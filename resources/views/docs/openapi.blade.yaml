@@ -82,7 +82,7 @@ paths:
     delete:
       tags:
         - "Users"
-      summart: "Delete a specific user"
+      summary: "Delete a specific user"
       operationId: "users.destroy"
       parameters:
         - $ref: "#/components/parameters/id"
@@ -163,7 +163,7 @@ paths:
     delete:
       tags:
         - "Service Users"
-      summart: "Delete a specific service user"
+      summary: "Delete a specific service user"
       operationId: "service-users.destroy"
       parameters:
         - $ref: "#/components/parameters/id"
@@ -244,7 +244,7 @@ paths:
     delete:
       tags:
         - "Locations"
-      summart: "Delete a specific location"
+      summary: "Delete a specific location"
       operationId: "locations.destroy"
       parameters:
         - $ref: "#/components/parameters/id"
@@ -329,7 +329,7 @@ paths:
     delete:
       tags:
         - "Appointments"
-      summart: "Delete a specific appointment"
+      summary: "Delete a specific appointment"
       operationId: "appointments.destroy"
       parameters:
         - $ref: "#/components/parameters/id"
@@ -410,7 +410,7 @@ paths:
     delete:
       tags:
         - "Questions"
-      summart: "Delete a specific question"
+      summary: "Delete a specific question"
       operationId: "questions.destroy"
       parameters:
         - $ref: "#/components/parameters/id"
@@ -497,7 +497,7 @@ paths:
     delete:
       tags:
         - "Answers"
-      summart: "Delete a specific answer"
+      summary: "Delete a specific answer"
       operationId: "answers.destroy"
       parameters:
         - $ref: "#/components/parameters/id"
