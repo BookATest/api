@@ -1,15 +1,15 @@
 openapi: "3.0.1"
 
 info:
-  title: "HIV API Specification"
-  description: "For using the HIV API"
+  title: "{{ config('app.name') }} API Specification"
+  description: "For using the {{ config('app.name') }} API"
   version: "v1"
   contact:
     name: "Ayup Digital"
     url: "https://ayup.agency"
 
 servers:
-- url: "https://api.hiv.test/v1/"
+- url: "{{ config('app.url') }}/v1/"
   description: "Dev Server"
 
 paths:
