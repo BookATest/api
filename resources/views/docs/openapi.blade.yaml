@@ -93,6 +93,25 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/DeletedResponse"
+  /locations:
+    post:
+      tags:
+        - "Locations"
+      summary: "Create a new location"
+      operationId: "locations.store"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ModifyLocation"
+      responses:
+        200:
+          description: "Successful response"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Location"
 
 components:
   securitySchemes:
@@ -195,15 +214,40 @@ components:
           $ref: "#/components/schemas/ApiResourceLinks"
         meta:
           $ref: "#/components/schemas/ApiResourceMeta"
+    ModifyLocation:
+      type: "object"
+      required:
+        - name
+      properties:
+        name:
+          type: string
+    Location:
+      type: "object"
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+    LocationCollection:
+      type: "object"
+      properties:
+        data:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/Location"
+        links:
+          $ref: "#/components/schemas/ApiResourceLinks"
+        meta:
+          $ref: "#/components/schemas/ApiResourceMeta"
 
 security:
   - app_id: []
 
 tags:
   - name: "Users"
-    description: "All user routes"
+    description: "Backend users"
   - name: "Locations"
-    description: "All location routes"
+    description: "Clinic locations"
 
 externalDocs:
   description: "External Doc Website"
