@@ -35293,7 +35293,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 __WEBPACK_IMPORTED_MODULE_0_swagger_ui___default()({
     dom_id: '#app',
     url: "/docs/openapi.yaml",
-    defaultModelsExpandDepth: -1
+    defaultModelsExpandDepth: -1,
+    docExpansion: 'none'
 });
 
 /***/ }),
