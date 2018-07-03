@@ -11,6 +11,18 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Route;
+
+Route::get('/docs', function () {
+    return view('docs.index');
+});
+
+Route::get('/docs/openapi.yaml', function () {
+    $yaml = view('docs.openapi')->render();
+
+    return response()->make($yaml, Response::HTTP_OK, [
+        'Content-Type' => 'application/x-yaml',
+        'Content-Disposition' => 'inline; filename="openapi.yaml"',
+    ]);
 });

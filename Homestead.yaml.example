@@ -11,7 +11,7 @@ folders:
         to: /home/vagrant/BookATest.hiv
 sites:
     -
-        map: bookatest.test
+        map: api.bookatest.test
         to: /home/vagrant/BookATest.hiv/public
 databases:
     - book_a_test_dev
