@@ -112,6 +112,67 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Location"
+    get:
+      tags:
+        - "Locations"
+      summary: "List all locations"
+      operationId: "locations.list"
+      responses:
+        200:
+          description: "Successful response"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LocationCollection"
+  /locations/{id}:
+    get:
+      tags:
+        - "Locations"
+      summary: "Get a specific location"
+      operationId: "locations.show"
+      parameters:
+        - $ref: "#/components/parameters/id"
+      responses:
+        200:
+          description: "Successful response"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Location"
+    put:
+      tags:
+        - "Locations"
+      summary: "Update a specific location"
+      operationId: "locations.update"
+      parameters:
+        - $ref: "#/components/parameters/id"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ModifyLocation"
+      responses:
+        200:
+          description: "Successful response"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Location"
+    delete:
+      tags:
+        - "Locations"
+      summart: "Delete a specific location"
+      operationId: "locations.destroy"
+      parameters:
+        - $ref: "#/components/parameters/id"
+      responses:
+        200:
+          description: "Successful response"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DeletedResponse"
 
 components:
   securitySchemes:
