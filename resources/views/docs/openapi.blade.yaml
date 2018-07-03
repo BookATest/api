@@ -427,6 +427,7 @@ paths:
       tags:
         - "Answers"
       summary: "Create a new answer"
+      description: "This endpoint will only be invoked by an end-user who's API key will link back to them."
       operationId: "answers.store"
       parameters:
         - $ref: "#/components/parameters/id"
@@ -476,6 +477,7 @@ paths:
       tags:
         - "Answers"
       summary: "Update a specific answer"
+      description: "This endpoint will only be invoked by an end-user who's API key will link back to them."
       operationId: "answers.update"
       parameters:
         - $ref: "#/components/parameters/id"
