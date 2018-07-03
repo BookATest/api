@@ -584,6 +584,11 @@ components:
       properties:
         question:
           type: "string"
+        options:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/QuestionOption"
+          nullable: true
     Question:
       type: "object"
       properties:
@@ -591,6 +596,10 @@ components:
           type: "integer"
         question:
           type: "string"
+        options:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/QuestionOption"
     QuestionCollection:
       type: "object"
       properties:
@@ -602,6 +611,11 @@ components:
           $ref: "#/components/schemas/ApiResourceLinks"
         meta:
           $ref: "#/components/schemas/ApiResourceMeta"
+    QuestionOption:
+      type: "object"
+      properties:
+        option:
+          type: "string"
     ModifyAnswer:
       type: "object"
       required:
