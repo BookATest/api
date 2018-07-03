@@ -337,6 +337,90 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/DeletedResponse"
+  /appointments/{id}/answers:
+    post:
+      tags:
+        - "Answers"
+      summary: "Create a new answer"
+      operationId: "answers.store"
+      parameters:
+        - $ref: "#/components/parameters/id"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ModifyAnswer"
+      responses:
+        200:
+          description: "Successful response"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Answer"
+    get:
+      tags:
+        - "Answers"
+      summary: "List all answers"
+      operationId: "answers.list"
+      parameters:
+        - $ref: "#/components/parameters/id"
+      responses:
+        200:
+          description: "Successful response"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AnswerCollection"
+  /answers/{id}:
+    get:
+      tags:
+        - "Answers"
+      summary: "Get a specific answer"
+      operationId: "answers.show"
+      parameters:
+        - $ref: "#/components/parameters/id"
+      responses:
+        200:
+          description: "Successful response"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Answer"
+    put:
+      tags:
+        - "Answers"
+      summary: "Update a specific answer"
+      operationId: "answers.update"
+      parameters:
+        - $ref: "#/components/parameters/id"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ModifyAnswer"
+      responses:
+        200:
+          description: "Successful response"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Answer"
+    delete:
+      tags:
+        - "Answers"
+      summart: "Delete a specific answer"
+      operationId: "answers.destroy"
+      parameters:
+        - $ref: "#/components/parameters/id"
+      responses:
+        200:
+          description: "Successful response"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DeletedResponse"
 
 components:
   securitySchemes:
@@ -477,6 +561,8 @@ components:
       properties:
         id:
           type: "integer"
+        location_id:
+          type: "integer"
         start_at:
           type: "string"
           example: "YYYY-MM-DD H:i:s"
@@ -516,6 +602,47 @@ components:
           $ref: "#/components/schemas/ApiResourceLinks"
         meta:
           $ref: "#/components/schemas/ApiResourceMeta"
+    ModifyAnswer:
+      type: "object"
+      required:
+        - "question_id"
+      properties:
+        question_id:
+          type: "integer"
+        question_option_id:
+          type: "integer"
+          nullable: true
+        answer:
+          type: "string"
+          nullable: true
+    Answer:
+      type: "object"
+      properties:
+        id:
+          type: "integer"
+        service_user_id:
+          type: "integer"
+        appointment_id:
+          type: "integer"
+        question_id:
+          type: "integer"
+        question_option_id:
+          type: "integer"
+          nullable: true
+        answer:
+          type: "string"
+          nullable: true
+    AnswerCollection:
+      type: "object"
+      properties:
+        data:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/Answer"
+        links:
+          $ref: "#/components/schemas/ApiResourceLinks"
+        meta:
+          $ref: "#/components/schemas/ApiResourceMeta"
 
 security:
   - app_id: []
@@ -529,6 +656,8 @@ tags:
     description: "Appointments at locations"
   - name: "Questions"
     description: "Screening questions to get an appointment booked"
+  - name: "Answers"
+    description: "Service user answers to screening questions"
 
 externalDocs:
   description: "External Doc Website"
