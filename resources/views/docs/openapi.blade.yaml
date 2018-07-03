@@ -257,6 +257,86 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/DeletedResponse"
+  /questions:
+    post:
+      tags:
+        - "Questions"
+      summary: "Create a new question"
+      operationId: "questions.store"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ModifyQuestion"
+      responses:
+        200:
+          description: "Successful response"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Question"
+    get:
+      tags:
+        - "Questions"
+      summary: "List all questions"
+      operationId: "questions.list"
+      responses:
+        200:
+          description: "Successful response"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/QuestionCollection"
+  /questions/{id}:
+    get:
+      tags:
+        - "Questions"
+      summary: "Get a specific question"
+      operationId: "questions.show"
+      parameters:
+        - $ref: "#/components/parameters/id"
+      responses:
+        200:
+          description: "Successful response"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Question"
+    put:
+      tags:
+        - "Questions"
+      summary: "Update a specific question"
+      operationId: "questions.update"
+      parameters:
+        - $ref: "#/components/parameters/id"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ModifyQuestion"
+      responses:
+        200:
+          description: "Successful response"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Question"
+    delete:
+      tags:
+        - "Questions"
+      summart: "Delete a specific question"
+      operationId: "questions.destroy"
+      parameters:
+        - $ref: "#/components/parameters/id"
+      responses:
+        200:
+          description: "Successful response"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DeletedResponse"
 
 components:
   securitySchemes:
@@ -411,6 +491,31 @@ components:
           $ref: "#/components/schemas/ApiResourceLinks"
         meta:
           $ref: "#/components/schemas/ApiResourceMeta"
+    ModifyQuestion:
+      type: "object"
+      required:
+        - "question"
+      properties:
+        question:
+          type: "string"
+    Question:
+      type: "object"
+      properties:
+        id:
+          type: "integer"
+        question:
+          type: "string"
+    QuestionCollection:
+      type: "object"
+      properties:
+        data:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/Question"
+        links:
+          $ref: "#/components/schemas/ApiResourceLinks"
+        meta:
+          $ref: "#/components/schemas/ApiResourceMeta"
 
 security:
   - app_id: []
@@ -422,6 +527,8 @@ tags:
     description: "Clinic locations"
   - name: "Appointments"
     description: "Appointments at locations"
+  - name: "Questions"
+    description: "Screening questions to get an appointment booked"
 
 externalDocs:
   description: "External Doc Website"
