@@ -1,0 +1,20 @@
+ip: 192.168.10.11
+memory: 2048
+cpus: 1
+provider: virtualbox
+authorize: ~/.ssh/id_rsa.pub
+keys:
+    - ~/.ssh/id_rsa
+folders:
+    -
+        map: ~/Sites/BookATest.hiv
+        to: /home/vagrant/BookATest.hiv
+sites:
+    -
+        map: bookatest.test
+        to: /home/vagrant/BookATest.hiv/public
+databases:
+    - book_a_test_dev
+    - book_a_test_testing
+name: bookatest-hiv
+hostname: bookatest-hiv
