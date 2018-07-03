@@ -173,6 +173,90 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/DeletedResponse"
+  /locations/{id}/appointments:
+    post:
+      tags:
+        - "Appointments"
+      summary: "Create a new appointment"
+      operationId: "appointments.store"
+      parameters:
+        - $ref: "#/components/parameters/id"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ModifyAppointment"
+      responses:
+        200:
+          description: "Successful response"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Appointment"
+    get:
+      tags:
+        - "Appointments"
+      summary: "List all appointments"
+      operationId: "appointments.list"
+      parameters:
+        - $ref: "#/components/parameters/id"
+      responses:
+        200:
+          description: "Successful response"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AppointmentCollection"
+  /appointments/{id}:
+    get:
+      tags:
+        - "Appointments"
+      summary: "Get a specific appointment"
+      operationId: "appointments.show"
+      parameters:
+        - $ref: "#/components/parameters/id"
+      responses:
+        200:
+          description: "Successful response"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Appointment"
+    put:
+      tags:
+        - "Appointments"
+      summary: "Update a specific appointment"
+      operationId: "appointments.update"
+      parameters:
+        - $ref: "#/components/parameters/id"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ModifyAppointment"
+      responses:
+        200:
+          description: "Successful response"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Appointment"
+    delete:
+      tags:
+        - "Appointments"
+      summart: "Delete a specific appointment"
+      operationId: "appointments.destroy"
+      parameters:
+        - $ref: "#/components/parameters/id"
+      responses:
+        200:
+          description: "Successful response"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DeletedResponse"
 
 components:
   securitySchemes:
@@ -231,39 +315,39 @@ components:
     ModifyUser:
       type: "object"
       required:
-        - name
-        - email
-        - password
+        - "name"
+        - "email"
+        - "password"
       properties:
         location_id:
-          type: integer
+          type: "integer"
         name:
-          type: string
+          type: "string"
         email:
-          type: string
-          format: email
+          type: "string"
+          format: "email"
         password:
-          type: string
-          format: password
+          type: "string"
+          format: "password"
     User:
       type: "object"
       properties:
         id:
-          type: integer
+          type: "integer"
         location_id:
-          type: integer
+          type: "integer"
           nullable: true
         profile_picture_file_id:
-          type: integer
+          type: "integer"
           nullable: true
         name:
-          type: string
+          type: "string"
         email:
-          type: string
-          format: email
+          type: "string"
+          format: "email"
         password:
-          type: string
-          format: password
+          type: "string"
+          format: "password"
     UserCollection:
       type: "object"
       properties:
@@ -278,17 +362,17 @@ components:
     ModifyLocation:
       type: "object"
       required:
-        - name
+        - "name"
       properties:
         name:
-          type: string
+          type: "string"
     Location:
       type: "object"
       properties:
         id:
-          type: integer
+          type: "integer"
         name:
-          type: string
+          type: "string"
     LocationCollection:
       type: "object"
       properties:
@@ -296,6 +380,33 @@ components:
           type: "array"
           items:
             $ref: "#/components/schemas/Location"
+        links:
+          $ref: "#/components/schemas/ApiResourceLinks"
+        meta:
+          $ref: "#/components/schemas/ApiResourceMeta"
+    ModifyAppointment:
+      type: "object"
+      required:
+        - "start_at"
+      properties:
+        start_at:
+          type: "string"
+          example: "YYYY-MM-DD H:i:s"
+    Appointment:
+      type: "object"
+      properties:
+        id:
+          type: "integer"
+        start_at:
+          type: "string"
+          example: "YYYY-MM-DD H:i:s"
+    AppointmentCollection:
+      type: "object"
+      properties:
+        data:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/Appointment"
         links:
           $ref: "#/components/schemas/ApiResourceLinks"
         meta:
@@ -309,6 +420,8 @@ tags:
     description: "Backend users"
   - name: "Locations"
     description: "Clinic locations"
+  - name: "Appointments"
+    description: "Appointments at locations"
 
 externalDocs:
   description: "External Doc Website"
