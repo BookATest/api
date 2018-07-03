@@ -585,6 +585,11 @@ components:
         password:
           type: "string"
           format: "password"
+        roles:
+          type: "array"
+          items:
+            type: "string"
+            enum: ["super admin", "organisation admin", "location admin"]
 
     User:
       type: "object"
@@ -605,6 +610,11 @@ components:
         password:
           type: "string"
           format: "password"
+        roles:
+          type: "array"
+          items:
+            type: "string"
+            enum: ["super admin", "organisation admin", "location admin"]
 
     UserCollection:
       type: "object"
