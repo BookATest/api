@@ -93,6 +93,88 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/DeletedResponse"
+
+  /service-users:
+    post:
+      tags:
+        - "Service Users"
+      summary: "Create a new service user"
+      operationId: "service-users.store"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ModifyServiceUser"
+      responses:
+        200:
+          description: "Successful response"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServiceUser"
+    get:
+      tags:
+        - "Service Users"
+      summary: "List all service users"
+      operationId: "service-users.list"
+      responses:
+        200:
+          description: "Successful response"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServiceUserCollection"
+  /service-users/{id}:
+    get:
+      tags:
+        - "Service Users"
+      summary: "Get a specific service user"
+      operationId: "users.show"
+      parameters:
+        - $ref: "#/components/parameters/id"
+      responses:
+        200:
+          description: "Successful response"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServiceUser"
+    put:
+      tags:
+        - "Service Users"
+      summary: "Update a specific service user"
+      operationId: "service-users.update"
+      parameters:
+        - $ref: "#/components/parameters/id"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ModifyServiceUser"
+      responses:
+        200:
+          description: "Successful response"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServiceUser"
+    delete:
+      tags:
+        - "Service Users"
+      summart: "Delete a specific service user"
+      operationId: "service-users.destroy"
+      parameters:
+        - $ref: "#/components/parameters/id"
+      responses:
+        200:
+          description: "Successful response"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DeletedResponse"
+
   /locations:
     post:
       tags:
@@ -173,6 +255,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/DeletedResponse"
+
   /locations/{id}/appointments:
     post:
       tags:
@@ -257,6 +340,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/DeletedResponse"
+
   /questions:
     post:
       tags:
@@ -337,6 +421,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/DeletedResponse"
+
   /appointments/{id}/answers:
     post:
       tags:
@@ -429,6 +514,7 @@ components:
       description: "API key to authorize requests"
       name: "appid"
       in: "query"
+
   parameters:
     id:
       name: "id"
@@ -436,6 +522,7 @@ components:
       description: "The ID of the model"
       schema:
         type: "integer"
+
   schemas:
     DeletedResponse:
       type: "object"
@@ -443,6 +530,7 @@ components:
         message:
           type: "string"
           example: "Model successfully deleted"
+
     ApiResourceMeta:
       type: "object"
       properties:
@@ -461,6 +549,7 @@ components:
           type: "integer"
         total:
           type: "integer"
+
     ApiResourceLinks:
       type: "object"
       properties:
@@ -476,6 +565,7 @@ components:
         next:
           type: "string"
           nullable: true
+
     ModifyUser:
       type: "object"
       required:
@@ -493,6 +583,7 @@ components:
         password:
           type: "string"
           format: "password"
+
     User:
       type: "object"
       properties:
@@ -512,6 +603,7 @@ components:
         password:
           type: "string"
           format: "password"
+
     UserCollection:
       type: "object"
       properties:
@@ -523,6 +615,47 @@ components:
           $ref: "#/components/schemas/ApiResourceLinks"
         meta:
           $ref: "#/components/schemas/ApiResourceMeta"
+
+    ModifyServiceUser:
+      type: "object"
+      required:
+        - "name"
+        - "email"
+        - "phone_number"
+      properties:
+        name:
+          type: "string"
+        email:
+          type: "string"
+          format: "email"
+        phone_number:
+          type: "string"
+
+    ServiceUser:
+      type: "object"
+      properties:
+        id:
+          type: "integer"
+        name:
+          type: "string"
+        email:
+          type: "string"
+          format: "email"
+        phone_number:
+          type: "string"
+
+    ServiceUserCollection:
+      type: "object"
+      properties:
+        data:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/ServiceUser"
+        links:
+          $ref: "#/components/schemas/ApiResourceLinks"
+        meta:
+          $ref: "#/components/schemas/ApiResourceMeta"
+
     ModifyLocation:
       type: "object"
       required:
@@ -530,6 +663,7 @@ components:
       properties:
         name:
           type: "string"
+
     Location:
       type: "object"
       properties:
@@ -537,6 +671,7 @@ components:
           type: "integer"
         name:
           type: "string"
+
     LocationCollection:
       type: "object"
       properties:
@@ -548,6 +683,7 @@ components:
           $ref: "#/components/schemas/ApiResourceLinks"
         meta:
           $ref: "#/components/schemas/ApiResourceMeta"
+
     ModifyAppointment:
       type: "object"
       required:
@@ -556,6 +692,7 @@ components:
         start_at:
           type: "string"
           example: "YYYY-MM-DD H:i:s"
+
     Appointment:
       type: "object"
       properties:
@@ -566,6 +703,7 @@ components:
         start_at:
           type: "string"
           example: "YYYY-MM-DD H:i:s"
+
     AppointmentCollection:
       type: "object"
       properties:
@@ -577,6 +715,7 @@ components:
           $ref: "#/components/schemas/ApiResourceLinks"
         meta:
           $ref: "#/components/schemas/ApiResourceMeta"
+
     ModifyQuestion:
       type: "object"
       required:
@@ -589,6 +728,7 @@ components:
           items:
             $ref: "#/components/schemas/QuestionOption"
           nullable: true
+
     Question:
       type: "object"
       properties:
@@ -600,6 +740,7 @@ components:
           type: "array"
           items:
             $ref: "#/components/schemas/QuestionOption"
+
     QuestionCollection:
       type: "object"
       properties:
@@ -611,11 +752,13 @@ components:
           $ref: "#/components/schemas/ApiResourceLinks"
         meta:
           $ref: "#/components/schemas/ApiResourceMeta"
+
     QuestionOption:
       type: "object"
       properties:
         option:
           type: "string"
+
     ModifyAnswer:
       type: "object"
       required:
@@ -629,6 +772,7 @@ components:
         answer:
           type: "string"
           nullable: true
+
     Answer:
       type: "object"
       properties:
@@ -646,6 +790,7 @@ components:
         answer:
           type: "string"
           nullable: true
+
     AnswerCollection:
       type: "object"
       properties:
@@ -664,6 +809,8 @@ security:
 tags:
   - name: "Users"
     description: "Backend users"
+  - name: "Service Users"
+    description: "End-users consuming the service"
   - name: "Locations"
     description: "Clinic locations"
   - name: "Appointments"
