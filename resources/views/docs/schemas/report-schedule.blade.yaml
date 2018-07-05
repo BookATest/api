@@ -1,0 +1,39 @@
+ReportSchedule:
+  type: "object"
+  properties:
+    user_id:
+      type: "integer"
+    report_type:
+      type: "string"
+      enum: ["ReportSchedule Type 1", "ReportSchedule Type 2"]
+    repeat_type:
+      type: "string"
+      enum: ["weekly", "monthly"]
+
+ReportScheduleCollection:
+  type: "object"
+  properties:
+    data:
+      type: "array"
+      items:
+        $ref: "#/ReportSchedule"
+    links:
+      $ref: "/docs/schemas/api-resource.yaml#/ApiResourceLinks"
+    meta:
+      $ref: "/docs/schemas/api-resource.yaml#/ApiResourceMeta"
+
+CreateReportSchedule:
+  type: "object"
+  required:
+    - "report_type"
+    - "repeat_type"
+  properties:
+    report_type:
+      type: "string"
+      enum: ["ReportSchedule Type 1", "ReportSchedule Type 2"]
+    repeat_type:
+      type: "string"
+      enum: ["weekly", "monthly"]
+
+UpdateReportSchedule:
+  $ref: "#/CreateReportSchedule"

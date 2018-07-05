@@ -40,6 +40,13 @@ report_id:
   schema:
     type: "integer"
 
+report_schedule_id:
+  name: "report_id"
+  in: "path"
+  description: "The ID of the report schedule"
+  schema:
+    type: "integer"
+
 uuid:
   name: "uuid"
   in: "path"

@@ -1,0 +1,99 @@
+report-schedules:
+  get:
+    tags:
+      - "Report Schedules"
+    summary: "List all of the report schedules"
+    operationId: "users.report-schedules.index"
+    responses:
+      200:
+        description: "Successful response"
+        content:
+          application/json:
+            schema:
+              $ref: "/docs/schemas/report-schedule.yaml#/ReportScheduleCollection"
+
+report-schedules.report_schedule_id:
+  get:
+    tags:
+      - "Report Schedules"
+    summary: "Show the specified report schedule"
+    operationId: "report-schedules.show"
+    parameters:
+      - $ref: "/docs/parameters/id.yaml#/report_schedule_id"
+    responses:
+      200:
+        description: "Successful response"
+        content:
+          application/json:
+            schema:
+              $ref: "/docs/schemas/report-schedule.yaml#/ReportSchedule"
+  put:
+    tags:
+      - "Report Schedules"
+    summary: "Update the specified report schedule"
+    operationId: "report-schedules.update"
+    parameters:
+      - $ref: "/docs/parameters/id.yaml#/report_schedule_id"
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "/docs/schemas/report-schedule.yaml#/UpdateReportSchedule"
+    responses:
+      200:
+        description: "Successful response"
+        content:
+          application/json:
+            schema:
+              $ref: "/docs/schemas/report-schedule.yaml#/ReportSchedule"
+  delete:
+    tags:
+      - "Report Schedules"
+    summary: "Delete a specific report"
+    operationId: "report-schedules.destroy"
+    parameters:
+      - $ref: "/docs/parameters/id.yaml#/report_schedule_id"
+    responses:
+      200:
+        description: "Successful response"
+        content:
+          application/json:
+            schema:
+              $ref: "/docs/schemas/responses.yaml#/DeletedResponse"
+
+users.user_id.report-schedules:
+  get:
+    tags:
+      - "Report Schedules"
+    summary: "List all of the report schedules for the specified user"
+    operationId: "users.report-schedules.index"
+    parameters:
+      - $ref: "/docs/parameters/id.yaml#/user_id"
+    responses:
+      200:
+        description: "Successful response"
+        content:
+          application/json:
+            schema:
+              $ref: "/docs/schemas/report-schedule.yaml#/ReportScheduleCollection"
+  post:
+    tags:
+      - "Report Schedules"
+    summary: "Create a new report schedule for the specified user"
+    operationId: "users.report-schedules.store"
+    parameters:
+      - $ref: "/docs/parameters/id.yaml#/user_id"
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "/docs/schemas/report-schedule.yaml#/CreateReportSchedule"
+    responses:
+      200:
+        description: "Successful response"
+        content:
+          application/json:
+            schema:
+              $ref: "/docs/schemas/report-schedule.yaml#/ReportSchedule"

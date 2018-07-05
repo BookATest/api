@@ -71,6 +71,14 @@ paths:
   /reports/{report_id}:
     $ref: "/docs/paths/reports.yaml#/reports.report_id"
 
+  # Report Schedule Routes.
+  /report-schedules:
+    $ref: "/docs/paths/report-schedules.yaml#/report-schedules"
+  /report-schedules/{report_schedule_id}:
+    $ref: "/docs/paths/report-schedules.yaml#/report-schedules.report_schedule_id"
+  /users/{user_id}/report-schedules:
+    $ref: "/docs/paths/report-schedules.yaml#/users.user_id.report-schedules"
+
 components:
   securitySchemes:
     app_id:
@@ -101,6 +109,7 @@ tags:
     description: "For managing the users calendar feed token"
   - name: "Reports"
     description: "User generated/scheduled reports"
+  - name: "Report Schedules"
 
 externalDocs:
   description: "External Doc Website"
