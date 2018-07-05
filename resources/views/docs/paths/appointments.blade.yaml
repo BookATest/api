@@ -1,0 +1,149 @@
+clinics.clinic_id.appointments:
+  post:
+    tags:
+      - "Appointments"
+    summary: "Create a new appointment"
+    operationId: "clinics.appointments.store"
+    parameters:
+      - $ref: "/docs/parameters/id.yaml#/clinic_id"
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "/docs/schemas/Appointment.yaml#/ModifyAppointment"
+    responses:
+      200:
+        description: "Successful response"
+        content:
+          application/json:
+            schema:
+              $ref: "/docs/schemas/Appointment.yaml#/Appointment"
+  get:
+    tags:
+      - "Appointments"
+    summary: "List all appointments at a specified clinic"
+    operationId: "clinics.appointments.list"
+    parameters:
+      - $ref: "/docs/parameters/id.yaml#/clinic_id"
+    responses:
+      200:
+        description: "Successful response"
+        content:
+          application/json:
+            schema:
+              $ref: "/docs/schemas/Appointment.yaml#/AppointmentCollection"
+
+users.user_id.appointments:
+  get:
+    tags:
+      - "Appointments"
+    summary: "List all appointments for a specified user"
+    operationId: "users.appointments.list"
+    parameters:
+      - $ref: "/docs/parameters/id.yaml#/user_id"
+    responses:
+      200:
+        description: "Successful response"
+        content:
+          application/json:
+            schema:
+              $ref: "/docs/schemas/Appointment.yaml#/AppointmentCollection"
+
+service-users.service_user_uuid.appointments:
+  get:
+    tags:
+      - "Appointments"
+    summary: "List all appointments for a specified service user"
+    operationId: "service-users.appointments.list"
+    parameters:
+      - $ref: "/docs/parameters/id.yaml#/service_user_uuid"
+    responses:
+      200:
+        description: "Successful response"
+        content:
+          application/json:
+            schema:
+              $ref: "/docs/schemas/Appointment.yaml#/AppointmentCollection"
+
+appointments:
+  get:
+    tags:
+      - "Appointments"
+    summary: "List all appointments"
+    operationId: "appointments.list"
+    parameters:
+      - $ref: "/docs/parameters/id.yaml#/id"
+    responses:
+      200:
+        description: "Successful response"
+        content:
+          application/json:
+            schema:
+              $ref: "/docs/schemas/Appointment.yaml#/AppointmentCollection"
+
+appointments.appointment_id:
+  get:
+    tags:
+      - "Appointments"
+    summary: "Get a specific appointment"
+    operationId: "appointments.show"
+    parameters:
+      - $ref: "/docs/parameters/id.yaml#/appointment_id"
+    responses:
+      200:
+        description: "Successful response"
+        content:
+          application/json:
+            schema:
+              $ref: "/docs/schemas/Appointment.yaml#/Appointment"
+  put:
+    tags:
+      - "Appointments"
+    summary: "Update a specific appointment"
+    operationId: "appointments.update"
+    parameters:
+      - $ref: "/docs/parameters/id.yaml#/appointment_id"
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "/docs/schemas/Appointment.yaml#/ModifyAppointment"
+    responses:
+      200:
+        description: "Successful response"
+        content:
+          application/json:
+            schema:
+              $ref: "/docs/schemas/Appointment.yaml#/Appointment"
+  delete:
+    tags:
+      - "Appointments"
+    summary: "Delete a specific appointment"
+    operationId: "appointments.destroy"
+    parameters:
+      - $ref: "/docs/parameters/id.yaml#/appointment_id"
+    responses:
+      200:
+        description: "Successful response"
+        content:
+          application/json:
+            schema:
+              $ref: "/docs/schemas/Responses.yaml#/DeletedResponse"
+
+appointments.appointment_id.cancel:
+  put:
+    tags:
+      - "Appointments"
+    summary: "Cancel a specific appointment"
+    operationId: "appointments.cancel.update"
+    parameters:
+      - $ref: "/docs/parameters/id.yaml#/appointment_id"
+    responses:
+      200:
+        description: "Successful response"
+        content:
+          application/json:
+            schema:
+              $ref: "/docs/schemas/Appointment.yaml#/Appointment"

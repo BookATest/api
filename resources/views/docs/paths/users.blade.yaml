@@ -1,0 +1,97 @@
+users:
+  post:
+    tags:
+      - "Users"
+    summary: "Create a new user"
+    operationId: "users.store"
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "/docs/schemas/User.yaml#/ModifyUser"
+    responses:
+      200:
+        description: "Successful response"
+        content:
+          application/json:
+            schema:
+              $ref: "/docs/schemas/User.yaml#/User"
+  get:
+    tags:
+      - "Users"
+    summary: "List all users"
+    operationId: "users.list"
+    responses:
+      200:
+        description: "Successful response"
+        content:
+          application/json:
+            schema:
+              $ref: "/docs/schemas/User.yaml#/UserCollection"
+
+users.user_id:
+  get:
+    tags:
+      - "Users"
+    summary: "Get a specific user"
+    operationId: "users.show"
+    parameters:
+      - $ref: "/docs/parameters/id.yaml#/user_id"
+    responses:
+      200:
+        description: "Successful response"
+        content:
+          application/json:
+            schema:
+              $ref: "/docs/schemas/User.yaml#/User"
+  put:
+    tags:
+      - "Users"
+    summary: "Update a specific user"
+    operationId: "users.update"
+    parameters:
+      - $ref: "/docs/parameters/id.yaml#/user_id"
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "/docs/schemas/User.yaml#/ModifyUser"
+    responses:
+      200:
+        description: "Successful response"
+        content:
+          application/json:
+            schema:
+              $ref: "/docs/schemas/User.yaml#/User"
+  delete:
+    tags:
+      - "Users"
+    summary: "Disable a specific user"
+    operationId: "users.destroy"
+    parameters:
+      - $ref: "/docs/parameters/id.yaml#/user_id"
+    responses:
+      200:
+        description: "Successful response"
+        content:
+          application/json:
+            schema:
+              $ref: "/docs/schemas/Responses.yaml#/DeletedResponse"
+
+clinics.clinic_id.users:
+  get:
+    tags:
+      - "Users"
+    summary: "List all users that are associated to a specific clinic"
+    operationId: "clinics.users.show"
+    parameters:
+      - $ref: "/docs/parameters/id.yaml#/clinic_id"
+    responses:
+      200:
+        description: "Successful response"
+        content:
+          application/json:
+            schema:
+              $ref: "/docs/schemas/User.yaml#/UserCollection"

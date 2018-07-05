@@ -1,0 +1,81 @@
+clinics:
+  post:
+    tags:
+      - "Clinics"
+    summary: "Create a new clinic"
+    operationId: "clinics.store"
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "/docs/schemas/Clinic.yaml#/ModifyClinic"
+    responses:
+      200:
+        description: "Successful response"
+        content:
+          application/json:
+            schema:
+              $ref: "/docs/schemas/Clinic.yaml#/Clinic"
+  get:
+    tags:
+      - "Clinics"
+    summary: "List all clinics"
+    operationId: "clinics.list"
+    responses:
+      200:
+        description: "Successful response"
+        content:
+          application/json:
+            schema:
+              $ref: "/docs/schemas/Clinic.yaml#/ClinicCollection"
+
+clinics.clinic_id:
+  get:
+    tags:
+      - "Clinics"
+    summary: "Get a specific clinic"
+    operationId: "clinics.show"
+    parameters:
+      - $ref: "/docs/parameters/id.yaml#/clinic_id"
+    responses:
+      200:
+        description: "Successful response"
+        content:
+          application/json:
+            schema:
+              $ref: "/docs/schemas/Clinic.yaml#/Clinic"
+  put:
+    tags:
+      - "Clinics"
+    summary: "Update a specific clinic"
+    operationId: "clinics.update"
+    parameters:
+      - $ref: "/docs/parameters/id.yaml#/clinic_id"
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "/docs/schemas/Clinic.yaml#/ModifyClinic"
+    responses:
+      200:
+        description: "Successful response"
+        content:
+          application/json:
+            schema:
+              $ref: "/docs/schemas/Clinic.yaml#/Clinic"
+  delete:
+    tags:
+      - "Clinics"
+    summary: "Delete a specific clinic"
+    operationId: "clinics.destroy"
+    parameters:
+      - $ref: "/docs/parameters/id.yaml#/clinic_id"
+    responses:
+      200:
+        description: "Successful response"
+        content:
+          application/json:
+            schema:
+              $ref: "/docs/schemas/Responses.yaml#/DeletedResponse"

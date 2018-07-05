@@ -1,0 +1,35 @@
+questions:
+  post:
+    tags:
+      - "Questions"
+    summary: "Create a new set of eligibility questions"
+    operationId: "questions.store"
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: "array"
+            items:
+              $ref: "/docs/schemas/Question.yaml#/ModifyQuestion"
+    responses:
+      200:
+        description: "Successful response"
+        content:
+          application/json:
+            schema:
+              type: "array"
+              items:
+                $ref: "/docs/schemas/Question.yaml#/Question"
+  get:
+    tags:
+      - "Questions"
+    summary: "List all questions"
+    operationId: "questions.list"
+    responses:
+      200:
+        description: "Successful response"
+        content:
+          application/json:
+            schema:
+              $ref: "/docs/schemas/Question.yaml#/QuestionCollection"

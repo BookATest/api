@@ -1,0 +1,87 @@
+appointments.appointment_id.answers:
+  post:
+    tags:
+      - "Answers"
+    summary: "Create a new answer"
+    description: "This endpoint will only be invoked by an end-user who's API key will link back to them."
+    operationId: "answers.store"
+    parameters:
+      - $ref: "/docs/parameters/id.yaml#/appointment_id"
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "/docs/schemas/Answer.yaml#/ModifyAnswer"
+    responses:
+      200:
+        description: "Successful response"
+        content:
+          application/json:
+            schema:
+              $ref: "/docs/schemas/Answer.yaml#/Answer"
+  get:
+    tags:
+      - "Answers"
+    summary: "List all answers"
+    operationId: "answers.list"
+    parameters:
+      - $ref: "/docs/parameters/id.yaml#/appointment_id"
+    responses:
+      200:
+        description: "Successful response"
+        content:
+          application/json:
+            schema:
+              $ref: "/docs/schemas/Answer.yaml#/AnswerCollection"
+
+answers.answer_id:
+  get:
+    tags:
+      - "Answers"
+    summary: "Get a specific answer"
+    operationId: "answers.show"
+    parameters:
+      - $ref: "/docs/parameters/id.yaml#/answer_id"
+    responses:
+      200:
+        description: "Successful response"
+        content:
+          application/json:
+            schema:
+              $ref: "/docs/schemas/Answer.yaml#/Answer"
+  put:
+    tags:
+      - "Answers"
+    summary: "Update a specific answer"
+    description: "This endpoint will only be invoked by an end-user who's API key will link back to them."
+    operationId: "answers.update"
+    parameters:
+      - $ref: "/docs/parameters/id.yaml#/answer_id"
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "/docs/schemas/Answer.yaml#/ModifyAnswer"
+    responses:
+      200:
+        description: "Successful response"
+        content:
+          application/json:
+            schema:
+              $ref: "/docs/schemas/Answer.yaml#/Answer"
+  delete:
+    tags:
+      - "Answers"
+    summary: "Delete a specific answer"
+    operationId: "answers.destroy"
+    parameters:
+      - $ref: "/docs/parameters/id.yaml#/answer_id"
+    responses:
+      200:
+        description: "Successful response"
+        content:
+          application/json:
+            schema:
+              $ref: "/docs/schemas/Responses.yaml#/DeletedResponse"

@@ -1,0 +1,48 @@
+id:
+  name: "id"
+  in: "path"
+  description: "The ID of the model"
+  schema:
+    type: "integer"
+
+user_id:
+  name: "user_id"
+  in: "path"
+  description: "The ID of the user"
+  schema:
+    type: "integer"
+
+clinic_id:
+  name: "clinic_id"
+  in: "path"
+  description: "The ID of the clinic"
+  schema:
+    type: "integer"
+
+appointment_id:
+  name: "appointment_id"
+  in: "path"
+  description: "The ID of the appointment"
+  schema:
+    type: "integer"
+
+answer_id:
+  name: "answer_id"
+  in: "path"
+  description: "The ID of the answer"
+  schema:
+    type: "integer"
+
+uuid:
+  name: "uuid"
+  in: "path"
+  description: "The UUID of the model"
+  schema:
+    type: "string"
+
+service_user_uuid:
+  name: "service_user_uuid"
+  in: "path"
+  description: "The UUID of the service user"
+  schema:
+    type: "string"
