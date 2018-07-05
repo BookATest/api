@@ -1,0 +1,16 @@
+users.user_id.calendar-feed-token:
+  put:
+    tags:
+      - "Calendar Feed Token"
+    summary: "Refresh the calendar feed token"
+    operationId: "users.calendar-feed-token.update"
+    responses:
+      200:
+        description: "Successful response"
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                calendar_feed_token:
+                  type: "string"

@@ -61,6 +61,10 @@ paths:
   /appointments/{appointment_id}/bookings:
     $ref: "/docs/paths/bookings.yaml#/appointments.appointment_id.bookings"
 
+  # Calendar Feed Token.
+  /users/{user_id}/calendar-feed-token:
+    $ref: "/docs/paths/calendar-feed-token.yaml#/users.user_id.calendar-feed-token"
+
 components:
   securitySchemes:
     app_id:
@@ -87,6 +91,8 @@ tags:
     description: "Set by clinics to specify which answers make the user eligible"
   - name: "Bookings"
     description: "For service users to make appointment bookings"
+  - name: "Calendar Feed Token"
+    description: "For managing the users calendar feed token"
 
 externalDocs:
   description: "External Doc Website"
