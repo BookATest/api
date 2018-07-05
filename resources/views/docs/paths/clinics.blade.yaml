@@ -22,6 +22,7 @@ clinics:
       - "Clinics"
     summary: "List all clinics"
     operationId: "clinics.list"
+    security: []
     responses:
       200:
         description: "Successful response"
@@ -35,6 +36,7 @@ clinics.clinic_id:
     tags:
       - "Clinics"
     summary: "Get a specific clinic"
+    security: []
     operationId: "clinics.show"
     parameters:
       - $ref: "/docs/parameters/id.yaml#/clinic_id"

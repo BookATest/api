@@ -1,0 +1,13 @@
+audit:
+  get:
+    tags:
+      - "Audits"
+    summary: "List all the audits"
+    operationId: "audits.index"
+    responses:
+      200:
+        description: "Successful response"
+        content:
+          application/json:
+            schema:
+              $ref: "/docs/schemas/audit.yaml#/AuditCollection"

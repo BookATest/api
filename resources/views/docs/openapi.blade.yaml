@@ -87,6 +87,10 @@ paths:
   /settings:
     $ref: "/docs/paths/settings.yaml#/settings"
 
+  # Audit Routes.
+  /audits:
+    $ref: "/docs/paths/audits.yaml#/audit"
+
 components:
   securitySchemes:
     OAuth2:
@@ -121,6 +125,8 @@ tags:
     description: "Dashboard stats"
   - name: "Settings"
     description: "Organisation settings"
+  - name: "Audits"
+    description: "User access auditing"
 
 externalDocs:
   description: "External Doc Website"

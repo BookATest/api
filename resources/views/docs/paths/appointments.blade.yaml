@@ -4,8 +4,16 @@ clinics.clinic_id.appointments:
       - "Appointments"
     summary: "Create a new appointment"
     operationId: "clinics.appointments.store"
+    security: []
     parameters:
       - $ref: "/docs/parameters/id.yaml#/clinic_id"
+      - name: "available"
+        in: "query"
+        description: >
+          If only available appointments should be returned. If the user is not authenticated, then they can only see
+          appointments which are available.
+        schema:
+          type: "boolean"
     requestBody:
       required: true
       content:
@@ -19,28 +27,6 @@ clinics.clinic_id.appointments:
           application/json:
             schema:
               $ref: "/docs/schemas/appointment.yaml#/Appointment"
-  get:
-    tags:
-      - "Appointments"
-    summary: "List all appointments at a specified clinic"
-    operationId: "clinics.appointments.list"
-    parameters:
-      - $ref: "/docs/parameters/id.yaml#/clinic_id"
-      - name: "format"
-        in: "query"
-        description: "The format of the appointments"
-        schema:
-          type: "string"
-          enum: ["json", "ics"]
-          default: "json"
-    responses:
-      200:
-        description: "Successful response"
-        content:
-          application/json:
-            schema:
-              $ref: "/docs/schemas/appointment.yaml#/AppointmentCollection"
-          text/calendar:
 
 users.user_id.appointments:
   get:

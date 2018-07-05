@@ -3,7 +3,7 @@ report-schedules:
     tags:
       - "Report Schedules"
     summary: "List all of the report schedules"
-    operationId: "users.report-schedules.index"
+    operationId: "report-schedules.index"
     responses:
       200:
         description: "Successful response"

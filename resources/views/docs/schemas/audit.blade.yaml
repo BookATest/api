@@ -1,0 +1,27 @@
+Audit:
+  type: "object"
+  properties:
+    id:
+      type: "integer"
+    auditable_id:
+      type: "integer"
+    auditable_type:
+      type: "string"
+    action:
+      type: "string"
+      enum: ["create", "read", "update", "delete", "login", "logout"]
+    description:
+      type: "integer"
+      nullable: true
+
+AuditCollection:
+  type: "object"
+  properties:
+    data:
+      type: "array"
+      items:
+        $ref: "#/Audit"
+    links:
+      $ref: "/docs/schemas/api-resource.yaml#/ApiResourceLinks"
+    meta:
+      $ref: "/docs/schemas/api-resource.yaml#/ApiResourceMeta"
