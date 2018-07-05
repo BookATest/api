@@ -125,6 +125,7 @@ tags:
   - name: "Reports"
     description: "User generated/scheduled reports"
   - name: "Report Schedules"
+    description: "Schedules for reports to be automatically generated"
   - name: "Stats"
     description: "Dashboard stats"
   - name: "Settings"
