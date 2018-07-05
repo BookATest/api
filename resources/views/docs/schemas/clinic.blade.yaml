@@ -4,7 +4,9 @@ ModifyClinic:
     - "name"
     - "phone"
     - "email"
-    - "address"
+    - "address_line_1"
+    - "city"
+    - "postcode"
   properties:
     name:
       type: "string"
@@ -12,7 +14,15 @@ ModifyClinic:
       type: "string"
     email:
       type: "string"
-    address:
+    address_line_1:
+      type: "string"
+    address_line_2:
+      type: "string"
+    address_line_3:
+      type: "string"
+    city:
+      type: "string"
+    postcode:
       type: "string"
     appointment_duration:
       type: "integer"
@@ -28,7 +38,15 @@ Clinic:
       type: "string"
     email:
       type: "string"
-    address:
+    address_line_1:
+      type: "string"
+    address_line_2:
+      type: "string"
+    address_line_3:
+      type: "string"
+    city:
+      type: "string"
+    postcode:
       type: "string"
     appointment_duration:
       type: "integer"
