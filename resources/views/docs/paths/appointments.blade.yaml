@@ -3,6 +3,21 @@ clinics.clinic_id.appointments:
     tags:
       - "Appointments"
     summary: "List all the appointments at a clinic"
+    description: |
+      This enpoint returns several responses depending on the caller:
+
+      ### Accessed From Service User
+      When this endpoint is accessed from a service user (no authentication), it will always return only the
+      appointments that are available.
+
+      ### Accessed From User
+      When access by an authenticated user, they can specify if they want to view all appointments or only available
+      appointments by specifying the `format` parameter in the query string.
+
+      ### Calendar Feed
+      To get a calendar feed of all appointments in `.ics` format:
+      - the `format` parameter of the query string must be set to `ics`
+      - and the `calendar_feed_token` must be provided (which is unique to a specific user)
     operationId: "clinics.appointments.index"
     security: []
     parameters:
@@ -101,8 +116,6 @@ appointments:
       - "Appointments"
     summary: "List all appointments"
     operationId: "appointments.list"
-    parameters:
-      - $ref: "/docs/parameters/id.yaml#/id"
     responses:
       200:
         description: "Successful response"
@@ -150,6 +163,9 @@ appointments.appointment_id:
     tags:
       - "Appointments"
     summary: "Delete a specific appointment"
+    description: >
+      An appointment can only be deleted if it has not been booked by a service user. If an appointment has been booked,
+      it must first be cancelled before you can delete it.
     operationId: "appointments.destroy"
     parameters:
       - $ref: "/docs/parameters/id.yaml#/appointment_id"
@@ -166,6 +182,8 @@ appointments.appointment_id.cancel:
     tags:
       - "Appointments"
     summary: "Cancel a specific appointment"
+    description: >
+      Removes the booking against the specified appointment.
     operationId: "appointments.cancel.update"
     parameters:
       - $ref: "/docs/parameters/id.yaml#/appointment_id"
