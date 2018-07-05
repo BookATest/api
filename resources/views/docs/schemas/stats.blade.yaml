@@ -1,0 +1,11 @@
+Stats:
+  type: "object"
+  properties:
+    stat_1:
+      type: "integer"
+    stat_2:
+      type: "integer"
+    stat_3:
+      type: "integer"
+    stat_4:
+      type: "integer"

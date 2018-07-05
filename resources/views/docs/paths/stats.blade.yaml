@@ -1,0 +1,13 @@
+stats:
+  get:
+    tags:
+      - "Stats"
+    summary: "The dashboard stats for the user"
+    operationId: "stats.index"
+    responses:
+      200:
+        description: "Successful response"
+        content:
+          application/json:
+            schema:
+              $ref: "/docs/schemas/stats.yaml#/Stats"
