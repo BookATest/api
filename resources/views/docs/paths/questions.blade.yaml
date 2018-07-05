@@ -32,6 +32,7 @@ questions:
       This endpoint will only return a list of all the current eligibility questions. Previous questions cannot be
       accessed.
     operationId: "questions.list"
+    security: []
     responses:
       200:
         description: "Successful response"
