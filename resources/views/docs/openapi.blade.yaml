@@ -89,14 +89,13 @@ paths:
 
 components:
   securitySchemes:
-    app_id:
-      type: "apiKey"
-      description: "API key to authorize requests"
-      name: "appid"
-      in: "query"
-
+    OAuth2:
+      type: "oauth2"
+      flows:
+        password:
+          tokenUrl: "{{ url('/oauth/token') }}"
 security:
-  - app_id: []
+  - OAuth2: []
 
 tags:
   - name: "Users"
