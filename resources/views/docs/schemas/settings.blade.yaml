@@ -1,0 +1,23 @@
+Settings:
+  type: "object"
+  properties:
+    setting_1:
+      type: "integer"
+    setting_2:
+      type: "integer"
+    setting_3:
+      type: "string"
+    setting_4:
+      type: "string"
+
+UpdateSettings:
+  type: "object"
+  properties:
+    setting_1:
+      type: "integer"
+    setting_2:
+      type: "integer"
+    setting_3:
+      type: "string"
+    setting_4:
+      type: "string"

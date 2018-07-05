@@ -1,0 +1,31 @@
+settings:
+  get:
+    tags:
+      - "Settings"
+    summary: "List all the organisation settings"
+    operationId: "settings.index"
+    responses:
+      200:
+        description: "Successful response"
+        content:
+          application/json:
+            schema:
+              $ref: "/docs/schemas/settings.yaml#/Settings"
+  put:
+    tags:
+      - "Settings"
+    summary: "Update all of the organisation settings"
+    operationId: "settings.update"
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "/docs/schemas/settings.yaml#/UpdateSettings"
+    responses:
+      200:
+        description: "Successful response"
+        content:
+          application/json:
+            schema:
+              $ref: "/docs/schemas/settings.yaml#/Settings"

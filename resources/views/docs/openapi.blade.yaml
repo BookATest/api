@@ -83,6 +83,10 @@ paths:
   /stats:
     $ref: "/docs/paths/stats.yaml#/stats"
 
+  # Settings Routes.
+  /settings:
+    $ref: "/docs/paths/settings.yaml#/settings"
+
 components:
   securitySchemes:
     app_id:
@@ -116,6 +120,8 @@ tags:
   - name: "Report Schedules"
   - name: "Stats"
     description: "Dashboard stats"
+  - name: "Settings"
+    description: "Organisation settings"
 
 externalDocs:
   description: "External Doc Website"
