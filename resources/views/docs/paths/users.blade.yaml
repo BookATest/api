@@ -81,6 +81,31 @@ users.user_id:
               $ref: "/docs/schemas/responses.yaml#/DeletedResponse"
 
 users.user_id.profile-picture:
+  post:
+    tags:
+      - "Users"
+    summary: "Uploads a user's profile picture"
+    operationId: "users.profile-picture.store"
+    parameters:
+      - $ref: "/docs/parameters/id.yaml#/user_id"
+    requestBody:
+      required: true
+      content:
+        image/png:
+          schema:
+            type: "string"
+            format: "binary"
+    responses:
+      200:
+        description: "Successful response"
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                message:
+                  type: "string"
+                  example: "Profile picture successfully uploaded"
   get:
     tags:
       - "Users"
@@ -93,6 +118,20 @@ users.user_id.profile-picture:
         description: "Successful response"
         content:
           image/png:
+  delete:
+    tags:
+      - "Users"
+    summary: "Deleted a specific user's profile picture"
+    operationId: "users.profile-picture.destroy"
+    parameters:
+      - $ref: "/docs/parameters/id.yaml#/user_id"
+    responses:
+      200:
+        description: "Successful response"
+        content:
+          application/json:
+            schema:
+              $ref: "/docs/schemas/responses.yaml#/DeletedResponse"
 
 clinics.clinic_id.users:
   get:
