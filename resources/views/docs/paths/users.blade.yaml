@@ -3,6 +3,8 @@ users:
     tags:
       - "Users"
     summary: "Create a new user"
+    description: >
+      Create a new users along with their roles.
     operationId: "users.store"
     requestBody:
       required: true
@@ -50,6 +52,8 @@ users.user_id:
     tags:
       - "Users"
     summary: "Update a specific user"
+    description: >
+      Update a specific users along with their roles.
     operationId: "users.update"
     parameters:
       - $ref: "/docs/parameters/id.yaml#/user_id"
@@ -70,6 +74,9 @@ users.user_id:
     tags:
       - "Users"
     summary: "Disable a specific user"
+    description: >
+      This will only disable the user so they can no longer access the backend. All of this user's future appointments
+      will also be cancelled and deleted.
     operationId: "users.destroy"
     parameters:
       - $ref: "/docs/parameters/id.yaml#/user_id"
@@ -111,6 +118,9 @@ users.user_id.profile-picture:
     tags:
       - "Users"
     summary: "Get a specific user's profile picture"
+    description: >
+      If no profile picture has been uploaded for the user, then a generated profile picture will be used, consisting
+      of their initials against a random coloured background.
     operationId: "users.profile-picture.show"
     security: []
     parameters:
@@ -140,6 +150,8 @@ clinics.clinic_id.users:
     tags:
       - "Users"
     summary: "List all users that are associated to a specific clinic"
+    description: >
+      Lists all users who have a role of some sort at the specified clinic.
     operationId: "clinics.users.show"
     parameters:
       - $ref: "/docs/parameters/id.yaml#/clinic_id"
