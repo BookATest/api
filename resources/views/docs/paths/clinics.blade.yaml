@@ -9,14 +9,14 @@ clinics:
       content:
         application/json:
           schema:
-            $ref: "/docs/schemas/Clinic.yaml#/ModifyClinic"
+            $ref: "/docs/schemas/clinic.yaml#/ModifyClinic"
     responses:
       200:
         description: "Successful response"
         content:
           application/json:
             schema:
-              $ref: "/docs/schemas/Clinic.yaml#/Clinic"
+              $ref: "/docs/schemas/clinic.yaml#/Clinic"
   get:
     tags:
       - "Clinics"
@@ -28,7 +28,7 @@ clinics:
         content:
           application/json:
             schema:
-              $ref: "/docs/schemas/Clinic.yaml#/ClinicCollection"
+              $ref: "/docs/schemas/clinic.yaml#/ClinicCollection"
 
 clinics.clinic_id:
   get:
@@ -44,7 +44,7 @@ clinics.clinic_id:
         content:
           application/json:
             schema:
-              $ref: "/docs/schemas/Clinic.yaml#/Clinic"
+              $ref: "/docs/schemas/clinic.yaml#/Clinic"
   put:
     tags:
       - "Clinics"
@@ -57,14 +57,14 @@ clinics.clinic_id:
       content:
         application/json:
           schema:
-            $ref: "/docs/schemas/Clinic.yaml#/ModifyClinic"
+            $ref: "/docs/schemas/clinic.yaml#/ModifyClinic"
     responses:
       200:
         description: "Successful response"
         content:
           application/json:
             schema:
-              $ref: "/docs/schemas/Clinic.yaml#/Clinic"
+              $ref: "/docs/schemas/clinic.yaml#/Clinic"
   delete:
     tags:
       - "Clinics"
@@ -78,4 +78,4 @@ clinics.clinic_id:
         content:
           application/json:
             schema:
-              $ref: "/docs/schemas/Responses.yaml#/DeletedResponse"
+              $ref: "/docs/schemas/responses.yaml#/DeletedResponse"

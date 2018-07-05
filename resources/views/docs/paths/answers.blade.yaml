@@ -12,14 +12,14 @@ appointments.appointment_id.answers:
       content:
         application/json:
           schema:
-            $ref: "/docs/schemas/Answer.yaml#/ModifyAnswer"
+            $ref: "/docs/schemas/answer.yaml#/ModifyAnswer"
     responses:
       200:
         description: "Successful response"
         content:
           application/json:
             schema:
-              $ref: "/docs/schemas/Answer.yaml#/Answer"
+              $ref: "/docs/schemas/answer.yaml#/Answer"
   get:
     tags:
       - "Answers"
@@ -33,7 +33,7 @@ appointments.appointment_id.answers:
         content:
           application/json:
             schema:
-              $ref: "/docs/schemas/Answer.yaml#/AnswerCollection"
+              $ref: "/docs/schemas/answer.yaml#/AnswerCollection"
 
 answers.answer_id:
   get:
@@ -49,7 +49,7 @@ answers.answer_id:
         content:
           application/json:
             schema:
-              $ref: "/docs/schemas/Answer.yaml#/Answer"
+              $ref: "/docs/schemas/answer.yaml#/Answer"
   put:
     tags:
       - "Answers"
@@ -63,14 +63,14 @@ answers.answer_id:
       content:
         application/json:
           schema:
-            $ref: "/docs/schemas/Answer.yaml#/ModifyAnswer"
+            $ref: "/docs/schemas/answer.yaml#/ModifyAnswer"
     responses:
       200:
         description: "Successful response"
         content:
           application/json:
             schema:
-              $ref: "/docs/schemas/Answer.yaml#/Answer"
+              $ref: "/docs/schemas/answer.yaml#/Answer"
   delete:
     tags:
       - "Answers"
@@ -84,4 +84,4 @@ answers.answer_id:
         content:
           application/json:
             schema:
-              $ref: "/docs/schemas/Responses.yaml#/DeletedResponse"
+              $ref: "/docs/schemas/responses.yaml#/DeletedResponse"

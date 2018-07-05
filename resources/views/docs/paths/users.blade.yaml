@@ -9,14 +9,14 @@ users:
       content:
         application/json:
           schema:
-            $ref: "/docs/schemas/User.yaml#/ModifyUser"
+            $ref: "/docs/schemas/user.yaml#/ModifyUser"
     responses:
       200:
         description: "Successful response"
         content:
           application/json:
             schema:
-              $ref: "/docs/schemas/User.yaml#/User"
+              $ref: "/docs/schemas/user.yaml#/User"
   get:
     tags:
       - "Users"
@@ -28,7 +28,7 @@ users:
         content:
           application/json:
             schema:
-              $ref: "/docs/schemas/User.yaml#/UserCollection"
+              $ref: "/docs/schemas/user.yaml#/UserCollection"
 
 users.user_id:
   get:
@@ -44,7 +44,7 @@ users.user_id:
         content:
           application/json:
             schema:
-              $ref: "/docs/schemas/User.yaml#/User"
+              $ref: "/docs/schemas/user.yaml#/User"
   put:
     tags:
       - "Users"
@@ -57,14 +57,14 @@ users.user_id:
       content:
         application/json:
           schema:
-            $ref: "/docs/schemas/User.yaml#/ModifyUser"
+            $ref: "/docs/schemas/user.yaml#/ModifyUser"
     responses:
       200:
         description: "Successful response"
         content:
           application/json:
             schema:
-              $ref: "/docs/schemas/User.yaml#/User"
+              $ref: "/docs/schemas/user.yaml#/User"
   delete:
     tags:
       - "Users"
@@ -78,7 +78,7 @@ users.user_id:
         content:
           application/json:
             schema:
-              $ref: "/docs/schemas/Responses.yaml#/DeletedResponse"
+              $ref: "/docs/schemas/responses.yaml#/DeletedResponse"
 
 clinics.clinic_id.users:
   get:
@@ -94,4 +94,4 @@ clinics.clinic_id.users:
         content:
           application/json:
             schema:
-              $ref: "/docs/schemas/User.yaml#/UserCollection"
+              $ref: "/docs/schemas/user.yaml#/UserCollection"

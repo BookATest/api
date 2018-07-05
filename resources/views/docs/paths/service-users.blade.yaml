@@ -9,14 +9,14 @@ service-users:
       content:
         application/json:
           schema:
-            $ref: "/docs/schemas/ServiceUser.yaml#/ModifyServiceUser"
+            $ref: "/docs/schemas/service-user.yaml#/ModifyServiceUser"
     responses:
       200:
         description: "Successful response"
         content:
           application/json:
             schema:
-              $ref: "/docs/schemas/ServiceUser.yaml#/ServiceUser"
+              $ref: "/docs/schemas/service-user.yaml#/ServiceUser"
   get:
     tags:
       - "Service Users"
@@ -28,7 +28,7 @@ service-users:
         content:
           application/json:
             schema:
-              $ref: "/docs/schemas/ServiceUser.yaml#/ServiceUserCollection"
+              $ref: "/docs/schemas/service-user.yaml#/ServiceUserCollection"
 
 service-users.service_user_uuid:
   get:
@@ -44,4 +44,4 @@ service-users.service_user_uuid:
         content:
           application/json:
             schema:
-              $ref: "/docs/schemas/ServiceUser.yaml#/ServiceUser"
+              $ref: "/docs/schemas/service-user.yaml#/ServiceUser"

@@ -41,6 +41,6 @@ ClinicCollection:
       items:
         $ref: "#/Clinic"
     links:
-      $ref: "/docs/schemas/ApiResource.yaml#/ApiResourceLinks"
+      $ref: "/docs/schemas/api-resource.yaml#/ApiResourceLinks"
     meta:
-      $ref: "/docs/schemas/ApiResource.yaml#/ApiResourceMeta"
+      $ref: "/docs/schemas/api-resource.yaml#/ApiResourceMeta"

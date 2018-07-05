@@ -12,7 +12,7 @@ ModifyQuestion:
     options:
       type: "array"
       items:
-        $ref: "/docs/schemas/QuestionOption.yaml#/QuestionOption"
+        $ref: "/docs/schemas/question-option.yaml#/QuestionOption"
       nullable: true
 
 Question:
@@ -28,7 +28,7 @@ Question:
     options:
       type: "array"
       items:
-        $ref: "/docs/schemas/QuestionOption.yaml#/QuestionOption"
+        $ref: "/docs/schemas/question-option.yaml#/QuestionOption"
 
 QuestionCollection:
   type: "object"
@@ -38,6 +38,6 @@ QuestionCollection:
       items:
         $ref: "#/Question"
     links:
-      $ref: "/docs/schemas/ApiResource.yaml#/ApiResourceLinks"
+      $ref: "/docs/schemas/api-resource.yaml#/ApiResourceLinks"
     meta:
-      $ref: "/docs/schemas/ApiResource.yaml#/ApiResourceMeta"
+      $ref: "/docs/schemas/api-resource.yaml#/ApiResourceMeta"

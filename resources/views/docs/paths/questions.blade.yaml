@@ -11,7 +11,7 @@ questions:
           schema:
             type: "array"
             items:
-              $ref: "/docs/schemas/Question.yaml#/ModifyQuestion"
+              $ref: "/docs/schemas/question.yaml#/ModifyQuestion"
     responses:
       200:
         description: "Successful response"
@@ -20,7 +20,7 @@ questions:
             schema:
               type: "array"
               items:
-                $ref: "/docs/schemas/Question.yaml#/Question"
+                $ref: "/docs/schemas/question.yaml#/Question"
   get:
     tags:
       - "Questions"
@@ -32,4 +32,4 @@ questions:
         content:
           application/json:
             schema:
-              $ref: "/docs/schemas/Question.yaml#/QuestionCollection"
+              $ref: "/docs/schemas/question.yaml#/QuestionCollection"

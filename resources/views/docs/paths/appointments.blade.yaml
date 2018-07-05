@@ -11,14 +11,14 @@ clinics.clinic_id.appointments:
       content:
         application/json:
           schema:
-            $ref: "/docs/schemas/Appointment.yaml#/ModifyAppointment"
+            $ref: "/docs/schemas/appointment.yaml#/ModifyAppointment"
     responses:
       200:
         description: "Successful response"
         content:
           application/json:
             schema:
-              $ref: "/docs/schemas/Appointment.yaml#/Appointment"
+              $ref: "/docs/schemas/appointment.yaml#/Appointment"
   get:
     tags:
       - "Appointments"
@@ -32,7 +32,7 @@ clinics.clinic_id.appointments:
         content:
           application/json:
             schema:
-              $ref: "/docs/schemas/Appointment.yaml#/AppointmentCollection"
+              $ref: "/docs/schemas/appointment.yaml#/AppointmentCollection"
 
 users.user_id.appointments:
   get:
@@ -48,7 +48,7 @@ users.user_id.appointments:
         content:
           application/json:
             schema:
-              $ref: "/docs/schemas/Appointment.yaml#/AppointmentCollection"
+              $ref: "/docs/schemas/appointment.yaml#/AppointmentCollection"
 
 service-users.service_user_uuid.appointments:
   get:
@@ -64,7 +64,7 @@ service-users.service_user_uuid.appointments:
         content:
           application/json:
             schema:
-              $ref: "/docs/schemas/Appointment.yaml#/AppointmentCollection"
+              $ref: "/docs/schemas/appointment.yaml#/AppointmentCollection"
 
 appointments:
   get:
@@ -80,7 +80,7 @@ appointments:
         content:
           application/json:
             schema:
-              $ref: "/docs/schemas/Appointment.yaml#/AppointmentCollection"
+              $ref: "/docs/schemas/appointment.yaml#/AppointmentCollection"
 
 appointments.appointment_id:
   get:
@@ -96,7 +96,7 @@ appointments.appointment_id:
         content:
           application/json:
             schema:
-              $ref: "/docs/schemas/Appointment.yaml#/Appointment"
+              $ref: "/docs/schemas/appointment.yaml#/Appointment"
   put:
     tags:
       - "Appointments"
@@ -109,14 +109,14 @@ appointments.appointment_id:
       content:
         application/json:
           schema:
-            $ref: "/docs/schemas/Appointment.yaml#/ModifyAppointment"
+            $ref: "/docs/schemas/appointment.yaml#/ModifyAppointment"
     responses:
       200:
         description: "Successful response"
         content:
           application/json:
             schema:
-              $ref: "/docs/schemas/Appointment.yaml#/Appointment"
+              $ref: "/docs/schemas/appointment.yaml#/Appointment"
   delete:
     tags:
       - "Appointments"
@@ -130,7 +130,7 @@ appointments.appointment_id:
         content:
           application/json:
             schema:
-              $ref: "/docs/schemas/Responses.yaml#/DeletedResponse"
+              $ref: "/docs/schemas/responses.yaml#/DeletedResponse"
 
 appointments.appointment_id.cancel:
   put:
@@ -146,4 +146,4 @@ appointments.appointment_id.cancel:
         content:
           application/json:
             schema:
-              $ref: "/docs/schemas/Appointment.yaml#/Appointment"
+              $ref: "/docs/schemas/appointment.yaml#/Appointment"
