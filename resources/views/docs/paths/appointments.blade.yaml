@@ -7,6 +7,18 @@ clinics.clinic_id.appointments:
     security: []
     parameters:
       - $ref: "/docs/parameters/id.yaml#/clinic_id"
+      - name: "format"
+        in: "query"
+        description: "The format of the appointments"
+        schema:
+          type: "string"
+          enum: ["json", "ics"]
+          default: "json"
+      - name: "calendar_feed_token"
+        in: "query"
+        description: "The user's calendar feed token - required if the format is set to `ics`"
+        schema:
+          type: "string"
       - name: "available"
         in: "query"
         description: >
@@ -21,6 +33,7 @@ clinics.clinic_id.appointments:
           application/json:
             schema:
               $ref: "/docs/schemas/appointment.yaml#/AppointmentCollection"
+          text/calendar:
   post:
     tags:
       - "Appointments"
