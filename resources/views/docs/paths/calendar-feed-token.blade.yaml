@@ -1,7 +1,7 @@
 users.user_id.calendar-feed-token:
   put:
     tags:
-      - "Calendar Feed Token"
+      - "Calendar Feed"
     summary: "Refresh the calendar feed token"
     operationId: "users.calendar-feed-token.update"
     responses:

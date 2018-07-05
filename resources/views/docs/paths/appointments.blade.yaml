@@ -26,6 +26,13 @@ clinics.clinic_id.appointments:
     operationId: "clinics.appointments.list"
     parameters:
       - $ref: "/docs/parameters/id.yaml#/clinic_id"
+      - name: "format"
+        in: "query"
+        description: "The format of the appointments"
+        schema:
+          type: "string"
+          enum: ["json", "ics"]
+          default: "json"
     responses:
       200:
         description: "Successful response"
@@ -33,6 +40,7 @@ clinics.clinic_id.appointments:
           application/json:
             schema:
               $ref: "/docs/schemas/appointment.yaml#/AppointmentCollection"
+          text/calendar:
 
 users.user_id.appointments:
   get:
@@ -42,6 +50,13 @@ users.user_id.appointments:
     operationId: "users.appointments.list"
     parameters:
       - $ref: "/docs/parameters/id.yaml#/user_id"
+      - name: "format"
+        in: "query"
+        description: "The format of the appointments"
+        schema:
+          type: "string"
+          enum: ["json", "ics"]
+          default: "json"
     responses:
       200:
         description: "Successful response"
@@ -49,6 +64,7 @@ users.user_id.appointments:
           application/json:
             schema:
               $ref: "/docs/schemas/appointment.yaml#/AppointmentCollection"
+          text/calendar:
 
 service-users.service_user_uuid.appointments:
   get:
