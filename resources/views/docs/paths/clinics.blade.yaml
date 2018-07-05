@@ -71,6 +71,8 @@ clinics.clinic_id:
     tags:
       - "Clinics"
     summary: "Delete a specific clinic"
+    description: >
+      This only soft deletes the clinic.
     operationId: "clinics.destroy"
     parameters:
       - $ref: "/docs/parameters/id.yaml#/clinic_id"
