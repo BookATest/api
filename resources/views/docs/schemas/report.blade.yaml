@@ -3,8 +3,6 @@ Report:
   properties:
     user_id:
       type: "integer"
-    file_uuid:
-      type: "string"
     type:
       type: "string"
       enum: ["Report Type 1", "Report Type 2"]

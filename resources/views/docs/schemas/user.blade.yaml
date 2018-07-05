@@ -35,9 +35,6 @@ User:
   properties:
     id:
       type: "integer"
-    profile_picture_file_id:
-      type: "integer"
-      nullable: true
     first_name:
       type: "string"
     last_name:

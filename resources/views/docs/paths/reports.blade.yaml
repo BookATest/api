@@ -18,7 +18,7 @@ users.user_id.reports:
         content:
           application/json:
             schema:
-              $ref: "/docs/schemas/report.yaml#/Report"
+              $ref: "/docs/schemas/report.yaml#/ReportCollection"
   get:
     tags:
       - "Reports"
@@ -38,7 +38,7 @@ reports.report_id:
   get:
     tags:
       - "Reports"
-    summary: "Download the specified report"
+    summary: "Show the specified report"
     operationId: "reports.show"
     parameters:
       - $ref: "/docs/parameters/id.yaml#/report_id"
@@ -46,7 +46,9 @@ reports.report_id:
       200:
         description: "Successful response"
         content:
-          application/pdf:
+          application/json:
+            schema:
+              $ref: "/docs/schemas/report.yaml#/Report"
   delete:
     tags:
       - "Reports"
@@ -61,3 +63,17 @@ reports.report_id:
           application/json:
             schema:
               $ref: "/docs/schemas/responses.yaml#/DeletedResponse"
+
+reports.report_id.download:
+  get:
+    tags:
+      - "Reports"
+    summary: "Download the specified report"
+    operationId: "reports.download"
+    parameters:
+      - $ref: "/docs/parameters/id.yaml#/report_id"
+    responses:
+      200:
+        description: "Successful response"
+        content:
+          application/pdf:

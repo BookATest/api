@@ -80,6 +80,20 @@ users.user_id:
             schema:
               $ref: "/docs/schemas/responses.yaml#/DeletedResponse"
 
+users.user_id.profile-picture:
+  get:
+    tags:
+      - "Users"
+    summary: "Get a specific user's profile picture"
+    operationId: "users.profile-picture.show"
+    parameters:
+      - $ref: "/docs/parameters/id.yaml#/user_id"
+    responses:
+      200:
+        description: "Successful response"
+        content:
+          image/png:
+
 clinics.clinic_id.users:
   get:
     tags:

@@ -18,6 +18,8 @@ paths:
     $ref: "/docs/paths/users.yaml#/users"
   /users/{user_id}:
     $ref: "/docs/paths/users.yaml#/users.user_id"
+  /users/{user_id}/profile-picture:
+    $ref: "/docs/paths/users.yaml#/users.user_id.profile-picture"
   /clinics/{clinic_id}/users:
     $ref: "/docs/paths/users.yaml#/clinics.clinic_id.users"
 
@@ -70,6 +72,8 @@ paths:
     $ref: "/docs/paths/reports.yaml#/users.user_id.reports"
   /reports/{report_id}:
     $ref: "/docs/paths/reports.yaml#/reports.report_id"
+  /reports/{report_id}/download:
+    $ref: "/docs/paths/reports.yaml#/reports.report_id.download"
 
   # Report Schedule Routes.
   /report-schedules:
