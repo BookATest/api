@@ -1,0 +1,11 @@
+Roles:
+  type: "array"
+  items:
+    type: "object"
+    properties:
+      role:
+        type: "string"
+        enum: ["Community Worker", "Clinic Admin", "Organisation Admin"]
+        required: true
+      clinic_id:
+        type: "integer"

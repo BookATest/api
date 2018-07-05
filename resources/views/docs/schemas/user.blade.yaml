@@ -28,10 +28,7 @@ ModifyUser:
     include_calendar_attachment:
       type: "boolean"
     roles:
-      type: "array"
-      items:
-        type: "string"
-        enum: ["Community Worker", "Clinic Admin", "Organisation Admin"]
+      $ref: "/docs/schemas/role.yaml#/Roles"
 
 User:
   type: "object"
@@ -57,10 +54,7 @@ User:
     include_calendar_attachment:
       type: "boolean"
     roles:
-      type: "array"
-      items:
-        type: "string"
-        enum: ["Community Worker", "Clinic Admin", "Organisation Admin"]
+      $ref: "/docs/schemas/role.yaml#/Roles"
 
 UserCollection:
   type: "object"
