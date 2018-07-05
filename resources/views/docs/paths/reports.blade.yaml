@@ -1,0 +1,15 @@
+users.reports.index:
+  get:
+    tags:
+      - "Reports"
+    summary: "List all the reports for a specific user"
+    operationId: "users.reports.index"
+    parameters:
+      - $ref: "/docs/parameters/id.yaml#/user_id"
+    responses:
+      200:
+        description: "Successful response"
+        content:
+          application/json:
+            schema:
+              $ref: "/docs/schemas/report.yaml#/ReportCollection"

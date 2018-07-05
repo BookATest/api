@@ -61,9 +61,13 @@ paths:
   /appointments/{appointment_id}/bookings:
     $ref: "/docs/paths/bookings.yaml#/appointments.appointment_id.bookings"
 
-  # Calendar Feed Token.
+  # Calendar Feed Token Routes.
   /users/{user_id}/calendar-feed-token:
     $ref: "/docs/paths/calendar-feed-token.yaml#/users.user_id.calendar-feed-token"
+
+  # Report Routes.
+  /users/{user_id}/reports:
+    $ref: "/docs/paths/reports.yaml#/users.reports.index"
 
 components:
   securitySchemes:
@@ -93,6 +97,8 @@ tags:
     description: "For service users to make appointment bookings"
   - name: "Calendar Feed Token"
     description: "For managing the users calendar feed token"
+  - name: "Reports"
+    description: "User generated/scheduled reports"
 
 externalDocs:
   description: "External Doc Website"
