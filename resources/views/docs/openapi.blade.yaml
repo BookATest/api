@@ -68,6 +68,8 @@ paths:
   # Report Routes.
   /users/{user_id}/reports:
     $ref: "/docs/paths/reports.yaml#/users.reports.index"
+  /reports/{report_id}:
+    $ref: "/docs/paths/reports.yaml#/reports.show"
 
 components:
   securitySchemes:

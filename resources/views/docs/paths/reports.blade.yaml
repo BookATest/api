@@ -13,3 +13,17 @@ users.reports.index:
           application/json:
             schema:
               $ref: "/docs/schemas/report.yaml#/ReportCollection"
+
+reports.show:
+  get:
+    tags:
+      - "Reports"
+    summary: "Download the specified report"
+    operationId: "reports.show"
+    parameters:
+      - $ref: "/docs/parameters/id.yaml#/report_id"
+    responses:
+      200:
+        description: "Successful response"
+        content:
+          application/pdf:
