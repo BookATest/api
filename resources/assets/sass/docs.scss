@@ -1,11 +1,12 @@
 // @import "~swagger-ui/dist/swagger-ui.css";
 @import "~swagger-ui-themes/themes/3.x/theme-material.css";
 
-.opblock-section-header {
+.swagger-ui .opblock .opblock-section-header {
+  background-color: #ececec ;
   justify-content: space-between;
 }
 
-.opblock-summary-description {
+.swagger-ui .opblock .opblock-summary-description {
   margin-left: 1rem;
   text-decoration: underline;
 }

@@ -6,7 +6,7 @@ Eligibility:
     answers:
       type: "array"
       items:
-        $ref: "/docs/schemas/answer.yaml#/ModifyAnswer"
+        $ref: "/docs/schemas/answer.yaml#/CreateAnswer"
 
 EligibleClinics:
   type: "array"
@@ -24,7 +24,7 @@ MakeBooking:
     answers:
       type: "array"
       items:
-        $ref: "/docs/schemas/answer.yaml#/ModifyAnswer"
+        $ref: "/docs/schemas/answer.yaml#/CreateAnswer"
 
 Booking:
   type: "object"

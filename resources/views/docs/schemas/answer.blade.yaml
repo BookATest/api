@@ -1,4 +1,4 @@
-ModifyAnswer:
+CreateAnswer:
   type: "object"
   required:
     - "question_id"
