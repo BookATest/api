@@ -1,22 +1,4 @@
 service-users:
-  post:
-    tags:
-      - "Service Users"
-    summary: "Create a new service user"
-    operationId: "service-users.store"
-    requestBody:
-      required: true
-      content:
-        application/json:
-          schema:
-            $ref: "/docs/schemas/service-user.yaml#/ModifyServiceUser"
-    responses:
-      200:
-        description: "Successful response"
-        content:
-          application/json:
-            schema:
-              $ref: "/docs/schemas/service-user.yaml#/ServiceUser"
   get:
     tags:
       - "Service Users"

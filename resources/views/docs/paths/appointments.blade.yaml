@@ -1,9 +1,9 @@
 clinics.clinic_id.appointments:
-  post:
+  get:
     tags:
       - "Appointments"
-    summary: "Create a new appointment"
-    operationId: "clinics.appointments.store"
+    summary: "List all the appointments at a clinic"
+    operationId: "clinics.appointments.index"
     security: []
     parameters:
       - $ref: "/docs/parameters/id.yaml#/clinic_id"
@@ -14,6 +14,20 @@ clinics.clinic_id.appointments:
           appointments which are available.
         schema:
           type: "boolean"
+    responses:
+      200:
+        description: "Successful response"
+        content:
+          application/json:
+            schema:
+              $ref: "/docs/schemas/appointment.yaml#/AppointmentCollection"
+  post:
+    tags:
+      - "Appointments"
+    summary: "Create a new appointment"
+    operationId: "clinics.appointments.store"
+    parameters:
+      - $ref: "/docs/parameters/id.yaml#/clinic_id"
     requestBody:
       required: true
       content:

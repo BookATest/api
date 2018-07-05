@@ -36,6 +36,7 @@ users.user_id:
       - "Users"
     summary: "Get a specific user"
     operationId: "users.show"
+    security: []
     parameters:
       - $ref: "/docs/parameters/id.yaml#/user_id"
     responses:
@@ -111,6 +112,7 @@ users.user_id.profile-picture:
       - "Users"
     summary: "Get a specific user's profile picture"
     operationId: "users.profile-picture.show"
+    security: []
     parameters:
       - $ref: "/docs/parameters/id.yaml#/user_id"
     responses:
