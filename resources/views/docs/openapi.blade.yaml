@@ -51,17 +51,15 @@ paths:
   /questions:
     $ref: "/docs/paths/questions.yaml#/questions"
 
+  # Eligible Answer Routes.
+  /clinics/{clinic_id}/eligible-answers:
+    $ref: "/docs/paths/eligible-answers.yaml#/clinics.clinic_id.eligible-answers"
+
   # Booking Routes.
   /booking/eligibility:
     $ref: "/docs/paths/bookings.yaml#/bookings.eligibility"
   /appointments/{appointment_id}/bookings:
     $ref: "/docs/paths/bookings.yaml#/appointments.appointment_id.bookings"
-
-  # Answer Routes.
-  # /appointments/{appointment_id}/answers:
-  #   $ref: "/docs/paths/answers.yaml#/appointments.appointment_id.answers"
-  # /answers/{answer_id}:
-  #   $ref: "/docs/paths/answers.yaml#/answers.answer_id"
 
 components:
   securitySchemes:
@@ -84,9 +82,9 @@ tags:
   - name: "Appointments"
     description: "Appointments at clinics"
   - name: "Questions"
-    description: "Screening questions to get an appointment booked"
-  - name: "Answers"
-    description: "Service user answers to screening questions"
+    description: "To check eligibility at clinics for service users"
+  - name: "Eligible Answers"
+    description: "Set by clinics to specify which answers make the user eligible"
   - name: "Bookings"
     description: "For service users to make appointment bookings"
 

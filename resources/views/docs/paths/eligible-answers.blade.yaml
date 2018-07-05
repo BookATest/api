@@ -1,0 +1,45 @@
+clinics.clinic_id.eligible-answers:
+  get:
+    tags:
+      - "Eligible Answers"
+    summary: "List all the eligible answers set by the clinic"
+    operationId: "clinics.eligible-answers.index"
+    parameters:
+      - $ref: "/docs/parameters/id.yaml#/clinic_id"
+    responses:
+      200:
+        description: "Successful response"
+        content:
+          application/json:
+            schema:
+              $ref: "/docs/schemas/eligible-answer.yaml#/EligibleAnswerCollection"
+  post:
+    tags:
+      - "Eligible Answers"
+    summary: "Create a new set of eligibility answers if they have not yet been created"
+    operationId: "clinics.eligible-answers.store"
+    parameters:
+      - $ref: "/docs/parameters/id.yaml#/clinic_id"
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: "array"
+            items:
+              $ref: "/docs/schemas/eligible-answer.yaml#/ModifyEligibleAnswer"
+  put:
+    tags:
+      - "Eligible Answers"
+    summary: "Update the exists set of eligibility answers"
+    operationId: "clinics.eligible-answers.update"
+    parameters:
+      - $ref: "/docs/parameters/id.yaml#/clinic_id"
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: "array"
+            items:
+              $ref: "/docs/schemas/eligible-answer.yaml#/ModifyEligibleAnswer"

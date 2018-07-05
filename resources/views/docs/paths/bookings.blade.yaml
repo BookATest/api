@@ -3,6 +3,9 @@ bookings.eligibility:
     tags:
       - "Bookings"
     summary: "Check which clinics the service user is eligible for"
+    description: >
+      This endpoint should be called at first instance to ensure the service user only attempts to book at a clinic that
+      they are eligible for.
     operationId: "bookings.eligibility.store"
     requestBody:
       required: true
@@ -23,6 +26,9 @@ appointments.appointment_id.bookings:
     tags:
       - "Bookings"
     summary: "Make a booking for the service user"
+    description: >
+      Validation is in place to ensure only eligible service users can make a booking for this appointment. You should
+      always first check which clinics the user is eligible at.
     operationId: "appointments.appointment_id.bookings"
     parameters:
       - $ref: "/docs/parameters/id.yaml#/appointment_id"
