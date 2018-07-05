@@ -1,0 +1,33 @@
+Eligibility:
+  type: "object"
+  required:
+    - "answers"
+  properties:
+    answers:
+      type: "array"
+      items:
+        $ref: "/docs/schemas/answer.yaml#/ModifyAnswer"
+
+EligibleClinics:
+  type: "array"
+  items:
+    type: integer
+
+MakeBooking:
+  type: "object"
+  required:
+    - "service_user"
+    - "answers"
+  properties:
+    service_user:
+      $ref: "/docs/schemas/service-user.yaml#/ModifyServiceUser"
+    answers:
+      type: "array"
+      items:
+        $ref: "/docs/schemas/answer.yaml#/ModifyAnswer"
+
+Booking:
+  type: "object"
+  properties:
+    appointment:
+      $ref: "/docs/schemas/appointment.yaml#/Appointment"

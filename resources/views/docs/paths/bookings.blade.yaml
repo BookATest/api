@@ -1,0 +1,41 @@
+bookings.eligibility:
+  post:
+    tags:
+      - "Bookings"
+    summary: "Check which clinics the service user is eligible for"
+    operationId: "bookings.eligibility.store"
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "/docs/schemas/booking.yaml#/Eligibility"
+    responses:
+      200:
+        description: "Successful response"
+        content:
+          application/json:
+            schema:
+              $ref: "/docs/schemas/booking.yaml#/EligibleClinics"
+
+appointments.appointment_id.bookings:
+  post:
+    tags:
+      - "Bookings"
+    summary: "Make a booking for the service user"
+    operationId: "appointments.appointment_id.bookings"
+    parameters:
+      - $ref: "/docs/parameters/id.yaml#/appointment_id"
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "/docs/schemas/booking.yaml#/MakeBooking"
+    responses:
+      200:
+        description: "Successful response"
+        content:
+          application/json:
+            schema:
+              $ref: "/docs/schemas/booking.yaml#/Booking"

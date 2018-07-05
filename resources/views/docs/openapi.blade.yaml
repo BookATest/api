@@ -51,11 +51,17 @@ paths:
   /questions:
     $ref: "/docs/paths/questions.yaml#/questions"
 
+  # Booking Routes.
+  /booking/eligibility:
+    $ref: "/docs/paths/bookings.yaml#/bookings.eligibility"
+  /appointments/{appointment_id}/bookings:
+    $ref: "/docs/paths/bookings.yaml#/appointments.appointment_id.bookings"
+
   # Answer Routes.
-  /appointments/{appointment_id}/answers:
-    $ref: "/docs/paths/answers.yaml#/appointments.appointment_id.answers"
-  /answers/{answer_id}:
-    $ref: "/docs/paths/answers.yaml#/answers.answer_id"
+  # /appointments/{appointment_id}/answers:
+  #   $ref: "/docs/paths/answers.yaml#/appointments.appointment_id.answers"
+  # /answers/{answer_id}:
+  #   $ref: "/docs/paths/answers.yaml#/answers.answer_id"
 
 components:
   securitySchemes:
@@ -81,6 +87,8 @@ tags:
     description: "Screening questions to get an appointment booked"
   - name: "Answers"
     description: "Service user answers to screening questions"
+  - name: "Bookings"
+    description: "For service users to make appointment bookings"
 
 externalDocs:
   description: "External Doc Website"
