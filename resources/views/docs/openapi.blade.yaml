@@ -13,6 +13,7 @@ servers:
   description: "Dev Server"
 
 paths:
+  # User Routes.
   /users:
     $ref: "/docs/paths/users.yaml#/users"
   /users/{user_id}:
@@ -20,16 +21,19 @@ paths:
   /clinics/{clinic_id}/users:
     $ref: "/docs/paths/users.yaml#/clinics.clinic_id.users"
 
+  # Service User Routes.
   /service-users:
     $ref: "/docs/paths/service-users.yaml#/service-users"
   /service-users/{service_user_uuid}:
     $ref: "/docs/paths/service-users.yaml#/service-users.service_user_uuid"
 
+  # Clinic Routes.
   /clinics:
     $ref: "/docs/paths/clinics.yaml#/clinics"
   /clinics/{clinic_id}:
     $ref: "/docs/paths/clinics.yaml#/clinics.clinic_id"
 
+  # Appointment Routes.
   /appointments:
     $ref: "/docs/paths/appointments.yaml#/appointments"
   /appointments/{appointment_id}:
@@ -43,9 +47,11 @@ paths:
   /service-users/{service_user_uuid}/appointments:
     $ref: "/docs/paths/appointments.yaml#/service-users.service_user_uuid.appointments"
 
+  # Question Routes.
   /questions:
     $ref: "/docs/paths/questions.yaml#/questions"
 
+  # Answer Routes.
   /appointments/{appointment_id}/answers:
     $ref: "/docs/paths/answers.yaml#/appointments.appointment_id.answers"
   /answers/{answer_id}:
