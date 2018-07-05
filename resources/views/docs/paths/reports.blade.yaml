@@ -1,4 +1,24 @@
-users.reports.index:
+users.user_id.reports:
+  post:
+    tags:
+      - "Reports"
+    summary: "Create a new report for the specified user"
+    operationId: "users.reports.store"
+    parameters:
+      - $ref: "/docs/parameters/id.yaml#/user_id"
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "/docs/schemas/report.yaml#/CreateReport"
+    responses:
+      200:
+        description: "Successful response"
+        content:
+          application/json:
+            schema:
+              $ref: "/docs/schemas/report.yaml#/Report"
   get:
     tags:
       - "Reports"
@@ -14,7 +34,7 @@ users.reports.index:
             schema:
               $ref: "/docs/schemas/report.yaml#/ReportCollection"
 
-reports.show:
+reports.report_id:
   get:
     tags:
       - "Reports"
@@ -27,3 +47,17 @@ reports.show:
         description: "Successful response"
         content:
           application/pdf:
+  delete:
+    tags:
+      - "Reports"
+    summary: "Delete a specific report"
+    operationId: "reports.destroy"
+    parameters:
+      - $ref: "/docs/parameters/id.yaml#/report_id"
+    responses:
+      200:
+        description: "Successful response"
+        content:
+          application/json:
+            schema:
+              $ref: "/docs/schemas/responses.yaml#/DeletedResponse"

@@ -1,6 +1,8 @@
 Report:
   type: "object"
   properties:
+    user_id:
+      type: "integer"
     file_uuid:
       type: "string"
     type:
@@ -24,3 +26,20 @@ ReportCollection:
       $ref: "/docs/schemas/api-resource.yaml#/ApiResourceLinks"
     meta:
       $ref: "/docs/schemas/api-resource.yaml#/ApiResourceMeta"
+
+CreateReport:
+  type: "object"
+  required:
+    - "type"
+    - "from_date"
+    - "to_date"
+  properties:
+    type:
+      type: "string"
+      enum: ["Report Type 1", "Report Type 2"]
+    from_date:
+      type: "string"
+      example: "Y-m-d"
+    to_date:
+      type: "string"
+      example: "Y-m-d"
