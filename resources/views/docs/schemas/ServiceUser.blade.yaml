@@ -1,0 +1,47 @@
+ModifyServiceUser:
+  type: "object"
+  required:
+    - "name"
+    - "email"
+    - "phone_number"
+    - "preferred_contact_method"
+  properties:
+    name:
+      type: "string"
+    email:
+      type: "string"
+      format: "email"
+    phone_number:
+      type: "string"
+    preferred_contact_method:
+      type: "string"
+      enum: ["email", "phone_number"]
+
+ServiceUser:
+  type: "object"
+  properties:
+    uuid:
+      type: "string"
+      format: "uuid"
+    name:
+      type: "string"
+    email:
+      type: "string"
+      format: "email"
+    phone_number:
+      type: "string"
+    preferred_contact_method:
+      type: "string"
+      enum: ["email", "phone_number"]
+
+ServiceUserCollection:
+  type: "object"
+  properties:
+    data:
+      type: "array"
+      items:
+        $ref: "#/ServiceUser"
+    links:
+      $ref: "/docs/schemas/ApiResource.yaml#/ApiResourceLinks"
+    meta:
+      $ref: "/docs/schemas/ApiResource.yaml#/ApiResourceMeta"

@@ -24,14 +24,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/ModifyUser"
+              $ref: "/docs/schemas/User.yaml#/ModifyUser"
       responses:
         200:
           description: "Successful response"
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/User"
+                $ref: "/docs/chemas/User.yaml#/User"
     get:
       tags:
         - "Users"
@@ -43,7 +43,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/UserCollection"
+                $ref: "/docs/schemas/User.yaml#/UserCollection"
   /users/{id}:
     get:
       tags:
@@ -58,7 +58,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/User"
+                $ref: "/docs/schemas/User.yaml#/User"
     put:
       tags:
         - "Users"
@@ -71,18 +71,18 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/ModifyUser"
+              $ref: "/docs/schemas/User.yaml#/ModifyUser"
       responses:
         200:
           description: "Successful response"
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/User"
+                $ref: "/docs/schemas/User.yaml#/User"
     delete:
       tags:
         - "Users"
-      summary: "Delete a specific user"
+      summary: "Disable a specific user"
       operationId: "users.destroy"
       parameters:
         - $ref: "#/components/parameters/id"
@@ -92,7 +92,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/DeletedResponse"
+                $ref: "/docs/schemas/Responses.yaml#/DeletedResponse"
 
   /service-users:
     post:
@@ -105,14 +105,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/ModifyServiceUser"
+              $ref: "/docs/schemas/ServiceUser.yaml#/ModifyServiceUser"
       responses:
         200:
           description: "Successful response"
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceUser"
+                $ref: "/docs/schemas/ServiceUser.yaml#/ServiceUser"
     get:
       tags:
         - "Service Users"
@@ -124,94 +124,60 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceUserCollection"
-  /service-users/{id}:
+                $ref: "/docs/schemas/ServiceUser.yaml#/ServiceUserCollection"
+  /service-users/{uuid}:
     get:
       tags:
         - "Service Users"
       summary: "Get a specific service user"
       operationId: "users.show"
       parameters:
-        - $ref: "#/components/parameters/id"
+        - $ref: "#/components/parameters/uuid"
       responses:
         200:
           description: "Successful response"
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceUser"
-    put:
-      tags:
-        - "Service Users"
-      summary: "Update a specific service user"
-      operationId: "service-users.update"
-      parameters:
-        - $ref: "#/components/parameters/id"
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/ModifyServiceUser"
-      responses:
-        200:
-          description: "Successful response"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ServiceUser"
-    delete:
-      tags:
-        - "Service Users"
-      summary: "Delete a specific service user"
-      operationId: "service-users.destroy"
-      parameters:
-        - $ref: "#/components/parameters/id"
-      responses:
-        200:
-          description: "Successful response"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/DeletedResponse"
+                $ref: "/docs/schemas/ServiceUser.yaml#/ServiceUser"
 
-  /locations:
+  /clinics:
     post:
       tags:
-        - "Locations"
-      summary: "Create a new location"
-      operationId: "locations.store"
+        - "Clinics"
+      summary: "Create a new clinic"
+      operationId: "clinics.store"
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/ModifyLocation"
+              $ref: "/docs/schemas/Clinic.yaml#/ModifyClinic"
       responses:
         200:
           description: "Successful response"
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Location"
+                $ref: "/docs/schemas/Clinic.yaml#/Clinic"
     get:
       tags:
-        - "Locations"
-      summary: "List all locations"
-      operationId: "locations.list"
+        - "Clinics"
+      summary: "List all clinics"
+      operationId: "clinics.list"
       responses:
         200:
           description: "Successful response"
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/LocationCollection"
-  /locations/{id}:
+                $ref: "/docs/schemas/Clinic.yaml#/ClinicCollection"
+  /clinics/{id}:
     get:
       tags:
-        - "Locations"
-      summary: "Get a specific location"
-      operationId: "locations.show"
+        - "Clinics"
+      summary: "Get a specific clinic"
+      operationId: "clinics.show"
       parameters:
         - $ref: "#/components/parameters/id"
       responses:
@@ -220,12 +186,12 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Location"
+                $ref: "/docs/schemas/Clinic.yaml#/Clinic"
     put:
       tags:
-        - "Locations"
-      summary: "Update a specific location"
-      operationId: "locations.update"
+        - "Clinics"
+      summary: "Update a specific clinic"
+      operationId: "clinics.update"
       parameters:
         - $ref: "#/components/parameters/id"
       requestBody:
@@ -233,19 +199,19 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/ModifyLocation"
+              $ref: "/docs/schemas/Clinic.yaml#/ModifyClinic"
       responses:
         200:
           description: "Successful response"
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Location"
+                $ref: "/docs/schemas/Clinic.yaml#/Clinic"
     delete:
       tags:
-        - "Locations"
-      summary: "Delete a specific location"
-      operationId: "locations.destroy"
+        - "Clinics"
+      summary: "Delete a specific clinic"
+      operationId: "clinics.destroy"
       parameters:
         - $ref: "#/components/parameters/id"
       responses:
@@ -254,14 +220,30 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/DeletedResponse"
+                $ref: "/docs/schemas/Responses.yaml#/DeletedResponse"
 
-  /locations/{id}/appointments:
+  /clinics/{id}/users:
+    get:
+      tags:
+        - "Users"
+      summary: "List all users that are associated to a specific clinic"
+      operationId: "clinics.users.show"
+      parameters:
+        - $ref: "#/components/parameters/id"
+      responses:
+        200:
+          description: "Successful response"
+          content:
+            application/json:
+              schema:
+                $ref: "/docs/schemas/User.yaml#/UserCollection"
+
+  /clinics/{id}/appointments:
     post:
       tags:
         - "Appointments"
       summary: "Create a new appointment"
-      operationId: "appointments.store"
+      operationId: "clinics.appointments.store"
       parameters:
         - $ref: "#/components/parameters/id"
       requestBody:
@@ -269,14 +251,62 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/ModifyAppointment"
+              $ref: "/docs/schemas/Appointment.yaml#/ModifyAppointment"
       responses:
         200:
           description: "Successful response"
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Appointment"
+                $ref: "/docs/schemas/Appointment.yaml#/Appointment"
+    get:
+      tags:
+        - "Appointments"
+      summary: "List all appointments at a specified clinic"
+      operationId: "clinics.appointments.list"
+      parameters:
+        - $ref: "#/components/parameters/id"
+      responses:
+        200:
+          description: "Successful response"
+          content:
+            application/json:
+              schema:
+                $ref: "/docs/schemas/Appointment.yaml#/AppointmentCollection"
+
+  /users/{id}/appointments:
+    get:
+      tags:
+        - "Appointments"
+      summary: "List all appointments for a specified user"
+      operationId: "users.appointments.list"
+      parameters:
+        - $ref: "#/components/parameters/id"
+      responses:
+        200:
+          description: "Successful response"
+          content:
+            application/json:
+              schema:
+                $ref: "/docs/schemas/Appointment.yaml#/AppointmentCollection"
+
+  /service-users/{id}/appointments:
+    get:
+      tags:
+        - "Appointments"
+      summary: "List all appointments for a specified service user"
+      operationId: "service-users.appointments.list"
+      parameters:
+        - $ref: "#/components/parameters/id"
+      responses:
+        200:
+          description: "Successful response"
+          content:
+            application/json:
+              schema:
+                $ref: "/docs/schemas/Appointment.yaml#/AppointmentCollection"
+
+  /appointments:
     get:
       tags:
         - "Appointments"
@@ -290,7 +320,8 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/AppointmentCollection"
+                $ref: "/docs/schemas/Appointment.yaml#/AppointmentCollection"
+
   /appointments/{id}:
     get:
       tags:
@@ -305,7 +336,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Appointment"
+                $ref: "/docs/schemas/Appointment.yaml#/Appointment"
     put:
       tags:
         - "Appointments"
@@ -318,14 +349,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/ModifyAppointment"
+              $ref: "/docs/schemas/Appointment.yaml#/ModifyAppointment"
       responses:
         200:
           description: "Successful response"
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Appointment"
+                $ref: "/docs/schemas/Appointment.yaml#/Appointment"
     delete:
       tags:
         - "Appointments"
@@ -339,27 +370,47 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/DeletedResponse"
+                $ref: "/docs/schemas/Responses.yaml#/DeletedResponse"
 
-  /questions:
-    post:
+  /appointments/{id}/cancel:
+    put:
       tags:
-        - "Questions"
-      summary: "Create a new question"
-      operationId: "questions.store"
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/ModifyQuestion"
+        - "Appointments"
+      summary: "Cancel a specific appointment"
+      operationId: "appointments.cancel.update"
+      parameters:
+        - $ref: "#/components/parameters/id"
       responses:
         200:
           description: "Successful response"
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Question"
+                $ref: "/docs/schemas/Appointment.yaml#/Appointment"
+
+  /questions:
+    post:
+      tags:
+        - "Questions"
+      summary: "Create a new set of eligibility questions"
+      operationId: "questions.store"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: "array"
+              items:
+                $ref: "/docs/schemas/Question.yaml#/ModifyQuestion"
+      responses:
+        200:
+          description: "Successful response"
+          content:
+            application/json:
+              schema:
+                type: "array"
+                items:
+                  $ref: "/docs/schemas/Question.yaml#/Question"
     get:
       tags:
         - "Questions"
@@ -371,56 +422,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/QuestionCollection"
-  /questions/{id}:
-    get:
-      tags:
-        - "Questions"
-      summary: "Get a specific question"
-      operationId: "questions.show"
-      parameters:
-        - $ref: "#/components/parameters/id"
-      responses:
-        200:
-          description: "Successful response"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Question"
-    put:
-      tags:
-        - "Questions"
-      summary: "Update a specific question"
-      operationId: "questions.update"
-      parameters:
-        - $ref: "#/components/parameters/id"
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/ModifyQuestion"
-      responses:
-        200:
-          description: "Successful response"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Question"
-    delete:
-      tags:
-        - "Questions"
-      summary: "Delete a specific question"
-      operationId: "questions.destroy"
-      parameters:
-        - $ref: "#/components/parameters/id"
-      responses:
-        200:
-          description: "Successful response"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/DeletedResponse"
+                $ref: "/docs/schemas/Question.yaml#/QuestionCollection"
 
   /appointments/{id}/answers:
     post:
@@ -436,14 +438,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/ModifyAnswer"
+              $ref: "/docs/schemas/Answer.yaml#/ModifyAnswer"
       responses:
         200:
           description: "Successful response"
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Answer"
+                $ref: "/docs/schemas/Answer.yaml#/Answer"
     get:
       tags:
         - "Answers"
@@ -457,7 +459,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/AnswerCollection"
+                $ref: "/docs/schemas/Answer.yaml#/AnswerCollection"
   /answers/{id}:
     get:
       tags:
@@ -472,7 +474,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Answer"
+                $ref: "/docs/schemas/Answer.yaml#/Answer"
     put:
       tags:
         - "Answers"
@@ -486,14 +488,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/ModifyAnswer"
+              $ref: "/docs/schemas/Answer.yaml#/ModifyAnswer"
       responses:
         200:
           description: "Successful response"
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Answer"
+                $ref: "/docs/schemas/Answer.yaml#/Answer"
     delete:
       tags:
         - "Answers"
@@ -507,7 +509,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/DeletedResponse"
+                $ref: "/docs/schemas/Responses.yaml#/DeletedResponse"
 
 components:
   securitySchemes:
@@ -525,296 +527,12 @@ components:
       schema:
         type: "integer"
 
-  schemas:
-    DeletedResponse:
-      type: "object"
-      properties:
-        message:
-          type: "string"
-          example: "Model successfully deleted"
-
-    ApiResourceMeta:
-      type: "object"
-      properties:
-        current_page:
-          type: "integer"
-        from:
-          type: "integer"
-        last_page:
-          type: "integer"
-        path:
-          type: "string"
-          example: "http://example.com/pagination"
-        per_page:
-          type: "integer"
-        to:
-          type: "integer"
-        total:
-          type: "integer"
-
-    ApiResourceLinks:
-      type: "object"
-      properties:
-        first:
-          type: "string"
-          example: "http://example.com/pagination?page=1"
-        last:
-          type: "string"
-          example: "http://example.com/pagination?page=1"
-        prev:
-          type: "string"
-          nullable: true
-        next:
-          type: "string"
-          nullable: true
-
-    ModifyUser:
-      type: "object"
-      required:
-        - "name"
-        - "email"
-        - "password"
-      properties:
-        location_id:
-          type: "integer"
-        name:
-          type: "string"
-        email:
-          type: "string"
-          format: "email"
-        password:
-          type: "string"
-          format: "password"
-        roles:
-          type: "array"
-          items:
-            type: "string"
-            enum: ["super admin", "organisation admin", "location admin"]
-
-    User:
-      type: "object"
-      properties:
-        id:
-          type: "integer"
-        location_id:
-          type: "integer"
-          nullable: true
-        profile_picture_file_id:
-          type: "integer"
-          nullable: true
-        name:
-          type: "string"
-        email:
-          type: "string"
-          format: "email"
-        password:
-          type: "string"
-          format: "password"
-        roles:
-          type: "array"
-          items:
-            type: "string"
-            enum: ["super admin", "organisation admin", "location admin"]
-
-    UserCollection:
-      type: "object"
-      properties:
-        data:
-          type: "array"
-          items:
-            $ref: "#/components/schemas/User"
-        links:
-          $ref: "#/components/schemas/ApiResourceLinks"
-        meta:
-          $ref: "#/components/schemas/ApiResourceMeta"
-
-    ModifyServiceUser:
-      type: "object"
-      required:
-        - "name"
-        - "email"
-        - "phone_number"
-      properties:
-        name:
-          type: "string"
-        email:
-          type: "string"
-          format: "email"
-        phone_number:
-          type: "string"
-
-    ServiceUser:
-      type: "object"
-      properties:
-        id:
-          type: "integer"
-        name:
-          type: "string"
-        email:
-          type: "string"
-          format: "email"
-        phone_number:
-          type: "string"
-
-    ServiceUserCollection:
-      type: "object"
-      properties:
-        data:
-          type: "array"
-          items:
-            $ref: "#/components/schemas/ServiceUser"
-        links:
-          $ref: "#/components/schemas/ApiResourceLinks"
-        meta:
-          $ref: "#/components/schemas/ApiResourceMeta"
-
-    ModifyLocation:
-      type: "object"
-      required:
-        - "name"
-      properties:
-        name:
-          type: "string"
-
-    Location:
-      type: "object"
-      properties:
-        id:
-          type: "integer"
-        name:
-          type: "string"
-
-    LocationCollection:
-      type: "object"
-      properties:
-        data:
-          type: "array"
-          items:
-            $ref: "#/components/schemas/Location"
-        links:
-          $ref: "#/components/schemas/ApiResourceLinks"
-        meta:
-          $ref: "#/components/schemas/ApiResourceMeta"
-
-    ModifyAppointment:
-      type: "object"
-      required:
-        - "start_at"
-      properties:
-        start_at:
-          type: "string"
-          example: "YYYY-MM-DD H:i:s"
-
-    Appointment:
-      type: "object"
-      properties:
-        id:
-          type: "integer"
-        location_id:
-          type: "integer"
-        start_at:
-          type: "string"
-          example: "YYYY-MM-DD H:i:s"
-
-    AppointmentCollection:
-      type: "object"
-      properties:
-        data:
-          type: "array"
-          items:
-            $ref: "#/components/schemas/Appointment"
-        links:
-          $ref: "#/components/schemas/ApiResourceLinks"
-        meta:
-          $ref: "#/components/schemas/ApiResourceMeta"
-
-    ModifyQuestion:
-      type: "object"
-      required:
-        - "question"
-      properties:
-        question:
-          type: "string"
-        options:
-          type: "array"
-          items:
-            $ref: "#/components/schemas/QuestionOption"
-          nullable: true
-
-    Question:
-      type: "object"
-      properties:
-        id:
-          type: "integer"
-        question:
-          type: "string"
-        options:
-          type: "array"
-          items:
-            $ref: "#/components/schemas/QuestionOption"
-
-    QuestionCollection:
-      type: "object"
-      properties:
-        data:
-          type: "array"
-          items:
-            $ref: "#/components/schemas/Question"
-        links:
-          $ref: "#/components/schemas/ApiResourceLinks"
-        meta:
-          $ref: "#/components/schemas/ApiResourceMeta"
-
-    QuestionOption:
-      type: "object"
-      properties:
-        option:
-          type: "string"
-
-    ModifyAnswer:
-      type: "object"
-      required:
-        - "question_id"
-      properties:
-        question_id:
-          type: "integer"
-        question_option_id:
-          type: "integer"
-          nullable: true
-        answer:
-          type: "string"
-          nullable: true
-
-    Answer:
-      type: "object"
-      properties:
-        id:
-          type: "integer"
-        service_user_id:
-          type: "integer"
-        appointment_id:
-          type: "integer"
-        question_id:
-          type: "integer"
-        question_option_id:
-          type: "integer"
-          nullable: true
-        answer:
-          type: "string"
-          nullable: true
-
-    AnswerCollection:
-      type: "object"
-      properties:
-        data:
-          type: "array"
-          items:
-            $ref: "#/components/schemas/Answer"
-        links:
-          $ref: "#/components/schemas/ApiResourceLinks"
-        meta:
-          $ref: "#/components/schemas/ApiResourceMeta"
-
+    uuid:
+      name: "uuid"
+      in: "path"
+      description: "The UUID of the model"
+      schema:
+        type: "string"
 security:
   - app_id: []
 
@@ -823,10 +541,10 @@ tags:
     description: "Backend users"
   - name: "Service Users"
     description: "End-users consuming the service"
-  - name: "Locations"
+  - name: "Clinics"
     description: "Clinic locations"
   - name: "Appointments"
-    description: "Appointments at locations"
+    description: "Appointments at clinics"
   - name: "Questions"
     description: "Screening questions to get an appointment booked"
   - name: "Answers"

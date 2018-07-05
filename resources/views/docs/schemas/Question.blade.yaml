@@ -1,0 +1,43 @@
+ModifyQuestion:
+  type: "object"
+  required:
+    - "question"
+    - "type"
+  properties:
+    question:
+      type: "string"
+    type:
+      type: "string"
+      enum: ["select", "checkbox", "date", "text"]
+    options:
+      type: "array"
+      items:
+        $ref: "/docs/schemas/QuestionOption.yaml#/QuestionOption"
+      nullable: true
+
+Question:
+  type: "object"
+  properties:
+    id:
+      type: "integer"
+    question:
+      type: "string"
+    type:
+      type: "string"
+      enum: ["select", "checkbox", "date", "text"]
+    options:
+      type: "array"
+      items:
+        $ref: "/docs/schemas/QuestionOption.yaml#/QuestionOption"
+
+QuestionCollection:
+  type: "object"
+  properties:
+    data:
+      type: "array"
+      items:
+        $ref: "#/Question"
+    links:
+      $ref: "/docs/schemas/ApiResource.yaml#/ApiResourceLinks"
+    meta:
+      $ref: "/docs/schemas/ApiResource.yaml#/ApiResourceMeta"

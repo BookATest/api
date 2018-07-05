@@ -1,0 +1,6 @@
+DeletedResponse:
+  type: "object"
+  properties:
+    message:
+      type: "string"
+      example: "Model successfully deleted"

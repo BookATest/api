@@ -15,12 +15,18 @@ class DocsController extends Controller
     }
 
     /**
+     * @param string $path
+     *
      * @return \Illuminate\Http\Response
      * @throws \Throwable
      */
-    public function openapi()
+    public function openapi(string $path)
     {
-        $yaml = view('docs.openapi')->render();
+        $path = str_replace('.yaml', '', $path);
+        $path = str_replace('/', '.', $path);
+        $path = 'docs.' . $path;
+
+        $yaml = view($path)->render();
 
         return response()->make($yaml, Response::HTTP_OK, [
             'Content-Type' => 'application/x-yaml',

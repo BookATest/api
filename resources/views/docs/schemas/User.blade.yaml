@@ -1,0 +1,75 @@
+ModifyUser:
+  type: "object"
+  required:
+    - "first_name"
+    - "last_name"
+    - "email"
+    - "phone_number"
+    - "display_email"
+    - "display_phone_number"
+    - "include_calendar_attachment"
+  properties:
+    first_name:
+      type: "string"
+    last_name:
+      type: "string"
+    email:
+      type: "string"
+      format: "email"
+    phone_number:
+      type: "string"
+    password:
+      type: "string"
+      format: "password"
+    display_email:
+      type: "boolean"
+    display_phone_number:
+      type: "boolean"
+    include_calendar_attachment:
+      type: "boolean"
+    roles:
+      type: "array"
+      items:
+        type: "string"
+        enum: ["Community Worker", "Clinic Admin", "Organisation Admin"]
+
+User:
+  type: "object"
+  properties:
+    id:
+      type: "integer"
+    profile_picture_file_id:
+      type: "integer"
+      nullable: true
+    first_name:
+      type: "string"
+    last_name:
+      type: "string"
+    email:
+      type: "string"
+      format: "email"
+    phone_number:
+      type: "string"
+    display_email:
+      type: "boolean"
+    display_phone_number:
+      type: "boolean"
+    include_calendar_attachment:
+      type: "boolean"
+    roles:
+      type: "array"
+      items:
+        type: "string"
+        enum: ["Community Worker", "Clinic Admin", "Organisation Admin"]
+
+UserCollection:
+  type: "object"
+  properties:
+    data:
+      type: "array"
+      items:
+        $ref: "#/User"
+    links:
+      $ref: "/docs/schemas/ApiResource.yaml#/ApiResourceLinks"
+    meta:
+      $ref: "/docs/schemas/ApiResource.yaml#/ApiResourceMeta"

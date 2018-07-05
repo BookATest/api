@@ -1,0 +1,47 @@
+ModifyAppointment:
+  type: "object"
+  required:
+    - "start_at"
+  properties:
+    start_at:
+      type: "string"
+      example: "YYYY-MM-DD H:i:s"
+    did_not_attend:
+      type: "boolean"
+
+Appointment:
+  type: "object"
+  properties:
+    id:
+      type: "integer"
+    user_id:
+      type: "integer"
+    clinic_id:
+      type: "integer"
+    appointment_schedule_id:
+      type: "integer"
+      nullable: true
+    service_user_id:
+      type: "integer"
+      nullable: true
+    start_at:
+      type: "string"
+      example: "YYYY-MM-DD H:i:s"
+    booked_at:
+      type: "string"
+      example: "YYYY-MM-DD H:i:s"
+      nullable: true
+    did_not_attend:
+      type: "boolean"
+
+AppointmentCollection:
+  type: "object"
+  properties:
+    data:
+      type: "array"
+      items:
+        $ref: "#/Appointment"
+    links:
+      $ref: "/docs/schemas/ApiResource.yaml#/ApiResourceLinks"
+    meta:
+      $ref: "/docs/schemas/ApiResource.yaml#/ApiResourceMeta"

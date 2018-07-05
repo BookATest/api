@@ -1,0 +1,34 @@
+ApiResourceMeta:
+  type: "object"
+  properties:
+    current_page:
+      type: "integer"
+    from:
+      type: "integer"
+    last_page:
+      type: "integer"
+    path:
+      type: "string"
+      example: "http://example.com/pagination"
+    per_page:
+      type: "integer"
+    to:
+      type: "integer"
+    total:
+      type: "integer"
+
+ApiResourceLinks:
+  type: "object"
+  properties:
+    first:
+      type: "string"
+      example: "http://example.com/pagination?page=1"
+    last:
+      type: "string"
+      example: "http://example.com/pagination?page=1"
+    prev:
+      type: "string"
+      nullable: true
+    next:
+      type: "string"
+      nullable: true

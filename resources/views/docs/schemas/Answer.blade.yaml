@@ -1,0 +1,43 @@
+ModifyAnswer:
+  type: "object"
+  required:
+    - "question_id"
+  properties:
+    question_id:
+      type: "integer"
+    question_option_id:
+      type: "integer"
+      nullable: true
+    answer:
+      type: "string"
+      nullable: true
+
+Answer:
+  type: "object"
+  properties:
+    id:
+      type: "integer"
+    service_user_id:
+      type: "integer"
+    appointment_id:
+      type: "integer"
+    question_id:
+      type: "integer"
+    question_option_id:
+      type: "integer"
+      nullable: true
+    answer:
+      type: "string"
+      nullable: true
+
+AnswerCollection:
+  type: "object"
+  properties:
+    data:
+      type: "array"
+      items:
+        $ref: "#/Answer"
+    links:
+      $ref: "/docs/schemas/ApiResource.yaml#/ApiResourceLinks"
+    meta:
+      $ref: "/docs/schemas/ApiResource.yaml#/ApiResourceMeta"

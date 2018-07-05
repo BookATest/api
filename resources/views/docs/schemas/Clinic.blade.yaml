@@ -1,0 +1,46 @@
+ModifyClinic:
+  type: "object"
+  required:
+    - "name"
+    - "phone"
+    - "email"
+    - "address"
+  properties:
+    name:
+      type: "string"
+    phone:
+      type: "string"
+    email:
+      type: "string"
+    address:
+      type: "string"
+    appointment_duration:
+      type: "integer"
+
+Clinic:
+  type: "object"
+  properties:
+    id:
+      type: "integer"
+    name:
+      type: "string"
+    phone:
+      type: "string"
+    email:
+      type: "string"
+    address:
+      type: "string"
+    appointment_duration:
+      type: "integer"
+
+ClinicCollection:
+  type: "object"
+  properties:
+    data:
+      type: "array"
+      items:
+        $ref: "#/Clinic"
+    links:
+      $ref: "/docs/schemas/ApiResource.yaml#/ApiResourceLinks"
+    meta:
+      $ref: "/docs/schemas/ApiResource.yaml#/ApiResourceMeta"
