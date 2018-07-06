@@ -134,5 +134,5 @@ tags:
     description: "User access auditing"
 
 externalDocs:
-  description: "External Doc Website"
-  url: "https://ayup.agency"
+  description: "GitHub Wiki"
+  url: "https://github.com/BookATest/api/wiki"
