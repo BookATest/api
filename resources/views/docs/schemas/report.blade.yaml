@@ -3,6 +3,8 @@ Report:
   properties:
     user_id:
       type: "integer"
+    clinic_id:
+      type: "integer"
     type:
       type: "string"
       enum: ["Report Type 1", "Report Type 2"]
@@ -32,6 +34,8 @@ CreateReport:
     - "from_date"
     - "to_date"
   properties:
+    clinic_id:
+      type: "integer"
     type:
       type: "string"
       enum: ["Report Type 1", "Report Type 2"]

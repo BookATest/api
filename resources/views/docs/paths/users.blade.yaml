@@ -3,7 +3,11 @@ users:
     tags:
       - "Users"
     summary: "Create a new user"
-    description: >
+    description: |
+      **Permission:** `Organisation Admin`
+
+      ***
+
       Create a new users along with their roles.
     operationId: "users.store"
     requestBody:
@@ -23,6 +27,8 @@ users:
     tags:
       - "Users"
     summary: "List all users"
+    description: |
+      **Permission:** `Community Worker`
     operationId: "users.list"
     responses:
       200:
@@ -37,6 +43,8 @@ users.user_id:
     tags:
       - "Users"
     summary: "Get a specific user"
+    description: |
+      **Permission:** `Open`
     operationId: "users.show"
     security: []
     parameters:
@@ -52,7 +60,22 @@ users.user_id:
     tags:
       - "Users"
     summary: "Update a specific user"
-    description: >
+    description: |
+      **Permission:** `Community Worker`
+      - Edit their own profile
+
+      **Permission:** `Clinic Admin`
+      - Edit their own profile.
+      - Assign `Community Worker` role to other users at a clinic they are a `Clinic Admin` at.
+      - Remove `Community Worker` from other users at a clinic they are a `Clinic Admin` at.
+
+      **Permission:** `Organisation Admin`
+      - Edit all user profiles.
+      - Assign any role to any user.
+      - Remove any role from any user.
+
+      ***
+
       Update a specific users along with their roles.
     operationId: "users.update"
     parameters:
@@ -74,7 +97,11 @@ users.user_id:
     tags:
       - "Users"
     summary: "Disable a specific user"
-    description: >
+    description: |
+      **Permission:** `Organisation Admin`
+
+      ***
+
       This will only disable the user so they can no longer access the backend. All of this user's future appointments
       will also be cancelled and deleted.
     operationId: "users.destroy"
@@ -93,6 +120,9 @@ users.user_id.profile-picture:
     tags:
       - "Users"
     summary: "Uploads a user's profile picture"
+    description: |
+      **Permission:** `Community Worker`
+      - Upload their own profile picture.
     operationId: "users.profile-picture.store"
     parameters:
       - $ref: "/docs/parameters/id.yaml#/user_id"
@@ -118,7 +148,11 @@ users.user_id.profile-picture:
     tags:
       - "Users"
     summary: "Get a specific user's profile picture"
-    description: >
+    description: |
+      **Permission:** `Open`
+
+      ***
+
       If no profile picture has been uploaded for the user, then a generated profile picture will be used, consisting
       of their initials against a random coloured background.
     operationId: "users.profile-picture.show"
@@ -134,6 +168,12 @@ users.user_id.profile-picture:
     tags:
       - "Users"
     summary: "Deleted a specific user's profile picture"
+    description: |
+      **Permission:** `Community Worker`
+      - Delete their own profile picture.
+
+      **Permission:** `Organisation Admin`
+      - Delete any user's profile picture
     operationId: "users.profile-picture.destroy"
     parameters:
       - $ref: "/docs/parameters/id.yaml#/user_id"
@@ -150,7 +190,11 @@ clinics.clinic_id.users:
     tags:
       - "Users"
     summary: "List all users that are associated to a specific clinic"
-    description: >
+    description: |
+      **Permission:** `Community Worker`
+
+      ***
+
       Lists all users who have a role of some sort at the specified clinic.
     operationId: "clinics.users.show"
     parameters:

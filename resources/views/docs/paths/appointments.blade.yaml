@@ -182,11 +182,24 @@ appointments.appointment_id.cancel:
     tags:
       - "Appointments"
     summary: "Cancel a specific appointment"
-    description: >
+    description: |
       Removes the booking against the specified appointment.
+
+      If the service user is cancelling their own appointment then the `service_user_uuid` parameter must be provided.
     operationId: "appointments.cancel.update"
+    security: []
     parameters:
       - $ref: "/docs/parameters/id.yaml#/appointment_id"
+    requestBody:
+      content:
+        application/json:
+          schema:
+            type: "object"
+            required:
+              - "service_user_uuid"
+            properties:
+              service_user_uuid:
+                type: "string"
     responses:
       200:
         description: "Successful response"

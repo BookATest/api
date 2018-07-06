@@ -1,8 +1,12 @@
 Eligibility:
   type: "object"
   required:
+    - "postcode"
     - "answers"
   properties:
+    postcode:
+      type: "string"
+      example: "LS1 4HT"
     answers:
       type: "array"
       items:

@@ -3,6 +3,8 @@ ReportSchedule:
   properties:
     user_id:
       type: "integer"
+    clinic_id:
+      type: "integer"
     report_type:
       type: "string"
       enum: ["ReportSchedule Type 1", "ReportSchedule Type 2"]
@@ -28,6 +30,8 @@ CreateReportSchedule:
     - "report_type"
     - "repeat_type"
   properties:
+    clinic_id:
+      type: "integer"
     report_type:
       type: "string"
       enum: ["ReportSchedule Type 1", "ReportSchedule Type 2"]

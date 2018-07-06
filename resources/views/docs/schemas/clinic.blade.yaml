@@ -26,6 +26,8 @@ ModifyClinic:
       type: "string"
     appointment_duration:
       type: "integer"
+    appointment_booking_threshold:
+      type: "integer"
 
 Clinic:
   type: "object"
@@ -49,6 +51,8 @@ Clinic:
     postcode:
       type: "string"
     appointment_duration:
+      type: "integer"
+    appointment_booking_threshold:
       type: "integer"
 
 ClinicCollection:
