@@ -4,6 +4,11 @@ clinics.clinic_id.eligible-answers:
       - "Eligible Answers"
     summary: "List all the eligible answers set by the clinic"
     description: |
+      **Permission:** `Clinic Admin`
+      - Can view all eligible answers at a clinic they are a `Clinic Admin` for
+
+      ***
+
       This endpoint will only return a list of all the eligiblity answers for the current questions.
 
       It's important to realise that answers for previous questions cannot be accessed through the API, even though they
@@ -33,6 +38,11 @@ clinics.clinic_id.eligible-answers:
       - "Eligible Answers"
     summary: "Create a new set of eligibility answers if they have not yet been created"
     description: |
+      **Permission:** `Clinic Admin`
+      - Can create a new set of eligible answers for a clininc they are a `Clinic Admin` for
+
+      ***
+
       This endpoint can only be used if this client has not yet specified their eligible answers for the current set of
       questions.
     operationId: "clinics.eligible-answers.store"
@@ -51,6 +61,11 @@ clinics.clinic_id.eligible-answers:
       - "Eligible Answers"
     summary: "Update the exists set of eligibility answers"
     description: |
+      **Permission:** `Clinic Admin`
+      - Can update the set of eligible answers for a clinic they are a `Clinic Admin` for
+
+      ***
+
       This endpoint can only be used if the client has already specified their eligible answers for the current set of
       questions.
     operationId: "clinics.eligible-answers.update"

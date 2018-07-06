@@ -3,6 +3,8 @@ settings:
     tags:
       - "Settings"
     summary: "List all the organisation settings"
+    description: |
+      **Permission:** `Organisation Admin`
     operationId: "settings.index"
     responses:
       200:
@@ -15,6 +17,8 @@ settings:
     tags:
       - "Settings"
     summary: "Update all of the organisation settings"
+    description: |
+      **Permission:** `Organisation Admin`
     operationId: "settings.update"
     requestBody:
       required: true

@@ -3,6 +3,13 @@ stats:
     tags:
       - "Stats"
     summary: "The dashboard stats for the user"
+    description: |
+      **Permission:** `Community Worker`
+
+      ***
+
+      The stats returned will vary depending on the calling user's role (i.e. more stats will be available for users
+      with greater roles).
     operationId: "stats.index"
     responses:
       200:

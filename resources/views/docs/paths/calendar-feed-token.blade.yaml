@@ -3,6 +3,9 @@ users.user_id.calendar-feed-token:
     tags:
       - "Calendar Feed"
     summary: "Refresh the calendar feed token"
+    description: |
+      **Permission:** `Community Worker`
+      - Can refresh their own calendar feed token
     operationId: "users.calendar-feed-token.update"
     responses:
       200:

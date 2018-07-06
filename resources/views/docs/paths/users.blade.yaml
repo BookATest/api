@@ -65,14 +65,14 @@ users.user_id:
       - Edit their own profile
 
       **Permission:** `Clinic Admin`
-      - Edit their own profile.
-      - Assign `Community Worker` role to other users at a clinic they are a `Clinic Admin` at.
-      - Remove `Community Worker` from other users at a clinic they are a `Clinic Admin` at.
+      - Edit their own profile
+      - Assign `Community Worker` role to other users at a clinic they are a `Clinic Admin` at
+      - Remove `Community Worker` from other users at a clinic they are a `Clinic Admin` at
 
       **Permission:** `Organisation Admin`
-      - Edit all user profiles.
-      - Assign any role to any user.
-      - Remove any role from any user.
+      - Edit all user profiles
+      - Assign any role to any user
+      - Remove any role from any user
 
       ***
 
@@ -122,7 +122,7 @@ users.user_id.profile-picture:
     summary: "Uploads a user's profile picture"
     description: |
       **Permission:** `Community Worker`
-      - Upload their own profile picture.
+      - Upload their own profile picture
     operationId: "users.profile-picture.store"
     parameters:
       - $ref: "/docs/parameters/id.yaml#/user_id"
@@ -170,7 +170,7 @@ users.user_id.profile-picture:
     summary: "Deleted a specific user's profile picture"
     description: |
       **Permission:** `Community Worker`
-      - Delete their own profile picture.
+      - Delete their own profile picture
 
       **Permission:** `Organisation Admin`
       - Delete any user's profile picture

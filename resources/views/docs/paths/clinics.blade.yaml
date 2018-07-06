@@ -3,6 +3,8 @@ clinics:
     tags:
       - "Clinics"
     summary: "Create a new clinic"
+    description: |
+      **Permission:** `Organisation Admin`
     operationId: "clinics.store"
     requestBody:
       required: true
@@ -21,6 +23,8 @@ clinics:
     tags:
       - "Clinics"
     summary: "List all clinics"
+    description: |
+      **Permission:** `Open`
     operationId: "clinics.list"
     security: []
     responses:
@@ -36,6 +40,8 @@ clinics.clinic_id:
     tags:
       - "Clinics"
     summary: "Get a specific clinic"
+    description: |
+      **Permission:** `Open`
     security: []
     operationId: "clinics.show"
     parameters:
@@ -51,6 +57,9 @@ clinics.clinic_id:
     tags:
       - "Clinics"
     summary: "Update a specific clinic"
+    description: |
+      **Permission:** `Clinic Admin`
+      - Update a clinic they are a `Clinic Admin` for
     operationId: "clinics.update"
     parameters:
       - $ref: "/docs/parameters/id.yaml#/clinic_id"
@@ -71,7 +80,11 @@ clinics.clinic_id:
     tags:
       - "Clinics"
     summary: "Delete a specific clinic"
-    description: >
+    description: |
+      **Permission:** `Organisation Admin`
+
+      ***
+
       This only soft deletes the clinic.
     operationId: "clinics.destroy"
     parameters:

@@ -4,6 +4,14 @@ clinics.clinic_id.appointments:
       - "Appointments"
     summary: "List all the appointments at a clinic"
     description: |
+      **Permission:** `Open`
+      - List all available appointments
+
+      **Permission:** `Community Worker`
+      - List all appointments (including booked)
+
+      ***
+
       This enpoint returns several responses depending on the caller:
 
       ### Accessed From Service User
@@ -53,6 +61,9 @@ clinics.clinic_id.appointments:
     tags:
       - "Appointments"
     summary: "Create a new appointment"
+    description: |
+      **Permission:** `Community Worker`
+      - Create an appointment at a clinic that they are a `Community Worker` for
     operationId: "clinics.appointments.store"
     parameters:
       - $ref: "/docs/parameters/id.yaml#/clinic_id"
@@ -75,6 +86,8 @@ users.user_id.appointments:
     tags:
       - "Appointments"
     summary: "List all appointments for a specified user"
+    description: |
+      **Permission:** `Community Worker`
     operationId: "users.appointments.list"
     parameters:
       - $ref: "/docs/parameters/id.yaml#/user_id"
@@ -99,6 +112,8 @@ service-users.service_user_uuid.appointments:
     tags:
       - "Appointments"
     summary: "List all appointments for a specified service user"
+    description: |
+      **Permission:** `Community Worker`
     operationId: "service-users.appointments.list"
     parameters:
       - $ref: "/docs/parameters/id.yaml#/service_user_uuid"
@@ -115,6 +130,8 @@ appointments:
     tags:
       - "Appointments"
     summary: "List all appointments"
+    description: |
+      **Permission:** `Community Worker`
     operationId: "appointments.list"
     responses:
       200:
@@ -129,29 +146,11 @@ appointments.appointment_id:
     tags:
       - "Appointments"
     summary: "Get a specific appointment"
+    description: |
+      **Permission:** `Community Worker`
     operationId: "appointments.show"
     parameters:
       - $ref: "/docs/parameters/id.yaml#/appointment_id"
-    responses:
-      200:
-        description: "Successful response"
-        content:
-          application/json:
-            schema:
-              $ref: "/docs/schemas/appointment.yaml#/Appointment"
-  put:
-    tags:
-      - "Appointments"
-    summary: "Update a specific appointment"
-    operationId: "appointments.update"
-    parameters:
-      - $ref: "/docs/parameters/id.yaml#/appointment_id"
-    requestBody:
-      required: true
-      content:
-        application/json:
-          schema:
-            $ref: "/docs/schemas/appointment.yaml#/ModifyAppointment"
     responses:
       200:
         description: "Successful response"
@@ -163,7 +162,12 @@ appointments.appointment_id:
     tags:
       - "Appointments"
     summary: "Delete a specific appointment"
-    description: >
+    description: |
+      **Permission:** `Community Worker`
+      - Can delete any appointment from any user at a clinic they are a `Community Worker` for
+
+      ***
+
       An appointment can only be deleted if it has not been booked by a service user. If an appointment has been booked,
       it must first be cancelled before you can delete it.
     operationId: "appointments.destroy"
@@ -183,6 +187,14 @@ appointments.appointment_id.cancel:
       - "Appointments"
     summary: "Cancel a specific appointment"
     description: |
+      **Permission:** `Open`
+      - Service user can cancel their own appointments
+
+      **Permission:** `Community Worker`
+      - Can cancel any appointment from any user at a clinic they are a `Community Worker` for
+
+      ***
+
       Removes the booking against the specified appointment.
 
       If the service user is cancelling their own appointment then the `service_user_uuid` parameter must be provided.

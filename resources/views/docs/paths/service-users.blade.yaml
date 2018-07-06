@@ -3,6 +3,8 @@ service-users:
     tags:
       - "Service Users"
     summary: "List all service users"
+    description: |
+      **Permission:** `Community Worker`
     operationId: "service-users.list"
     responses:
       200:
@@ -17,6 +19,8 @@ service-users.service_user_uuid:
     tags:
       - "Service Users"
     summary: "Get a specific service user"
+    description: |
+      **Permission:** `Community Worker`
     operationId: "users.show"
     parameters:
       - $ref: "/docs/parameters/id.yaml#/service_user_uuid"

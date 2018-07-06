@@ -3,6 +3,8 @@ audit:
     tags:
       - "Audits"
     summary: "List all the audits"
+    description: |
+      **Permission:** `Organisation Admin`
     operationId: "audits.index"
     responses:
       200:

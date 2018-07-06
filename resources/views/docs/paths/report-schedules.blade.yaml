@@ -1,22 +1,11 @@
-report-schedules:
-  get:
-    tags:
-      - "Report Schedules"
-    summary: "List all of the report schedules"
-    operationId: "report-schedules.index"
-    responses:
-      200:
-        description: "Successful response"
-        content:
-          application/json:
-            schema:
-              $ref: "/docs/schemas/report-schedule.yaml#/ReportScheduleCollection"
-
 report-schedules.report_schedule_id:
   get:
     tags:
       - "Report Schedules"
     summary: "Show the specified report schedule"
+    description: |
+      **Permission:** `Community Worker`
+      - View their own report schedule
     operationId: "report-schedules.show"
     parameters:
       - $ref: "/docs/parameters/id.yaml#/report_schedule_id"
@@ -31,6 +20,9 @@ report-schedules.report_schedule_id:
     tags:
       - "Report Schedules"
     summary: "Update the specified report schedule"
+    description: |
+      **Permission:** `Community Worker`
+      - Update their own report schedule
     operationId: "report-schedules.update"
     parameters:
       - $ref: "/docs/parameters/id.yaml#/report_schedule_id"
@@ -51,6 +43,9 @@ report-schedules.report_schedule_id:
     tags:
       - "Report Schedules"
     summary: "Delete a specific report"
+    description: |
+      **Permission:** `Community Worker`
+      - Delete their own report schedule
     operationId: "report-schedules.destroy"
     parameters:
       - $ref: "/docs/parameters/id.yaml#/report_schedule_id"
@@ -67,6 +62,9 @@ users.user_id.report-schedules:
     tags:
       - "Report Schedules"
     summary: "List all of the report schedules for the specified user"
+    description: |
+      **Permission:** `Community Worker`
+      - List their own report schedules
     operationId: "users.report-schedules.index"
     parameters:
       - $ref: "/docs/parameters/id.yaml#/user_id"
@@ -81,6 +79,9 @@ users.user_id.report-schedules:
     tags:
       - "Report Schedules"
     summary: "Create a new report schedule for the specified user"
+    description: |
+      **Permission:** `Community Worker`
+      - Create a report schedule for themselves
     operationId: "users.report-schedules.store"
     parameters:
       - $ref: "/docs/parameters/id.yaml#/user_id"
