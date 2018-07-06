@@ -4,7 +4,11 @@ users:
       - "Users"
     summary: "Create a new user"
     description: |
+      **Permission:** `Clinic Admin`
+      - Can create a user with the `Community Worker` role for a clinic that they are associated to
+
       **Permission:** `Organisation Admin`
+      - Can create a user with any role for any clinic
 
       ***
 
