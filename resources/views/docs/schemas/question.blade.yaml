@@ -1,20 +1,3 @@
-ModifyQuestion:
-  type: "object"
-  required:
-    - "question"
-    - "type"
-  properties:
-    question:
-      type: "string"
-    type:
-      type: "string"
-      enum: ["select", "checkbox", "date", "text"]
-    options:
-      type: "array"
-      items:
-        $ref: "/docs/schemas/question-option.yaml#/QuestionOption"
-      nullable: true
-
 Question:
   type: "object"
   properties:
@@ -41,3 +24,20 @@ QuestionCollection:
       $ref: "/docs/schemas/api-resource.yaml#/ApiResourceLinks"
     meta:
       $ref: "/docs/schemas/api-resource.yaml#/ApiResourceMeta"
+
+CreateQuestion:
+  type: "object"
+  required:
+    - "question"
+    - "type"
+  properties:
+    question:
+      type: "string"
+    type:
+      type: "string"
+      enum: ["select", "checkbox", "date", "text"]
+    options:
+      type: "array"
+      items:
+        $ref: "/docs/schemas/question-option.yaml#/QuestionOption"
+      nullable: true

@@ -20,7 +20,7 @@ questions:
           schema:
             type: "array"
             items:
-              $ref: "/docs/schemas/question.yaml#/ModifyQuestion"
+              $ref: "/docs/schemas/question.yaml#/CreateQuestion"
     responses:
       200:
         description: "Successful response"
@@ -30,6 +30,10 @@ questions:
               type: "array"
               items:
                 $ref: "/docs/schemas/question.yaml#/Question"
+      401:
+        $ref: "/docs/schemas/responses.yaml#/UnauthenticatedResponse"
+      419:
+        $ref: "/docs/schemas/responses.yaml#/AuthenticationTimeoutResponse"
   get:
     tags:
       - "Questions"

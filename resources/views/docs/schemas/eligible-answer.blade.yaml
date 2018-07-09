@@ -1,17 +1,3 @@
-ModifyEligibleAnswer:
-  type: "object"
-  properties:
-    question_id:
-      type: "integer"
-    answer:
-      type: "object"
-      properties:
-        type:
-          type: "string"
-          enum: [">", "<"]
-        interval:
-          type: "integer"
-
 EligibleAnswer:
   type: "object"
   properties:
@@ -32,3 +18,20 @@ EligibleAnswerCollection:
   type: "array"
   items:
     $ref: "#/EligibleAnswer"
+
+CreateEligibleAnswer:
+  type: "object"
+  properties:
+    question_id:
+      type: "integer"
+    answer:
+      type: "object"
+      properties:
+        type:
+          type: "string"
+          enum: [">", "<"]
+        interval:
+          type: "integer"
+
+EditEligibleAnswer:
+  $ref: "#/CreateEligibleAnswer"

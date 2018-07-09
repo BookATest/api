@@ -19,7 +19,7 @@ users:
       content:
         application/json:
           schema:
-            $ref: "/docs/schemas/user.yaml#/ModifyUser"
+            $ref: "/docs/schemas/user.yaml#/CreateUser"
     responses:
       200:
         description: "Successful response"
@@ -27,6 +27,10 @@ users:
           application/json:
             schema:
               $ref: "/docs/schemas/user.yaml#/User"
+      401:
+        $ref: "/docs/schemas/responses.yaml#/UnauthenticatedResponse"
+      419:
+        $ref: "/docs/schemas/responses.yaml#/AuthenticationTimeoutResponse"
   get:
     tags:
       - "Users"
@@ -41,6 +45,10 @@ users:
           application/json:
             schema:
               $ref: "/docs/schemas/user.yaml#/UserCollection"
+      401:
+        $ref: "/docs/schemas/responses.yaml#/UnauthenticatedResponse"
+      419:
+        $ref: "/docs/schemas/responses.yaml#/AuthenticationTimeoutResponse"
 
 users.user_id:
   get:
@@ -60,6 +68,8 @@ users.user_id:
           application/json:
             schema:
               $ref: "/docs/schemas/user.yaml#/User"
+      404:
+        $ref: "/docs/schemas/responses.yaml#/NotFoundResponse"
   put:
     tags:
       - "Users"
@@ -89,7 +99,7 @@ users.user_id:
       content:
         application/json:
           schema:
-            $ref: "/docs/schemas/user.yaml#/ModifyUser"
+            $ref: "/docs/schemas/user.yaml#/EditUser"
     responses:
       200:
         description: "Successful response"
@@ -97,6 +107,12 @@ users.user_id:
           application/json:
             schema:
               $ref: "/docs/schemas/user.yaml#/User"
+      404:
+        $ref: "/docs/schemas/responses.yaml#/NotFoundResponse"
+      401:
+        $ref: "/docs/schemas/responses.yaml#/UnauthenticatedResponse"
+      419:
+        $ref: "/docs/schemas/responses.yaml#/AuthenticationTimeoutResponse"
   delete:
     tags:
       - "Users"
@@ -118,6 +134,12 @@ users.user_id:
           application/json:
             schema:
               $ref: "/docs/schemas/responses.yaml#/DeletedResponse"
+      404:
+        $ref: "/docs/schemas/responses.yaml#/NotFoundResponse"
+      401:
+        $ref: "/docs/schemas/responses.yaml#/UnauthenticatedResponse"
+      419:
+        $ref: "/docs/schemas/responses.yaml#/AuthenticationTimeoutResponse"
 
 users.user_id.profile-picture:
   post:
@@ -148,6 +170,12 @@ users.user_id.profile-picture:
                 message:
                   type: "string"
                   example: "Profile picture successfully uploaded"
+      404:
+        $ref: "/docs/schemas/responses.yaml#/NotFoundResponse"
+      401:
+        $ref: "/docs/schemas/responses.yaml#/UnauthenticatedResponse"
+      419:
+        $ref: "/docs/schemas/responses.yaml#/AuthenticationTimeoutResponse"
   get:
     tags:
       - "Users"
@@ -168,6 +196,8 @@ users.user_id.profile-picture:
         description: "Successful response"
         content:
           image/png:
+      404:
+        $ref: "/docs/schemas/responses.yaml#/NotFoundResponse"
   delete:
     tags:
       - "Users"
@@ -188,6 +218,12 @@ users.user_id.profile-picture:
           application/json:
             schema:
               $ref: "/docs/schemas/responses.yaml#/DeletedResponse"
+      404:
+        $ref: "/docs/schemas/responses.yaml#/NotFoundResponse"
+      401:
+        $ref: "/docs/schemas/responses.yaml#/UnauthenticatedResponse"
+      419:
+        $ref: "/docs/schemas/responses.yaml#/AuthenticationTimeoutResponse"
 
 clinics.clinic_id.users:
   get:
@@ -210,3 +246,9 @@ clinics.clinic_id.users:
           application/json:
             schema:
               $ref: "/docs/schemas/user.yaml#/UserCollection"
+      404:
+        $ref: "/docs/schemas/responses.yaml#/NotFoundResponse"
+      401:
+        $ref: "/docs/schemas/responses.yaml#/UnauthenticatedResponse"
+      419:
+        $ref: "/docs/schemas/responses.yaml#/AuthenticationTimeoutResponse"

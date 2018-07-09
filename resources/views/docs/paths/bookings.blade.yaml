@@ -49,7 +49,7 @@ appointments.appointment_id.bookings:
       content:
         application/json:
           schema:
-            $ref: "/docs/schemas/booking.yaml#/MakeBooking"
+            $ref: "/docs/schemas/booking.yaml#/CreateBooking"
     responses:
       200:
         description: "Successful response"
@@ -57,3 +57,5 @@ appointments.appointment_id.bookings:
           application/json:
             schema:
               $ref: "/docs/schemas/booking.yaml#/Booking"
+      404:
+        $ref: "/docs/schemas/responses.yaml#/NotFoundResponse"

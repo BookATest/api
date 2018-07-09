@@ -13,3 +13,7 @@ audit:
           application/json:
             schema:
               $ref: "/docs/schemas/audit.yaml#/AuditCollection"
+      401:
+        $ref: "/docs/schemas/responses.yaml#/UnauthenticatedResponse"
+      419:
+        $ref: "/docs/schemas/responses.yaml#/AuthenticationTimeoutResponse"

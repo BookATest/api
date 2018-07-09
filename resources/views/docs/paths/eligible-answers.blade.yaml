@@ -23,6 +23,10 @@ clinics.clinic_id.eligible-answers:
           application/json:
             schema:
               $ref: "/docs/schemas/eligible-answer.yaml#/EligibleAnswerCollection"
+      401:
+        $ref: "/docs/schemas/responses.yaml#/UnauthenticatedResponse"
+      419:
+        $ref: "/docs/schemas/responses.yaml#/AuthenticationTimeoutResponse"
       404:
         description: "Not found"
         content:
@@ -55,7 +59,20 @@ clinics.clinic_id.eligible-answers:
           schema:
             type: "array"
             items:
-              $ref: "/docs/schemas/eligible-answer.yaml#/ModifyEligibleAnswer"
+              $ref: "/docs/schemas/eligible-answer.yaml#/CreateEligibleAnswer"responses:
+    responses:
+      200:
+        description: "Successful response"
+        content:
+          application/json:
+            schema:
+              $ref: "/docs/schemas/eligible-answer.yaml#/EligibleAnswerCollection"
+      404:
+        $ref: "/docs/schemas/responses.yaml#/NotFoundResponse"
+      401:
+        $ref: "/docs/schemas/responses.yaml#/UnauthenticatedResponse"
+      419:
+        $ref: "/docs/schemas/responses.yaml#/AuthenticationTimeoutResponse"
   put:
     tags:
       - "Eligible Answers"
@@ -78,4 +95,17 @@ clinics.clinic_id.eligible-answers:
           schema:
             type: "array"
             items:
-              $ref: "/docs/schemas/eligible-answer.yaml#/ModifyEligibleAnswer"
+              $ref: "/docs/schemas/eligible-answer.yaml#/EditEligibleAnswer"
+    responses:
+      200:
+        description: "Successful response"
+        content:
+          application/json:
+            schema:
+              $ref: "/docs/schemas/eligible-answer.yaml#/EligibleAnswer"
+      404:
+        $ref: "/docs/schemas/responses.yaml#/NotFoundResponse"
+      401:
+        $ref: "/docs/schemas/responses.yaml#/UnauthenticatedResponse"
+      419:
+        $ref: "/docs/schemas/responses.yaml#/AuthenticationTimeoutResponse"

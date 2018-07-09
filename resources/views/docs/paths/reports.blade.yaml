@@ -22,6 +22,12 @@ users.user_id.reports:
           application/json:
             schema:
               $ref: "/docs/schemas/report.yaml#/ReportCollection"
+      404:
+        $ref: "/docs/schemas/responses.yaml#/NotFoundResponse"
+      401:
+        $ref: "/docs/schemas/responses.yaml#/UnauthenticatedResponse"
+      419:
+        $ref: "/docs/schemas/responses.yaml#/AuthenticationTimeoutResponse"
   get:
     tags:
       - "Reports"
@@ -39,6 +45,12 @@ users.user_id.reports:
           application/json:
             schema:
               $ref: "/docs/schemas/report.yaml#/ReportCollection"
+      404:
+        $ref: "/docs/schemas/responses.yaml#/NotFoundResponse"
+      401:
+        $ref: "/docs/schemas/responses.yaml#/UnauthenticatedResponse"
+      419:
+        $ref: "/docs/schemas/responses.yaml#/AuthenticationTimeoutResponse"
 
 reports.report_id:
   get:
@@ -58,6 +70,12 @@ reports.report_id:
           application/json:
             schema:
               $ref: "/docs/schemas/report.yaml#/Report"
+      404:
+        $ref: "/docs/schemas/responses.yaml#/NotFoundResponse"
+      401:
+        $ref: "/docs/schemas/responses.yaml#/UnauthenticatedResponse"
+      419:
+        $ref: "/docs/schemas/responses.yaml#/AuthenticationTimeoutResponse"
   delete:
     tags:
       - "Reports"
@@ -75,6 +93,12 @@ reports.report_id:
           application/json:
             schema:
               $ref: "/docs/schemas/responses.yaml#/DeletedResponse"
+      404:
+        $ref: "/docs/schemas/responses.yaml#/NotFoundResponse"
+      401:
+        $ref: "/docs/schemas/responses.yaml#/UnauthenticatedResponse"
+      419:
+        $ref: "/docs/schemas/responses.yaml#/AuthenticationTimeoutResponse"
 
 reports.report_id.download:
   get:
@@ -92,3 +116,9 @@ reports.report_id.download:
         description: "Successful response"
         content:
           application/pdf:
+      404:
+        $ref: "/docs/schemas/responses.yaml#/NotFoundResponse"
+      401:
+        $ref: "/docs/schemas/responses.yaml#/UnauthenticatedResponse"
+      419:
+        $ref: "/docs/schemas/responses.yaml#/AuthenticationTimeoutResponse"

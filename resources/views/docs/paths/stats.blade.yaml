@@ -18,3 +18,7 @@ stats:
           application/json:
             schema:
               $ref: "/docs/schemas/stats.yaml#/Stats"
+      401:
+        $ref: "/docs/schemas/responses.yaml#/UnauthenticatedResponse"
+      419:
+        $ref: "/docs/schemas/responses.yaml#/AuthenticationTimeoutResponse"

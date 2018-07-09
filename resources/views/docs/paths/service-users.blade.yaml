@@ -13,6 +13,10 @@ service-users:
           application/json:
             schema:
               $ref: "/docs/schemas/service-user.yaml#/ServiceUserCollection"
+      401:
+        $ref: "/docs/schemas/responses.yaml#/UnauthenticatedResponse"
+      419:
+        $ref: "/docs/schemas/responses.yaml#/AuthenticationTimeoutResponse"
 
 service-users.service_user_uuid:
   get:
@@ -31,3 +35,9 @@ service-users.service_user_uuid:
           application/json:
             schema:
               $ref: "/docs/schemas/service-user.yaml#/ServiceUser"
+      404:
+        $ref: "/docs/schemas/responses.yaml#/NotFoundResponse"
+      401:
+        $ref: "/docs/schemas/responses.yaml#/UnauthenticatedResponse"
+      419:
+        $ref: "/docs/schemas/responses.yaml#/AuthenticationTimeoutResponse"

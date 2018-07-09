@@ -10,7 +10,7 @@ Settings:
     setting_4:
       type: "string"
 
-UpdateSettings:
+EditSettings:
   type: "object"
   properties:
     setting_1:

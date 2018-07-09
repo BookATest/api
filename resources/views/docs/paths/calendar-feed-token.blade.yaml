@@ -17,3 +17,9 @@ users.user_id.calendar-feed-token:
               properties:
                 calendar_feed_token:
                   type: "string"
+      404:
+        $ref: "/docs/schemas/responses.yaml#/NotFoundResponse"
+      401:
+        $ref: "/docs/schemas/responses.yaml#/UnauthenticatedResponse"
+      419:
+        $ref: "/docs/schemas/responses.yaml#/AuthenticationTimeoutResponse"

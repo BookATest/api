@@ -57,6 +57,8 @@ clinics.clinic_id.appointments:
             schema:
               $ref: "/docs/schemas/appointment.yaml#/AppointmentCollection"
           text/calendar:
+      404:
+        $ref: "/docs/schemas/responses.yaml#/NotFoundResponse"
   post:
     tags:
       - "Appointments"
@@ -72,7 +74,7 @@ clinics.clinic_id.appointments:
       content:
         application/json:
           schema:
-            $ref: "/docs/schemas/appointment.yaml#/ModifyAppointment"
+            $ref: "/docs/schemas/appointment.yaml#/CreateAppointment"
     responses:
       200:
         description: "Successful response"
@@ -80,6 +82,12 @@ clinics.clinic_id.appointments:
           application/json:
             schema:
               $ref: "/docs/schemas/appointment.yaml#/Appointment"
+      404:
+        $ref: "/docs/schemas/responses.yaml#/NotFoundResponse"
+      401:
+        $ref: "/docs/schemas/responses.yaml#/UnauthenticatedResponse"
+      419:
+        $ref: "/docs/schemas/responses.yaml#/AuthenticationTimeoutResponse"
 
 users.user_id.appointments:
   get:
@@ -106,6 +114,12 @@ users.user_id.appointments:
             schema:
               $ref: "/docs/schemas/appointment.yaml#/AppointmentCollection"
           text/calendar:
+      404:
+        $ref: "/docs/schemas/responses.yaml#/NotFoundResponse"
+      401:
+        $ref: "/docs/schemas/responses.yaml#/UnauthenticatedResponse"
+      419:
+        $ref: "/docs/schemas/responses.yaml#/AuthenticationTimeoutResponse"
 
 service-users.service_user_uuid.appointments:
   get:
@@ -124,6 +138,12 @@ service-users.service_user_uuid.appointments:
           application/json:
             schema:
               $ref: "/docs/schemas/appointment.yaml#/AppointmentCollection"
+      404:
+        $ref: "/docs/schemas/responses.yaml#/NotFoundResponse"
+      401:
+        $ref: "/docs/schemas/responses.yaml#/UnauthenticatedResponse"
+      419:
+        $ref: "/docs/schemas/responses.yaml#/AuthenticationTimeoutResponse"
 
 appointments:
   get:
@@ -140,6 +160,10 @@ appointments:
           application/json:
             schema:
               $ref: "/docs/schemas/appointment.yaml#/AppointmentCollection"
+      401:
+        $ref: "/docs/schemas/responses.yaml#/UnauthenticatedResponse"
+      419:
+        $ref: "/docs/schemas/responses.yaml#/AuthenticationTimeoutResponse"
 
 appointments.appointment_id:
   get:
@@ -158,6 +182,12 @@ appointments.appointment_id:
           application/json:
             schema:
               $ref: "/docs/schemas/appointment.yaml#/Appointment"
+      404:
+        $ref: "/docs/schemas/responses.yaml#/NotFoundResponse"
+      401:
+        $ref: "/docs/schemas/responses.yaml#/UnauthenticatedResponse"
+      419:
+        $ref: "/docs/schemas/responses.yaml#/AuthenticationTimeoutResponse"
   delete:
     tags:
       - "Appointments"
@@ -180,6 +210,12 @@ appointments.appointment_id:
           application/json:
             schema:
               $ref: "/docs/schemas/responses.yaml#/DeletedResponse"
+      404:
+        $ref: "/docs/schemas/responses.yaml#/NotFoundResponse"
+      401:
+        $ref: "/docs/schemas/responses.yaml#/UnauthenticatedResponse"
+      419:
+        $ref: "/docs/schemas/responses.yaml#/AuthenticationTimeoutResponse"
 
 appointments.appointment_id.cancel:
   put:
@@ -219,3 +255,9 @@ appointments.appointment_id.cancel:
           application/json:
             schema:
               $ref: "/docs/schemas/appointment.yaml#/Appointment"
+      404:
+        $ref: "/docs/schemas/responses.yaml#/NotFoundResponse"
+      401:
+        $ref: "/docs/schemas/responses.yaml#/UnauthenticatedResponse"
+      419:
+        $ref: "/docs/schemas/responses.yaml#/AuthenticationTimeoutResponse"

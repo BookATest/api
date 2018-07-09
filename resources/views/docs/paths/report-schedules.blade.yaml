@@ -31,7 +31,7 @@ report-schedules.report_schedule_id:
       content:
         application/json:
           schema:
-            $ref: "/docs/schemas/report-schedule.yaml#/UpdateReportSchedule"
+            $ref: "/docs/schemas/report-schedule.yaml#/EditReportSchedule"
     responses:
       200:
         description: "Successful response"
@@ -39,6 +39,12 @@ report-schedules.report_schedule_id:
           application/json:
             schema:
               $ref: "/docs/schemas/report-schedule.yaml#/ReportSchedule"
+      404:
+        $ref: "/docs/schemas/responses.yaml#/NotFoundResponse"
+      401:
+        $ref: "/docs/schemas/responses.yaml#/UnauthenticatedResponse"
+      419:
+        $ref: "/docs/schemas/responses.yaml#/AuthenticationTimeoutResponse"
   delete:
     tags:
       - "Report Schedules"
@@ -56,6 +62,12 @@ report-schedules.report_schedule_id:
           application/json:
             schema:
               $ref: "/docs/schemas/responses.yaml#/DeletedResponse"
+      404:
+        $ref: "/docs/schemas/responses.yaml#/NotFoundResponse"
+      401:
+        $ref: "/docs/schemas/responses.yaml#/UnauthenticatedResponse"
+      419:
+        $ref: "/docs/schemas/responses.yaml#/AuthenticationTimeoutResponse"
 
 users.user_id.report-schedules:
   get:
@@ -75,6 +87,12 @@ users.user_id.report-schedules:
           application/json:
             schema:
               $ref: "/docs/schemas/report-schedule.yaml#/ReportScheduleCollection"
+      404:
+        $ref: "/docs/schemas/responses.yaml#/NotFoundResponse"
+      401:
+        $ref: "/docs/schemas/responses.yaml#/UnauthenticatedResponse"
+      419:
+        $ref: "/docs/schemas/responses.yaml#/AuthenticationTimeoutResponse"
   post:
     tags:
       - "Report Schedules"
@@ -98,3 +116,9 @@ users.user_id.report-schedules:
           application/json:
             schema:
               $ref: "/docs/schemas/report-schedule.yaml#/ReportSchedule"
+      404:
+        $ref: "/docs/schemas/responses.yaml#/NotFoundResponse"
+      401:
+        $ref: "/docs/schemas/responses.yaml#/UnauthenticatedResponse"
+      419:
+        $ref: "/docs/schemas/responses.yaml#/AuthenticationTimeoutResponse"

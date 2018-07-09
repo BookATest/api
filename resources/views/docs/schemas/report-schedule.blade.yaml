@@ -39,5 +39,5 @@ CreateReportSchedule:
       type: "string"
       enum: ["weekly", "monthly"]
 
-UpdateReportSchedule:
+EditReportSchedule:
   $ref: "#/CreateReportSchedule"

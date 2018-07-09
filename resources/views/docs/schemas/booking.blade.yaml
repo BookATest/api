@@ -17,14 +17,14 @@ EligibleClinics:
   items:
     type: integer
 
-MakeBooking:
+CreateBooking:
   type: "object"
   required:
     - "service_user"
     - "answers"
   properties:
     service_user:
-      $ref: "/docs/schemas/service-user.yaml#/ModifyServiceUser"
+      $ref: "/docs/schemas/service-user.yaml#/CreateServiceUser"
     answers:
       type: "array"
       items:

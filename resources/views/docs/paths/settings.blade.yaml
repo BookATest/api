@@ -13,6 +13,10 @@ settings:
           application/json:
             schema:
               $ref: "/docs/schemas/settings.yaml#/Settings"
+      401:
+        $ref: "/docs/schemas/responses.yaml#/UnauthenticatedResponse"
+      419:
+        $ref: "/docs/schemas/responses.yaml#/AuthenticationTimeoutResponse"
   put:
     tags:
       - "Settings"
@@ -25,7 +29,7 @@ settings:
       content:
         application/json:
           schema:
-            $ref: "/docs/schemas/settings.yaml#/UpdateSettings"
+            $ref: "/docs/schemas/settings.yaml#/EditSettings"
     responses:
       200:
         description: "Successful response"
@@ -33,3 +37,7 @@ settings:
           application/json:
             schema:
               $ref: "/docs/schemas/settings.yaml#/Settings"
+      401:
+        $ref: "/docs/schemas/responses.yaml#/UnauthenticatedResponse"
+      419:
+        $ref: "/docs/schemas/responses.yaml#/AuthenticationTimeoutResponse"

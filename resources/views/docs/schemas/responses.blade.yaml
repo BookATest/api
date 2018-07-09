@@ -4,3 +4,36 @@ DeletedResponse:
     message:
       type: "string"
       example: "Model successfully deleted"
+
+NotFoundResponse:
+  description: "Not found"
+  content:
+    application/json:
+      schema:
+        type: "object"
+        properties:
+          message:
+            type: "string"
+            example: "Model not found"
+
+UnauthenticatedResponse:
+  description: "Unauthenticated"
+  content:
+    application/json:
+      schema:
+        type: "object"
+        properties:
+          message:
+            type: "string"
+            example: "Unauthenticated"
+
+AuthenticationTimeoutResponse:
+  description: "Authentication timeout"
+  content:
+    application/json:
+      schema:
+        type: "object"
+        properties:
+          message:
+            type: "string"
+            example: "Your access token has expired"
