@@ -7,14 +7,14 @@ keys:
     - ~/.ssh/id_rsa
 folders:
     -
-        map: ~/Sites/BookATest.hiv
-        to: /home/vagrant/BookATest.hiv
+        map: ~/Sites/api.bookatest
+        to: /home/vagrant/api.bookatest
 sites:
     -
         map: api.bookatest.test
-        to: /home/vagrant/BookATest.hiv/public
+        to: /home/vagrant/api.bookatest/public
 databases:
     - book_a_test_dev
     - book_a_test_testing
-name: bookatest-hiv
-hostname: bookatest-hiv
+name: api-bookatest
+hostname: api-bookatest
