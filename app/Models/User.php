@@ -17,7 +17,15 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'first_name',
+        'last_name',
+        'email',
+        'phone_number',
+        'password',
+        'display_email',
+        'display_phone_number',
+        'include_calendar_attachment',
+        'calendar_feed_token',
     ];
 
     /**
@@ -26,6 +34,16 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token',
+        'password',
+        'calendar_feed_token',
+        'remember_token',
     ];
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function roles()
+    {
+        return $this->belongsToMany(Role::class, UserRole::class)->withTimestamps();
+    }
 }
