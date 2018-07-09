@@ -48,6 +48,12 @@ If the application key (`APP_KEY`) has not already been set in the `.env` file, 
 php artisan key:generate
 ``` 
 
+Run the migrations and initial seeder:
+
+```bash
+php artisan migrate --seed
+```
+
 Install the OAuth 2.0 keys:
 
 ```bash
@@ -58,6 +64,12 @@ Ensure any API clients have been created:
 
 ```bash
 php artisan passport:client --password --name="Name of Application"
+```
+
+Create the first Organisation Admin user (take a note of the password outputted):
+
+```bash
+php artisan bat:create-user <first-name> <last-name> <email> <phone-number>
 ```
 
 ## Running the tests
