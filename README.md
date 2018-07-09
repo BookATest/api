@@ -21,18 +21,12 @@ Start by cloning the example configuration files and configuring as needed. For 
 ```bash
 cp Homestead.yaml.example Homestead.yaml
 cp .env.example .env
-```
 
-Make sure you update your hosts file to include the domain specified in the Homestead configuration:
-
-```bash
-sudo echo "192.168.10.11 api.bookatest.test" >> /etc/hosts
-```
-
-Then install all of the composer dependencies:
-
-```bash
+# Installs Laravel Homestead.
 composer install --ignore-platform-reqs
+
+# Update your hosts file (use values set in Homestead.yaml).
+sudo echo "192.168.10.11 api.bookatest.test" >> /etc/hosts
 ```
 
 You should then be able to start the VM and SSH into it:
@@ -40,36 +34,24 @@ You should then be able to start the VM and SSH into it:
 ```bash
 vagrant up && vagrant ssh
 cd api.bookatest
-```
 
-If the application key (`APP_KEY`) has not already been set in the `.env` file, then generate it:
-
-```bash
+# Generate the application key.
 php artisan key:generate
-``` 
 
-Run the migrations and initial seeder:
-
-```bash
+# Run the migrations and initial seeder.
 php artisan migrate --seed
-```
 
-Install the OAuth 2.0 keys:
-
-```bash
+# Install the OAuth 2.0 keys.
 php artisan pasport:keys
+
+# Create the first Organisation Admin user (take a note of the password outputted).
+php artisan bat:create-user <first-name> <last-name> <email> <phone-number>
 ```
 
 Ensure any API clients have been created:
 
 ```bash
 php artisan passport:client --password --name="Name of Application"
-```
-
-Create the first Organisation Admin user (take a note of the password outputted):
-
-```bash
-php artisan bat:create-user <first-name> <last-name> <email> <phone-number>
 ```
 
 ## Running the tests
