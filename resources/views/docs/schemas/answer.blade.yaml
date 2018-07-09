@@ -10,12 +10,8 @@ Answer:
       type: "integer"
     question_id:
       type: "integer"
-    question_option_id:
-      type: "integer"
-      nullable: true
     answer:
       type: "string"
-      nullable: true
 
 AnswerCollection:
   type: "object"
@@ -36,9 +32,5 @@ CreateAnswer:
   properties:
     question_id:
       type: "integer"
-    question_option_id:
-      type: "integer"
-      nullable: true
     answer:
       type: "string"
-      nullable: true

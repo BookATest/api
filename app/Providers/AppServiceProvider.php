@@ -15,6 +15,22 @@ class AppServiceProvider extends ServiceProvider
     {
         // Register *.blade.yaml files as blade views.
         resolve(\Illuminate\View\Factory::class)->addExtension('blade.yaml', 'blade');
+
+        // Add helper for migration foreign keys.
+        \Illuminate\Database\Schema\Blueprint::macro('foreignId', function (string $column, string $referencedTable, string $referencedColumn = 'id') {
+            $this->unsignedInteger($column);
+            $this->foreign($column)->references($referencedColumn)->on($referencedTable);
+        });
+        \Illuminate\Database\Schema\Blueprint::macro('foreignUuid', function (string $column, string $referencedTable, string $referencedColumn = 'uuid') {
+            $this->uuid($column);
+            $this->foreign($column)->references($referencedColumn)->on($referencedTable);
+        });
+
+        // Custom morph map.
+        \Illuminate\Database\Eloquent\Relations\Relation::morphMap([
+            'users' => \App\Models\User::class,
+            'service_users' => \App\Models\ServiceUser::class,
+        ]);
     }
 
     /**

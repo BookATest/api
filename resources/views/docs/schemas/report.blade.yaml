@@ -8,10 +8,10 @@ Report:
     type:
       type: "string"
       enum: ["Report Type 1", "Report Type 2"]
-    from_date:
+    start_at:
       type: "string"
       example: "Y-m-d"
-    to_date:
+    end_at:
       type: "string"
       example: "Y-m-d"
 
@@ -31,17 +31,17 @@ CreateReport:
   type: "object"
   required:
     - "type"
-    - "from_date"
-    - "to_date"
+    - "start_at"
+    - "end_at"
   properties:
     clinic_id:
       type: "integer"
     type:
       type: "string"
       enum: ["Report Type 1", "Report Type 2"]
-    from_date:
+    start_at:
       type: "string"
       example: "Y-m-d"
-    to_date:
+    end_at:
       type: "string"
       example: "Y-m-d"
