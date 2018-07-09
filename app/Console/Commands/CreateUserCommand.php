@@ -65,7 +65,7 @@ class CreateUserCommand extends Command
             $this->assignRoles($user);
 
             // Output message.
-            $this->info('User created!');
+            $this->info('User created successfully.');
             $this->warn("Password: $password");
 
             return true;
