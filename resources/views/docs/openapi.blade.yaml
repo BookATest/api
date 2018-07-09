@@ -57,7 +57,7 @@ paths:
     $ref: "/docs/paths/eligible-answers.yaml#/clinics.clinic_id.eligible-answers"
 
   # Booking Routes.
-  /booking/eligibility:
+  /bookings/eligibility:
     $ref: "/docs/paths/bookings.yaml#/bookings.eligibility"
   /appointments/{appointment_id}/bookings:
     $ref: "/docs/paths/bookings.yaml#/appointments.appointment_id.bookings"

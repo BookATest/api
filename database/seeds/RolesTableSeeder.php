@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\Role;
+
 class RolesTableSeeder extends BaseSeeder
 {
     /**
@@ -9,9 +11,9 @@ class RolesTableSeeder extends BaseSeeder
      */
     public function run()
     {
-        $this->addRecord('Community Worker');
-        $this->addRecord('Clinic Admin');
-        $this->addRecord('Organisation Admin');
+        $this->addRecord(Role::COMMUNITY_WORKER);
+        $this->addRecord(Role::CLINIC_ADMIN);
+        $this->addRecord(Role::ORGANISATION_ADMIN);
 
         $this->db->table('roles')->insert($this->records);
     }

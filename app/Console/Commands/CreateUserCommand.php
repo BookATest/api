@@ -7,6 +7,7 @@ use App\Models\Role;
 use App\Models\User;
 use App\Models\UserRole;
 use Illuminate\Console\Command;
+use Illuminate\Database\DatabaseManager;
 
 class CreateUserCommand extends Command
 {
@@ -29,26 +30,46 @@ class CreateUserCommand extends Command
     protected $description = 'Creates a new user with organisation admin privileges';
 
     /**
+     * @var \Illuminate\Database\DatabaseManager
+     */
+    protected $db;
+
+    /**
+     * CreateUserCommand constructor.
+     *
+     * @param \Illuminate\Database\DatabaseManager $db
+     */
+    public function __construct(DatabaseManager $db)
+    {
+        parent::__construct();
+
+        $this->db = $db;
+    }
+
+    /**
      * Execute the console command.
      *
      * @return mixed
+     * @throws \Throwable
      */
     public function handle()
     {
-        // Cache the password to display.
-        $password = str_random();
+        return $this->db->transaction(function () {
+            // Cache the password to display.
+            $password = str_random();
 
-        // Create the user record.
-        $user = $this->createUser($password);
+            // Create the user record.
+            $user = $this->createUser($password);
 
-        // Get all the clinics and roles.
-        $this->assignRoles($user);
+            // Get all the clinics and roles.
+            $this->assignRoles($user);
 
-        // Output message.
-        $this->info('User created!');
-        $this->warn("Password: $password");
+            // Output message.
+            $this->info('User created!');
+            $this->warn("Password: $password");
 
-        return true;
+            return true;
+        });
     }
 
     /**
@@ -77,11 +98,21 @@ class CreateUserCommand extends Command
     protected function assignRoles(User $user)
     {
         $clinics = Clinic::all();
-        $roles = Role::where('name', '!=', Role::ORGANISATION_ADMIN)->get();
+        $roles = Role::all();
+        $organisationAdminRole = $roles->firstWhere('name', Role::ORGANISATION_ADMIN);
+        $otherRoles = $roles->reject(function (Role $role) {
+            return $role->name === Role::ORGANISATION_ADMIN;
+        });
+
+        // Attach the organisation admin role.
+        UserRole::create([
+            'user_id' => $user->id,
+            'role_id' => $organisationAdminRole->id,
+        ]);
 
         // Attach all non-organisation admin roles to the user.
         foreach ($clinics as $clinic) {
-            foreach ($roles as $role) {
+            foreach ($otherRoles as $role) {
                 UserRole::create([
                     'user_id' => $user->id,
                     'role_id' => $role->id,

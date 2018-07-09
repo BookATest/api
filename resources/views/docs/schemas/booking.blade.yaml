@@ -15,7 +15,7 @@ Eligibility:
 EligibleClinics:
   type: "array"
   items:
-    type: integer
+    $ref: "/docs/schemas/clinic.yaml#/Clinic"
 
 CreateBooking:
   type: "object"

@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\ReportType;
+
 class ReportTypesTableSeeder extends BaseSeeder
 {
     /**
@@ -9,9 +11,10 @@ class ReportTypesTableSeeder extends BaseSeeder
      */
     public function run()
     {
-        $this->addRecord('Report Type 1');
-        $this->addRecord('Report Type 2');
-        $this->addRecord('Report Type 3');
+        $this->addRecord(ReportType::COUNT_APPOINTMENTS_AVAILABLE);
+        $this->addRecord(ReportType::COUNT_APPOINTMENTS_BOOKED);
+        $this->addRecord(ReportType::COUNT_DID_NOT_ATTEND);
+        $this->addRecord(ReportType::COUNT_TESTING_TYPES);
 
         $this->db->table('report_types')->insert($this->records);
     }
