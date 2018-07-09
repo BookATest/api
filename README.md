@@ -20,7 +20,7 @@ Start by cloning the example configuration files and configuring as needed. For 
 
 ```bash
 cp Homestead.yaml.example Homestead.yaml
-vp .env.example .env
+cp .env.example .env
 ```
 
 Make sure you update your hosts file to include the domain specified in the Homestead configuration:
