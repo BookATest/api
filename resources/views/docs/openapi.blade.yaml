@@ -10,7 +10,6 @@ info:
 
 servers:
 - url: "{{ config('app.url') }}/v1/"
-  description: "Dev Server"
 
 paths:
   # User Routes.
