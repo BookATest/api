@@ -3,8 +3,9 @@ Answer:
   properties:
     id:
       type: "integer"
-    service_user_id:
-      type: "integer"
+    service_user_uuid:
+      type: "string"
+      format: "uuid"
     appointment_id:
       type: "integer"
     question_id:

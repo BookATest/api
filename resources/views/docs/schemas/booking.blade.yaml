@@ -29,6 +29,9 @@ CreateBooking:
       type: "array"
       items:
         $ref: "/docs/schemas/answer.yaml#/CreateAnswer"
+    notification:
+      type: "string"
+      example: "pick up milk at @{{time}}..."
 
 Booking:
   type: "object"

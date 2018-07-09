@@ -10,8 +10,9 @@ Appointment:
     appointment_schedule_id:
       type: "integer"
       nullable: true
-    service_user_id:
-      type: "integer"
+    service_user_uuid:
+      type: "string"
+      format: "uuid"
       nullable: true
     start_at:
       type: "string"

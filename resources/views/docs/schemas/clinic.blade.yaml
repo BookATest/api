@@ -45,6 +45,7 @@ CreateClinic:
     - "address_line_1"
     - "city"
     - "postcode"
+    - "directions"
   properties:
     name:
       type: "string"
@@ -61,6 +62,8 @@ CreateClinic:
     city:
       type: "string"
     postcode:
+      type: "string"
+    directions:
       type: "string"
     appointment_duration:
       type: "integer"
