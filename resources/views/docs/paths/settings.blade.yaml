@@ -4,8 +4,9 @@ settings:
       - "Settings"
     summary: "List all the organisation settings"
     description: |
-      **Permission:** `Organisation Admin`
+      **Permission:** `Open`
     operationId: "settings.index"
+    security: []
     responses:
       200:
         description: "Successful response"
@@ -13,10 +14,6 @@ settings:
           application/json:
             schema:
               $ref: "/docs/schemas/settings.yaml#/Settings"
-      401:
-        $ref: "/docs/schemas/responses.yaml#/UnauthenticatedResponse"
-      419:
-        $ref: "/docs/schemas/responses.yaml#/AuthenticationTimeoutResponse"
   put:
     tags:
       - "Settings"
