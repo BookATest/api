@@ -39,7 +39,7 @@ You should then be able to start the VM and SSH into it:
 
 ```bash
 vagrant up && vagrant ssh
-cd api.bookatest.test
+cd api.bookatest
 ```
 
 If the application key (`APP_KEY`) has not already been set in the `.env` file, then generate it:
