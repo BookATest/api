@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Models\Appointment;
 use App\Models\Clinic;
 use App\Models\User;
+use Laravel\Passport\Passport;
 use Tests\TestCase;
 
 class AppointmentsTest extends TestCase
@@ -21,19 +22,23 @@ class AppointmentsTest extends TestCase
             'start_at' => $startAt,
         ]);
 
+        Passport::actingAs($user);
+
         $response = $this->json('GET', '/v1/appointments');
 
         $response->assertStatus(200);
         $response->assertJsonFragment([
             'data' => [
-                'id' => $appointment->id,
-                'user_id' => $user->id,
-                'clinic_id' => $clinic->id,
-                'is_repeating' => false,
-                'service_user_uuid' => null,
-                'start_at' => $startAt->toIso8601String(),
-                'booked_at' => null,
-                'did_not_attend' => null,
+                [
+                    'id' => $appointment->id,
+                    'user_id' => $user->id,
+                    'clinic_id' => $clinic->id,
+                    'is_repeating' => false,
+                    'service_user_uuid' => null,
+                    'start_at' => $startAt->toIso8601String(),
+                    'booked_at' => null,
+                    'did_not_attend' => null,
+                ]
             ]
         ]);
     }
