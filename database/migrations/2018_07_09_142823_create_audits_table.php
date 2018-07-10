@@ -15,7 +15,7 @@ class CreateAuditsTable extends Migration
     {
         Schema::create('audits', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->morphs('auditiable');
+            $table->morphs('auditable');
             $table->enum('action', ['create', 'read', 'update', 'delete', 'login', 'logout']);
             $table->text('description')->nullable();
             $table->timestamps();
