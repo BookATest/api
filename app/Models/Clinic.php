@@ -2,10 +2,13 @@
 
 namespace App\Models;
 
+use App\Models\Relationships\ClinicRelationships;
 use Illuminate\Database\Eloquent\Model;
 
 class Clinic extends Model
 {
+    use ClinicRelationships;
+
     /**
      * The attributes that are mass assignable.
      *

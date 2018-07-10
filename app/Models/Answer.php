@@ -2,10 +2,13 @@
 
 namespace App\Models;
 
+use App\Models\Relationships\AnswerRelationships;
 use Illuminate\Database\Eloquent\Model;
 
 class Answer extends Model
 {
+    use AnswerRelationships;
+
     /**
      * The attributes that are mass assignable.
      *

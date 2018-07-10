@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Console\Commands;
+namespace App\Console\Commands\Bat;
 
 use App\Models\Clinic;
 use App\Models\Role;

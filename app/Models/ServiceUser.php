@@ -2,10 +2,13 @@
 
 namespace App\Models;
 
+use App\Models\Relationships\ServiceUserRelationships;
 use Illuminate\Database\Eloquent\Model;
 
 class ServiceUser extends Model
 {
+    use ServiceUserRelationships;
+
     /**
      * @var string The primary key of the table.
      */

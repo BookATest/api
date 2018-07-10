@@ -2,10 +2,13 @@
 
 namespace App\Models;
 
+use App\Models\Relationships\AuditRelationships;
 use Illuminate\Database\Eloquent\Model;
 
 class Audit extends Model
 {
+    use AuditRelationships;
+
     /**
      * The attributes that are mass assignable.
      *

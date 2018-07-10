@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Relationships\UserRelationships;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Laravel\Passport\HasApiTokens;
@@ -10,6 +11,7 @@ class User extends Authenticatable
 {
     use HasApiTokens;
     use Notifiable;
+    use UserRelationships;
 
     /**
      * The attributes that are mass assignable.
@@ -38,12 +40,4 @@ class User extends Authenticatable
         'calendar_feed_token',
         'remember_token',
     ];
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
-     */
-    public function roles()
-    {
-        return $this->belongsToMany(Role::class, UserRole::class)->withTimestamps();
-    }
 }

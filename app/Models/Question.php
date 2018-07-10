@@ -2,10 +2,13 @@
 
 namespace App\Models;
 
+use App\Models\Relationships\QuestionRelationships;
 use Illuminate\Database\Eloquent\Model;
 
 class Question extends Model
 {
+    use QuestionRelationships;
+
     const SELECT = 'select';
     const CHECKBOX = 'checkbox';
     const DATE = 'date';

@@ -2,10 +2,13 @@
 
 namespace App\Models;
 
+use App\Models\Relationships\UserRoleRelationships;
 use Illuminate\Database\Eloquent\Model;
 
 class UserRole extends Model
 {
+    use UserRoleRelationships;
+
     /**
      * The attributes that are mass assignable.
      *

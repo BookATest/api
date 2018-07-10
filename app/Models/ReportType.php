@@ -2,10 +2,13 @@
 
 namespace App\Models;
 
+use App\Models\Relationships\ReportTypeRelationships;
 use Illuminate\Database\Eloquent\Model;
 
 class ReportType extends Model
 {
+    use ReportTypeRelationships;
+
     const COUNT_APPOINTMENTS_AVAILABLE = 'count_appointments_available';
     const COUNT_APPOINTMENTS_BOOKED = 'count_appointments_booked';
     const COUNT_DID_NOT_ATTEND = 'count_did_not_attend';
