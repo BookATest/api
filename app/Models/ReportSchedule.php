@@ -4,12 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Question extends Model
+class ReportSchedule extends Model
 {
-    const SELECT = 'select';
-    const CHECKBOX = 'checkbox';
-    const DATE = 'date';
-    const TEXT = 'text';
+    const WEEKLY = 'weekly';
+    const MONTHLY= 'monthly';
 
     /**
      * The attributes that are mass assignable.
@@ -17,7 +15,9 @@ class Question extends Model
      * @var array
      */
     protected $fillable = [
-        'question',
-        'type',
+        'user_id',
+        'clinic_id',
+        'report_type_id',
+        'repeat_type',
     ];
 }

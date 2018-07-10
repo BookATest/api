@@ -4,20 +4,18 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Question extends Model
+class Notification extends Model
 {
-    const SELECT = 'select';
-    const CHECKBOX = 'checkbox';
-    const DATE = 'date';
-    const TEXT = 'text';
-
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'question',
-        'type',
+        'notifiable_id',
+        'notifiable_type',
+        'channel',
+        'recipient',
+        'message',
     ];
 }

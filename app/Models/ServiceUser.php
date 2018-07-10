@@ -15,4 +15,16 @@ class ServiceUser extends Model
      * @var bool If the primary key is an incrementing value.
      */
     public $incrementing = false;
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'name',
+        'phone',
+        'email',
+        'preferred_contact_method',
+    ];
 }
