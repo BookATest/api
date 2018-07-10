@@ -33,17 +33,6 @@ class User extends Authenticatable
     ];
 
     /**
-     * The attributes that should be hidden for arrays.
-     *
-     * @var array
-     */
-    protected $hidden = [
-        'password',
-        'calendar_feed_token',
-        'remember_token',
-    ];
-
-    /**
      * The attributes that should be mutated to dates.
      *
      * @var array
