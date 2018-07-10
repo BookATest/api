@@ -44,5 +44,9 @@ CreateAppointment:
     start_at:
       type: "string"
       format: "date-time"
+
+EditAppointment:
+  type: "object"
+  properties:
     did_not_attend:
       type: "boolean"
