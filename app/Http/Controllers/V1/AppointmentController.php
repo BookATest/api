@@ -44,11 +44,11 @@ class AppointmentController extends Controller
      * Display the specified resource.
      *
      * @param  \App\Models\Appointment  $appointment
-     * @return \Illuminate\Http\Response
+     * @return \App\Http\Resources\AppointmentResource
      */
     public function show(Appointment $appointment)
     {
-        //
+        return new AppointmentResource($appointment);
     }
 
     /**

@@ -2,10 +2,7 @@
 
 namespace App\Console\Commands\Bat;
 
-use App\Models\Clinic;
-use App\Models\Role;
 use App\Models\User;
-use App\Models\UserRole;
 use Illuminate\Console\Command;
 use Illuminate\Database\DatabaseManager;
 
@@ -62,7 +59,7 @@ class CreateUserCommand extends Command
             $user = $this->createUser($password);
 
             // Get all the clinics and roles.
-            $this->assignRoles($user);
+            $user->makeOrganisationAdmin();
 
             // Output message.
             $this->info('User created successfully.');
@@ -90,35 +87,5 @@ class CreateUserCommand extends Command
             'include_calendar_attachment' => true,
             'calendar_feed_token' => str_random(10),
         ]);
-    }
-
-    /**
-     * @param \App\Models\User $user
-     */
-    protected function assignRoles(User $user)
-    {
-        $clinics = Clinic::all();
-        $roles = Role::all();
-        $organisationAdminRole = $roles->firstWhere('name', Role::ORGANISATION_ADMIN);
-        $otherRoles = $roles->reject(function (Role $role) {
-            return $role->name === Role::ORGANISATION_ADMIN;
-        });
-
-        // Attach the organisation admin role.
-        UserRole::create([
-            'user_id' => $user->id,
-            'role_id' => $organisationAdminRole->id,
-        ]);
-
-        // Attach all non-organisation admin roles to the user.
-        foreach ($clinics as $clinic) {
-            foreach ($otherRoles as $role) {
-                UserRole::create([
-                    'user_id' => $user->id,
-                    'role_id' => $role->id,
-                    'clinic_id' => $clinic->id,
-                ]);
-            }
-        }
     }
 }

@@ -23,4 +23,28 @@ class Role extends Model
     protected $fillable = [
         'name',
     ];
+
+    /**
+     * @return \App\Models\Role
+     */
+    public static function communityWorker(): self
+    {
+        return static::where('name', static::COMMUNITY_WORKER)->firstOrFail();
+    }
+
+    /**
+     * @return \App\Models\Role
+     */
+    public static function clinicAdmin(): self
+    {
+        return static::where('name', static::CLINIC_ADMIN)->firstOrFail();
+    }
+
+    /**
+     * @return \App\Models\Role
+     */
+    public static function organisationAdmin(): self
+    {
+        return static::where('name', static::ORGANISATION_ADMIN)->firstOrFail();
+    }
 }

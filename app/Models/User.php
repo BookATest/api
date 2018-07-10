@@ -54,11 +54,16 @@ class User extends Authenticatable
 
     /**
      * @param \App\Models\Role $role
+     * @param \App\Models\Clinic|null $clinic
      * @return bool
      */
-    public function hasRole(Role $role): bool
+    protected function hasRole(Role $role, Clinic $clinic = null): bool
     {
-        return $this->roles()->where('roles.id', $role->id)->exists();
+        $query = $this->userRoles()->where('user_roles.role_id', $role->id);
+
+        return $clinic
+            ? $query->where('user_roles.clinic_id', $clinic->id)->exists()
+            : $query->exists();
     }
 
     /**
@@ -66,7 +71,7 @@ class User extends Authenticatable
      * @param \App\Models\Clinic|null $clinic
      * @return \App\Models\User
      */
-    public function assignRole(Role $role, Clinic $clinic = null): self
+    protected function assignRole(Role $role, Clinic $clinic = null): self
     {
         // Check if the user already has the role.
         if ($this->hasRole($role)) {
@@ -84,12 +89,94 @@ class User extends Authenticatable
     }
 
     /**
+     * @param \App\Models\Role $role
+     * @param \App\Models\Clinic|null $clinic
+     * @return \App\Models\User
+     */
+    protected function removeRoll(Role $role, Clinic $clinic = null): self
+    {
+        // Check if the user doesn't already have the role.
+        if (!$this->hasRole($role)) {
+            return $this;
+        }
+
+        // Remove the role.
+        $this->userRoles()->where('role_id', $role->id)->delete();
+
+        return $this;
+    }
+
+    /**
+     * @param \App\Models\Clinic $clinic
+     * @return \App\Models\User
+     */
+    public function makeCommunityWorker(Clinic $clinic): self
+    {
+        return $this->assignRole(Role::communityWorker(), $clinic);
+    }
+
+    /**
+     * @param \App\Models\Clinic $clinic
+     * @return \App\Models\User
+     */
+    public function makeClinicAdmin(Clinic $clinic): self
+    {
+        $this->assignRole(Role::communityWorker(), $clinic);
+        $this->assignRole(Role::clinicAdmin(), $clinic);
+
+        return $this;
+    }
+
+    /**
      * @return \App\Models\User
      */
     public function makeOrganisationAdmin(): self
     {
-        $role = Role::where('name', Role::ORGANISATION_ADMIN)->firstOrFail();
+        Clinic::all()->each(function (Clinic $clinic) {
+            $this->assignRole(Role::communityWorker(), $clinic);
+            $this->assignRole(Role::clinicAdmin(), $clinic);
+        });
 
-        return $this->assignRole($role);
+        $this->assignRole(Role::organisationAdmin());
+
+        return $this;
+    }
+
+    /**
+     * @param \App\Models\Clinic $clinic
+     * @return \App\Models\User
+     * @throws \Exception
+     */
+    public function revokeCommunityWorker(Clinic $clinic): self
+    {
+        $clinicAdminRole = Role::clinicAdmin();
+
+        if ($this->hasRole($clinicAdminRole, $clinic)) {
+            throw new \Exception('Cannot revoke community worker role when user is a clinic admin');
+        }
+
+        return $this->removeRoll($clinicAdminRole, $clinic);
+    }
+
+    /**
+     * @param \App\Models\Clinic $clinic
+     * @return \App\Models\User
+     * @throws \Exception
+     */
+    public function revokeClinicAdmin(Clinic $clinic): self
+    {
+        $this->removeRoll(Role::clinicAdmin(), $clinic);
+        $this->removeRoll(Role::communityWorker(), $clinic);
+
+        return $this;
+    }
+
+    /**
+     * @return \App\Models\User
+     * @throws \Exception
+     */
+    public function revokeOrganisationAdmin(): self
+    {
+        return $this->removeRoll(Role::organisationAdmin());
     }
 }
