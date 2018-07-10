@@ -75,6 +75,10 @@ paths:
     $ref: "/docs/paths/service-users.yaml#/service-users"
   /service-users/{service_user_uuid}:
     $ref: "/docs/paths/service-users.yaml#/service-users.service_user_uuid"
+  /service-users/access-code:
+    $ref: "/docs/paths/service-users.yaml#/service-users.access-code"
+  /service-users/token:
+    $ref: "/docs/paths/service-users.yaml#/service-users.token"
 
   # Settings Routes.
   /settings:

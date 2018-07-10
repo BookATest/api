@@ -196,7 +196,6 @@ appointments.appointment_id:
       **Permission:** `Community Worker`
       - Update their own appointment
     operationId: "appointments.update"
-    security: []
     requestBody:
       required: true
       content:
@@ -258,7 +257,7 @@ appointments.appointment_id.cancel:
 
       Removes the booking against the specified appointment.
 
-      If the service user is cancelling their own appointment then the `service_user_uuid` parameter must be provided.
+      If the service user is cancelling their own appointment then the `service_user_token` parameter must be provided.
     operationId: "appointments.cancel.update"
     security: []
     parameters:
@@ -269,9 +268,10 @@ appointments.appointment_id.cancel:
           schema:
             type: "object"
             required:
-              - "service_user_uuid"
+              - "service_user_token"
             properties:
-              service_user_uuid:
+              service_user_token:
+                description: "A short lived token obtained by a service user"
                 type: "string"
     responses:
       200:

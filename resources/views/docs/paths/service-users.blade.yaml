@@ -41,3 +41,73 @@ service-users.service_user_uuid:
         $ref: "/docs/schemas/responses.yaml#/UnauthenticatedResponse"
       419:
         $ref: "/docs/schemas/responses.yaml#/AuthenticationTimeoutResponse"
+
+service-users.access-code:
+  post:
+    tags:
+      - "Service Users"
+    summary: "Request a one-time access code used to request a token"
+    description: |
+      **Permission:** `Open`
+    operationId: "service-users.access-code.store"
+    security: []
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: "object"
+            required:
+              - "phone"
+            properties:
+              phone:
+                type: "string"
+    responses:
+      200:
+        description: "Successful response"
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                message:
+                  type: "string"
+                  example: "If the number provided has been used to make a booking, then an access code has been sent."
+
+service-users.token:
+  post:
+    tags:
+      - "Service Users"
+    summary: "Request a short lived token to manage their appointments"
+    description: |
+      **Permission:** `Open`
+    operationId: "service-users.token.store"
+    security: []
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: "object"
+            required:
+              - "access_code"
+            properties:
+              access_code:
+                type: "string"
+    responses:
+      200:
+        description: "Successful response"
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: "/docs/schemas/service-user.yaml#/ServiceUser"
+                - type: "object"
+                  properties:
+                    service_user_token:
+                      type: "string"
+                      example: "8MAvDd=u"
+                    appointments:
+                      type: "array"
+                      items:
+                        $ref: "/docs/schemas/appointment.yaml#/Appointment"

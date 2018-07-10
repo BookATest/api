@@ -32,7 +32,6 @@ CreateServiceUser:
   required:
     - "name"
     - "phone"
-    - "email"
     - "preferred_contact_method"
   properties:
     name:
