@@ -65,7 +65,7 @@ php vendor/bin/phpunit
 To run the code style tests:
 
 ```bash
-php vendor/bind/phpcs
+php vendor/bin/phpcs
 ```
 
 ## Deployment
