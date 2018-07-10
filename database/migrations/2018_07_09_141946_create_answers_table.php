@@ -18,7 +18,7 @@ class CreateAnswersTable extends Migration
             $table->foreignUuid('service_user_uuid', 'service_users');
             $table->foreignId('appointment_id', 'appointments');
             $table->foreignId('question_id', 'questions');
-            $table->text('answer');
+            $table->json('answer');
             $table->timestamps();
         });
     }
