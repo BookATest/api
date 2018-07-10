@@ -8,4 +8,25 @@ use Illuminate\Database\Eloquent\Model;
 class AppointmentSchedule extends Model
 {
     use AppointmentScheduleRelationships;
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'user_id',
+        'clinic_id',
+        'weekly_on',
+        'weekly_at',
+    ];
+
+    /**
+     * The attributes that should be mutated to dates.
+     *
+     * @var array
+     */
+    protected $dates = [
+        'deleted_at',
+    ];
 }

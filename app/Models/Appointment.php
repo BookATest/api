@@ -20,4 +20,14 @@ class Appointment extends Model
         'appointment_schedule_id',
         'start_at',
     ];
+
+    /**
+     * The attributes that should be mutated to dates.
+     *
+     * @var array
+     */
+    protected $dates = [
+        'start_at',
+        'booked_at',
+    ];
 }

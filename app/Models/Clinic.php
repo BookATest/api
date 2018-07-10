@@ -27,4 +27,13 @@ class Clinic extends Model
         'appointment_duration',
         'appointment_booking_threshold',
     ];
+
+    /**
+     * The attributes that should be mutated to dates.
+     *
+     * @var array
+     */
+    protected $dates = [
+        'deleted_at',
+    ];
 }

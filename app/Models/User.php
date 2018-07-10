@@ -40,4 +40,13 @@ class User extends Authenticatable
         'calendar_feed_token',
         'remember_token',
     ];
+
+    /**
+     * The attributes that should be mutated to dates.
+     *
+     * @var array
+     */
+    protected $dates = [
+        'disabled_at',
+    ];
 }

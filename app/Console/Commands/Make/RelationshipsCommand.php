@@ -4,7 +4,7 @@ namespace App\Console\Commands\Make;
 
 use Illuminate\Console\Command;
 
-class RelationshipCommand extends Command
+class RelationshipsCommand extends Command
 {
     /**
      * The name and signature of the console command.
