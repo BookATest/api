@@ -5,11 +5,14 @@ Audit:
       type: "integer"
     auditable_id:
       type: "integer"
+      nullable: true
     auditable_type:
       type: "string"
+      nullable: true
     client:
       type: "string"
       example: "Frontend Web App"
+      nullable: true
     action:
       type: "string"
       enum: ["create", "read", "update", "delete", "login", "logout"]
