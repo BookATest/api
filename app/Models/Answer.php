@@ -2,11 +2,13 @@
 
 namespace App\Models;
 
+use App\Models\Mutators\AnswerMutators;
 use App\Models\Relationships\AnswerRelationships;
 use Illuminate\Database\Eloquent\Model;
 
 class Answer extends Model
 {
+    use AnswerMutators;
     use AnswerRelationships;
 
     /**

@@ -4,21 +4,21 @@ namespace App\Console\Commands\Make;
 
 use Illuminate\Console\Command;
 
-class RelationshipsCommand extends Command
+class MutatorsCommand extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'make:relationships {model : The name of the Model}';
+    protected $signature = 'make:mutators {model : The name of the Model}';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Create a new Model relationships trait';
+    protected $description = 'Create a new Model mutators trait';
 
     /**
      * Execute the console command.
@@ -30,7 +30,7 @@ class RelationshipsCommand extends Command
         $fileContents = $this->getTemplate();
         $this->saveToFile($fileContents);
 
-        $this->info('Model relationships trait created successfully.');
+        $this->info('Model mutators trait created successfully.');
     }
 
     /**
@@ -43,9 +43,9 @@ class RelationshipsCommand extends Command
         return <<<EOT
 <?php
 
-namespace App\Models\Relationships;
+namespace App\Models\Mutators;
 
-trait {$model}Relationships
+trait {$model}Mutators
 {
     //
 }
@@ -62,11 +62,11 @@ EOT;
     {
         $model = $this->argument('model');
 
-        if (!is_dir(app_path('Models/Relationships'))) {
-            mkdir(app_path('Models/Relationships'));
+        if (!is_dir(app_path('Models/Mutators'))) {
+            mkdir(app_path('Models/Mutators'));
         }
 
-        file_put_contents(app_path('Models/Relationships/' . $model . 'Relationships.php'), $contents);
+        file_put_contents(app_path('Models/Mutators/' . $model . 'Mutators.php'), $contents);
 
         return true;
     }

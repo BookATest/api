@@ -2,11 +2,13 @@
 
 namespace App\Models;
 
+use App\Models\Mutators\AppointmentScheduleMutators;
 use App\Models\Relationships\AppointmentScheduleRelationships;
 use Illuminate\Database\Eloquent\Model;
 
 class AppointmentSchedule extends Model
 {
+    use AppointmentScheduleMutators;
     use AppointmentScheduleRelationships;
 
     /**

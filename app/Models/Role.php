@@ -2,11 +2,13 @@
 
 namespace App\Models;
 
+use App\Models\Mutators\RoleMutators;
 use App\Models\Relationships\RoleRelationships;
 use Illuminate\Database\Eloquent\Model;
 
 class Role extends Model
 {
+    use RoleMutators;
     use RoleRelationships;
 
     const COMMUNITY_WORKER = 'community_worker';

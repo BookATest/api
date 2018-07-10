@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Mutators\UserMutators;
 use App\Models\Relationships\UserRelationships;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -11,6 +12,7 @@ class User extends Authenticatable
 {
     use HasApiTokens;
     use Notifiable;
+    use UserMutators;
     use UserRelationships;
 
     /**
@@ -48,5 +50,16 @@ class User extends Authenticatable
      */
     protected $dates = [
         'disabled_at',
+    ];
+
+    /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'display_phone' => 'boolean',
+        'display_email' => 'boolean',
+        'include_calendar_attachment' => 'boolean',
     ];
 }

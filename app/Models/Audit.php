@@ -2,11 +2,13 @@
 
 namespace App\Models;
 
+use App\Models\Mutators\AuditMutators;
 use App\Models\Relationships\AuditRelationships;
 use Illuminate\Database\Eloquent\Model;
 
 class Audit extends Model
 {
+    use AuditMutators;
     use AuditRelationships;
 
     /**

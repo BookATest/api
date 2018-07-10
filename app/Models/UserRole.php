@@ -2,11 +2,13 @@
 
 namespace App\Models;
 
+use App\Models\Mutators\UserRoleMutators;
 use App\Models\Relationships\UserRoleRelationships;
 use Illuminate\Database\Eloquent\Model;
 
 class UserRole extends Model
 {
+    use UserRoleMutators;
     use UserRoleRelationships;
 
     /**

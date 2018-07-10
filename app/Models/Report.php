@@ -2,11 +2,13 @@
 
 namespace App\Models;
 
+use App\Models\Mutators\ReportMutators;
 use App\Models\Relationships\ReportRelationships;
 use Illuminate\Database\Eloquent\Model;
 
 class Report extends Model
 {
+    use ReportMutators;
     use ReportRelationships;
 
     /**

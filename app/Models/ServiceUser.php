@@ -2,11 +2,13 @@
 
 namespace App\Models;
 
+use App\Models\Mutators\ServiceUserMutators;
 use App\Models\Relationships\ServiceUserRelationships;
 use Illuminate\Database\Eloquent\Model;
 
 class ServiceUser extends Model
 {
+    use ServiceUserMutators;
     use ServiceUserRelationships;
 
     /**

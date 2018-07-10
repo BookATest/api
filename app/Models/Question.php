@@ -2,11 +2,13 @@
 
 namespace App\Models;
 
+use App\Models\Mutators\QuestionMutators;
 use App\Models\Relationships\QuestionRelationships;
 use Illuminate\Database\Eloquent\Model;
 
 class Question extends Model
 {
+    use QuestionMutators;
     use QuestionRelationships;
 
     const SELECT = 'select';

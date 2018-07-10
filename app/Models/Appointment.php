@@ -2,11 +2,13 @@
 
 namespace App\Models;
 
+use App\Models\Mutators\AppointmentMutators;
 use App\Models\Relationships\AppointmentRelationships;
 use Illuminate\Database\Eloquent\Model;
 
 class Appointment extends Model
 {
+    use AppointmentMutators;
     use AppointmentRelationships;
 
     /**
@@ -29,5 +31,14 @@ class Appointment extends Model
     protected $dates = [
         'start_at',
         'booked_at',
+    ];
+
+    /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'did_not_attend' => 'boolean',
     ];
 }

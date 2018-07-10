@@ -2,11 +2,13 @@
 
 namespace App\Models;
 
+use App\Models\Mutators\ReportScheduleMutators;
 use App\Models\Relationships\ReportScheduleRelationships;
 use Illuminate\Database\Eloquent\Model;
 
 class ReportSchedule extends Model
 {
+    use ReportScheduleMutators;
     use ReportScheduleRelationships;
 
     const WEEKLY = 'weekly';
