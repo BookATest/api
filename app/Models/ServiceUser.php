@@ -11,6 +11,9 @@ class ServiceUser extends Model
     use ServiceUserMutators;
     use ServiceUserRelationships;
 
+    const PHONE = 'phone';
+    const EMAIL = 'email';
+
     /**
      * @var string The primary key of the table.
      */
