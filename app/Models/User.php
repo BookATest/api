@@ -51,4 +51,45 @@ class User extends Authenticatable
         'display_email' => 'boolean',
         'include_calendar_attachment' => 'boolean',
     ];
+
+    /**
+     * @param \App\Models\Role $role
+     * @return bool
+     */
+    public function hasRole(Role $role): bool
+    {
+        return $this->roles()->where('roles.id', $role->id)->exists();
+    }
+
+    /**
+     * @param \App\Models\Role $role
+     * @param \App\Models\Clinic|null $clinic
+     * @return \App\Models\User
+     */
+    public function assignRole(Role $role, Clinic $clinic = null): self
+    {
+        // Check if the user already has the role.
+        if ($this->hasRole($role)) {
+            return $this;
+        }
+
+        // Create the role.
+        UserRole::create(array_filter([
+            'user_id' => $this->id,
+            'role_id' => $role->id,
+            'clinic_id' => $clinic->id ?? null,
+        ]));
+
+        return $this;
+    }
+
+    /**
+     * @return \App\Models\User
+     */
+    public function makeOrganisationAdmin(): self
+    {
+        $role = Role::where('name', Role::ORGANISATION_ADMIN)->firstOrFail();
+
+        return $this->assignRole($role);
+    }
 }

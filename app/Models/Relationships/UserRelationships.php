@@ -25,7 +25,7 @@ trait UserRelationships
      */
     public function roles()
     {
-        return $this->belongsToMany(Role::class, UserRole::class)->withTimestamps();
+        return $this->belongsToMany(Role::class, 'user_roles')->withTimestamps();
     }
 
     /**
