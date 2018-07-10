@@ -5,11 +5,13 @@ namespace App\Models;
 use App\Models\Mutators\ClinicMutators;
 use App\Models\Relationships\ClinicRelationships;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Clinic extends Model
 {
     use ClinicMutators;
     use ClinicRelationships;
+    use SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
