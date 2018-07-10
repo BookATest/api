@@ -7,12 +7,21 @@ Audit:
       type: "integer"
     auditable_type:
       type: "string"
+    client:
+      type: "string"
+      example: "Frontend Web App"
     action:
       type: "string"
       enum: ["create", "read", "update", "delete", "login", "logout"]
     description:
       type: "integer"
       nullable: true
+    ip_address:
+      type: "string"
+      example: "127.0.0.1"
+    user_agent:
+      type: "string"
+      example: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_4) AppleWebKit/600.7.12 (KHTML, like Gecko) Version/8.0.7 Safari/600.7.12"
 
 AuditCollection:
   type: "object"

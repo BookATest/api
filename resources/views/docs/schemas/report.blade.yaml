@@ -10,10 +10,10 @@ Report:
       enum: ["Report Type 1", "Report Type 2"]
     start_at:
       type: "string"
-      example: "Y-m-d"
+      format: "date"
     end_at:
       type: "string"
-      example: "Y-m-d"
+      format: "date"
 
 ReportCollection:
   type: "object"
@@ -41,7 +41,7 @@ CreateReport:
       enum: ["Report Type 1", "Report Type 2"]
     start_at:
       type: "string"
-      example: "Y-m-d"
+      format: "date"
     end_at:
       type: "string"
-      example: "Y-m-d"
+      format: "date"

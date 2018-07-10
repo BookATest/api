@@ -16,10 +16,10 @@ Appointment:
       nullable: true
     start_at:
       type: "string"
-      example: "YYYY-MM-DD H:i:s"
+      format: "date-time"
     booked_at:
       type: "string"
-      example: "YYYY-MM-DD H:i:s"
+      format: "date-time"
       nullable: true
     did_not_attend:
       type: "boolean"
@@ -43,6 +43,6 @@ CreateAppointment:
   properties:
     start_at:
       type: "string"
-      example: "YYYY-MM-DD H:i:s"
+      format: "date-time"
     did_not_attend:
       type: "boolean"
