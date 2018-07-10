@@ -18,10 +18,10 @@ class CreateUsersTable extends Migration
             $table->string('first_name');
             $table->string('last_name');
             $table->string('email')->unique();
-            $table->string('phone_number');
+            $table->string('phone');
             $table->string('password');
             $table->boolean('display_email');
-            $table->boolean('display_phone_number');
+            $table->boolean('display_phone');
             $table->boolean('include_calendar_attachment');
             $table->char('calendar_feed_token', 10)->unique();
             $table->rememberToken();

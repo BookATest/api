@@ -10,11 +10,11 @@ User:
     email:
       type: "string"
       format: "email"
-    phone_number:
+    phone:
       type: "string"
     display_email:
       type: "boolean"
-    display_phone_number:
+    display_phone:
       type: "boolean"
     include_calendar_attachment:
       type: "boolean"
@@ -39,9 +39,9 @@ CreateUser:
     - "first_name"
     - "last_name"
     - "email"
-    - "phone_number"
+    - "phone"
     - "display_email"
-    - "display_phone_number"
+    - "display_phone"
     - "include_calendar_attachment"
   properties:
     first_name:
@@ -51,14 +51,14 @@ CreateUser:
     email:
       type: "string"
       format: "email"
-    phone_number:
+    phone:
       type: "string"
     password:
       type: "string"
       format: "password"
     display_email:
       type: "boolean"
-    display_phone_number:
+    display_phone:
       type: "boolean"
     include_calendar_attachment:
       type: "boolean"

@@ -16,8 +16,8 @@ class CreateServiceUsersTable extends Migration
         Schema::create('service_users', function (Blueprint $table) {
             $table->uuid('uuid')->primary();
             $table->string('name');
+            $table->string('phone')->unique();
             $table->string('email')->nullable();
-            $table->string('phone_number')->nullable();
             $table->enum('preferred_contact_method', ['email', 'phone']);
             $table->timestamps();
         });

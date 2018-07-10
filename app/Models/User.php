@@ -20,10 +20,10 @@ class User extends Authenticatable
         'first_name',
         'last_name',
         'email',
-        'phone_number',
+        'phone',
         'password',
         'display_email',
-        'display_phone_number',
+        'display_phone',
         'include_calendar_attachment',
         'calendar_feed_token',
     ];
