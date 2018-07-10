@@ -17,6 +17,8 @@ paths:
     $ref: "/docs/paths/appointments.yaml#/appointments"
   /appointments/{appointment_id}:
     $ref: "/docs/paths/appointments.yaml#/appointments.appointment_id"
+  /appointments/{appointment_id}/schedule:
+    $ref: "/docs/paths/appointments.yaml#/appointments.appointment_id.schedule"
   /appointments/{appointment_id}/cancel:
     $ref: "/docs/paths/appointments.yaml#/appointments.appointment_id.cancel"
   /users/{user_id}/appointments:

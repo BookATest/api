@@ -286,3 +286,34 @@ appointments.appointment_id.cancel:
         $ref: "/docs/schemas/responses.yaml#/UnauthenticatedResponse"
       419:
         $ref: "/docs/schemas/responses.yaml#/AuthenticationTimeoutResponse"
+
+appointments.appointment_id.schedule:
+  delete:
+    tags:
+      - "Appointments"
+    summary: "Delete a specific repeating appointment"
+    description: |
+      **Permission:** `Community Worker`
+      - Can delete any appointment schedule for any user at a clinic they are a `Community Worker` for
+
+      ***
+
+      Deleting the appointment schedule will attempt to delete all future appointments from the appointment specified.
+      If any of the future appointments have been booked, they will be skipped and not deleted. If you want them to be
+      deleted, you must manually cancel them and delete them individually after.
+    operationId: "appointments.schedule.destroy"
+    parameters:
+      - $ref: "/docs/parameters/id.yaml#/appointment_id"
+    responses:
+      200:
+        description: "Successful response"
+        content:
+          application/json:
+            schema:
+              $ref: "/docs/schemas/responses.yaml#/DeletedResponse"
+      404:
+        $ref: "/docs/schemas/responses.yaml#/NotFoundResponse"
+      401:
+        $ref: "/docs/schemas/responses.yaml#/UnauthenticatedResponse"
+      419:
+        $ref: "/docs/schemas/responses.yaml#/AuthenticationTimeoutResponse"

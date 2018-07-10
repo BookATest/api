@@ -7,9 +7,8 @@ Appointment:
       type: "integer"
     clinic_id:
       type: "integer"
-    appointment_schedule_id:
-      type: "integer"
-      nullable: true
+    is_repeating:
+      type: "boolean"
     service_user_uuid:
       type: "string"
       format: "uuid"
@@ -40,10 +39,19 @@ CreateAppointment:
   type: "object"
   required:
     - "start_at"
+    - "is_repeating"
   properties:
     start_at:
       type: "string"
       format: "date-time"
+    is_repeating:
+      type: "boolean"
+    repeat_weekly_on:
+      type: "string"
+      enum: ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"]
+    repeat_weekly_at:
+      type: "string"
+      format: "time"
 
 EditAppointment:
   type: "object"
