@@ -25,6 +25,8 @@ class Role extends Model
     ];
 
     /**
+     * TODO: Cache the response.
+     *
      * @return \App\Models\Role
      */
     public static function communityWorker(): self
@@ -33,6 +35,8 @@ class Role extends Model
     }
 
     /**
+     * TODO: Cache the response.
+     *
      * @return \App\Models\Role
      */
     public static function clinicAdmin(): self
@@ -41,6 +45,8 @@ class Role extends Model
     }
 
     /**
+     * TODO: Cache the response.
+     *
      * @return \App\Models\Role
      */
     public static function organisationAdmin(): self

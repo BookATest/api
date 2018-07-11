@@ -4,9 +4,12 @@ namespace App\Http\Controllers\V1;
 
 use App\Http\Requests\UpdateAppointmentRequest;
 use App\Http\Resources\AppointmentResource;
+use App\Http\Responses\ResourceDeletedResponse;
 use App\Models\Appointment;
+use App\Models\Role;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 
 class AppointmentController extends Controller
@@ -75,11 +78,24 @@ class AppointmentController extends Controller
     /**
      * Remove the specified resource from storage.
      *
+     * @param \Illuminate\Http\Request $request
      * @param  \App\Models\Appointment $appointment
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Appointment $appointment)
+    public function destroy(Request $request, Appointment $appointment)
     {
-        //
+        if (!$request->user()->isCommunityWorker($appointment->clinic)) {
+            abort(Response::HTTP_FORBIDDEN);
+        }
+
+        if ($appointment->isbooked()) {
+            abort(Response::HTTP_CONFLICT, 'The appointment must first be cancelled');
+        }
+
+        return DB::transaction(function () use ($appointment) {
+            $appointment->delete();
+
+            return new ResourceDeletedResponse(Appointment::class);
+        });
     }
 }

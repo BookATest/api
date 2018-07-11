@@ -41,4 +41,12 @@ class Appointment extends Model
     protected $casts = [
         'did_not_attend' => 'boolean',
     ];
+
+    /**
+     * @return bool
+     */
+    public function isBooked(): bool
+    {
+        return $this->service_user_uuid !== null;
+    }
 }

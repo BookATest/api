@@ -108,6 +108,32 @@ class User extends Authenticatable
 
     /**
      * @param \App\Models\Clinic $clinic
+     * @return bool
+     */
+    public function isCommunityWorker(Clinic $clinic): bool
+    {
+        return $this->hasRole(Role::communityWorker(), $clinic);
+    }
+
+    /**
+     * @param \App\Models\Clinic $clinic
+     * @return bool
+     */
+    public function isClinicAdmin(Clinic $clinic): bool
+    {
+        return $this->hasRole(Role::clinicAdmin(), $clinic);
+    }
+
+    /**
+     * @return bool
+     */
+    public function isOrganisationAdmin(): bool
+    {
+        return $this->hasRole(Role::organisationAdmin());
+    }
+
+    /**
+     * @param \App\Models\Clinic $clinic
      * @return \App\Models\User
      */
     public function makeCommunityWorker(Clinic $clinic): self

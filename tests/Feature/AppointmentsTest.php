@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Models\Appointment;
 use App\Models\Clinic;
+use App\Models\ServiceUser;
 use App\Models\User;
 use Laravel\Passport\Passport;
 use Tests\TestCase;
@@ -99,8 +100,8 @@ class AppointmentsTest extends TestCase
 
     public function test_guest_cannot_update_appointment()
     {
-        $user = factory(User::class)->create();
         $clinic = factory(Clinic::class)->create();
+        $user = factory(User::class)->create();
         $startAt = today()->setTime(10, 30);
         $appointment = Appointment::create([
             'user_id' => $user->id,
@@ -126,10 +127,10 @@ class AppointmentsTest extends TestCase
             'clinic_id' => $clinic->id,
             'start_at' => $startAt,
         ]);
-        $otherUser = factory(User::class)->create();
-        $otherUser->makeCommunityWorker($clinic);
+        $differentUser = factory(User::class)->create();
+        $differentUser->makeCommunityWorker($clinic);
 
-        Passport::actingAs($otherUser);
+        Passport::actingAs($differentUser);
 
         $response = $this->json('PUT', "/v1/appointments/{$appointment->id}", [
             'did_not_attend' => true,
@@ -169,5 +170,111 @@ class AppointmentsTest extends TestCase
                 'did_not_attend' => true,
             ]
         ]);
+    }
+
+    public function test_guest_cannot_delete_appointment()
+    {
+        $clinic = factory(Clinic::class)->create();
+        $user = factory(User::class)->create();
+        $startAt = today()->setTime(10, 30);
+        $appointment = Appointment::create([
+            'user_id' => $user->id,
+            'clinic_id' => $clinic->id,
+            'start_at' => $startAt,
+        ]);
+
+        $response = $this->json('DELETE', "/v1/appointments/{$appointment->id}");
+
+        $response->assertStatus(401);
+    }
+
+    public function test_cw_can_delete_their_own_appointment()
+    {
+        $clinic = factory(Clinic::class)->create();
+        $user = factory(User::class)->create();
+        $user->makeCommunityWorker($clinic);
+        $startAt = today()->setTime(10, 30);
+        $appointment = Appointment::create([
+            'user_id' => $user->id,
+            'clinic_id' => $clinic->id,
+            'start_at' => $startAt,
+        ]);
+        $appointmentId = $appointment->id;
+
+        Passport::actingAs($user);
+
+        $response = $this->json('DELETE', "/v1/appointments/{$appointment->id}");
+
+        $response->assertStatus(200);
+        $response->assertJson(['message' => 'The Appointment has been successfully deleted']);
+        $this->assertDatabaseMissing('appointments', ['id' => $appointmentId]);
+    }
+
+    public function test_cw_can_delete_someone_elses_appointment_at_same_clinic()
+    {
+        $clinic = factory(Clinic::class)->create();
+        $ownerUser = factory(User::class)->create();
+        $ownerUser->makeCommunityWorker($clinic);
+        $startAt = today()->setTime(10, 30);
+        $appointment = Appointment::create([
+            'user_id' => $ownerUser->id,
+            'clinic_id' => $clinic->id,
+            'start_at' => $startAt,
+        ]);
+        $appointmentId = $appointment->id;
+        $differentUser = factory(User::class)->create();
+        $differentUser->makeCommunityWorker($clinic);
+
+        Passport::actingAs($differentUser);
+
+        $response = $this->json('DELETE', "/v1/appointments/{$appointment->id}");
+
+        $response->assertStatus(200);
+        $response->assertJson(['message' => 'The Appointment has been successfully deleted']);
+        $this->assertDatabaseMissing('appointments', ['id' => $appointmentId]);
+    }
+
+    public function test_cw_cannot_delete_someone_elses_appointment_at_different_clinic()
+    {
+        $clinic = factory(Clinic::class)->create();
+        $ownerUser = factory(User::class)->create();
+        $ownerUser->makeCommunityWorker($clinic);
+        $startAt = today()->setTime(10, 30);
+        $appointment = Appointment::create([
+            'user_id' => $ownerUser->id,
+            'clinic_id' => $clinic->id,
+            'start_at' => $startAt,
+        ]);
+        $differentClinic = factory(Clinic::class)->create();
+        $differentUser = factory(User::class)->create();
+        $differentUser->makeCommunityWorker($differentClinic);
+
+        Passport::actingAs($differentUser);
+
+        $response = $this->json('DELETE', "/v1/appointments/{$appointment->id}");
+
+        $response->assertStatus(403);
+    }
+
+    public function test_cw_cannot_delete_a_booked_appointment()
+    {
+        $clinic = factory(Clinic::class)->create();
+        $user = factory(User::class)->create();
+        $user->makeCommunityWorker($clinic);
+        $serviceUser = factory(ServiceUser::class)->create();
+        $startAt = today()->setTime(10, 30);
+        $appointment = Appointment::create([
+            'user_id' => $user->id,
+            'clinic_id' => $clinic->id,
+            'start_at' => $startAt,
+        ]);
+        $appointment->service_user_uuid = $serviceUser->uuid;
+        $appointment->save();
+
+        Passport::actingAs($user);
+
+        $response = $this->json('DELETE', "/v1/appointments/{$appointment->id}");
+
+        $response->assertStatus(409);
     }
 }
