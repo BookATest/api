@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\Appointment;
+use App\Models\AppointmentSchedule;
 use App\Models\Clinic;
 use App\Models\ServiceUser;
 use App\Models\User;
@@ -276,5 +277,91 @@ class AppointmentsTest extends TestCase
         $response = $this->json('DELETE', "/v1/appointments/{$appointment->id}");
 
         $response->assertStatus(409);
+    }
+
+    public function test_guest_cannot_delete_appointment_schedule()
+    {
+        $clinic = factory(Clinic::class)->create();
+        $user = factory(User::class)->create();
+        $startAt = today()->setTime(10, 30);
+        $schedule = AppointmentSchedule::create([
+            'user_id' => $user->id,
+            'clinic_id' => $clinic->id,
+            'weekly_on' => AppointmentSchedule::MONDAY,
+            'weekly_at' => today()->setTime(10, 00)->toTimeString(),
+        ]);
+        $appointment = Appointment::create([
+            'user_id' => $user->id,
+            'clinic_id' => $clinic->id,
+            'appointment_schedule_id' => $schedule->id,
+            'start_at' => $startAt,
+        ]);
+
+        $response = $this->json('DELETE', "/v1/appointments/{$appointment->id}/schedule");
+
+        $response->assertStatus(401);
+    }
+
+    public function test_cw_cannot_delete_someone_elses_appointment_schedule()
+    {
+        $clinic = factory(Clinic::class)->create();
+        $ownerUser = factory(User::class)->create();
+        $ownerUser->makeCommunityWorker($clinic);
+        $startAt = today()->setTime(10, 30);
+        $schedule = AppointmentSchedule::create([
+            'user_id' => $ownerUser->id,
+            'clinic_id' => $clinic->id,
+            'weekly_on' => AppointmentSchedule::MONDAY,
+            'weekly_at' => today()->setTime(10, 00)->toTimeString(),
+        ]);
+        $appointment = Appointment::create([
+            'user_id' => $ownerUser->id,
+            'clinic_id' => $clinic->id,
+            'appointment_schedule_id' => $schedule->id,
+            'start_at' => $startAt,
+        ]);
+        $differentUser = factory(User::class)->create();
+        $differentUser->makeCommunityWorker($clinic);
+
+        Passport::actingAs($differentUser);
+
+        $response = $this->json('DELETE', "/v1/appointments/{$appointment->id}/schedule");
+
+        $response->assertStatus(403);
+    }
+
+    public function test_cw_can_delete_their_own_appointment_schedule()
+    {
+        $clinic = factory(Clinic::class)->create();
+        $user = factory(User::class)->create();
+        $user->makeCommunityWorker($clinic);
+        $startAt = today()->setTime(10, 30);
+        $schedule = AppointmentSchedule::create([
+            'user_id' => $user->id,
+            'clinic_id' => $clinic->id,
+            'weekly_on' => AppointmentSchedule::MONDAY,
+            'weekly_at' => today()->setTime(10, 00)->toTimeString(),
+        ]);
+        $appointment = Appointment::create([
+            'user_id' => $user->id,
+            'clinic_id' => $clinic->id,
+            'appointment_schedule_id' => $schedule->id,
+            'start_at' => $startAt,
+        ]);
+        $scheduleId = $schedule->id;
+        $appointmentId = $appointment->id;
+
+        Passport::actingAs($user);
+
+        $response = $this->json('DELETE', "/v1/appointments/{$appointment->id}/schedule");
+
+        $response->assertStatus(200);
+        $this->assertDatabaseMissing('appointment_schedules', ['id' => $scheduleId, 'deleted_at' => null]);
+        $this->assertDatabaseMissing('appointments', ['id' => $appointmentId]);
+    }
+
+    public function test_cw_can_only_delete_unbooked_appointments_when_deleting_an_appointment_schedule()
+    {
+        // TODO
     }
 }
