@@ -10,14 +10,14 @@ use Tests\TestCase;
 
 class AppointmentsTest extends TestCase
 {
-    public function test_cannot_view_all_appointments_as_guest()
+    public function test_guest_cannot_view_all_appointments()
     {
         $response = $this->json('GET', '/v1/appointments');
 
         $response->assertStatus(401);
     }
 
-    public function test_can_view_all_appointments_as_cw()
+    public function test_cw_can_view_all_appointments()
     {
         $clinic = factory(Clinic::class)->create();
         $user = factory(User::class)->create();
@@ -50,7 +50,7 @@ class AppointmentsTest extends TestCase
         ]);
     }
 
-    public function test_cannot_view_appointment_as_guest()
+    public function test_guest_cannot_view_appointment()
     {
         $user = factory(User::class)->create();
         $clinic = factory(Clinic::class)->create();
@@ -66,7 +66,7 @@ class AppointmentsTest extends TestCase
         $response->assertStatus(401);
     }
 
-    public function test_can_view_appointment_as_cw()
+    public function test_cw_can_view_appointment()
     {
         $clinic = factory(Clinic::class)->create();
         $user = factory(User::class)->create();
