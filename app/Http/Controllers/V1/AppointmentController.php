@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\V1;
 
+use App\Http\Requests\UpdateAppointmentRequest;
 use App\Http\Resources\AppointmentResource;
 use App\Models\Appointment;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\DB;
 
 class AppointmentController extends Controller
 {
@@ -32,7 +34,7 @@ class AppointmentController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -43,7 +45,7 @@ class AppointmentController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Appointment  $appointment
+     * @param  \App\Models\Appointment $appointment
      * @return \App\Http\Resources\AppointmentResource
      */
     public function show(Appointment $appointment)
@@ -54,19 +56,26 @@ class AppointmentController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Appointment  $appointment
-     * @return \Illuminate\Http\Response
+     * @param  \App\Http\Requests\UpdateAppointmentRequest $request
+     * @param  \App\Models\Appointment $appointment
+     * @return \App\Http\Resources\AppointmentResource
      */
-    public function update(Request $request, Appointment $appointment)
+    public function update(UpdateAppointmentRequest $request, Appointment $appointment)
     {
-        //
+        $appointment = DB::transaction(function () use ($request, $appointment) {
+            $appointment->did_not_attend = $request->input('did_not_attend');
+            $appointment->save();
+
+            return $appointment;
+        });
+
+        return new AppointmentResource($appointment);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Appointment  $appointment
+     * @param  \App\Models\Appointment $appointment
      * @return \Illuminate\Http\Response
      */
     public function destroy(Appointment $appointment)

@@ -96,4 +96,78 @@ class AppointmentsTest extends TestCase
             ]
         ]);
     }
+
+    public function test_guest_cannot_update_appointment()
+    {
+        $user = factory(User::class)->create();
+        $clinic = factory(Clinic::class)->create();
+        $startAt = today()->setTime(10, 30);
+        $appointment = Appointment::create([
+            'user_id' => $user->id,
+            'clinic_id' => $clinic->id,
+            'start_at' => $startAt,
+        ]);
+
+        $response = $this->json('PUT', "/v1/appointments/{$appointment->id}", [
+            'did_not_attend' => true,
+        ]);
+
+        $response->assertStatus(401);
+    }
+
+    public function test_cw_cannot_update_someone_elses_appointment()
+    {
+        $clinic = factory(Clinic::class)->create();
+        $ownerUser = factory(User::class)->create();
+        $ownerUser->makeCommunityWorker($clinic);
+        $startAt = today()->setTime(10, 30);
+        $appointment = Appointment::create([
+            'user_id' => $ownerUser->id,
+            'clinic_id' => $clinic->id,
+            'start_at' => $startAt,
+        ]);
+        $otherUser = factory(User::class)->create();
+        $otherUser->makeCommunityWorker($clinic);
+
+        Passport::actingAs($otherUser);
+
+        $response = $this->json('PUT', "/v1/appointments/{$appointment->id}", [
+            'did_not_attend' => true,
+        ]);
+
+        $response->assertStatus(403);
+    }
+
+    public function test_cw_can_update_their_own_appointment()
+    {
+        $clinic = factory(Clinic::class)->create();
+        $user = factory(User::class)->create();
+        $user->makeCommunityWorker($clinic);
+        $startAt = today()->setTime(10, 30);
+        $appointment = Appointment::create([
+            'user_id' => $user->id,
+            'clinic_id' => $clinic->id,
+            'start_at' => $startAt,
+        ]);
+
+        Passport::actingAs($user);
+
+        $response = $this->json('PUT', "/v1/appointments/{$appointment->id}", [
+            'did_not_attend' => true,
+        ]);
+
+        $response->assertStatus(200);
+        $response->assertJson([
+            'data' => [
+                'id' => $appointment->id,
+                'user_id' => $user->id,
+                'clinic_id' => $clinic->id,
+                'is_repeating' => false,
+                'service_user_uuid' => null,
+                'start_at' => $startAt->toIso8601String(),
+                'booked_at' => null,
+                'did_not_attend' => true,
+            ]
+        ]);
+    }
 }
