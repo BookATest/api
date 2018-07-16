@@ -566,4 +566,27 @@ class AppointmentsTest extends TestCase
         $response->assertStatus(Response::HTTP_FORBIDDEN);
         $this->assertDatabaseHas('appointments', ['id' => $appointment->id, 'service_user_uuid' => $serviceUser->uuid]);
     }
+
+    public function test_cw_cannot_cancel_their_own_appointment_in_the_past()
+    {
+        $clinic = factory(Clinic::class)->create();
+        $user = factory(User::class)->create();
+        $user->makeCommunityWorker($clinic);
+        $startAt = today()->subDay()->setTime(10, 30);
+        $appointment = Appointment::create([
+            'user_id' => $user->id,
+            'clinic_id' => $clinic->id,
+            'start_at' => $startAt,
+        ]);
+        $serviceUser = factory(ServiceUser::class)->create();
+        $appointment->service_user_uuid = $serviceUser->uuid;
+        $appointment->save();
+
+        Passport::actingAs($user);
+
+        $response = $this->json('PUT', "/v1/appointments/{$appointment->id}/cancel");
+
+        $response->assertStatus(Response::HTTP_CONFLICT);
+        $this->assertDatabaseHas('appointments', ['id' => $appointment->id, 'service_user_uuid' => $serviceUser->uuid]);
+    }
 }
