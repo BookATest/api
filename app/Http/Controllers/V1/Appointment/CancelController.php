@@ -21,7 +21,7 @@ class CancelController extends Controller
     public function update(Request $request, Appointment $appointment)
     {
         $userLoggedIn = $request->user() !== null;
-        $serviceUserToken = $request->service_user_token;
+        $serviceUserToken = $request->input('service_user_token', '');
         $appointmentBookedByServiceUser = $userLoggedIn
             ? false
             : $appointment->serviceUser->validateToken($serviceUserToken);
@@ -34,6 +34,11 @@ class CancelController extends Controller
         // Don't allow the CW to cancel this appointment if it's at a different clinic.
         if ($userLoggedIn && !$request->user()->isCommunityWorker($appointment->clinic)) {
             abort(Response::HTTP_FORBIDDEN);
+        }
+
+        // Don't allow an appointment in the past to be cancelled.
+        if ($appointment->start_at->lessThan(now())) {
+            abort(Response::HTTP_CONFLICT, 'Cannot cancel appointments in the past');
         }
 
         return DB::transaction(function () use ($appointment) {

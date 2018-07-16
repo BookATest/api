@@ -25,7 +25,7 @@ class AppointmentsTest extends TestCase
         $clinic = factory(Clinic::class)->create();
         $user = factory(User::class)->create();
         $user->makeCommunityWorker($clinic);
-        $startAt = today()->setTime(10, 30);
+        $startAt = today()->addDay()->setTime(10, 30);
         $appointment = Appointment::create([
             'user_id' => $user->id,
             'clinic_id' => $clinic->id,
@@ -57,7 +57,7 @@ class AppointmentsTest extends TestCase
     {
         $user = factory(User::class)->create();
         $clinic = factory(Clinic::class)->create();
-        $startAt = today()->setTime(10, 30);
+        $startAt = today()->addDay()->setTime(10, 30);
         $appointment = Appointment::create([
             'user_id' => $user->id,
             'clinic_id' => $clinic->id,
@@ -74,7 +74,7 @@ class AppointmentsTest extends TestCase
         $clinic = factory(Clinic::class)->create();
         $user = factory(User::class)->create();
         $user->makeCommunityWorker($clinic);
-        $startAt = today()->setTime(10, 30);
+        $startAt = today()->addDay()->setTime(10, 30);
         $appointment = Appointment::create([
             'user_id' => $user->id,
             'clinic_id' => $clinic->id,
@@ -104,7 +104,7 @@ class AppointmentsTest extends TestCase
     {
         $clinic = factory(Clinic::class)->create();
         $user = factory(User::class)->create();
-        $startAt = today()->setTime(10, 30);
+        $startAt = today()->addDay()->setTime(10, 30);
         $appointment = Appointment::create([
             'user_id' => $user->id,
             'clinic_id' => $clinic->id,
@@ -123,7 +123,7 @@ class AppointmentsTest extends TestCase
         $clinic = factory(Clinic::class)->create();
         $ownerUser = factory(User::class)->create();
         $ownerUser->makeCommunityWorker($clinic);
-        $startAt = today()->setTime(10, 30);
+        $startAt = today()->addDay()->setTime(10, 30);
         $appointment = Appointment::create([
             'user_id' => $ownerUser->id,
             'clinic_id' => $clinic->id,
@@ -146,7 +146,7 @@ class AppointmentsTest extends TestCase
         $clinic = factory(Clinic::class)->create();
         $user = factory(User::class)->create();
         $user->makeCommunityWorker($clinic);
-        $startAt = today()->setTime(10, 30);
+        $startAt = today()->addDay()->setTime(10, 30);
         $appointment = Appointment::create([
             'user_id' => $user->id,
             'clinic_id' => $clinic->id,
@@ -178,7 +178,7 @@ class AppointmentsTest extends TestCase
     {
         $clinic = factory(Clinic::class)->create();
         $user = factory(User::class)->create();
-        $startAt = today()->setTime(10, 30);
+        $startAt = today()->addDay()->setTime(10, 30);
         $appointment = Appointment::create([
             'user_id' => $user->id,
             'clinic_id' => $clinic->id,
@@ -195,7 +195,7 @@ class AppointmentsTest extends TestCase
         $clinic = factory(Clinic::class)->create();
         $user = factory(User::class)->create();
         $user->makeCommunityWorker($clinic);
-        $startAt = today()->setTime(10, 30);
+        $startAt = today()->addDay()->setTime(10, 30);
         $appointment = Appointment::create([
             'user_id' => $user->id,
             'clinic_id' => $clinic->id,
@@ -217,7 +217,7 @@ class AppointmentsTest extends TestCase
         $clinic = factory(Clinic::class)->create();
         $ownerUser = factory(User::class)->create();
         $ownerUser->makeCommunityWorker($clinic);
-        $startAt = today()->setTime(10, 30);
+        $startAt = today()->addDay()->setTime(10, 30);
         $appointment = Appointment::create([
             'user_id' => $ownerUser->id,
             'clinic_id' => $clinic->id,
@@ -241,7 +241,7 @@ class AppointmentsTest extends TestCase
         $clinic = factory(Clinic::class)->create();
         $ownerUser = factory(User::class)->create();
         $ownerUser->makeCommunityWorker($clinic);
-        $startAt = today()->setTime(10, 30);
+        $startAt = today()->addDay()->setTime(10, 30);
         $appointment = Appointment::create([
             'user_id' => $ownerUser->id,
             'clinic_id' => $clinic->id,
@@ -264,7 +264,7 @@ class AppointmentsTest extends TestCase
         $user = factory(User::class)->create();
         $user->makeCommunityWorker($clinic);
         $serviceUser = factory(ServiceUser::class)->create();
-        $startAt = today()->setTime(10, 30);
+        $startAt = today()->addDay()->setTime(10, 30);
         $appointment = Appointment::create([
             'user_id' => $user->id,
             'clinic_id' => $clinic->id,
@@ -284,7 +284,7 @@ class AppointmentsTest extends TestCase
     {
         $clinic = factory(Clinic::class)->create();
         $user = factory(User::class)->create();
-        $startAt = today()->setTime(10, 30);
+        $startAt = today()->addDay()->setTime(10, 30);
         $schedule = AppointmentSchedule::create([
             'user_id' => $user->id,
             'clinic_id' => $clinic->id,
@@ -308,7 +308,7 @@ class AppointmentsTest extends TestCase
         $clinic = factory(Clinic::class)->create();
         $ownerUser = factory(User::class)->create();
         $ownerUser->makeCommunityWorker($clinic);
-        $startAt = today()->setTime(10, 30);
+        $startAt = today()->addDay()->setTime(10, 30);
         $schedule = AppointmentSchedule::create([
             'user_id' => $ownerUser->id,
             'clinic_id' => $clinic->id,
@@ -336,7 +336,7 @@ class AppointmentsTest extends TestCase
         $clinic = factory(Clinic::class)->create();
         $user = factory(User::class)->create();
         $user->makeCommunityWorker($clinic);
-        $startAt = today()->setTime(10, 30);
+        $startAt = today()->addDay()->setTime(10, 30);
         $schedule = AppointmentSchedule::create([
             'user_id' => $user->id,
             'clinic_id' => $clinic->id,
@@ -366,7 +366,7 @@ class AppointmentsTest extends TestCase
         $clinic = factory(Clinic::class)->create();
         $user = factory(User::class)->create();
         $user->makeCommunityWorker($clinic);
-        $startAt = today()->setTime(10, 30);
+        $startAt = today()->addDay()->setTime(10, 30);
         $schedule = AppointmentSchedule::create([
             'user_id' => $user->id,
             'clinic_id' => $clinic->id,
@@ -410,7 +410,7 @@ class AppointmentsTest extends TestCase
         $clinic = factory(Clinic::class)->create();
         $user = factory(User::class)->create();
         $user->makeCommunityWorker($clinic);
-        $startAt = today()->setTime(10, 30);
+        $startAt = today()->addDay()->setTime(10, 30);
         $schedule = AppointmentSchedule::create([
             'user_id' => $user->id,
             'clinic_id' => $clinic->id,
@@ -451,7 +451,7 @@ class AppointmentsTest extends TestCase
         $clinic = factory(Clinic::class)->create();
         $user = factory(User::class)->create();
         $user->makeCommunityWorker($clinic);
-        $startAt = today()->setTime(10, 30);
+        $startAt = today()->addDay()->setTime(10, 30);
         $appointment = Appointment::create([
             'user_id' => $user->id,
             'clinic_id' => $clinic->id,
@@ -474,7 +474,7 @@ class AppointmentsTest extends TestCase
         $clinic = factory(Clinic::class)->create();
         $ownerUser = factory(User::class)->create();
         $ownerUser->makeCommunityWorker($clinic);
-        $startAt = today()->setTime(10, 30);
+        $startAt = today()->addDay()->setTime(10, 30);
         $appointment = Appointment::create([
             'user_id' => $ownerUser->id,
             'clinic_id' => $clinic->id,
@@ -499,7 +499,7 @@ class AppointmentsTest extends TestCase
         $clinic = factory(Clinic::class)->create();
         $ownerUser = factory(User::class)->create();
         $ownerUser->makeCommunityWorker($clinic);
-        $startAt = today()->setTime(10, 30);
+        $startAt = today()->addDay()->setTime(10, 30);
         $appointment = Appointment::create([
             'user_id' => $ownerUser->id,
             'clinic_id' => $clinic->id,
@@ -525,7 +525,7 @@ class AppointmentsTest extends TestCase
         $clinic = factory(Clinic::class)->create();
         $user = factory(User::class)->create();
         $user->makeCommunityWorker($clinic);
-        $startAt = today()->setTime(10, 30);
+        $startAt = today()->addDay()->setTime(10, 30);
         $appointment = Appointment::create([
             'user_id' => $user->id,
             'clinic_id' => $clinic->id,
@@ -548,7 +548,7 @@ class AppointmentsTest extends TestCase
         $clinic = factory(Clinic::class)->create();
         $user = factory(User::class)->create();
         $user->makeCommunityWorker($clinic);
-        $startAt = today()->setTime(10, 30);
+        $startAt = today()->addDay()->setTime(10, 30);
         $appointment = Appointment::create([
             'user_id' => $user->id,
             'clinic_id' => $clinic->id,
