@@ -18,4 +18,5 @@ Route::prefix('v1')->group(function () {
 
     Route::apiResource('/appointments', 'V1\\AppointmentController');
     Route::delete('/appointments/{appointment}/schedule', 'V1\\Appointment\\ScheduleController@destroy')->name('appointments.schedule.destroy');
+    Route::put('/appointments/{appointment}/cancel', 'V1\\Appointment\\CancelController@update')->name('appointments.cancel.update');
 });

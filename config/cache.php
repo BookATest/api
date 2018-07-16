@@ -91,4 +91,9 @@ return [
         str_slug(env('APP_NAME', 'laravel'), '_').'_cache'
     ),
 
+    'lifetimes' => [
+        'service_user_access_code' => env('SERVICE_USER_ACCESS_CODE_LIFETIME', 30),
+        'service_user_token' => env('SERVICE_USER_TOKEN_LIFETIME', 30),
+    ],
+
 ];

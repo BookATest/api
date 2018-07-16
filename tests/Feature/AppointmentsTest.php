@@ -445,4 +445,125 @@ class AppointmentsTest extends TestCase
             }
         }
     }
+
+    public function test_cw_can_cancel_their_own_appointment()
+    {
+        $clinic = factory(Clinic::class)->create();
+        $user = factory(User::class)->create();
+        $user->makeCommunityWorker($clinic);
+        $startAt = today()->setTime(10, 30);
+        $appointment = Appointment::create([
+            'user_id' => $user->id,
+            'clinic_id' => $clinic->id,
+            'start_at' => $startAt,
+        ]);
+        $serviceUser = factory(ServiceUser::class)->create();
+        $appointment->service_user_uuid = $serviceUser->uuid;
+        $appointment->save();
+
+        Passport::actingAs($user);
+
+        $response = $this->json('PUT', "/v1/appointments/{$appointment->id}/cancel");
+
+        $response->assertStatus(Response::HTTP_OK);
+        $this->assertDatabaseMissing('appointments', ['id' => $appointment->id, 'service_user_uuid' => $serviceUser->uuid]);
+    }
+
+    public function test_cw_can_cancel_someone_elses_appointment_at_same_clinic()
+    {
+        $clinic = factory(Clinic::class)->create();
+        $ownerUser = factory(User::class)->create();
+        $ownerUser->makeCommunityWorker($clinic);
+        $startAt = today()->setTime(10, 30);
+        $appointment = Appointment::create([
+            'user_id' => $ownerUser->id,
+            'clinic_id' => $clinic->id,
+            'start_at' => $startAt,
+        ]);
+        $serviceUser = factory(ServiceUser::class)->create();
+        $appointment->service_user_uuid = $serviceUser->uuid;
+        $appointment->save();
+        $differentUser = factory(User::class)->create();
+        $differentUser->makeCommunityWorker($clinic);
+
+        Passport::actingAs($differentUser);
+
+        $response = $this->json('PUT', "/v1/appointments/{$appointment->id}/cancel");
+
+        $response->assertStatus(Response::HTTP_OK);
+        $this->assertDatabaseMissing('appointments', ['id' => $appointment->id, 'service_user_uuid' => $serviceUser->uuid]);
+    }
+
+    public function test_cw_cannot_cancel_someone_elses_appointment_at_different_clinic()
+    {
+        $clinic = factory(Clinic::class)->create();
+        $ownerUser = factory(User::class)->create();
+        $ownerUser->makeCommunityWorker($clinic);
+        $startAt = today()->setTime(10, 30);
+        $appointment = Appointment::create([
+            'user_id' => $ownerUser->id,
+            'clinic_id' => $clinic->id,
+            'start_at' => $startAt,
+        ]);
+        $serviceUser = factory(ServiceUser::class)->create();
+        $appointment->service_user_uuid = $serviceUser->uuid;
+        $appointment->save();
+        $differentClinic = factory(Clinic::class)->create();
+        $differentUser = factory(User::class)->create();
+        $differentUser->makeCommunityWorker($differentClinic);
+
+        Passport::actingAs($differentUser);
+
+        $response = $this->json('PUT', "/v1/appointments/{$appointment->id}/cancel");
+
+        $response->assertStatus(Response::HTTP_FORBIDDEN);
+        $this->assertDatabaseHas('appointments', ['id' => $appointment->id, 'service_user_uuid' => $serviceUser->uuid]);
+    }
+
+    public function test_su_can_cancel_their_own_appointment()
+    {
+        $clinic = factory(Clinic::class)->create();
+        $user = factory(User::class)->create();
+        $user->makeCommunityWorker($clinic);
+        $startAt = today()->setTime(10, 30);
+        $appointment = Appointment::create([
+            'user_id' => $user->id,
+            'clinic_id' => $clinic->id,
+            'start_at' => $startAt,
+        ]);
+        $serviceUser = factory(ServiceUser::class)->create();
+        $appointment->service_user_uuid = $serviceUser->uuid;
+        $appointment->save();
+
+        $response = $this->json('PUT', "/v1/appointments/{$appointment->id}/cancel", [
+            'service_user_token' => $serviceUser->generateToken(),
+        ]);
+
+        $response->assertStatus(Response::HTTP_OK);
+        $this->assertDatabaseMissing('appointments', ['id' => $appointment->id, 'service_user_uuid' => $serviceUser->uuid]);
+    }
+
+    public function test_su_cannot_cancel_someone_elses_appointment()
+    {
+        $clinic = factory(Clinic::class)->create();
+        $user = factory(User::class)->create();
+        $user->makeCommunityWorker($clinic);
+        $startAt = today()->setTime(10, 30);
+        $appointment = Appointment::create([
+            'user_id' => $user->id,
+            'clinic_id' => $clinic->id,
+            'start_at' => $startAt,
+        ]);
+        $serviceUser = factory(ServiceUser::class)->create();
+        $appointment->service_user_uuid = $serviceUser->uuid;
+        $appointment->save();
+        $anotherServiceUser = factory(ServiceUser::class)->create();
+
+        $response = $this->json('PUT', "/v1/appointments/{$appointment->id}/cancel", [
+            'service_user_token' => $anotherServiceUser->generateToken(),
+        ]);
+
+        $response->assertStatus(Response::HTTP_FORBIDDEN);
+        $this->assertDatabaseHas('appointments', ['id' => $appointment->id, 'service_user_uuid' => $serviceUser->uuid]);
+    }
 }
