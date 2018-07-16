@@ -5,7 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Carbon;
 
-class AppointmentResource extends JsonResource
+class AuditResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -17,13 +17,13 @@ class AppointmentResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'user_id' => $this->user_id,
-            'clinic_id' => $this->clinic_id,
-            'is_repeating' => $this->appointment_schedule_id !== null,
-            'service_user_uuid' => $this->service_user_uuid,
-            'start_at' => $this->start_at->format(Carbon::ISO8601),
-            'booked_at' => optional($this->booked_at)->format(Carbon::ISO8601),
-            'did_not_attend' => $this->did_not_attend,
+            'auditable_type' => $this->auditable_type,
+            'auditable_id' => $this->auditable_id,
+            'client' => optional($this->client)->name,
+            'action' => $this->action,
+            'description' => $this->description,
+            'ip_address' => $this->ip_address,
+            'user_agent' => $this->user_agent,
             'created_at' => $this->created_at->format(Carbon::ISO8601),
             'updated_at' => $this->updated_at->format(Carbon::ISO8601),
         ];

@@ -4,6 +4,7 @@ namespace App\Models\Relationships;
 
 use App\Models\Appointment;
 use App\Models\AppointmentSchedule;
+use App\Models\Audit;
 use App\Models\File;
 use App\Models\Report;
 use App\Models\ReportSchedule;
@@ -66,5 +67,13 @@ trait UserRelationships
     public function reports()
     {
         return $this->hasMany(Report::class);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
+     */
+    public function audits()
+    {
+        return $this->morphMany(Audit::class, 'auditable');
     }
 }

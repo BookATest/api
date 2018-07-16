@@ -4,6 +4,7 @@ namespace App\Models\Relationships;
 
 use App\Models\Answer;
 use App\Models\Appointment;
+use App\Models\Audit;
 
 trait ServiceUserRelationships
 {
@@ -21,5 +22,13 @@ trait ServiceUserRelationships
     public function answers()
     {
         return $this->hasMany(Answer::class);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
+     */
+    public function audits()
+    {
+        return $this->morphMany(Audit::class, 'auditable');
     }
 }

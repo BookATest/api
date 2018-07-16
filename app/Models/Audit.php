@@ -11,6 +11,13 @@ class Audit extends Model
     use AuditMutators;
     use AuditRelationships;
 
+    const CREATE = 'create';
+    const READ = 'read';
+    const UPDATE = 'update';
+    const DELETE = 'delete';
+    const LOGIN = 'login';
+    const LOGOUT = 'logout';
+
     /**
      * The attributes that are mass assignable.
      *

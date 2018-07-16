@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\V1;
 
+use App\Events\AppointmentEvent;
 use App\Http\Requests\UpdateAppointmentRequest;
 use App\Http\Resources\AppointmentResource;
 use App\Http\Responses\ResourceDeletedResponse;
@@ -24,10 +25,13 @@ class AppointmentController extends Controller
     /**
      * Display a listing of the resource.
      *
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
-    public function index()
+    public function index(Request $request)
     {
+        event(AppointmentEvent::onIndex($request));
+
         $appointments = Appointment::orderByDesc('created_at')->paginate();
 
         return AppointmentResource::collection($appointments);
