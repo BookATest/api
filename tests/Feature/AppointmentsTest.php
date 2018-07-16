@@ -8,6 +8,7 @@ use App\Models\Clinic;
 use App\Models\ServiceUser;
 use App\Models\User;
 use Illuminate\Http\Response;
+use Illuminate\Support\Carbon;
 use Laravel\Passport\Passport;
 use Tests\TestCase;
 
@@ -45,7 +46,7 @@ class AppointmentsTest extends TestCase
                     'clinic_id' => $clinic->id,
                     'is_repeating' => false,
                     'service_user_uuid' => null,
-                    'start_at' => $startAt->toIso8601String(),
+                    'start_at' => $startAt->format(Carbon::ISO8601),
                     'booked_at' => null,
                     'did_not_attend' => null,
                 ]
@@ -93,7 +94,7 @@ class AppointmentsTest extends TestCase
                 'clinic_id' => $clinic->id,
                 'is_repeating' => false,
                 'service_user_uuid' => null,
-                'start_at' => $startAt->toIso8601String(),
+                'start_at' => $startAt->format(Carbon::ISO8601),
                 'booked_at' => null,
                 'did_not_attend' => null,
             ]
@@ -167,7 +168,7 @@ class AppointmentsTest extends TestCase
                 'clinic_id' => $clinic->id,
                 'is_repeating' => false,
                 'service_user_uuid' => null,
-                'start_at' => $startAt->toIso8601String(),
+                'start_at' => $startAt->format(Carbon::ISO8601),
                 'booked_at' => null,
                 'did_not_attend' => true,
             ]
@@ -617,7 +618,7 @@ class AppointmentsTest extends TestCase
                     'clinic_id' => $clinic->id,
                     'is_repeating' => false,
                     'service_user_uuid' => null,
-                    'start_at' => $startAt->toIso8601String(),
+                    'start_at' => $startAt->format(Carbon::ISO8601),
                     'booked_at' => null,
                     'did_not_attend' => null,
                 ]
@@ -671,7 +672,7 @@ class AppointmentsTest extends TestCase
                     'clinic_id' => $clinic->id,
                     'is_repeating' => false,
                     'service_user_uuid' => null,
-                    'start_at' => $startAt->toIso8601String(),
+                    'start_at' => $startAt->format(Carbon::ISO8601),
                     'booked_at' => null,
                     'did_not_attend' => null,
                 ],
@@ -681,8 +682,8 @@ class AppointmentsTest extends TestCase
                     'clinic_id' => $clinic->id,
                     'is_repeating' => false,
                     'service_user_uuid' => $serviceUser->uuid,
-                    'start_at' => $startAt->toIso8601String(),
-                    'booked_at' => $bookedAt->toIso8601String(),
+                    'start_at' => $startAt->format(Carbon::ISO8601),
+                    'booked_at' => $bookedAt->format(Carbon::ISO8601),
                     'did_not_attend' => null,
                 ],
             ]
@@ -720,11 +721,68 @@ class AppointmentsTest extends TestCase
                     'clinic_id' => $clinic->id,
                     'is_repeating' => false,
                     'service_user_uuid' => null,
-                    'start_at' => $startAt->toIso8601String(),
+                    'start_at' => $startAt->format(Carbon::ISO8601),
                     'booked_at' => null,
                     'did_not_attend' => null,
                 ]
             ]
         ]);
+    }
+
+    public function test_cw_can_create_appointment_at_their_own_clinic()
+    {
+        $clinic = factory(Clinic::class)->create();
+        $user = factory(User::class)->create();
+        $user->makeCommunityWorker($clinic);
+        $startAt = today()->addDay()->setTime(10, 30);
+
+        Passport::actingAs($user);
+
+        $response = $this->json('POST', "/v1/clinics/{$clinic->id}/appointments", [
+            'start_at' => $startAt->format(Carbon::ISO8601),
+            'is_repeating' => false,
+        ]);
+
+        $response->assertStatus(Response::HTTP_CREATED);
+        $response->assertJsonFragment([
+            'user_id' => $user->id,
+            'clinic_id' => $clinic->id,
+            'is_repeating' => false,
+            'service_user_uuid' => null,
+            'start_at' => $startAt->format(Carbon::ISO8601),
+            'booked_at' => null,
+            'did_not_attend' => null,
+        ]);
+    }
+
+    public function test_cw_cannot_create_appointment_at_different_clinic()
+    {
+        $clinic = factory(Clinic::class)->create();
+        $differentClinic = factory(Clinic::class)->create();
+        $user = factory(User::class)->create();
+        $user->makeCommunityWorker($clinic);
+        $startAt = today()->addDay()->setTime(10, 30);
+
+        Passport::actingAs($user);
+
+        $response = $this->json('POST', "/v1/clinics/{$differentClinic->id}/appointments", [
+            'start_at' => $startAt->format(Carbon::ISO8601),
+            'is_repeating' => false,
+        ]);
+
+        $response->assertStatus(Response::HTTP_FORBIDDEN);
+    }
+
+    public function test_guest_cannot_create_appointment_at_clinic()
+    {
+        $clinic = factory(Clinic::class)->create();
+        $startAt = today()->addDay()->setTime(10, 30);
+
+        $response = $this->json('POST', "/v1/clinics/{$clinic->id}/appointments", [
+            'start_at' => $startAt->format(Carbon::ISO8601),
+            'is_repeating' => false,
+        ]);
+
+        $response->assertStatus(Response::HTTP_UNAUTHORIZED);
     }
 }
