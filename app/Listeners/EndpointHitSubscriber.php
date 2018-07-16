@@ -2,16 +2,16 @@
 
 namespace App\Listeners;
 
-use App\Events\EndpointHitEvent;
+use App\Events\EndpointHit;
 use App\Models\Audit;
 use Illuminate\Events\Dispatcher;
 
 class EndpointHitSubscriber
 {
     /**
-     * @param \App\Events\EndpointHitEvent $event
+     * @param \App\Events\EndpointHit $event
      */
-    public function onHit(EndpointHitEvent $event)
+    public function onHit(EndpointHit $event)
     {
         // Filter out any null values.
         $attributes = array_filter([
@@ -40,6 +40,6 @@ class EndpointHitSubscriber
     public function subscribe(Dispatcher $events)
     {
         // Appointment events.
-        $events->listen(\App\Events\AppointmentEvent::class, static::class.'@onHit');
+        $events->listen(EndpointHit::class, static::class.'@onHit');
     }
 }

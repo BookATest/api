@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\V1;
 
-use App\Events\AppointmentEvent;
+use App\Events\EndpointHit;
 use App\Http\Requests\UpdateAppointmentRequest;
 use App\Http\Resources\AppointmentResource;
 use App\Http\Responses\ResourceDeletedResponse;
@@ -30,7 +30,7 @@ class AppointmentController extends Controller
      */
     public function index(Request $request)
     {
-        event(AppointmentEvent::onIndex($request));
+        event(EndpointHit::onRead($request, 'Viewed all appointments'));
 
         $appointments = Appointment::orderByDesc('created_at')->paginate();
 
