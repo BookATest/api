@@ -1,13 +1,6 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: matthew
- * Date: 11/07/2018
- * Time: 09:37
- */
 
 namespace App\Http\Responses;
-
 
 use Illuminate\Contracts\Support\Responsable;
 

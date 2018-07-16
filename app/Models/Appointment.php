@@ -4,12 +4,14 @@ namespace App\Models;
 
 use App\Models\Mutators\AppointmentMutators;
 use App\Models\Relationships\AppointmentRelationships;
+use App\Models\Scopes\AppointmentScopes;
 use Illuminate\Database\Eloquent\Model;
 
 class Appointment extends Model
 {
     use AppointmentMutators;
     use AppointmentRelationships;
+    use AppointmentScopes;
 
     /**
      * The attributes that are mass assignable.
