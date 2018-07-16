@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\V1\Appointment;
 
+use App\Events\EndpointHit;
 use App\Http\Resources\AppointmentResource;
 use App\Models\Appointment;
 use Illuminate\Http\Request;
@@ -44,6 +45,8 @@ class CancelController extends Controller
             Response::HTTP_CONFLICT,
             'Cannot cancel appointments in the past'
         );
+
+        event(EndpointHit::onUpdate($request, "Cancelled appointment [$appointment->id]"));
 
         return DB::transaction(function () use ($appointment) {
             $appointment->service_user_uuid = null;

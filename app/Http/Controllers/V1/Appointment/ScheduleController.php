@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\V1\Appointment;
 
+use App\Events\EndpointHit;
 use App\Http\Responses\ResourceDeletedResponse;
 use App\Models\Appointment;
 use App\Models\AppointmentSchedule;
@@ -34,6 +35,8 @@ class ScheduleController extends Controller
             $request->user()->id !== $appointment->user_id,
             Response::HTTP_FORBIDDEN
         );
+
+        event(EndpointHit::onDelete($request, "Deleted appointment [$appointment->id] along with schedule"));
 
         return DB::transaction(function () use ($appointment) {
             // Soft delete the schedule.

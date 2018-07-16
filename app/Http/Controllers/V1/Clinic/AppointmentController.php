@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\V1\Clinic;
 
+use App\Events\EndpointHit;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Clinic\StoreAppointmentRequest;
 use App\Http\Resources\AppointmentResource;
@@ -32,6 +33,8 @@ class AppointmentController extends Controller
      */
     public function index(Request $request, Clinic $clinic)
     {
+        event(EndpointHit::onRead($request, "Viewed all appointments for clinic [$clinic->id]"));
+
         $appointments = $clinic
             ->appointments()
             ->when(!$request->user(), function (Builder $query): Builder {
@@ -52,6 +55,8 @@ class AppointmentController extends Controller
      */
     public function store(StoreAppointmentRequest $request, Clinic $clinic)
     {
+        event(EndpointHit::onCreate($request, "Created appointment for clinic [$clinic->id]"));
+
         $startAt = Carbon::createFromFormat(Carbon::ISO8601, $request->start_at)->second(0);
 
         return DB::transaction(function () use ($request, $clinic, $startAt) {

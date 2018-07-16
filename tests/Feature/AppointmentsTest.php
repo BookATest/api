@@ -39,18 +39,14 @@ class AppointmentsTest extends TestCase
 
         $response->assertStatus(200);
         $response->assertJsonFragment([
-            'data' => [
-                [
-                    'id' => $appointment->id,
-                    'user_id' => $user->id,
-                    'clinic_id' => $clinic->id,
-                    'is_repeating' => false,
-                    'service_user_uuid' => null,
-                    'start_at' => $startAt->format(Carbon::ISO8601),
-                    'booked_at' => null,
-                    'did_not_attend' => null,
-                ]
-            ]
+            'id' => $appointment->id,
+            'user_id' => $user->id,
+            'clinic_id' => $clinic->id,
+            'is_repeating' => false,
+            'service_user_uuid' => null,
+            'start_at' => $startAt->format(Carbon::ISO8601),
+            'booked_at' => null,
+            'did_not_attend' => null,
         ]);
     }
 
@@ -611,18 +607,14 @@ class AppointmentsTest extends TestCase
 
         $response->assertStatus(Response::HTTP_OK);
         $response->assertJsonFragment([
-            'data' => [
-                [
-                    'id' => $appointment->id,
-                    'user_id' => $ownerUser->id,
-                    'clinic_id' => $clinic->id,
-                    'is_repeating' => false,
-                    'service_user_uuid' => null,
-                    'start_at' => $startAt->format(Carbon::ISO8601),
-                    'booked_at' => null,
-                    'did_not_attend' => null,
-                ]
-            ]
+            'id' => $appointment->id,
+            'user_id' => $ownerUser->id,
+            'clinic_id' => $clinic->id,
+            'is_repeating' => false,
+            'service_user_uuid' => null,
+            'start_at' => $startAt->format(Carbon::ISO8601),
+            'booked_at' => null,
+            'did_not_attend' => null,
         ]);
     }
 
@@ -665,28 +657,24 @@ class AppointmentsTest extends TestCase
 
         $response->assertStatus(Response::HTTP_OK);
         $response->assertJsonFragment([
-            'data' => [
-                [
-                    'id' => $appointment->id,
-                    'user_id' => $user->id,
-                    'clinic_id' => $clinic->id,
-                    'is_repeating' => false,
-                    'service_user_uuid' => null,
-                    'start_at' => $startAt->format(Carbon::ISO8601),
-                    'booked_at' => null,
-                    'did_not_attend' => null,
-                ],
-                [
-                    'id' => $bookedAppointment->id,
-                    'user_id' => $user->id,
-                    'clinic_id' => $clinic->id,
-                    'is_repeating' => false,
-                    'service_user_uuid' => $serviceUser->uuid,
-                    'start_at' => $startAt->format(Carbon::ISO8601),
-                    'booked_at' => $bookedAt->format(Carbon::ISO8601),
-                    'did_not_attend' => null,
-                ],
-            ]
+            'id' => $appointment->id,
+            'user_id' => $user->id,
+            'clinic_id' => $clinic->id,
+            'is_repeating' => false,
+            'service_user_uuid' => null,
+            'start_at' => $startAt->format(Carbon::ISO8601),
+            'booked_at' => null,
+            'did_not_attend' => null,
+        ]);
+        $response->assertJsonFragment([
+            'id' => $bookedAppointment->id,
+            'user_id' => $user->id,
+            'clinic_id' => $clinic->id,
+            'is_repeating' => false,
+            'service_user_uuid' => $serviceUser->uuid,
+            'start_at' => $startAt->format(Carbon::ISO8601),
+            'booked_at' => $bookedAt->format(Carbon::ISO8601),
+            'did_not_attend' => null,
         ]);
     }
 
@@ -714,18 +702,14 @@ class AppointmentsTest extends TestCase
 
         $response->assertStatus(Response::HTTP_OK);
         $response->assertJsonFragment([
-            'data' => [
-                [
-                    'id' => $appointment->id,
-                    'user_id' => $user->id,
-                    'clinic_id' => $clinic->id,
-                    'is_repeating' => false,
-                    'service_user_uuid' => null,
-                    'start_at' => $startAt->format(Carbon::ISO8601),
-                    'booked_at' => null,
-                    'did_not_attend' => null,
-                ]
-            ]
+            'id' => $appointment->id,
+            'user_id' => $user->id,
+            'clinic_id' => $clinic->id,
+            'is_repeating' => false,
+            'service_user_uuid' => null,
+            'start_at' => $startAt->format(Carbon::ISO8601),
+            'booked_at' => null,
+            'did_not_attend' => null,
         ]);
     }
 
@@ -903,18 +887,14 @@ class AppointmentsTest extends TestCase
 
         $response->assertStatus(Response::HTTP_OK);
         $response->assertJsonFragment([
-            'data' => [
-                [
-                    'id' => $appointment->id,
-                    'user_id' => $user->id,
-                    'clinic_id' => $clinic->id,
-                    'is_repeating' => false,
-                    'service_user_uuid' => $serviceUser->uuid,
-                    'start_at' => $startAt->format(Carbon::ISO8601),
-                    'booked_at' => $bookedAt->format(Carbon::ISO8601),
-                    'did_not_attend' => null,
-                ]
-            ]
+            'id' => $appointment->id,
+            'user_id' => $user->id,
+            'clinic_id' => $clinic->id,
+            'is_repeating' => false,
+            'service_user_uuid' => $serviceUser->uuid,
+            'start_at' => $startAt->format(Carbon::ISO8601),
+            'booked_at' => $bookedAt->format(Carbon::ISO8601),
+            'did_not_attend' => null,
         ]);
     }
 
