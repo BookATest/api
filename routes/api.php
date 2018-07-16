@@ -16,7 +16,9 @@ use Illuminate\Support\Facades\Route;
 Route::prefix('v1')->group(function () {
     Route::get('/', 'ApiController@v1');
 
+    // Appointment routes.
     Route::apiResource('/appointments', 'V1\\AppointmentController');
     Route::delete('/appointments/{appointment}/schedule', 'V1\\Appointment\\ScheduleController@destroy')->name('appointments.schedule.destroy');
     Route::put('/appointments/{appointment}/cancel', 'V1\\Appointment\\CancelController@update')->name('appointments.cancel.update');
+    Route::apiResource('/users.appointments', 'V1\\User\\AppointmentController')->only('index');
 });

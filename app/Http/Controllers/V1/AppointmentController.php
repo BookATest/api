@@ -6,7 +6,6 @@ use App\Http\Requests\UpdateAppointmentRequest;
 use App\Http\Resources\AppointmentResource;
 use App\Http\Responses\ResourceDeletedResponse;
 use App\Models\Appointment;
-use App\Models\Role;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Response;
