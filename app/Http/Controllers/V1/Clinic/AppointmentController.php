@@ -11,6 +11,7 @@ use App\Models\Clinic;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 
 class AppointmentController extends Controller
@@ -52,9 +53,9 @@ class AppointmentController extends Controller
      */
     public function store(StoreAppointmentRequest $request, Clinic $clinic)
     {
-        return DB::transaction(function () use ($request, $clinic) {
-            $startAt = Carbon::createFromFormat(Carbon::ISO8601, $request->start_at)->second(0);
+        $startAt = Carbon::createFromFormat(Carbon::ISO8601, $request->start_at)->second(0);
 
+        return DB::transaction(function () use ($request, $clinic, $startAt) {
             // For repeating appointments.
             if ($request->is_repeating) {
                 $appointmentSchedule = AppointmentSchedule::create([

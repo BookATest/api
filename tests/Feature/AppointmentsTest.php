@@ -840,4 +840,43 @@ class AppointmentsTest extends TestCase
             ]);
         }
     }
+
+    public function test_cw_cannot_create_overlapping_appointment()
+    {
+        $clinic = factory(Clinic::class)->create();
+        $user = factory(User::class)->create();
+        $user->makeCommunityWorker($clinic);
+        $startAt = today()->addDay()->setTime(10, 30);
+        Appointment::create([
+            'user_id' => $user->id,
+            'clinic_id' => $clinic->id,
+            'start_at' => $startAt,
+        ]);
+
+        Passport::actingAs($user);
+
+        $response = $this->json('POST', "/v1/clinics/{$clinic->id}/appointments", [
+            'start_at' => $startAt->format(Carbon::ISO8601),
+            'is_repeating' => false,
+        ]);
+
+        $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
+    }
+
+    public function test_cw_cannot_create_appointment_outside_of_slot()
+    {
+        $clinic = factory(Clinic::class)->create(['appointment_duration' => 60]);
+        $user = factory(User::class)->create();
+        $user->makeCommunityWorker($clinic);
+        $startAt = today()->addDay()->setTime(10, 30);
+
+        Passport::actingAs($user);
+
+        $response = $this->json('POST', "/v1/clinics/{$clinic->id}/appointments", [
+            'start_at' => $startAt->format(Carbon::ISO8601),
+            'is_repeating' => false,
+        ]);
+
+        $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
+    }
 }

@@ -27,19 +27,22 @@ class CancelController extends Controller
             : $appointment->serviceUser->validateToken($serviceUserToken);
 
         // Don't allow the SU to cancel this appointment if it's not theirs.
-        if (!$userLoggedIn && !$appointmentBookedByServiceUser) {
-            abort(Response::HTTP_FORBIDDEN);
-        }
+        abort_if(
+            !$userLoggedIn && !$appointmentBookedByServiceUser,
+            Response::HTTP_FORBIDDEN
+        );
 
         // Don't allow the CW to cancel this appointment if it's at a different clinic.
-        if ($userLoggedIn && !$request->user()->isCommunityWorker($appointment->clinic)) {
-            abort(Response::HTTP_FORBIDDEN);
-        }
+        abort_if(
+            $userLoggedIn && !$request->user()->isCommunityWorker($appointment->clinic),
+            Response::HTTP_FORBIDDEN
+        );
 
         // Don't allow an appointment in the past to be cancelled.
-        if ($appointment->start_at->lessThan(now())) {
-            abort(Response::HTTP_CONFLICT, 'Cannot cancel appointments in the past');
-        }
+        abort_if(
+            $appointment->start_at->lessThan(now()),
+            Response::HTTP_CONFLICT, 'Cannot cancel appointments in the past'
+        );
 
         return DB::transaction(function () use ($appointment) {
             $appointment->service_user_uuid = null;

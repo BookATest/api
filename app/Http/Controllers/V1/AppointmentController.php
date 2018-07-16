@@ -84,14 +84,17 @@ class AppointmentController extends Controller
     public function destroy(Request $request, Appointment $appointment)
     {
         // Only allow community workers at the same clinic delete the appointment.
-        if (!$request->user()->isCommunityWorker($appointment->clinic)) {
-            abort(Response::HTTP_FORBIDDEN);
-        }
+        abort_if(
+            !$request->user()->isCommunityWorker($appointment->clinic),
+            Response::HTTP_FORBIDDEN
+        );
 
         // Don't allow booked appointments to be cancelled.
-        if ($appointment->isbooked()) {
-            abort(Response::HTTP_CONFLICT, 'The appointment must first be cancelled');
-        }
+        abort_if(
+            $appointment->isbooked(),
+            Response::HTTP_CONFLICT,
+            'The appointment must first be cancelled'
+        );
 
         return DB::transaction(function () use ($appointment) {
             $appointment->delete();

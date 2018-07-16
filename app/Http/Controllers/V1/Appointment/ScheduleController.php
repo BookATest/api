@@ -30,9 +30,10 @@ class ScheduleController extends Controller
     public function destroy(Request $request, Appointment $appointment)
     {
         // Only allow community workers to delete their own appointment schedule.
-        if ($request->user()->id !== $appointment->user_id) {
-            abort(Response::HTTP_FORBIDDEN);
-        }
+        abort_if(
+            $request->user()->id !== $appointment->user_id,
+            Response::HTTP_FORBIDDEN
+        );
 
         return DB::transaction(function () use ($appointment) {
             // Soft delete the schedule.
