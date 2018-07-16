@@ -51,11 +51,14 @@ class AppointmentController extends Controller
     /**
      * Display the specified resource.
      *
+     * @param \Illuminate\Http\Request $request
      * @param  \App\Models\Appointment $appointment
      * @return \App\Http\Resources\AppointmentResource
      */
-    public function show(Appointment $appointment)
+    public function show(Request $request, Appointment $appointment)
     {
+        event(EndpointHit::onRead($request, "Viewed appointment [$appointment->id]"));
+
         return new AppointmentResource($appointment);
     }
 
@@ -68,6 +71,8 @@ class AppointmentController extends Controller
      */
     public function update(UpdateAppointmentRequest $request, Appointment $appointment)
     {
+        event(EndpointHit::onUpdate($request, "Updated appointment [$appointment->id]"));
+
         $appointment = DB::transaction(function () use ($request, $appointment) {
             $appointment->did_not_attend = $request->input('did_not_attend');
             $appointment->save();
@@ -99,6 +104,8 @@ class AppointmentController extends Controller
             Response::HTTP_CONFLICT,
             'The appointment must first be cancelled'
         );
+
+        event(EndpointHit::onDelete($request, "Deleted appointment [$appointment->id]"));
 
         return DB::transaction(function () use ($appointment) {
             $appointment->delete();
