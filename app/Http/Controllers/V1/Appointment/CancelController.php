@@ -41,7 +41,8 @@ class CancelController extends Controller
         // Don't allow an appointment in the past to be cancelled.
         abort_if(
             $appointment->start_at->lessThan(now()),
-            Response::HTTP_CONFLICT, 'Cannot cancel appointments in the past'
+            Response::HTTP_CONFLICT,
+            'Cannot cancel appointments in the past'
         );
 
         return DB::transaction(function () use ($appointment) {

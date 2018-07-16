@@ -49,7 +49,7 @@ class AppointmentDoesntOverlap implements Rule
     public function passes($attribute, $value)
     {
         return Appointment::query()
-            ->where('user_id',$this->user->id)
+            ->where('user_id', $this->user->id)
             ->where('clinic_id', $this->clinic->id)
             ->where('start_at', $this->startAt)
             ->doesntExist();

@@ -11,7 +11,6 @@ use App\Models\Clinic;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 
 class AppointmentController extends Controller
