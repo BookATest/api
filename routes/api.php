@@ -22,4 +22,5 @@ Route::prefix('v1')->group(function () {
     Route::put('/appointments/{appointment}/cancel', 'V1\\Appointment\\CancelController@update')->name('appointments.cancel.update');
     Route::apiResource('/users.appointments', 'V1\\User\\AppointmentController')->only('index');
     Route::apiResource('/clinics.appointments', 'V1\\Clinic\\AppointmentController')->only('index', 'store');
+    Route::apiResource('/service-users.appointments', 'V1\\ServiceUser\\AppointmentController')->only('index', 'store');
 });

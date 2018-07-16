@@ -879,4 +879,51 @@ class AppointmentsTest extends TestCase
 
         $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
     }
+
+    public function test_cw_can_view_all_appointments_for_a_su()
+    {
+        $clinic = factory(Clinic::class)->create();
+        $user = factory(User::class)->create();
+        $user->makeCommunityWorker($clinic);
+        $startAt = today()->addDay()->setTime(10, 30);
+        $bookedAt = $startAt->copy()->addHour();
+        $appointment = Appointment::create([
+            'user_id' => $user->id,
+            'clinic_id' => $clinic->id,
+            'start_at' => $startAt,
+        ]);
+        $serviceUser = factory(ServiceUser::class)->create();
+        $appointment->service_user_uuid = $serviceUser->uuid;
+        $appointment->booked_at = $bookedAt;
+        $appointment->save();
+
+        Passport::actingAs($user);
+
+        $response = $this->json('GET', "/v1/service-users/{$serviceUser->uuid}/appointments");
+
+        $response->assertStatus(Response::HTTP_OK);
+        $response->assertJsonFragment([
+            'data' => [
+                [
+                    'id' => $appointment->id,
+                    'user_id' => $user->id,
+                    'clinic_id' => $clinic->id,
+                    'is_repeating' => false,
+                    'service_user_uuid' => $serviceUser->uuid,
+                    'start_at' => $startAt->format(Carbon::ISO8601),
+                    'booked_at' => $bookedAt->format(Carbon::ISO8601),
+                    'did_not_attend' => null,
+                ]
+            ]
+        ]);
+    }
+
+    public function test_guest_cannot_view_all_appointments_for_a_su()
+    {
+        $serviceUser = factory(ServiceUser::class)->create();
+
+        $response = $this->json('GET', "/v1/service-users/{$serviceUser->uuid}/appointments");
+
+        $response->assertStatus(Response::HTTP_UNAUTHORIZED);
+    }
 }
