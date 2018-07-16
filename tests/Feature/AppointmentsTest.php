@@ -785,4 +785,59 @@ class AppointmentsTest extends TestCase
 
         $response->assertStatus(Response::HTTP_UNAUTHORIZED);
     }
+
+    public function test_cw_can_create_repeating_appointment()
+    {
+        $clinic = factory(Clinic::class)->create();
+        $user = factory(User::class)->create();
+        $user->makeCommunityWorker($clinic);
+        $startAt = today()->addDay()->setTime(10, 30);
+
+        Passport::actingAs($user);
+
+        $response = $this->json('POST', "/v1/clinics/{$clinic->id}/appointments", [
+            'start_at' => $startAt->format(Carbon::ISO8601),
+            'is_repeating' => true,
+        ]);
+
+        $response->assertStatus(Response::HTTP_CREATED);
+        $response->assertJsonFragment([
+            'user_id' => $user->id,
+            'clinic_id' => $clinic->id,
+            'is_repeating' => true,
+            'service_user_uuid' => null,
+            'start_at' => $startAt->format(Carbon::ISO8601),
+            'booked_at' => null,
+            'did_not_attend' => null,
+        ]);
+        $this->assertDatabaseHas('appointment_schedules', [
+            'user_id' => $user->id,
+            'clinic_id' => $clinic->id,
+            'weekly_on' => $startAt->dayOfWeek,
+            'weekly_at' => $startAt->toTimeString(),
+        ]);
+        foreach (range(0, 90) as $day) {
+            // Get the date of the looped day in the future.
+            $dateTime = $startAt->copy()
+                ->addDays($day)
+                ->setTime($startAt->hour, $startAt->minute);
+
+            // Make sure no record was created if it does not fall on the repeat day of week.
+            if ($dateTime->dayOfWeek !== $startAt->dayOfWeek) {
+                $this->assertDatabaseMissing('appointments', [
+                    'user_id' => $user->id,
+                    'clinic_id' => $clinic->id,
+                    'start_at' => $startAt->copy()->addDays($day)->toDateTimeString(),
+                ]);
+
+                continue;
+            }
+
+            $this->assertDatabaseHas('appointments', [
+                'user_id' => $user->id,
+                'clinic_id' => $clinic->id,
+                'start_at' => $startAt->copy()->addDays($day)->toDateTimeString(),
+            ]);
+        }
+    }
 }

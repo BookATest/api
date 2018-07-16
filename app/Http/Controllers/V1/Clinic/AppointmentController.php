@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Clinic\StoreAppointmentRequest;
 use App\Http\Resources\AppointmentResource;
 use App\Models\Appointment;
+use App\Models\AppointmentSchedule;
 use App\Models\Clinic;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
@@ -52,15 +53,27 @@ class AppointmentController extends Controller
     public function store(StoreAppointmentRequest $request, Clinic $clinic)
     {
         return DB::transaction(function () use ($request, $clinic) {
+            $startAt = Carbon::createFromFormat(Carbon::ISO8601, $request->start_at)->second(0);
+
+            // For repeating appointments.
             if ($request->is_repeating) {
-                // TODO: Create appointment schedule if repeating.
+                $appointmentSchedule = AppointmentSchedule::create([
+                    'user_id' => $request->user()->id,
+                    'clinic_id' => $clinic->id,
+                    'weekly_on' => $startAt->dayOfWeek,
+                    'weekly_at' => $startAt->toTimeString(),
+                ]);
+
+                $appointments = $appointmentSchedule->createAppointments(0);
+
+                return new AppointmentResource($appointments->first());
             }
 
-            // TODO: Set appointment schedule ID if repeating.
+            // For single appointments.
             $appointment = Appointment::create([
                 'user_id' => $request->user()->id,
                 'clinic_id' => $clinic->id,
-                'start_at' => Carbon::createFromFormat(Carbon::ISO8601, $request->start_at),
+                'start_at' => $startAt,
             ]);
 
             return new AppointmentResource($appointment);
