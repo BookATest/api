@@ -46,12 +46,6 @@ CreateAppointment:
       format: "date-time"
     is_repeating:
       type: "boolean"
-    repeat_weekly_on:
-      type: "string"
-      enum: ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"]
-    repeat_weekly_at:
-      type: "string"
-      format: "time"
 
 EditAppointment:
   type: "object"

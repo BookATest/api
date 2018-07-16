@@ -7,6 +7,7 @@ use App\Models\AppointmentSchedule;
 use App\Models\Clinic;
 use App\Models\ServiceUser;
 use App\Models\User;
+use Illuminate\Http\Response;
 use Laravel\Passport\Passport;
 use Tests\TestCase;
 
@@ -287,8 +288,8 @@ class AppointmentsTest extends TestCase
         $schedule = AppointmentSchedule::create([
             'user_id' => $user->id,
             'clinic_id' => $clinic->id,
-            'weekly_on' => AppointmentSchedule::MONDAY,
-            'weekly_at' => today()->setTime(10, 00)->toTimeString(),
+            'weekly_on' => $startAt->dayOfWeek,
+            'weekly_at' => $startAt->toTimeString(),
         ]);
         $appointment = Appointment::create([
             'user_id' => $user->id,
@@ -311,8 +312,8 @@ class AppointmentsTest extends TestCase
         $schedule = AppointmentSchedule::create([
             'user_id' => $ownerUser->id,
             'clinic_id' => $clinic->id,
-            'weekly_on' => AppointmentSchedule::MONDAY,
-            'weekly_at' => today()->setTime(10, 00)->toTimeString(),
+            'weekly_on' => $startAt->dayOfWeek,
+            'weekly_at' => $startAt->toTimeString(),
         ]);
         $appointment = Appointment::create([
             'user_id' => $ownerUser->id,
@@ -339,8 +340,8 @@ class AppointmentsTest extends TestCase
         $schedule = AppointmentSchedule::create([
             'user_id' => $user->id,
             'clinic_id' => $clinic->id,
-            'weekly_on' => AppointmentSchedule::MONDAY,
-            'weekly_at' => today()->setTime(10, 00)->toTimeString(),
+            'weekly_on' => $startAt->dayOfWeek,
+            'weekly_at' => $startAt->toTimeString(),
         ]);
         $appointment = Appointment::create([
             'user_id' => $user->id,
@@ -362,6 +363,86 @@ class AppointmentsTest extends TestCase
 
     public function test_cw_can_only_delete_unbooked_appointments_when_deleting_an_appointment_schedule()
     {
-        // TODO
+        $clinic = factory(Clinic::class)->create();
+        $user = factory(User::class)->create();
+        $user->makeCommunityWorker($clinic);
+        $startAt = today()->setTime(10, 30);
+        $schedule = AppointmentSchedule::create([
+            'user_id' => $user->id,
+            'clinic_id' => $clinic->id,
+            'weekly_on' => $startAt->dayOfWeek,
+            'weekly_at' => $startAt->toTimeString(),
+        ]);
+        $appointments = collect(range(0, 9))
+            ->map(function (int $index) use ($user, $clinic, $schedule, $startAt) {
+                return Appointment::create([
+                    'user_id' => $user->id,
+                    'clinic_id' => $clinic->id,
+                    'appointment_schedule_id' => $schedule->id,
+                    'start_at' => $startAt->addWeeks($index),
+                ]);
+            });
+        $serviceUser = factory(ServiceUser::class)->create();
+        $appointments[5]->service_user_uuid = $serviceUser->uuid;
+        $appointments[5]->save();
+        $scheduleId = $schedule->id;
+        $appointmentIds = $appointments->map(function (Appointment $appointment) {
+            return $appointment->id;
+        });
+
+        Passport::actingAs($user);
+
+        $response = $this->json('DELETE', "/v1/appointments/{$appointments->first()->id}/schedule");
+
+        $response->assertStatus(Response::HTTP_OK);
+        $this->assertDatabaseMissing('appointment_schedules', ['id' => $scheduleId, 'deleted_at' => null]);
+        foreach ($appointmentIds as $index => $appointmentId) {
+            if ($index === 5) {
+                $this->assertDatabaseHas('appointments', ['id' => $appointmentId]);
+            } else {
+                $this->assertDatabaseMissing('appointments', ['id' => $appointmentId]);
+            }
+        }
+    }
+
+    public function test_appointment_schedule_only_deletes_current_and_future_appointments()
+    {
+        $clinic = factory(Clinic::class)->create();
+        $user = factory(User::class)->create();
+        $user->makeCommunityWorker($clinic);
+        $startAt = today()->setTime(10, 30);
+        $schedule = AppointmentSchedule::create([
+            'user_id' => $user->id,
+            'clinic_id' => $clinic->id,
+            'weekly_on' => $startAt->dayOfWeek,
+            'weekly_at' => $startAt->toTimeString(),
+        ]);
+        $appointments = collect(range(0, 9))
+            ->map(function (int $index) use ($user, $clinic, $schedule, $startAt) {
+                return Appointment::create([
+                    'user_id' => $user->id,
+                    'clinic_id' => $clinic->id,
+                    'appointment_schedule_id' => $schedule->id,
+                    'start_at' => $startAt->addWeeks($index),
+                ]);
+            });
+        $scheduleId = $schedule->id;
+        $appointmentIds = $appointments->map(function (Appointment $appointment) {
+            return $appointment->id;
+        });
+
+        Passport::actingAs($user);
+
+        $response = $this->json('DELETE', "/v1/appointments/{$appointments[5]->id}/schedule");
+
+        $response->assertStatus(Response::HTTP_OK);
+        $this->assertDatabaseMissing('appointment_schedules', ['id' => $scheduleId, 'deleted_at' => null]);
+        foreach ($appointmentIds as $index => $appointmentId) {
+            if ($index >= 5) {
+                $this->assertDatabaseMissing('appointments', ['id' => $appointmentId]);
+            } else {
+                $this->assertDatabaseHas('appointments', ['id' => $appointmentId]);
+            }
+        }
     }
 }
