@@ -57,4 +57,30 @@ class ReportSchedulesTest extends TestCase
             'repeat_type' => $reportSchedule->repeat_type,
         ]);
     }
+
+    public function test_guest_cannot_create_a_report_schedule_for_a_user()
+    {
+        $user = factory(User::class)->create();
+
+        $response = $this->json('POST', "/v1/users/{$user->id}/report-schedules");
+
+        $response->assertStatus(Response::HTTP_UNAUTHORIZED);
+    }
+
+    public function test_user_cannot_create_a_report_schedule_for_another_user()
+    {
+        $user = factory(User::class)->create();
+        $differentUser = factory(User::class)->create();
+
+        Passport::actingAs($differentUser);
+
+        $response = $this->json('POST', "/v1/users/{$user->id}/report-schedules");
+
+        $response->assertStatus(Response::HTTP_FORBIDDEN);
+    }
+
+    public function test_user_can_create_a_report_schedule_for_themself()
+    {
+        $this->markTestIncomplete('Need to implement report logic');
+    }
 }

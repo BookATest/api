@@ -4,9 +4,9 @@ namespace App\Http\Controllers\V1\User;
 
 use App\Events\EndpointHit;
 use App\Http\Requests\User\ReportSchedule\IndexRequest;
+use App\Http\Requests\User\ReportSchedule\StoreRequest;
 use App\Http\Resources\ReportScheduleResource;
 use App\Models\User;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 class ReportScheduleController extends Controller
@@ -38,12 +38,12 @@ class ReportScheduleController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Http\Requests\User\ReportSchedule\StoreRequest  $request
      * @param  \App\Models\User  $user
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function store(Request $request, User $user)
+    public function store(StoreRequest $request, User $user)
     {
-        //
+        event(EndpointHit::onCreate($request, "Created report schedules for user [$user->id]"));
     }
 }
