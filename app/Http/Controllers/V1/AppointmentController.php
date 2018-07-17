@@ -3,6 +3,9 @@
 namespace App\Http\Controllers\V1;
 
 use App\Events\EndpointHit;
+use App\Http\Requests\Appointment\DestroyRequest;
+use App\Http\Requests\Appointment\IndexRequest;
+use App\Http\Requests\Appointment\ShowRequest;
 use App\Http\Requests\Appointment\UpdateRequest;
 use App\Http\Resources\AppointmentResource;
 use App\Http\Responses\ResourceDeletedResponse;
@@ -25,10 +28,10 @@ class AppointmentController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param \App\Http\Requests\Appointment\IndexRequest $request
      * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
-    public function index(Request $request)
+    public function index(IndexRequest $request)
     {
         event(EndpointHit::onRead($request, 'Viewed all appointments'));
 
@@ -51,11 +54,11 @@ class AppointmentController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param \App\Http\Requests\Appointment\ShowRequest $request
      * @param  \App\Models\Appointment $appointment
      * @return \App\Http\Resources\AppointmentResource
      */
-    public function show(Request $request, Appointment $appointment)
+    public function show(ShowRequest $request, Appointment $appointment)
     {
         event(EndpointHit::onRead($request, "Viewed appointment [$appointment->id]"));
 
@@ -86,25 +89,12 @@ class AppointmentController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param \App\Http\Requests\Appointment\DestroyRequest $request
      * @param  \App\Models\Appointment $appointment
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request, Appointment $appointment)
+    public function destroy(DestroyRequest $request, Appointment $appointment)
     {
-        // Only allow community workers at the same clinic delete the appointment.
-        abort_if(
-            !$request->user()->isCommunityWorker($appointment->clinic),
-            Response::HTTP_FORBIDDEN
-        );
-
-        // Don't allow booked appointments to be cancelled.
-        abort_if(
-            $appointment->isbooked(),
-            Response::HTTP_CONFLICT,
-            'The appointment must first be cancelled'
-        );
-
         event(EndpointHit::onDelete($request, "Deleted appointment [$appointment->id]"));
 
         return DB::transaction(function () use ($appointment) {

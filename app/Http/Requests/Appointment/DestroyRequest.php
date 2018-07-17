@@ -4,7 +4,7 @@ namespace App\Http\Requests\Appointment;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateRequest extends FormRequest
+class DestroyRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -15,8 +15,13 @@ class UpdateRequest extends FormRequest
     {
         $appointment = $this->route('appointment');
 
-        // Only allow a user to update their own appointments.
-        if ($appointment->user_id !== $this->user()->id) {
+        // Only allow community workers at the same clinic delete the appointment.
+        if (!$this->user()->isCommunityWorker($appointment->clinic)) {
+            return false;
+        }
+
+        // Don't allow booked appointments to be cancelled.
+        if ($appointment->isbooked()) {
             return false;
         }
 
@@ -31,7 +36,7 @@ class UpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'did_not_attend' => ['required', 'boolean'],
+            //
         ];
     }
 }

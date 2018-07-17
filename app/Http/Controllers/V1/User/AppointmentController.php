@@ -4,9 +4,9 @@ namespace App\Http\Controllers\V1\User;
 
 use App\Events\EndpointHit;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\User\Appointment\IndexRequest;
 use App\Http\Resources\AppointmentResource;
 use App\Models\User;
-use Illuminate\Http\Request;
 
 class AppointmentController extends Controller
 {
@@ -21,11 +21,11 @@ class AppointmentController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param \App\Http\Requests\User\Appointment\IndexRequest $request
      * @param \App\Models\User $user
      * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
-    public function index(Request $request, User $user)
+    public function index(IndexRequest $request, User $user)
     {
         event(EndpointHit::onRead($request, "Viewed all appointments for user [$user->id]"));
 

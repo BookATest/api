@@ -274,7 +274,7 @@ class AppointmentsTest extends TestCase
 
         $response = $this->json('DELETE', "/v1/appointments/{$appointment->id}");
 
-        $response->assertStatus(409);
+        $response->assertStatus(Response::HTTP_FORBIDDEN);
     }
 
     public function test_guest_cannot_delete_appointment_schedule()
@@ -583,7 +583,7 @@ class AppointmentsTest extends TestCase
 
         $response = $this->json('PUT', "/v1/appointments/{$appointment->id}/cancel");
 
-        $response->assertStatus(Response::HTTP_CONFLICT);
+        $response->assertStatus(Response::HTTP_FORBIDDEN);
         $this->assertDatabaseHas('appointments', ['id' => $appointment->id, 'service_user_uuid' => $serviceUser->uuid]);
     }
 

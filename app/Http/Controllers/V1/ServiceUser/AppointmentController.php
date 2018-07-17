@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\V1\ServiceUser;
 
 use App\Events\EndpointHit;
+use App\Http\Requests\ServiceUser\Appointment\IndexRequest;
 use App\Http\Resources\AppointmentResource;
 use App\Models\ServiceUser;
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 
 class AppointmentController extends Controller
 {
@@ -21,11 +21,11 @@ class AppointmentController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param \App\Http\Requests\ServiceUser\Appointment\IndexRequest $request
      * @param  \App\Models\ServiceUser $serviceUser
      * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
-    public function index(Request $request, ServiceUser $serviceUser)
+    public function index(IndexRequest $request, ServiceUser $serviceUser)
     {
         event(EndpointHit::onRead($request, "Viewed all appointments for service user [$serviceUser->uuid]"));
 

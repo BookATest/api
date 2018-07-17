@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\V1;
 
 use App\Events\EndpointHit;
+use App\Http\Requests\Audit\IndexRequest;
 use App\Http\Resources\AuditResource;
 use App\Models\Audit;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Response;
 
@@ -22,14 +22,11 @@ class AuditController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param \App\Http\Requests\Audit\IndexRequest $request
      * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
-    public function index(Request $request)
+    public function index(IndexRequest $request)
     {
-        // Do not allow users who are not organisation admins to view the audits.
-        abort_if(!$request->user()->isOrganisationAdmin(), Response::HTTP_FORBIDDEN);
-
         event(EndpointHit::onRead($request, 'Viewed all audits'));
 
         $audits = Audit::orderByDesc('created_at')->paginate();

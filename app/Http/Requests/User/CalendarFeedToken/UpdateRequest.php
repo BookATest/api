@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\Appointment;
+namespace App\Http\Requests\User\CalendarFeedToken;
 
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -13,10 +13,10 @@ class UpdateRequest extends FormRequest
      */
     public function authorize()
     {
-        $appointment = $this->route('appointment');
+        $user = $this->route('user');
 
-        // Only allow a user to update their own appointments.
-        if ($appointment->user_id !== $this->user()->id) {
+        // Only allow a user to refresh their own calendar feed token.
+        if ($this->user()->id !== $user->id) {
             return false;
         }
 
@@ -31,7 +31,7 @@ class UpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'did_not_attend' => ['required', 'boolean'],
+            //
         ];
     }
 }

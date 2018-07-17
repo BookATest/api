@@ -13,6 +13,7 @@ class StoreRequest extends FormRequest
      */
     public function authorize()
     {
+        // Only allow organisations to create clinics.
         if (!$this->user()->isOrganisationAdmin()) {
             return false;
         }

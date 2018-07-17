@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Appointment;
+namespace App\Http\Requests\Audit;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateRequest extends FormRequest
+class IndexRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -13,10 +13,8 @@ class UpdateRequest extends FormRequest
      */
     public function authorize()
     {
-        $appointment = $this->route('appointment');
-
-        // Only allow a user to update their own appointments.
-        if ($appointment->user_id !== $this->user()->id) {
+        // Do not allow users who are not organisation admins to view the audits.
+        if (!$this->user()->isOrganisationAdmin()) {
             return false;
         }
 
@@ -31,7 +29,7 @@ class UpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'did_not_attend' => ['required', 'boolean'],
+            //
         ];
     }
 }

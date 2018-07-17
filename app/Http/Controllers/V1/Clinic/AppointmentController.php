@@ -4,6 +4,7 @@ namespace App\Http\Controllers\V1\Clinic;
 
 use App\Events\EndpointHit;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Clinic\Appointment\IndexRequest;
 use App\Http\Requests\Clinic\Appointment\StoreRequest;
 use App\Http\Resources\AppointmentResource;
 use App\Models\Appointment;
@@ -11,7 +12,6 @@ use App\Models\AppointmentSchedule;
 use App\Models\Clinic;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class AppointmentController extends Controller
@@ -27,11 +27,11 @@ class AppointmentController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param \App\Http\Requests\Clinic\Appointment\IndexRequest $request
      * @param \App\Models\Clinic $clinic
      * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
-    public function index(Request $request, Clinic $clinic)
+    public function index(IndexRequest $request, Clinic $clinic)
     {
         event(EndpointHit::onRead($request, "Viewed all appointments for clinic [$clinic->id]"));
 

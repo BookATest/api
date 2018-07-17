@@ -16,7 +16,14 @@ class StoreRequest extends FormRequest
      */
     public function authorize()
     {
-        return $this->user()->isCommunityWorker($this->route('clinic'));
+        $clinic = $this->route('clinic');
+
+        // Only allow clinic workers at the same clinic to create appointments for the clinic.
+        if (!$this->user()->isCommunityWorker($clinic)) {
+            return false;
+        }
+
+        return true;
     }
 
     /**
