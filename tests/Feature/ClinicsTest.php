@@ -216,6 +216,56 @@ class ClinicsTest extends TestCase
         ]);
     }
 
+    public function test_guest_cannot_delete_a_clinic()
+    {
+        $clinic = factory(Clinic::class)->create();
+
+        $response = $this->json('DELETE', "/v1/clinics/{$clinic->id}");
+
+        $response->assertStatus(Response::HTTP_UNAUTHORIZED);
+    }
+
+    public function test_cw_cannot_delete_a_clinic()
+    {
+        $clinic = factory(Clinic::class)->create();
+        $user = factory(User::class)->create();
+        $user->makeCommunityWorker($clinic);
+
+        Passport::actingAs($user);
+
+        $response = $this->json('DELETE', "/v1/clinics/{$clinic->id}");
+
+        $response->assertStatus(Response::HTTP_FORBIDDEN);
+    }
+
+    public function test_ca_cannot_delete_a_clinic()
+    {
+        $clinic = factory(Clinic::class)->create();
+        $user = factory(User::class)->create();
+        $user->makeClinicAdmin($clinic);
+
+        Passport::actingAs($user);
+
+        $response = $this->json('DELETE', "/v1/clinics/{$clinic->id}");
+
+        $response->assertStatus(Response::HTTP_FORBIDDEN);
+    }
+
+    public function test_oa_can_delete_a_clinic()
+    {
+        $clinic = factory(Clinic::class)->create();
+        $user = factory(User::class)->create();
+        $user->makeOrganisationAdmin();
+
+        Passport::actingAs($user);
+
+        $response = $this->json('DELETE', "/v1/clinics/{$clinic->id}");
+
+        $response->assertStatus(Response::HTTP_OK);
+        $response->assertJson(['message' => 'The Clinic has been successfully deleted']);
+        $this->assertDatabaseMissing('clinics', ['id' => $clinic->id, 'deleted_at' => null]);
+    }
+
     /**
      * Helper method for test cases.
      *

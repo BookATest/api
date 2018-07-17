@@ -3,14 +3,15 @@
 namespace App\Http\Controllers\V1;
 
 use App\Events\EndpointHit;
+use App\Http\Requests\Clinic\DestroyRequest;
 use App\Http\Requests\Clinic\IndexRequest;
 use App\Http\Requests\Clinic\ShowRequest;
 use App\Http\Requests\Clinic\StoreRequest;
 use App\Http\Requests\Clinic\UpdateRequest;
 use App\Http\Resources\ClinicResource;
+use App\Http\Responses\ResourceDeletedResponse;
 use App\Models\Clinic;
 use App\Models\Setting;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 
@@ -91,7 +92,7 @@ class ClinicController extends Controller
      */
     public function update(UpdateRequest $request, Clinic $clinic)
     {
-        event(EndpointHit::onCreate($request, "Updated clinic [$clinic->id]"));
+        event(EndpointHit::onUpdate($request, "Updated clinic [$clinic->id]"));
 
         return DB::transaction(function () use ($request, $clinic) {
             $clinic->update([
@@ -115,11 +116,18 @@ class ClinicController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Clinic  $clinic
+     * @param \App\Http\Requests\Clinic\DestroyRequest $request
+     * @param  \App\Models\Clinic $clinic
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Clinic $clinic)
+    public function destroy(DestroyRequest $request, Clinic $clinic)
     {
-        //
+        event(EndpointHit::onDelete($request, "Deleted clinic [$clinic->id]"));
+
+        return DB::transaction(function () use ($clinic) {
+            $clinic->delete();
+
+            return new ResourceDeletedResponse(Clinic::class);
+        });
     }
 }

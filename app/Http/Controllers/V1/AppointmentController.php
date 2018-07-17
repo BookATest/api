@@ -12,7 +12,6 @@ use App\Http\Responses\ResourceDeletedResponse;
 use App\Models\Appointment;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 
 class AppointmentController extends Controller
