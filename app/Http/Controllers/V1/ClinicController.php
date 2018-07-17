@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\V1;
 
 use App\Events\EndpointHit;
-use App\Http\Requests\StoreClinicRequest;
+use App\Http\Requests\Clinic\StoreRequest;
 use App\Http\Resources\ClinicResource;
 use App\Models\Clinic;
 use App\Models\Setting;
@@ -34,10 +34,10 @@ class ClinicController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param \App\Http\Requests\StoreClinicRequest $request
+     * @param \App\Http\Requests\Clinic\StoreRequest $request
      * @return \Illuminate\Http\Resources\Json\JsonResource
      */
-    public function store(StoreClinicRequest $request)
+    public function store(StoreRequest $request)
     {
         event(EndpointHit::onCreate($request, 'Created clinic'));
 

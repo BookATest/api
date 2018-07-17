@@ -4,7 +4,7 @@ namespace App\Http\Controllers\V1\Clinic;
 
 use App\Events\EndpointHit;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Clinic\StoreAppointmentRequest;
+use App\Http\Requests\Clinic\Appointment\StoreRequest;
 use App\Http\Resources\AppointmentResource;
 use App\Models\Appointment;
 use App\Models\AppointmentSchedule;
@@ -49,17 +49,17 @@ class AppointmentController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param \App\Http\Requests\Clinic\StoreAppointmentRequest $request
+     * @param \App\Http\Requests\Clinic\Appointment\StoreRequest $request
      * @param \App\Models\Clinic $clinic
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreAppointmentRequest $request, Clinic $clinic)
+    public function store(StoreRequest $request, Clinic $clinic)
     {
         event(EndpointHit::onCreate($request, "Created appointment for clinic [$clinic->id]"));
 
-        $startAt = Carbon::createFromFormat(Carbon::ISO8601, $request->start_at)->second(0);
+        return DB::transaction(function () use ($request, $clinic) {
+            $startAt = Carbon::createFromFormat(Carbon::ISO8601, $request->start_at)->second(0);
 
-        return DB::transaction(function () use ($request, $clinic, $startAt) {
             // For repeating appointments.
             if ($request->is_repeating) {
                 $appointmentSchedule = AppointmentSchedule::create([

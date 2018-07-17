@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\V1;
 
 use App\Events\EndpointHit;
-use App\Http\Requests\UpdateAppointmentRequest;
+use App\Http\Requests\Appointment\UpdateRequest;
 use App\Http\Resources\AppointmentResource;
 use App\Http\Responses\ResourceDeletedResponse;
 use App\Models\Appointment;
@@ -65,11 +65,11 @@ class AppointmentController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdateAppointmentRequest $request
+     * @param  \App\Http\Requests\Appointment\UpdateRequest $request
      * @param  \App\Models\Appointment $appointment
      * @return \App\Http\Resources\AppointmentResource
      */
-    public function update(UpdateAppointmentRequest $request, Appointment $appointment)
+    public function update(UpdateRequest $request, Appointment $appointment)
     {
         event(EndpointHit::onUpdate($request, "Updated appointment [$appointment->id]"));
 

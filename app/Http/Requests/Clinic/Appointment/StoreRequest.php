@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Http\Requests\Clinic;
+namespace App\Http\Requests\Clinic\Appointment;
 
 use App\Rules\AppointmentDoesntOverlap;
 use App\Rules\AppointmentIsWithinSlot;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Carbon;
 
-class StoreAppointmentRequest extends FormRequest
+class StoreRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
