@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\V1;
 
 use App\Events\EndpointHit;
+use App\Http\Requests\Clinic\IndexRequest;
 use App\Http\Requests\Clinic\StoreRequest;
 use App\Http\Resources\ClinicResource;
 use App\Models\Clinic;
@@ -24,11 +25,16 @@ class ClinicController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @param \App\Http\Requests\Clinic\IndexRequest $request
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
-    public function index()
+    public function index(IndexRequest $request)
     {
-        //
+        event(EndpointHit::onRead($request, 'Viewed all clinics'));
+
+        $clinics = Clinic::orderByDesc('created_at')->paginate();
+
+        return ClinicResource::collection($clinics);
     }
 
     /**
