@@ -6,6 +6,7 @@ use App\Events\EndpointHit;
 use App\Http\Requests\Clinic\IndexRequest;
 use App\Http\Requests\Clinic\ShowRequest;
 use App\Http\Requests\Clinic\StoreRequest;
+use App\Http\Requests\Clinic\UpdateRequest;
 use App\Http\Resources\ClinicResource;
 use App\Models\Clinic;
 use App\Models\Setting;
@@ -76,19 +77,39 @@ class ClinicController extends Controller
      */
     public function show(ShowRequest $request, Clinic $clinic)
     {
+        event(EndpointHit::onCreate($request, "Viewed clinic [$clinic->id]"));
+
         return new ClinicResource($clinic);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Clinic  $clinic
+     * @param \App\Http\Requests\Clinic\UpdateRequest $request
+     * @param  \App\Models\Clinic $clinic
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Clinic $clinic)
+    public function update(UpdateRequest $request, Clinic $clinic)
     {
-        //
+        event(EndpointHit::onCreate($request, "Updated clinic [$clinic->id]"));
+
+        return DB::transaction(function () use ($request, $clinic) {
+            $clinic->update([
+                'name' => $request->input('name'),
+                'phone' => $request->input('phone'),
+                'email' => $request->input('email'),
+                'address_line_1' => $request->input('address_line_1'),
+                'address_line_2' => $request->input('address_line_2'),
+                'address_line_3' => $request->input('address_line_3'),
+                'city' => $request->input('city'),
+                'postcode' => $request->input('postcode'),
+                'directions' => $request->input('directions'),
+                'appointment_duration' => $request->input('appointment_duration', Setting::getValue(Setting::DEFAULT_APPOINTMENT_DURATION)),
+                'appointment_booking_threshold' => $request->input('appointment_booking_threshold', Setting::getValue(Setting::DEFAULT_APPOINTMENT_BOOKING_THRESHOLD)),
+            ]);
+
+            return new ClinicResource($clinic);
+        });
     }
 
     /**

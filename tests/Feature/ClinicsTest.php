@@ -2,7 +2,6 @@
 
 namespace Tests\Feature;
 
-use App\Models\Appointment;
 use App\Models\Clinic;
 use App\Models\Setting;
 use App\Models\User;
@@ -136,6 +135,83 @@ class ClinicsTest extends TestCase
                 'appointment_booking_threshold' => $clinic->appointment_booking_threshold,
                 'created_at' => $clinic->created_at->format(Carbon::ISO8601),
                 'updated_at' => $clinic->updated_at->format(Carbon::ISO8601),
+            ]
+        ]);
+    }
+
+    public function test_guest_cannot_update_a_clinic()
+    {
+        $clinic = factory(Clinic::class)->create();
+
+        $response = $this->json('PUT', "/v1/clinics/{$clinic->id}");
+
+        $response->assertStatus(Response::HTTP_UNAUTHORIZED);
+    }
+
+    public function test_cw_cannot_update_a_clinic()
+    {
+        $clinic = factory(Clinic::class)->create();
+        $user = factory(User::class)->create();
+        $user->makeCommunityWorker($clinic);
+
+        Passport::actingAs($user);
+
+        $response = $this->json('PUT', "/v1/clinics/{$clinic->id}");
+
+        $response->assertStatus(Response::HTTP_FORBIDDEN);
+    }
+
+    public function test_ca_cannot_update_a_different_clinic()
+    {
+        $clinic = factory(Clinic::class)->create();
+        $user = factory(User::class)->create();
+        $user->makeClinicAdmin($clinic);
+        $differentUser = factory(User::class)->create();
+        $differentUser->makeCommunityWorker($clinic);
+
+        Passport::actingAs($differentUser);
+
+        $response = $this->json('PUT', "/v1/clinics/{$clinic->id}");
+
+        $response->assertStatus(Response::HTTP_FORBIDDEN);
+    }
+
+    public function test_ca_can_edit_their_own_clinic()
+    {
+        $clinic = factory(Clinic::class)->create();
+        $user = factory(User::class)->create();
+        $user->makeClinicAdmin($clinic);
+
+        Passport::actingAs($user);
+
+        $response = $this->json('PUT', "/v1/clinics/{$clinic->id}", [
+            'name' => 'New Clinic Name',
+            'phone' => $clinic->phone,
+            'email' => $clinic->email,
+            'address_line_1' => $clinic->address_line_1,
+            'address_line_2' => $clinic->address_line_2,
+            'address_line_3' => $clinic->address_line_3,
+            'city' => $clinic->city,
+            'postcode' => $clinic->postcode,
+            'directions' => $clinic->directions,
+            'appointment_duration' => $clinic->appointment_duration,
+            'appointment_booking_threshold' => $clinic->appointment_booking_threshold,
+        ]);
+
+        $response->assertStatus(Response::HTTP_OK);
+        $response->assertJson([
+            'data' => [
+                'name' => 'New Clinic Name',
+                'phone' => $clinic->phone,
+                'email' => $clinic->email,
+                'address_line_1' => $clinic->address_line_1,
+                'address_line_2' => $clinic->address_line_2,
+                'address_line_3' => $clinic->address_line_3,
+                'city' => $clinic->city,
+                'postcode' => $clinic->postcode,
+                'directions' => $clinic->directions,
+                'appointment_duration' => $clinic->appointment_duration,
+                'appointment_booking_threshold' => $clinic->appointment_booking_threshold,
             ]
         ]);
     }
