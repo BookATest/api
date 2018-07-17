@@ -30,7 +30,7 @@ abstract class TestCase extends BaseTestCase
         Config::set('cache.prefix', 'testing');
 
         // Set the log path.
-        Config::set('log.channels.single.path', storage_path('logs/testing.log'));
+        Config::set('logging.channels.single.path', storage_path('logs/testing.log'));
 
         // Clear the cache.
         Artisan::call('cache:clear');

@@ -24,4 +24,13 @@ class ReportType extends Model
     protected $fillable = [
         'name',
     ];
+
+    /**
+     * @param string $name
+     * @return int
+     */
+    public static function getIdFor(string $name): int
+    {
+        return static::where('name', $name)->firstOrFail()->id;
+    }
 }

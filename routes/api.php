@@ -39,4 +39,9 @@ Route::prefix('v1')->group(function () {
 
     // Question Routes.
     Route::apiResource('/questions', 'V1\\QuestionController')->only('index', 'store');
+
+    // Report Routes.
+
+    // Report Schedule Routes.
+    Route::apiResource('/users.report-schedules', 'V1\\User\\ReportScheduleController')->only('index', 'store');
 });
