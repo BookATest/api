@@ -116,4 +116,32 @@ class QuestionsTest extends TestCase
             'deleted_at' => null,
         ]);
     }
+
+    public function test_guest_can_view_all_questions()
+    {
+        $question1 = Question::create([
+            'question' => 'Do you have the right to work within the UK?',
+            'type' => Question::CHECKBOX,
+        ]);
+        $question2 = Question::create([
+            'question' => 'What is your gender?',
+            'type' => Question::SELECT,
+        ]);
+        $question2->questionOptions()->create(['option' => 'Male']);
+        $question2->questionOptions()->create(['option' => 'Female']);
+        $question2->questionOptions()->create(['option' => 'Non-Binary']);
+
+        $response = $this->json('GET', '/v1/questions');
+
+        $response->assertStatus(Response::HTTP_OK);
+        $response->assertJsonFragment([
+            'question' => $question1->question,
+            'type' => $question1->type,
+        ]);
+        $response->assertJsonFragment([
+            'question' => $question2->question,
+            'type' => $question2->type,
+            'options' => ['Male', 'Female', 'Non-Binary'],
+        ]);
+    }
 }
