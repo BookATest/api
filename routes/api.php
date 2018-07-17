@@ -34,4 +34,9 @@ Route::prefix('v1')->group(function () {
 
     // Clinic Routes.
     Route::apiResource('/clinics', 'V1\\ClinicController');
+
+    // Eligible Answer Routes.
+
+    // Question Routes.
+    Route::apiResource('/questions', 'V1\\QuestionController')->only('index', 'store');
 });

@@ -28,16 +28,23 @@ QuestionCollection:
 CreateQuestion:
   type: "object"
   required:
-    - "question"
-    - "type"
+    - "questions"
   properties:
-    question:
-      type: "string"
-    type:
-      type: "string"
-      enum: ["select", "checkbox", "date", "text"]
-    options:
+    questions:
       type: "array"
       items:
-        $ref: "/docs/schemas/question-option.yaml#/QuestionOption"
-      nullable: true
+        type: "object"
+        required:
+          - "question"
+          - "type"
+        properties:
+          question:
+            type: "string"
+          type:
+            type: "string"
+            enum: ["select", "checkbox", "date", "text"]
+          options:
+            type: "array"
+            items:
+              $ref: "/docs/schemas/question-option.yaml#/QuestionOption"
+            nullable: true

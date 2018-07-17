@@ -18,9 +18,7 @@ questions:
       content:
         application/json:
           schema:
-            type: "array"
-            items:
-              $ref: "/docs/schemas/question.yaml#/CreateQuestion"
+            $ref: "/docs/schemas/question.yaml#/CreateQuestion"
     responses:
       200:
         description: "Successful response"
