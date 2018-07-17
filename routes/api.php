@@ -31,4 +31,7 @@ Route::prefix('v1')->group(function () {
 
     // Calendar Feed Routes.
     Route::put('/users/{user}/calendar-feed-token', 'V1\\User\\CalendarFeedTokenController@update')->name('users.calendar-feed-token.update');
+
+    // Clinic Routes.
+    Route::apiResource('/clinics', 'V1\\ClinicController');
 });

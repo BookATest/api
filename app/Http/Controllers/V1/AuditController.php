@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\V1;
 
+use App\Events\EndpointHit;
 use App\Http\Resources\AuditResource;
 use App\Models\Audit;
 use Illuminate\Http\Request;
@@ -28,6 +29,8 @@ class AuditController extends Controller
     {
         // Do not allow users who are not organisation admins to view the audits.
         abort_if(!$request->user()->isOrganisationAdmin(), Response::HTTP_FORBIDDEN);
+
+        event(EndpointHit::onRead($request, 'Viewed all audits'));
 
         $audits = Audit::orderByDesc('created_at')->paginate();
 

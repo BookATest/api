@@ -19,6 +19,8 @@ Clinic:
       type: "string"
     postcode:
       type: "string"
+    directions:
+      type: "string"
     appointment_duration:
       type: "integer"
     appointment_booking_threshold:

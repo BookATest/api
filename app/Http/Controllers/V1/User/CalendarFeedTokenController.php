@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\V1\User;
 
+use App\Events\EndpointHit;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -28,6 +29,8 @@ class CalendarFeedTokenController extends Controller
     public function update(Request $request, User $user)
     {
         abort_if($request->user()->id !== $user->id, Response::HTTP_FORBIDDEN);
+
+        event(EndpointHit::onUpdate($request, "Updated calendar feed token for user [$user->id]"));
 
         return DB::transaction(function () use ($user) {
             $user->generateCalendarFeedToken();
