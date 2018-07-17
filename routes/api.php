@@ -26,4 +26,9 @@ Route::prefix('v1')->group(function () {
 
     // Audit Routes.
     Route::apiResource('/audits', 'V1\\AuditController')->only('index');
+
+    // Booking Routes.
+
+    // Calendar Feed Routes.
+    Route::put('/users/{user}/calendar-feed-token', 'V1\\User\\CalendarFeedTokenController@update')->name('users.calendar-feed-token.update');
 });

@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\DB;
 class ScheduleController extends Controller
 {
     /**
-     * AppointmentController constructor.
+     * ScheduleController constructor.
      */
     public function __construct()
     {

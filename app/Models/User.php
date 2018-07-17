@@ -7,6 +7,7 @@ use App\Models\Relationships\UserRelationships;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Laravel\Passport\HasApiTokens;
+use RuntimeException;
 
 class User extends Authenticatable
 {
@@ -204,5 +205,31 @@ class User extends Authenticatable
     public function revokeOrganisationAdmin(): self
     {
         return $this->removeRoll(Role::organisationAdmin());
+    }
+
+    /**
+     * @param int $attempts
+     * @return \App\Models\User
+     */
+    public function generateCalendarFeedToken(int $attempts = 0): self
+    {
+        // Prevent infinite loop.
+        if ($attempts > 10) {
+            throw new RuntimeException('Failed generating calendar feed token');
+        }
+
+        // Generate the token.
+        $token = str_random(10);
+
+        // Use recursion if the token has already been used.
+        if (static::where('calendar_feed_token', $token)->exists()) {
+            $token = $this->generateCalendarFeedToken(++$attempts);
+        }
+
+        // Set the token on the model.
+        $this->calendar_feed_token = $token;
+        $this->save();
+
+        return $this;
     }
 }

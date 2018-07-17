@@ -11,7 +11,7 @@ use Illuminate\Http\Response;
 class AuditController extends Controller
 {
     /**
-     * AppointmentController constructor.
+     * AuditController constructor.
      */
     public function __construct()
     {
