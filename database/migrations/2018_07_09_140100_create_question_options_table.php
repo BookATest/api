@@ -14,8 +14,8 @@ class CreateQuestionOptionsTable extends Migration
     public function up()
     {
         Schema::create('question_options', function (Blueprint $table) {
-            $table->increments('id');
-            $table->foreignId('question_id', 'questions');
+            $table->uuid('id')->primary();
+            $table->foreignUuid('question_id', 'questions');
             $table->string('option');
             $table->timestamps();
         });

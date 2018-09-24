@@ -14,13 +14,11 @@ class CreateAppointmentsTable extends Migration
     public function up()
     {
         Schema::create('appointments', function (Blueprint $table) {
-            $table->increments('id');
-            $table->foreignId('user_id', 'users');
-            $table->foreignId('clinic_id', 'clinics');
-            $table->unsignedInteger('appointment_schedule_id')->nullable();
-            $table->foreign('appointment_schedule_id')->references('id')->on('appointment_schedules');
-            $table->uuid('service_user_uuid')->nullable();
-            $table->foreign('service_user_uuid')->references('uuid')->on('service_users');
+            $table->uuid('id')->primary();
+            $table->foreignUuid('user_id', 'users');
+            $table->foreignUuid('clinic_id', 'clinics');
+            $table->foreignUuid('appointment_schedule_id', 'appointment_schedules', 'id', true);
+            $table->foreignUuid('service_user_id', 'service_users', 'id', true);
             $table->boolean('did_not_attend')->nullable();
             $table->dateTime('start_at');
             $table->timestamp('booked_at')->nullable();

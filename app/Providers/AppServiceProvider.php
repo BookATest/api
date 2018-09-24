@@ -17,12 +17,22 @@ class AppServiceProvider extends ServiceProvider
         resolve(\Illuminate\View\Factory::class)->addExtension('blade.yaml', 'blade');
 
         // Add helper for migration foreign keys.
-        \Illuminate\Database\Schema\Blueprint::macro('foreignId', function (string $column, string $referencedTable, string $referencedColumn = 'id') {
-            $this->unsignedInteger($column);
+        \Illuminate\Database\Schema\Blueprint::macro('foreignId', function (
+            string $column,
+            string $referencedTable,
+            string $referencedColumn = 'id',
+            bool $nullable = false
+        ) {
+            $this->unsignedInteger($column)->nullable($nullable);
             $this->foreign($column)->references($referencedColumn)->on($referencedTable);
         });
-        \Illuminate\Database\Schema\Blueprint::macro('foreignUuid', function (string $column, string $referencedTable, string $referencedColumn = 'uuid') {
-            $this->uuid($column);
+        \Illuminate\Database\Schema\Blueprint::macro('foreignUuid', function (
+            string $column,
+            string $referencedTable,
+            string $referencedColumn = 'id',
+            bool $nullable = false
+        ) {
+            $this->uuid($column)->nullable($nullable);
             $this->foreign($column)->references($referencedColumn)->on($referencedTable);
         });
 

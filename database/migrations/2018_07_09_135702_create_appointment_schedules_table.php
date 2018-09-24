@@ -14,10 +14,10 @@ class CreateAppointmentSchedulesTable extends Migration
     public function up()
     {
         Schema::create('appointment_schedules', function (Blueprint $table) {
-            $table->increments('id');
-            $table->foreignId('user_id', 'users');
-            $table->foreignId('clinic_id', 'clinics');
-            $table->unsignedTinyInteger('weekly_on')->comment('The day of the week (1-7)');
+            $table->uuid('id')->primary();
+            $table->foreignUuid('user_id', 'users');
+            $table->foreignUuid('clinic_id', 'clinics');
+            $table->unsignedTinyInteger('weekly_on');
             $table->time('weekly_at');
             $table->timestamps();
             $table->softDeletes();

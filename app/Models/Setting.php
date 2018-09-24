@@ -4,7 +4,6 @@ namespace App\Models;
 
 use App\Models\Mutators\SettingMutators;
 use App\Models\Relationships\SettingRelationships;
-use Illuminate\Database\Eloquent\Model;
 
 class Setting extends Model
 {
@@ -25,21 +24,6 @@ class Setting extends Model
      * @var string The primary key of the table.
      */
     protected $primaryKey = 'key';
-
-    /**
-     * @var bool If the primary key is an incrementing value.
-     */
-    public $incrementing = false;
-
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
-    protected $fillable = [
-        'key',
-        'value',
-    ];
 
     /**
      * Helper method to get the setting value.
