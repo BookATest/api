@@ -12,6 +12,7 @@
         "laravel/tinker": "^1.0"
     },
     "require-dev": {
+        "codedungeon/phpunit-result-printer": "^0.20.3",
         "filp/whoops": "^2.0",
         "fzaninotto/faker": "^1.4",
         "laravel/homestead": "^7.9",
