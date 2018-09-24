@@ -28,6 +28,7 @@ class RolesTableSeeder extends BaseSeeder
         list($name) = $args;
 
         $this->records[] = [
+            'id' => uuid(),
             'name' => $name,
             'created_at' => $this->now,
             'updated_at' => $this->now,
