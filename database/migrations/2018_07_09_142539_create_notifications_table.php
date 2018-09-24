@@ -15,7 +15,7 @@ class CreateNotificationsTable extends Migration
     {
         Schema::create('notifications', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->morphs('notifiable');
+            $table->morphsUuid('notifiable');
             $table->enum('channel', ['email', 'sms']);
             $table->string('recipient');
             $table->text('message');
