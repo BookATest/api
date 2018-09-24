@@ -35,6 +35,17 @@ class AppServiceProvider extends ServiceProvider
             $this->uuid($column)->nullable($nullable);
             $this->foreign($column)->references($referencedColumn)->on($referencedTable);
         });
+        \Illuminate\Database\Schema\Blueprint::macro('morphsUuid', function (
+            string $name,
+            string $indexName = null,
+            bool $nullable = false
+        ) {
+            $this->string("{$name}_type")->nullable($nullable);
+
+            $this->uuid("{$name}_id")->nullable($nullable);
+
+            $this->index(["{$name}_type", "{$name}_id"], $indexName);
+        });
 
         // Custom morph map.
         \Illuminate\Database\Eloquent\Relations\Relation::morphMap([
