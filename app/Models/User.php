@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\Mutators\UserMutators;
 use App\Models\Relationships\UserRelationships;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Laravel\Passport\HasApiTokens;
@@ -97,12 +98,18 @@ class User extends Authenticatable
     protected function removeRoll(Role $role, Clinic $clinic = null): self
     {
         // Check if the user doesn't already have the role.
-        if (!$this->hasRole($role)) {
+        if (!$this->hasRole($role, $clinic)) {
             return $this;
         }
 
         // Remove the role.
-        $this->userRoles()->where('role_id', $role->id)->delete();
+        $this
+            ->userRoles()
+            ->where('role_id', $role->id)
+            ->when($clinic, function (Builder $query) use ($clinic) {
+                return $query->where('clinic_id', $clinic->id);
+            })
+            ->delete();
 
         return $this;
     }
