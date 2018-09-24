@@ -18,11 +18,6 @@ class ServiceUser extends Model
     const CACHE_KEY_FOR_TOKEN = 'ServiceUser::Token::%s';
 
     /**
-     * @var string The primary key of the table.
-     */
-    protected $primaryKey = 'uuid';
-
-    /**
      * @return string
      */
     public function generateToken(): string
@@ -30,7 +25,7 @@ class ServiceUser extends Model
         $token = str_random(10);
 
         Cache::put(
-            sprintf(static::CACHE_KEY_FOR_TOKEN, $this->uuid),
+            sprintf(static::CACHE_KEY_FOR_TOKEN, $this->id),
             $token,
             config('cache.lifetimes.service_user_token')
         );
@@ -44,6 +39,6 @@ class ServiceUser extends Model
      */
     public function validateToken(string $token): bool
     {
-        return Cache::get(sprintf(static::CACHE_KEY_FOR_TOKEN, $this->uuid)) === $token;
+        return Cache::get(sprintf(static::CACHE_KEY_FOR_TOKEN, $this->id)) === $token;
     }
 }

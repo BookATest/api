@@ -12,7 +12,7 @@ trait AppointmentScopes
      */
     public function scopeAvailable(Builder $query): Builder
     {
-        return $query->whereNull('appointments.service_user_uuid');
+        return $query->whereNull('appointments.service_user_id');
     }
 
     /**
@@ -21,6 +21,6 @@ trait AppointmentScopes
      */
     public function scopeBooked(Builder $query): Builder
     {
-        return $query->whereNotNull('appointments.service_user_uuid');
+        return $query->whereNotNull('appointments.service_user_id');
     }
 }

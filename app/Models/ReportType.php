@@ -17,10 +17,10 @@ class ReportType extends Model
 
     /**
      * @param string $name
-     * @return int
+     * @return string
      */
-    public static function getIdFor(string $name): int
+    public static function getIdFor(string $name): string
     {
-        return static::where('name', $name)->firstOrFail()->id;
+        return static::query()->where('name', $name)->firstOrFail()->id;
     }
 }

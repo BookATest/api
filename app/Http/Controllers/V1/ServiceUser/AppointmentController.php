@@ -27,7 +27,7 @@ class AppointmentController extends Controller
      */
     public function index(IndexRequest $request, ServiceUser $serviceUser)
     {
-        event(EndpointHit::onRead($request, "Viewed all appointments for service user [$serviceUser->uuid]"));
+        event(EndpointHit::onRead($request, "Viewed all appointments for service user [$serviceUser->id]"));
 
         $appointments = $serviceUser
             ->appointments()

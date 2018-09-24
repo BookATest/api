@@ -20,7 +20,7 @@ class AppointmentResource extends JsonResource
             'user_id' => $this->user_id,
             'clinic_id' => $this->clinic_id,
             'is_repeating' => $this->appointment_schedule_id !== null,
-            'service_user_uuid' => $this->service_user_uuid,
+            'service_user_id' => $this->service_user_id,
             'start_at' => $this->start_at->format(Carbon::ISO8601),
             'booked_at' => optional($this->booked_at)->format(Carbon::ISO8601),
             'did_not_attend' => $this->did_not_attend,

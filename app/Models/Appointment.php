@@ -30,6 +30,6 @@ class Appointment extends Model
      */
     public function isBooked(): bool
     {
-        return $this->service_user_uuid !== null;
+        return $this->service_user_id !== null;
     }
 }

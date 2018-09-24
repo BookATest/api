@@ -23,7 +23,7 @@ class CancelController extends Controller
         event(EndpointHit::onUpdate($request, "Cancelled appointment [$appointment->id]"));
 
         return DB::transaction(function () use ($appointment) {
-            $appointment->service_user_uuid = null;
+            $appointment->service_user_id = null;
             $appointment->save();
 
             return new AppointmentResource($appointment);

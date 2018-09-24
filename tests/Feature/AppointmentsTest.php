@@ -47,7 +47,7 @@ class AppointmentsTest extends TestCase
             'user_id' => $user->id,
             'clinic_id' => $clinic->id,
             'is_repeating' => false,
-            'service_user_uuid' => null,
+            'service_user_id' => null,
             'start_at' => $startAt->format(Carbon::ISO8601),
             'booked_at' => null,
             'did_not_attend' => null,
@@ -94,7 +94,7 @@ class AppointmentsTest extends TestCase
             'user_id' => $ownerUser->id,
             'clinic_id' => $clinic->id,
             'is_repeating' => false,
-            'service_user_uuid' => null,
+            'service_user_id' => null,
             'start_at' => $startAt->format(Carbon::ISO8601),
             'booked_at' => null,
             'did_not_attend' => null,
@@ -130,7 +130,7 @@ class AppointmentsTest extends TestCase
             'start_at' => $startAt,
         ]);
         $serviceUser = factory(ServiceUser::class)->create();
-        $bookedAppointment->service_user_uuid = $serviceUser->uuid;
+        $bookedAppointment->service_user_id = $serviceUser->id;
         $bookedAppointment->booked_at = $bookedAt;
         $bookedAppointment->save();
 
@@ -144,7 +144,7 @@ class AppointmentsTest extends TestCase
             'user_id' => $user->id,
             'clinic_id' => $clinic->id,
             'is_repeating' => false,
-            'service_user_uuid' => null,
+            'service_user_id' => null,
             'start_at' => $startAt->format(Carbon::ISO8601),
             'booked_at' => null,
             'did_not_attend' => null,
@@ -154,7 +154,7 @@ class AppointmentsTest extends TestCase
             'user_id' => $user->id,
             'clinic_id' => $clinic->id,
             'is_repeating' => false,
-            'service_user_uuid' => $serviceUser->uuid,
+            'service_user_id' => $serviceUser->id,
             'start_at' => $startAt->format(Carbon::ISO8601),
             'booked_at' => $bookedAt->format(Carbon::ISO8601),
             'did_not_attend' => null,
@@ -178,7 +178,7 @@ class AppointmentsTest extends TestCase
             'start_at' => $startAt,
         ]);
         $serviceUser = factory(ServiceUser::class)->create();
-        $bookedAppointment->service_user_uuid = $serviceUser->uuid;
+        $bookedAppointment->service_user_id = $serviceUser->id;
         $bookedAppointment->save();
 
         $response = $this->json('GET', "/v1/clinics/{$clinic->id}/appointments");
@@ -189,7 +189,7 @@ class AppointmentsTest extends TestCase
             'user_id' => $user->id,
             'clinic_id' => $clinic->id,
             'is_repeating' => false,
-            'service_user_uuid' => null,
+            'service_user_id' => null,
             'start_at' => $startAt->format(Carbon::ISO8601),
             'booked_at' => null,
             'did_not_attend' => null,
@@ -209,13 +209,13 @@ class AppointmentsTest extends TestCase
             'start_at' => $startAt,
         ]);
         $serviceUser = factory(ServiceUser::class)->create();
-        $appointment->service_user_uuid = $serviceUser->uuid;
+        $appointment->service_user_id = $serviceUser->id;
         $appointment->booked_at = $bookedAt;
         $appointment->save();
 
         Passport::actingAs($user);
 
-        $response = $this->json('GET', "/v1/service-users/{$serviceUser->uuid}/appointments");
+        $response = $this->json('GET', "/v1/service-users/{$serviceUser->id}/appointments");
 
         $response->assertStatus(Response::HTTP_OK);
         $response->assertJsonFragment([
@@ -223,7 +223,7 @@ class AppointmentsTest extends TestCase
             'user_id' => $user->id,
             'clinic_id' => $clinic->id,
             'is_repeating' => false,
-            'service_user_uuid' => $serviceUser->uuid,
+            'service_user_id' => $serviceUser->id,
             'start_at' => $startAt->format(Carbon::ISO8601),
             'booked_at' => $bookedAt->format(Carbon::ISO8601),
             'did_not_attend' => null,
@@ -234,7 +234,7 @@ class AppointmentsTest extends TestCase
     {
         $serviceUser = factory(ServiceUser::class)->create();
 
-        $response = $this->json('GET', "/v1/service-users/{$serviceUser->uuid}/appointments");
+        $response = $this->json('GET', "/v1/service-users/{$serviceUser->id}/appointments");
 
         $response->assertStatus(Response::HTTP_UNAUTHORIZED);
     }
@@ -262,7 +262,7 @@ class AppointmentsTest extends TestCase
             'user_id' => $user->id,
             'clinic_id' => $clinic->id,
             'is_repeating' => false,
-            'service_user_uuid' => null,
+            'service_user_id' => null,
             'start_at' => $startAt->format(Carbon::ISO8601),
             'booked_at' => null,
             'did_not_attend' => null,
@@ -319,7 +319,7 @@ class AppointmentsTest extends TestCase
             'user_id' => $user->id,
             'clinic_id' => $clinic->id,
             'is_repeating' => true,
-            'service_user_uuid' => null,
+            'service_user_id' => null,
             'start_at' => $startAt->format(Carbon::ISO8601),
             'booked_at' => null,
             'did_not_attend' => null,
@@ -421,7 +421,7 @@ class AppointmentsTest extends TestCase
                 'user_id' => $user->id,
                 'clinic_id' => $clinic->id,
                 'is_repeating' => false,
-                'service_user_uuid' => null,
+                'service_user_id' => null,
                 'start_at' => $startAt->format(Carbon::ISO8601),
                 'booked_at' => null,
                 'did_not_attend' => null,
@@ -499,7 +499,7 @@ class AppointmentsTest extends TestCase
                 'user_id' => $user->id,
                 'clinic_id' => $clinic->id,
                 'is_repeating' => false,
-                'service_user_uuid' => null,
+                'service_user_id' => null,
                 'start_at' => $startAt->format(Carbon::ISO8601),
                 'booked_at' => null,
                 'did_not_attend' => true,
@@ -607,7 +607,7 @@ class AppointmentsTest extends TestCase
             'clinic_id' => $clinic->id,
             'start_at' => $startAt,
         ]);
-        $appointment->service_user_uuid = $serviceUser->uuid;
+        $appointment->service_user_id = $serviceUser->id;
         $appointment->save();
 
         Passport::actingAs($user);
@@ -720,7 +720,7 @@ class AppointmentsTest extends TestCase
                 ]);
             });
         $serviceUser = factory(ServiceUser::class)->create();
-        $appointments[5]->service_user_uuid = $serviceUser->uuid;
+        $appointments[5]->service_user_id = $serviceUser->id;
         $appointments[5]->save();
         $scheduleId = $schedule->id;
         $appointmentIds = $appointments->map(function (Appointment $appointment) {
@@ -799,7 +799,7 @@ class AppointmentsTest extends TestCase
             'start_at' => $startAt,
         ]);
         $serviceUser = factory(ServiceUser::class)->create();
-        $appointment->service_user_uuid = $serviceUser->uuid;
+        $appointment->service_user_id = $serviceUser->id;
         $appointment->save();
 
         Passport::actingAs($user);
@@ -807,7 +807,7 @@ class AppointmentsTest extends TestCase
         $response = $this->json('PUT', "/v1/appointments/{$appointment->id}/cancel");
 
         $response->assertStatus(Response::HTTP_OK);
-        $this->assertDatabaseMissing('appointments', ['id' => $appointment->id, 'service_user_uuid' => $serviceUser->uuid]);
+        $this->assertDatabaseMissing('appointments', ['id' => $appointment->id, 'service_user_id' => $serviceUser->id]);
     }
 
     public function test_cw_can_cancel_someone_elses_appointment_at_same_clinic()
@@ -822,7 +822,7 @@ class AppointmentsTest extends TestCase
             'start_at' => $startAt,
         ]);
         $serviceUser = factory(ServiceUser::class)->create();
-        $appointment->service_user_uuid = $serviceUser->uuid;
+        $appointment->service_user_id = $serviceUser->id;
         $appointment->save();
         $differentUser = factory(User::class)->create();
         $differentUser->makeCommunityWorker($clinic);
@@ -832,7 +832,7 @@ class AppointmentsTest extends TestCase
         $response = $this->json('PUT', "/v1/appointments/{$appointment->id}/cancel");
 
         $response->assertStatus(Response::HTTP_OK);
-        $this->assertDatabaseMissing('appointments', ['id' => $appointment->id, 'service_user_uuid' => $serviceUser->uuid]);
+        $this->assertDatabaseMissing('appointments', ['id' => $appointment->id, 'service_user_id' => $serviceUser->id]);
     }
 
     public function test_cw_cannot_cancel_someone_elses_appointment_at_different_clinic()
@@ -847,7 +847,7 @@ class AppointmentsTest extends TestCase
             'start_at' => $startAt,
         ]);
         $serviceUser = factory(ServiceUser::class)->create();
-        $appointment->service_user_uuid = $serviceUser->uuid;
+        $appointment->service_user_id = $serviceUser->id;
         $appointment->save();
         $differentClinic = factory(Clinic::class)->create();
         $differentUser = factory(User::class)->create();
@@ -858,7 +858,7 @@ class AppointmentsTest extends TestCase
         $response = $this->json('PUT', "/v1/appointments/{$appointment->id}/cancel");
 
         $response->assertStatus(Response::HTTP_FORBIDDEN);
-        $this->assertDatabaseHas('appointments', ['id' => $appointment->id, 'service_user_uuid' => $serviceUser->uuid]);
+        $this->assertDatabaseHas('appointments', ['id' => $appointment->id, 'service_user_id' => $serviceUser->id]);
     }
 
     public function test_su_can_cancel_their_own_appointment()
@@ -873,7 +873,7 @@ class AppointmentsTest extends TestCase
             'start_at' => $startAt,
         ]);
         $serviceUser = factory(ServiceUser::class)->create();
-        $appointment->service_user_uuid = $serviceUser->uuid;
+        $appointment->service_user_id = $serviceUser->id;
         $appointment->save();
 
         $response = $this->json('PUT', "/v1/appointments/{$appointment->id}/cancel", [
@@ -881,7 +881,7 @@ class AppointmentsTest extends TestCase
         ]);
 
         $response->assertStatus(Response::HTTP_OK);
-        $this->assertDatabaseMissing('appointments', ['id' => $appointment->id, 'service_user_uuid' => $serviceUser->uuid]);
+        $this->assertDatabaseMissing('appointments', ['id' => $appointment->id, 'service_user_id' => $serviceUser->id]);
     }
 
     public function test_su_cannot_cancel_someone_elses_appointment()
@@ -896,7 +896,7 @@ class AppointmentsTest extends TestCase
             'start_at' => $startAt,
         ]);
         $serviceUser = factory(ServiceUser::class)->create();
-        $appointment->service_user_uuid = $serviceUser->uuid;
+        $appointment->service_user_id = $serviceUser->id;
         $appointment->save();
         $anotherServiceUser = factory(ServiceUser::class)->create();
 
@@ -905,7 +905,7 @@ class AppointmentsTest extends TestCase
         ]);
 
         $response->assertStatus(Response::HTTP_FORBIDDEN);
-        $this->assertDatabaseHas('appointments', ['id' => $appointment->id, 'service_user_uuid' => $serviceUser->uuid]);
+        $this->assertDatabaseHas('appointments', ['id' => $appointment->id, 'service_user_id' => $serviceUser->id]);
     }
 
     public function test_cw_cannot_cancel_their_own_appointment_in_the_past()
@@ -920,7 +920,7 @@ class AppointmentsTest extends TestCase
             'start_at' => $startAt,
         ]);
         $serviceUser = factory(ServiceUser::class)->create();
-        $appointment->service_user_uuid = $serviceUser->uuid;
+        $appointment->service_user_id = $serviceUser->id;
         $appointment->save();
 
         Passport::actingAs($user);
@@ -928,6 +928,6 @@ class AppointmentsTest extends TestCase
         $response = $this->json('PUT', "/v1/appointments/{$appointment->id}/cancel");
 
         $response->assertStatus(Response::HTTP_FORBIDDEN);
-        $this->assertDatabaseHas('appointments', ['id' => $appointment->id, 'service_user_uuid' => $serviceUser->uuid]);
+        $this->assertDatabaseHas('appointments', ['id' => $appointment->id, 'service_user_id' => $serviceUser->id]);
     }
 }
