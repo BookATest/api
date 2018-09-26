@@ -13,8 +13,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        // Register *.blade.yaml files as blade views.
-        resolve(\Illuminate\View\Factory::class)->addExtension('blade.yaml', 'blade');
+        // Register *.blade.json files as blade views.
+        resolve(\Illuminate\View\Factory::class)->addExtension('blade.json', 'blade');
 
         // Add helper for migration foreign keys.
         \Illuminate\Database\Schema\Blueprint::macro('foreignId', function (

@@ -1,0 +1,12 @@
+{
+  "tags": [
+    "Appointments"
+  ],
+  "summary": "Create a new appointment",
+  "description": "**Permission:** `Community Worker`\n- Create an appointment at a clinic that they are a `Community Worker` for",
+  "operationId": "appointments.store",
+  "requestBody": {!! view('docs.requests.appointment.store') !!},
+  "responses": {
+    "200": {!! view('docs.responses.201', ['schema' => view('docs.responses.appointment.show')]) !!}
+  }
+}

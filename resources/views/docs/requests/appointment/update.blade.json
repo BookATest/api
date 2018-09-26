@@ -1,0 +1,18 @@
+{
+  "required": true,
+  "content": {
+    "application/json": {
+      "schema": {
+        "type": "object",
+        "required": [
+          "did_not_attend"
+        ],
+        "properties": {
+          "did_not_attend": {
+            "type": "boolean"
+          }
+        }
+      }
+    }
+  }
+}

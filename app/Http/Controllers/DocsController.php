@@ -23,7 +23,7 @@ class DocsController extends Controller
     public function openapi(string $path)
     {
         // Parse the URL path so Laravel can find the corresponding view.
-        $path = str_replace('.yaml', '', $path);
+        $path = str_replace('.json', '', $path);
         $view = str_replace('/', '.', $path);
         $view = 'docs.' . $view;
         $pathParts = explode('/', $path);
@@ -35,11 +35,11 @@ class DocsController extends Controller
         }
 
         // Parse the YAML Blade template and retrieve the string contents.
-        $yaml = view($view)->render();
+        $json = view($view)->render();
 
-        return response()->make($yaml, Response::HTTP_OK, [
-            'Content-Type' => 'application/x-yaml',
-            'Content-Disposition' => sprintf('inline; filename="%s.yaml"', $filename),
+        return response()->make($json, Response::HTTP_OK, [
+            'Content-Type' => 'application/json',
+            'Content-Disposition' => sprintf('inline; filename="%s.json"', $filename),
         ]);
     }
 }

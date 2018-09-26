@@ -1,0 +1,12 @@
+{
+  "tags": [
+    "Appointments"
+  ],
+  "summary": "List all appointments",
+  "description": "**Permission:** `Community Worker`",
+  "operationId": "appointments.index",
+  "parameters": {!! view('docs.requests.appointment.index') !!},
+  "responses": {
+    "200": {!! view('docs.responses.200', ['schema' => view('docs.responses.appointment.index')]) !!}
+  }
+}

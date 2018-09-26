@@ -1,0 +1,103 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "{{ config('app.name') }} API Specification",
+    "description": "For using the {{ config('app.name') }} API",
+    "version": "v1",
+    "contact": {
+      "name": "Ayup Digital",
+      "url": "https://ayup.agency"
+    }
+  },
+  "servers": [
+    {
+      "url": "{{ config('app.url') }}/v1/"
+    }
+  ],
+  "paths": {
+    "/appointments": {
+      "get": {!! view('docs.paths.appointments.index') !!},
+      "post": {!! view('docs.paths.appointments.store') !!}
+    },
+    "/appointments/{appointment}": {
+      "get": {!! view('docs.paths.appointments.show') !!},
+      "put": {!! view('docs.paths.appointments.update') !!},
+      "delete": {!! view('docs.paths.appointments.destroy') !!}
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "OAuth2": {
+        "type": "oauth2",
+        "flows": {
+          "password": {
+            "tokenUrl": "{{ url('/oauth/token') }}"
+          }
+        }
+      }
+    }
+  },
+  "security": [
+    {
+      "OAuth2": []
+    }
+  ],
+  "tags": [
+    {
+      "name": "Appointments",
+      "description": "Appointments at clinics"
+    },
+    {
+      "name": "Audits",
+      "description": "User access auditing"
+    },
+    {
+      "name": "Bookings",
+      "description": "For service users to make appointment bookings"
+    },
+    {
+      "name": "Calendar Feed",
+      "description": "Appointment calendar feed"
+    },
+    {
+      "name": "Clinics",
+      "description": "Clinic locations"
+    },
+    {
+      "name": "Eligible Answers",
+      "description": "Set by clinics to specify which answers make the user eligible"
+    },
+    {
+      "name": "Questions",
+      "description": "To check eligibility at clinics for service users"
+    },
+    {
+      "name": "Reports",
+      "description": "User generated/scheduled reports"
+    },
+    {
+      "name": "Report Schedules",
+      "description": "Schedules for reports to be automatically generated"
+    },
+    {
+      "name": "Service Users",
+      "description": "End-users consuming the service"
+    },
+    {
+      "name": "Settings",
+      "description": "Organisation settings"
+    },
+    {
+      "name": "Stats",
+      "description": "Dashboard stats"
+    },
+    {
+      "name": "Users",
+      "description": "Backend users"
+    }
+  ],
+  "externalDocs": {
+    "description": "GitHub Wiki",
+    "url": "https://github.com/BookATest/api/wiki"
+  }
+}

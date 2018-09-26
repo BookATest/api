@@ -1,0 +1,24 @@
+{
+  "tags": [
+    "Appointments"
+  ],
+  "summary": "Delete a specific appointment",
+  "description": "**Permission:** `Community Worker`\n- Can delete any appointment from any user at a clinic they are a `Community Worker` for\n\n***\n\nAn appointment can only be deleted if it has not been booked by a service user. If an appointment has been booked,\nit must first be cancelled before you can delete it.",
+  "operationId": "appointments.destroy",
+  "parameters": [
+    {
+      "name": "id",
+      "in": "path",
+      "required": true,
+      "description": "The ID of the model",
+      "schema": {
+        "type": "string",
+        "format": "uuid"
+      }
+    }
+  ]
+,
+  "responses": {
+    "200": {!! view('docs.responses.deleted') !!}
+  }
+}

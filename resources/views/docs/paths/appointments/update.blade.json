@@ -1,0 +1,24 @@
+{
+  "tags": [
+    "Appointments"
+  ],
+  "summary": "Update a specific appointment",
+  "description": "**Permission:** `Community Worker`\n- Update their own appointment",
+  "operationId": "appointments.update",
+  "parameters": [
+    {
+      "name": "id",
+      "in": "path",
+      "required": true,
+      "description": "The ID of the model",
+      "schema": {
+        "type": "string",
+        "format": "uuid"
+      }
+    }
+  ],
+  "requestBody": {!! view('docs.requests.appointment.update') !!},
+  "responses": {
+    "200": {!! view('docs.responses.200', ['schema' => view('docs.responses.appointment.show')]) !!}
+  }
+}

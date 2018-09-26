@@ -1,0 +1,28 @@
+{
+  "required": true,
+  "content": {
+    "application/json": {
+      "schema": {
+        "type": "object",
+        "required": [
+          "clinic_id",
+          "start_at",
+          "is_repeating"
+        ],
+        "properties": {
+          "clinic_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "start_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "is_repeating": {
+            "type": "boolean"
+          }
+        }
+      }
+    }
+  }
+}

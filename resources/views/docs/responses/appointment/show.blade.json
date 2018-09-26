@@ -1,0 +1,37 @@
+{
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "user_id": {
+     "type": "string",
+      "format": "uuid"
+    },
+    "clinic_id": {
+     "type": "string",
+      "format": "uuid"
+    },
+    "is_repeating": {
+      "type": "boolean"
+    },
+    "service_user_id": {
+      "type": "string",
+      "format": "uuid",
+      "nullable": true
+    },
+    "start_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "booked_at": {
+      "type": "string",
+      "format": "date-time",
+      "nullable": true
+    },
+    "did_not_attend": {
+      "type": "boolean"
+    }
+  }
+}
