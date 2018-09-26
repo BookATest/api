@@ -4,6 +4,10 @@ $light-grey: #ececec;
 // @import "~swagger-ui/dist/swagger-ui.css";
 @import "~swagger-ui-themes/themes/3.x/theme-material.css";
 
+* {
+  box-sizing: border-box;
+}
+
 .swagger-ui .opblock .opblock-section-header {
   background-color: $light-grey;
   justify-content: space-between;
