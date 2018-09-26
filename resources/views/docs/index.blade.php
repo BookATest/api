@@ -2,7 +2,7 @@
 <html lang="en" dir="ltr">
 <head>
     <meta charset="utf-8">
-    <title>API Spec</title>
+    <title>{{ config('app.name') }} API Specification</title>
     <link rel="stylesheet" href="{{ mix('/css/docs.css') }}">
 </head>
 <body>
