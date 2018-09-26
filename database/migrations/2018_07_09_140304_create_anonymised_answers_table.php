@@ -14,9 +14,9 @@ class CreateAnonymisedAnswersTable extends Migration
     public function up()
     {
         Schema::create('anonymised_answers', function (Blueprint $table) {
-            $table->increments('id');
-            $table->foreignId('clinic_id', 'clinics');
-            $table->foreignId('question_id', 'questions');
+            $table->uuid('id')->primary();
+            $table->foreignUuid('clinic_id', 'clinics');
+            $table->foreignUuid('question_id', 'questions');
             $table->json('answer');
             $table->timestamps();
         });

@@ -4,7 +4,6 @@ namespace App\Models;
 
 use App\Models\Mutators\ServiceUserMutators;
 use App\Models\Relationships\ServiceUserRelationships;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Cache;
 
 class ServiceUser extends Model
@@ -19,28 +18,6 @@ class ServiceUser extends Model
     const CACHE_KEY_FOR_TOKEN = 'ServiceUser::Token::%s';
 
     /**
-     * @var string The primary key of the table.
-     */
-    protected $primaryKey = 'uuid';
-
-    /**
-     * @var bool If the primary key is an incrementing value.
-     */
-    public $incrementing = false;
-
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
-    protected $fillable = [
-        'name',
-        'phone',
-        'email',
-        'preferred_contact_method',
-    ];
-
-    /**
      * @return string
      */
     public function generateToken(): string
@@ -48,7 +25,7 @@ class ServiceUser extends Model
         $token = str_random(10);
 
         Cache::put(
-            sprintf(static::CACHE_KEY_FOR_TOKEN, $this->uuid),
+            sprintf(static::CACHE_KEY_FOR_TOKEN, $this->id),
             $token,
             config('cache.lifetimes.service_user_token')
         );
@@ -62,6 +39,6 @@ class ServiceUser extends Model
      */
     public function validateToken(string $token): bool
     {
-        return Cache::get(sprintf(static::CACHE_KEY_FOR_TOKEN, $this->uuid)) === $token;
+        return Cache::get(sprintf(static::CACHE_KEY_FOR_TOKEN, $this->id)) === $token;
     }
 }

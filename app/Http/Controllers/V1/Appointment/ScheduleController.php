@@ -41,7 +41,7 @@ class ScheduleController extends Controller
                 ->where('user_id', $appointment->user_id)
                 ->where('appointment_schedule_id', $appointment->appointment_schedule_id)
                 ->where('start_at', '>=', $appointment->start_at)
-                ->whereNull('service_user_uuid')
+                ->whereNull('service_user_id')
                 ->delete();
 
             return new ResourceDeletedResponse(AppointmentSchedule::class);

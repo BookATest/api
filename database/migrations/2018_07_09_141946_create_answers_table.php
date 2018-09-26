@@ -14,10 +14,10 @@ class CreateAnswersTable extends Migration
     public function up()
     {
         Schema::create('answers', function (Blueprint $table) {
-            $table->increments('id');
-            $table->foreignUuid('service_user_uuid', 'service_users');
-            $table->foreignId('appointment_id', 'appointments');
-            $table->foreignId('question_id', 'questions');
+            $table->uuid('id')->primary();
+            $table->foreignUuid('service_user_id', 'service_users');
+            $table->foreignUuid('appointment_id', 'appointments');
+            $table->foreignUuid('question_id', 'questions');
             $table->json('answer');
             $table->timestamps();
         });

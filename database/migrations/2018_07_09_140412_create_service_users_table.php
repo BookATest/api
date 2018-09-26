@@ -14,7 +14,7 @@ class CreateServiceUsersTable extends Migration
     public function up()
     {
         Schema::create('service_users', function (Blueprint $table) {
-            $table->uuid('uuid')->primary();
+            $table->uuid('id')->primary();
             $table->string('name');
             $table->string('phone')->unique();
             $table->string('email')->nullable();

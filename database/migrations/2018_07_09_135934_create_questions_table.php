@@ -14,7 +14,7 @@ class CreateQuestionsTable extends Migration
     public function up()
     {
         Schema::create('questions', function (Blueprint $table) {
-            $table->increments('id');
+            $table->uuid('id')->primary();
             $table->string('question');
             $table->enum('type', ['select', 'checkbox', 'date', 'text']);
             $table->timestamps();

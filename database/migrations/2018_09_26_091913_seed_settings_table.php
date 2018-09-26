@@ -1,16 +1,19 @@
 <?php
 
-class SettingsTableSeeder extends BaseSeeder
+use App\Database\Migrations\MigrationSeeder;
+use Illuminate\Support\Facades\DB;
+
+class SeedSettingsTable extends MigrationSeeder
 {
     /**
-     * Run the database seeds.
+     * Run the migrations.
      *
      * @return void
      */
-    public function run()
+    public function up()
     {
         $this->addRecord('name', 'Organisation Name');
-        $this->addRecord('logo_file_id', 0);
+        $this->addRecord('logo_file_id', null);
         $this->addRecord('primary_colour', '#3a4975');
         $this->addRecord('secondary_colour', '#56b5b2');
         $this->addRecord('default_appointment_duration', 30);
@@ -24,22 +27,32 @@ class SettingsTableSeeder extends BaseSeeder
             'booking_notification_help_text' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque dictum.',
             'booking_appointment_overview_help_text' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque dictum.',
         ]);
+    }
 
-        $this->db->table('settings')->insert($this->records);
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        DB::table('settings')->truncate();
     }
 
     /**
      * @param array $args
+     *
+     * @return void
      */
     protected function addRecord(...$args)
     {
         list($key, $value) = $args;
 
-        $this->records[] = [
+        DB::table('settings')->insert([
             'key' => $key,
             'value' => json_encode($value),
             'created_at' => $this->now,
             'updated_at' => $this->now,
-        ];
+        ]);
     }
 }

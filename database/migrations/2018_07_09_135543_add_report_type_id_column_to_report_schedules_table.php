@@ -14,7 +14,7 @@ class AddReportTypeIdColumnToReportSchedulesTable extends Migration
     public function up()
     {
         Schema::table('report_schedules', function (Blueprint $table) {
-            $table->unsignedInteger('report_type_id')->after('clinic_id');
+            $table->uuid('report_type_id')->after('clinic_id');
             $table->foreign('report_type_id')->references('id')->on('report_types');
         });
     }

@@ -14,7 +14,7 @@ class AddProfilePictureFileIdColumnToUsersTable extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->unsignedInteger('profile_picture_file_id')->nullable()->after('id');
+            $table->uuid('profile_picture_file_id')->nullable()->after('id');
             $table->foreign('profile_picture_file_id')->references('id')->on('files');
         });
     }

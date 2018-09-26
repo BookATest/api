@@ -4,7 +4,6 @@ namespace App\Models;
 
 use App\Models\Mutators\QuestionMutators;
 use App\Models\Relationships\QuestionRelationships;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Question extends Model
@@ -19,22 +18,14 @@ class Question extends Model
     const TEXT = 'text';
 
     /**
-     * The attributes that are mass assignable.
+     * The attributes that should be cast to native types.
      *
      * @var array
      */
-    protected $fillable = [
-        'question',
-        'type',
-    ];
-
-    /**
-     * The attributes that should be mutated to dates.
-     *
-     * @var array
-     */
-    protected $dates = [
-        'deleted_at',
+    protected $casts = [
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
+        'deleted_at' => 'datetime',
     ];
 
     /**

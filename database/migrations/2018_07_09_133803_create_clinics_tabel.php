@@ -14,7 +14,7 @@ class CreateClinicsTabel extends Migration
     public function up()
     {
         Schema::create('clinics', function (Blueprint $table) {
-            $table->increments('id');
+            $table->uuid('id')->primary();
             $table->string('name')->unique();
             $table->string('phone');
             $table->string('email');

@@ -4,7 +4,6 @@ namespace App\Models;
 
 use App\Models\Mutators\ReportTypeMutators;
 use App\Models\Relationships\ReportTypeRelationships;
-use Illuminate\Database\Eloquent\Model;
 
 class ReportType extends Model
 {
@@ -17,20 +16,11 @@ class ReportType extends Model
     const COUNT_TESTING_TYPES = 'count_testing_types';
 
     /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
-    protected $fillable = [
-        'name',
-    ];
-
-    /**
      * @param string $name
-     * @return int
+     * @return string
      */
-    public static function getIdFor(string $name): int
+    public static function getIdFor(string $name): string
     {
-        return static::where('name', $name)->firstOrFail()->id;
+        return static::query()->where('name', $name)->firstOrFail()->id;
     }
 }

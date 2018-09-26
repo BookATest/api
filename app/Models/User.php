@@ -18,30 +18,18 @@ class User extends Authenticatable
     use UserRelationships;
 
     /**
-     * The attributes that are mass assignable.
+     * Indicates if the IDs are auto-incrementing.
      *
-     * @var array
+     * @var bool
      */
-    protected $fillable = [
-        'first_name',
-        'last_name',
-        'email',
-        'phone',
-        'password',
-        'display_email',
-        'display_phone',
-        'include_calendar_attachment',
-        'calendar_feed_token',
-    ];
+    public $incrementing = false;
 
     /**
-     * The attributes that should be mutated to dates.
+     * The attributes that are not mass assignable.
      *
      * @var array
      */
-    protected $dates = [
-        'disabled_at',
-    ];
+    protected $guarded = [];
 
     /**
      * The attributes that should be cast to native types.
@@ -52,7 +40,26 @@ class User extends Authenticatable
         'display_phone' => 'boolean',
         'display_email' => 'boolean',
         'include_calendar_attachment' => 'boolean',
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
+        'disabled_at' => 'datetime',
     ];
+
+    /**
+     * The "booting" method of the model.
+     *
+     * @return void
+     */
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($model) {
+            if (empty($model->{$model->getKeyName()})) {
+                $model->{$model->getKeyName()} = uuid();
+            }
+        });
+    }
 
     /**
      * @param \App\Models\Role $role

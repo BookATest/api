@@ -14,7 +14,7 @@ class AddClinicIdColumnToUserRolesTable extends Migration
     public function up()
     {
         Schema::table('user_roles', function (Blueprint $table) {
-            $table->unsignedInteger('clinic_id')->nullable()->after('role_id');
+            $table->uuid('clinic_id')->nullable()->after('role_id');
             $table->foreign('clinic_id')->references('id')->on('clinics');
         });
     }

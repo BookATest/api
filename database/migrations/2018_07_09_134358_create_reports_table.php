@@ -14,11 +14,10 @@ class CreateReportsTable extends Migration
     public function up()
     {
         Schema::create('reports', function (Blueprint $table) {
-            $table->increments('id');
-            $table->foreignId('user_id', 'users');
-            $table->foreignId('file_id', 'files');
-            $table->unsignedInteger('clinic_id')->nullable();
-            $table->foreign('clinic_id')->references('id')->on('clinics');
+            $table->uuid('id')->primary();
+            $table->foreignUuid('user_id', 'users');
+            $table->foreignUuid('file_id', 'files');
+            $table->foreignUuid('clinic_id', 'clinics', 'id', true);
             $table->date('start_at');
             $table->date('end_at');
             $table->timestamps();
