@@ -1,1 +1,0 @@
-{!! view('docs.responses.collection', ['data' => view('docs.responses.appointment.show')]) !!}

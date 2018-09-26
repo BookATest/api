@@ -1,4 +1,0 @@
-type: object
-properties:
-  did_not_attend:
-    type: boolean

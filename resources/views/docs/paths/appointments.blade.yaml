@@ -29,8 +29,26 @@ clinics.clinic_id.appointments:
     operationId: "clinics.appointments.index"
     security: []
     parameters:
-      allOf:
-        - $ref: /docs/requests/appointment/index.yaml
+      - $ref: "/docs/parameters/id.yaml#/clinic_id"
+      - name: "format"
+        in: "query"
+        description: "The format of the appointments"
+        schema:
+          type: "string"
+          enum: ["json", "ics"]
+          default: "json"
+      - name: "calendar_feed_token"
+        in: "query"
+        description: "The user's calendar feed token - required if the format is set to `ics`"
+        schema:
+          type: "string"
+      - name: "available"
+        in: "query"
+        description: >
+          If only available appointments should be returned. If the user is not authenticated, then they can only see
+          appointments which are available.
+        schema:
+          type: "boolean"
     responses:
       200:
         description: "Successful response"
@@ -56,7 +74,7 @@ clinics.clinic_id.appointments:
       content:
         application/json:
           schema:
-            $ref: /docs/requests/appointment/store.yaml
+            $ref: "/docs/schemas/appointment.yaml#/CreateAppointment"
     responses:
       200:
         description: "Successful response"
@@ -183,7 +201,7 @@ appointments.appointment_id:
       content:
         application/json:
           schema:
-            $ref: /docs/requests/appointment/update.yaml
+            $ref: "/docs/schemas/appointment.yaml#/EditAppointment"
     responses:
       200:
         description: "Successful response"

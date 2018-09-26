@@ -1,8 +1,0 @@
-{
-  "description": "Resource created",
-  "content": {
-    "application/json": {
-      "schema": {!! $schema !!}
-    }
-  }
-}

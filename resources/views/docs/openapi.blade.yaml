@@ -1,0 +1,141 @@
+openapi: "3.0.1"
+
+info:
+  title: "{{ config('app.name') }} API Specification"
+  description: "For using the {{ config('app.name') }} API"
+  version: "v1"
+  contact:
+    name: "Ayup Digital"
+    url: "https://ayup.agency"
+
+servers:
+- url: "{{ config('app.url') }}/v1/"
+
+paths:
+  # Appointment Routes.
+  /appointments:
+    $ref: "/docs/paths/appointments.yaml#/appointments"
+  /appointments/{appointment_id}:
+    $ref: "/docs/paths/appointments.yaml#/appointments.appointment_id"
+  /appointments/{appointment_id}/schedule:
+    $ref: "/docs/paths/appointments.yaml#/appointments.appointment_id.schedule"
+  /appointments/{appointment_id}/cancel:
+    $ref: "/docs/paths/appointments.yaml#/appointments.appointment_id.cancel"
+  /users/{user_id}/appointments:
+    $ref: "/docs/paths/appointments.yaml#/users.user_id.appointments"
+  /clinics/{clinic_id}/appointments:
+    $ref: "/docs/paths/appointments.yaml#/clinics.clinic_id.appointments"
+  /service-users/{service_user_uuid}/appointments:
+    $ref: "/docs/paths/appointments.yaml#/service-users.service_user_uuid.appointments"
+
+  # Audit Routes.
+  /audits:
+    $ref: "/docs/paths/audits.yaml#/audit"
+
+  # Booking Routes.
+  /eligibility:
+    $ref: "/docs/paths/bookings.yaml#/eligibility"
+  /appointments/{appointment_id}/bookings:
+    $ref: "/docs/paths/bookings.yaml#/appointments.appointment_id.bookings"
+
+  # Calendar Feed Routes.
+  /users/{user_id}/calendar-feed-token:
+    $ref: "/docs/paths/calendar-feed-token.yaml#/users.user_id.calendar-feed-token"
+
+  # Clinic Routes.
+  /clinics:
+    $ref: "/docs/paths/clinics.yaml#/clinics"
+  /clinics/{clinic_id}:
+    $ref: "/docs/paths/clinics.yaml#/clinics.clinic_id"
+
+  # Eligible Answer Routes.
+  /clinics/{clinic_id}/eligible-answers:
+    $ref: "/docs/paths/eligible-answers.yaml#/clinics.clinic_id.eligible-answers"
+
+  # Question Routes.
+  /questions:
+    $ref: "/docs/paths/questions.yaml#/questions"
+
+  # Report Routes.
+  /users/{user_id}/reports:
+    $ref: "/docs/paths/reports.yaml#/users.user_id.reports"
+  /reports/{report_id}:
+    $ref: "/docs/paths/reports.yaml#/reports.report_id"
+  /reports/{report_id}/download:
+    $ref: "/docs/paths/reports.yaml#/reports.report_id.download"
+
+  # Report Schedule Routes.
+  /users/{user_id}/report-schedules:
+    $ref: "/docs/paths/report-schedules.yaml#/users.user_id.report-schedules"
+  /report-schedules/{report_schedule_id}:
+    $ref: "/docs/paths/report-schedules.yaml#/report-schedules.report_schedule_id"
+
+  # Service User Routes.
+  /service-users:
+    $ref: "/docs/paths/service-users.yaml#/service-users"
+  /service-users/{service_user_uuid}:
+    $ref: "/docs/paths/service-users.yaml#/service-users.service_user_uuid"
+  /service-users/access-code:
+    $ref: "/docs/paths/service-users.yaml#/service-users.access-code"
+  /service-users/token:
+    $ref: "/docs/paths/service-users.yaml#/service-users.token"
+
+  # Settings Routes.
+  /settings:
+    $ref: "/docs/paths/settings.yaml#/settings"
+
+  # Stats Routes.
+  /stats:
+    $ref: "/docs/paths/stats.yaml#/stats"
+
+  # User Routes.
+  /users:
+    $ref: "/docs/paths/users.yaml#/users"
+  /users/{user_id}:
+    $ref: "/docs/paths/users.yaml#/users.user_id"
+  /users/{user_id}/profile-picture:
+    $ref: "/docs/paths/users.yaml#/users.user_id.profile-picture"
+  /clinics/{clinic_id}/users:
+    $ref: "/docs/paths/users.yaml#/clinics.clinic_id.users"
+
+components:
+  securitySchemes:
+    OAuth2:
+      type: "oauth2"
+      flows:
+        password:
+          tokenUrl: "{{ url('/oauth/token') }}"
+security:
+  - OAuth2: []
+
+tags:
+  - name: "Appointments"
+    description: "Appointments at clinics"
+  - name: "Audits"
+    description: "User access auditing"
+  - name: "Bookings"
+    description: "For service users to make appointment bookings"
+  - name: "Calendar Feed"
+    description: "Appointment calendar feed"
+  - name: "Clinics"
+    description: "Clinic locations"
+  - name: "Eligible Answers"
+    description: "Set by clinics to specify which answers make the user eligible"
+  - name: "Questions"
+    description: "To check eligibility at clinics for service users"
+  - name: "Reports"
+    description: "User generated/scheduled reports"
+  - name: "Report Schedules"
+    description: "Schedules for reports to be automatically generated"
+  - name: "Service Users"
+    description: "End-users consuming the service"
+  - name: "Settings"
+    description: "Organisation settings"
+  - name: "Stats"
+    description: "Dashboard stats"
+  - name: "Users"
+    description: "Backend users"
+
+externalDocs:
+  description: "GitHub Wiki"
+  url: "https://github.com/BookATest/api/wiki"
