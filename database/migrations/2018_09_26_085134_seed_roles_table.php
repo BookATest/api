@@ -1,21 +1,31 @@
 <?php
 
+use App\Database\Migrations\MigrationSeeder;
 use App\Models\Role;
+use Illuminate\Support\Facades\DB;
 
-class RolesTableSeeder extends BaseSeeder
+class SeedRolesTable extends MigrationSeeder
 {
     /**
-     * Run the database seeds.
+     * Run the migrations.
      *
      * @return void
      */
-    public function run()
+    public function up()
     {
         $this->addRecord(Role::COMMUNITY_WORKER);
         $this->addRecord(Role::CLINIC_ADMIN);
         $this->addRecord(Role::ORGANISATION_ADMIN);
+    }
 
-        $this->db->table('roles')->insert($this->records);
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        DB::table('roles')->truncate();
     }
 
     /**
@@ -27,11 +37,11 @@ class RolesTableSeeder extends BaseSeeder
     {
         list($name) = $args;
 
-        $this->records[] = [
+        DB::table('roles')->insert([
             'id' => uuid(),
             'name' => $name,
             'created_at' => $this->now,
             'updated_at' => $this->now,
-        ];
+        ]);
     }
 }

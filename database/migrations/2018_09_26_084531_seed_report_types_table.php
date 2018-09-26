@@ -1,22 +1,32 @@
 <?php
 
+use App\Database\Migrations\MigrationSeeder;
 use App\Models\ReportType;
+use Illuminate\Support\Facades\DB;
 
-class ReportTypesTableSeeder extends BaseSeeder
+class SeedReportTypesTable extends MigrationSeeder
 {
     /**
-     * Run the database seeds.
+     * Run the migrations.
      *
      * @return void
      */
-    public function run()
+    public function up()
     {
         $this->addRecord(ReportType::COUNT_APPOINTMENTS_AVAILABLE);
         $this->addRecord(ReportType::COUNT_APPOINTMENTS_BOOKED);
         $this->addRecord(ReportType::COUNT_DID_NOT_ATTEND);
         $this->addRecord(ReportType::COUNT_TESTING_TYPES);
+    }
 
-        $this->db->table('report_types')->insert($this->records);
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        DB::table('report_types')->truncate();
     }
 
     /**
@@ -26,11 +36,11 @@ class ReportTypesTableSeeder extends BaseSeeder
     {
         list($name) = $args;
 
-        $this->records[] = [
+        DB::table('report_types')->insert([
             'id' => uuid(),
             'name' => $name,
             'created_at' => $this->now,
             'updated_at' => $this->now,
-        ];
+        ]);
     }
 }
