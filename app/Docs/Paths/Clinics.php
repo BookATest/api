@@ -56,6 +56,8 @@ class Clinics
                     'phone',
                     'email',
                     'address_line_1',
+                    'address_line_2',
+                    'address_line_3',
                     'city',
                     'postcode',
                     'directions'
@@ -65,8 +67,8 @@ class Clinics
                     Schema::string('phone'),
                     Schema::string('email'),
                     Schema::string('address_line_1'),
-                    Schema::string('address_line_2'),
-                    Schema::string('address_line_3'),
+                    Schema::string('address_line_2')->nullable(),
+                    Schema::string('address_line_3')->nullable(),
                     Schema::string('city'),
                     Schema::string('postcode'),
                     Schema::string('directions'),
@@ -104,6 +106,62 @@ class Clinics
             ->summary('Get a specific clinic')
             ->description('**Permission:** `Open`')
             ->operationId('clinics.show')
+            ->tags(Tags::clinics()->name);
+    }
+
+    /**
+     * @return \GoldSpecDigital\ObjectOrientedOAS\Objects\Operation
+     */
+    public static function update(): Operation
+    {
+        $responses = [
+            Responses::http200(
+                MediaType::json(ClinicResource::show())
+            ),
+        ];
+        $parameters = [
+            Parameter::path('clinic', Schema::string()->format(Schema::UUID))
+                ->description('The clinic ID')
+                ->required(),
+        ];
+        $requestBody = Requests::json(
+            Schema::object()
+                ->required(
+                    'name',
+                    'phone',
+                    'email',
+                    'address_line_1',
+                    'address_line_2',
+                    'address_line_3',
+                    'city',
+                    'postcode',
+                    'directions'
+                )
+                ->properties(
+                    Schema::string('name'),
+                    Schema::string('phone'),
+                    Schema::string('email'),
+                    Schema::string('address_line_1'),
+                    Schema::string('address_line_2')->nullable(),
+                    Schema::string('address_line_3')->nullable(),
+                    Schema::string('city'),
+                    Schema::string('postcode'),
+                    Schema::string('directions'),
+                    Schema::integer('appointment_duration'),
+                    Schema::integer('appointment_booking_threshold')
+                )
+        );
+
+        return Operation::put(...$responses)
+            ->parameters(...$parameters)
+            ->requestBody($requestBody)
+            ->summary('Updated a specific clinics')
+            ->description(<<<EOT
+**Permission:** `Clinic Admin`
+* Update a clinic they are a `Clinic Admin` for
+EOT
+            )
+            ->operationId('clinics.update')
             ->tags(Tags::clinics()->name);
     }
 }

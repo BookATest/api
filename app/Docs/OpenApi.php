@@ -96,7 +96,7 @@ class OpenApi
             PathItem::create('/bookings', Bookings::store()),
             PathItem::create('/bookings/eligible-clinics', Bookings::eligibleClinics()),
             PathItem::create('/clinics', Clinics::index(), Clinics::store()),
-            PathItem::create('/clinics/{clinic}', Clinics::show())
+            PathItem::create('/clinics/{clinic}', Clinics::show(), Clinics::update())
         );
     }
 
