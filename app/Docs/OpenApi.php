@@ -85,7 +85,7 @@ class OpenApi
     protected function getPaths(): Paths
     {
         return Paths::create(
-            PathItem::create('/appointments', Appointments::index()),
+            PathItem::create('/appointments', Appointments::index(), Appointments::store()),
             PathItem::create('/appointments/{appointment}', Appointments::show())
         );
     }
