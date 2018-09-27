@@ -76,14 +76,15 @@ class Appointments
                 )
         );
 
+        $description = <<<EOT
+**Permission:** `Community Worker`
+- Create an appointment at a clinic that they are a `Community Worker` for
+EOT;
+
         return Operation::post(...$responses)
             ->requestBody($requestBody)
             ->summary('Create a new appointment')
-            ->description(<<<EOT
-**Permission:** `Community Worker`
-- Create an appointment at a clinic that they are a `Community Worker` for
-EOT
-            )
+            ->description($description)
             ->operationId('appointments.store')
             ->tags(Tags::appointments()->name);
     }
@@ -135,15 +136,16 @@ EOT
                 )
         );
 
+        $description = <<<EOT
+**Permission:** `Community Worker`
+- Update their own appointment
+EOT;
+
         return Operation::put(...$responses)
             ->parameters(...$parameters)
             ->requestBody($requestBody)
             ->summary('Update a specific appointment')
-            ->description(<<<EOT
-**Permission:** `Community Worker`
-- Update their own appointment
-EOT
-            )
+            ->description($description)
             ->operationId('appointments.update')
             ->tags(Tags::appointments()->name);
     }
@@ -164,10 +166,7 @@ EOT
                 ->required(),
         ];
 
-        return Operation::delete(...$responses)
-            ->parameters(...$parameters)
-            ->summary('Delete a specific appointment')
-            ->description(<<<EOT
+        $description = <<<EOT
 **Permission:** `Community Worker`
 - Can delete any appointment from any user at a clinic they are a `Community Worker` for
 
@@ -175,8 +174,12 @@ EOT
 
 An appointment can only be deleted if it has not been booked by a service user. If an appointment has been booked,
 it must first be cancelled before you can delete it.
-EOT
-            )
+EOT;
+
+        return Operation::delete(...$responses)
+            ->parameters(...$parameters)
+            ->summary('Delete a specific appointment')
+            ->description($description)
             ->operationId('appointments.destroy')
             ->tags(Tags::appointments()->name);
     }
@@ -204,11 +207,7 @@ EOT
                 )
         );
 
-        return Operation::put(...$responses)
-            ->parameters(...$parameters)
-            ->requestBody($requestBody)
-            ->summary('Cancel a specific appointment')
-            ->description(<<<EOT
+        $description = <<<EOT
 **Permission:** `Open`
 - Service user can cancel their own appointments
 
@@ -220,8 +219,13 @@ EOT
 Removes the booking against the specified appointment.
 
 If the service user is cancelling their own appointment then the `service_user_token` parameter must be provided.
-EOT
-            )
+EOT;
+
+        return Operation::put(...$responses)
+            ->parameters(...$parameters)
+            ->requestBody($requestBody)
+            ->summary('Cancel a specific appointment')
+            ->description($description)
             ->operationId('appointments.cancel')
             ->tags(Tags::appointments()->name);
     }
@@ -242,10 +246,7 @@ EOT
                 ->required(),
         ];
 
-        return Operation::delete(...$responses)
-            ->parameters(...$parameters)
-            ->summary('Delete a specific repeating appointment')
-            ->description(<<<EOT
+        $description = <<<EOT
 **Permission:** `Community Worker`
 - Can delete any appointment schedule for any user at a clinic they are a `Community Worker` for
 
@@ -254,8 +255,12 @@ EOT
 Deleting the appointment schedule will attempt to delete all future appointments from the appointment specified.
 If any of the future appointments have been booked, they will be skipped and not deleted. If you want them to be
 deleted, you must manually cancel them and delete them individually after.
-EOT
-            )
+EOT;
+
+        return Operation::delete(...$responses)
+            ->parameters(...$parameters)
+            ->summary('Delete a specific repeating appointment')
+            ->description($description)
             ->operationId('appointments.schedule.destroy')
             ->tags(Tags::appointments()->name);
     }

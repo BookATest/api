@@ -153,15 +153,16 @@ class Clinics
                 )
         );
 
+        $description = <<<EOT
+**Permission:** `Clinic Admin`
+* Update a clinic they are a `Clinic Admin` for
+EOT;
+
         return Operation::put(...$responses)
             ->parameters(...$parameters)
             ->requestBody($requestBody)
             ->summary('Updated a specific clinic')
-            ->description(<<<EOT
-**Permission:** `Clinic Admin`
-* Update a clinic they are a `Clinic Admin` for
-EOT
-            )
+            ->description($description)
             ->operationId('clinics.update')
             ->tags(Tags::clinics()->name);
     }
@@ -182,17 +183,18 @@ EOT
                 ->required(),
         ];
 
-        return Operation::delete(...$responses)
-            ->parameters(...$parameters)
-            ->summary('Delete a specific clinic')
-            ->description(<<<EOT
+        $description = <<<EOT
 **Permission:** `Organisation Admin`
 
 ***
 
 This only soft deletes the clinic.
-EOT
-            )
+EOT;
+
+        return Operation::delete(...$responses)
+            ->parameters(...$parameters)
+            ->summary('Delete a specific clinic')
+            ->description($description)
             ->operationId('clinics.destroy')
             ->tags(Tags::clinics()->name);
     }

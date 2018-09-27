@@ -54,17 +54,18 @@ class Bookings
                 )
         );
 
-        return Operation::post(...$responses)
-            ->requestBody($requestBody)
-            ->summary('Make a booking for the service user')
-            ->description(<<<EOT
+        $description = <<<EOT
 **Permission:** `Open`
 
 ***
 
 Validation is in place to ensure only eligible service users can make a booking for this appointment. You should always first check which clinics the user is eligible at.
-EOT
-            )
+EOT;
+
+        return Operation::post(...$responses)
+            ->requestBody($requestBody)
+            ->summary('Make a booking for the service user')
+            ->description($description)
             ->operationId('bookings.store')
             ->tags(Tags::bookings()->name);
     }
@@ -95,10 +96,7 @@ EOT
                 )
         );
 
-        return Operation::post(...$responses)
-            ->requestBody($requestBody)
-            ->summary('Check which clinics the service user is eligible for')
-            ->description(<<<EOT
+        $description = <<<EOT
 **Permission:** `Open`
 
 ***
@@ -106,8 +104,12 @@ EOT
 This endpoint should be called at first instance to ensure the service user only attempts to book at a clinic that they are eligible for.
 
 A postcode must be provided to order the clinics by distance.
-EOT
-            )
+EOT;
+
+        return Operation::post(...$responses)
+            ->requestBody($requestBody)
+            ->summary('Check which clinics the service user is eligible for')
+            ->description($description)
             ->operationId('bookings.eligible-clinics')
             ->tags(Tags::bookings()->name);
     }
