@@ -95,6 +95,10 @@ class OpenApi
                 Appointments::show(),
                 Appointments::update(),
                 Appointments::destroy()
+            ),
+            PathItem::create(
+                '/appointments/{appointment}/cancel',
+                Appointments::cancel()
             )
         );
     }

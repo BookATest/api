@@ -10,7 +10,6 @@ use App\Docs\Tags;
 use GoldSpecDigital\ObjectOrientedOAS\Objects\MediaType;
 use GoldSpecDigital\ObjectOrientedOAS\Objects\Operation;
 use GoldSpecDigital\ObjectOrientedOAS\Objects\Parameter;
-use GoldSpecDigital\ObjectOrientedOAS\Objects\RequestBody;
 use GoldSpecDigital\ObjectOrientedOAS\Objects\Schema;
 
 class Appointments
@@ -175,6 +174,51 @@ it must first be cancelled before you can delete it.
 EOT
             )
             ->operationId('appointments.destroy')
+            ->tags(Tags::appointments()->name);
+    }
+
+    /**
+     * @return \GoldSpecDigital\ObjectOrientedOAS\Objects\Operation
+     */
+    public static function cancel(): Operation
+    {
+        $responses = [
+            Responses::http200(
+                MediaType::json(AppointmentResource::show())
+            ),
+        ];
+        $parameters = [
+            Parameter::path('appointment', Schema::string()->format(Schema::UUID))
+                ->description('The appointment ID')
+                ->required(),
+        ];
+        $requestBody = Requests::json(
+            Schema::object()
+                ->required('service_user_token')
+                ->properties(
+                    Schema::string('service_user_token')
+                )
+        );
+
+        return Operation::put(...$responses)
+            ->parameters(...$parameters)
+            ->requestBody($requestBody)
+            ->summary('Cancel a specific appointment')
+            ->description(<<<EOT
+**Permission:** `Open`
+- Service user can cancel their own appointments
+
+**Permission:** `Community Worker`
+- Can cancel any appointment from any user at a clinic they are a `Community Worker` for
+
+***
+
+Removes the booking against the specified appointment.
+
+If the service user is cancelling their own appointment then the `service_user_token` parameter must be provided.
+EOT
+            )
+            ->operationId('appointments.cancel')
             ->tags(Tags::appointments()->name);
     }
 }
