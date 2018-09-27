@@ -24,7 +24,8 @@ abstract class BaseResource
      */
     public static function show(): Schema
     {
-        return static::single(static::resource());
+        return Schema::object()
+            ->properties(static::resource()->name('data'));
     }
 
     /**
@@ -32,29 +33,10 @@ abstract class BaseResource
      */
     public static function list(): Schema
     {
-        return static::collection(static::resource());
-    }
-
-    /**
-     * @param \GoldSpecDigital\ObjectOrientedOAS\Objects\Schema $resource
-     * @return \GoldSpecDigital\ObjectOrientedOAS\Objects\Schema
-     */
-    protected static function single(Schema $resource): Schema
-    {
-        return Schema::object()
-            ->properties($resource->name('data'));
-    }
-
-    /**
-     * @param \GoldSpecDigital\ObjectOrientedOAS\Objects\Schema $resource
-     * @return \GoldSpecDigital\ObjectOrientedOAS\Objects\Schema
-     */
-    protected static function collection(Schema $resource): Schema
-    {
         return Schema::object()
             ->properties(
                 Schema::array('data')
-                    ->items($resource),
+                    ->items(static::resource()),
                 Schema::object('link')
                     ->properties(
                         Schema::string('first')->example('https://api.example.com/v1/resource?page=1'),
@@ -72,6 +54,17 @@ abstract class BaseResource
                         Schema::integer('to')->example(60),
                         Schema::integer('total')->example(100)
                     )
+            );
+    }
+
+    /**
+     * @return \GoldSpecDigital\ObjectOrientedOAS\Objects\Schema
+     */
+    public static function all(): Schema
+    {
+        return Schema::object()
+            ->properties(
+                Schema::array('data')->items(static::resource())
             );
     }
 
