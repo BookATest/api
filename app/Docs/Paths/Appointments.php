@@ -2,6 +2,7 @@
 
 namespace App\Docs\Paths;
 
+use App\Docs\Requests;
 use App\Docs\Resources\AppointmentResource;
 use App\Docs\Responses;
 use App\Docs\Tags;
@@ -61,19 +62,14 @@ class Appointments
                 MediaType::json(AppointmentResource::show())
             ),
         ];
-        $requestBody = RequestBody::create(
-            MediaType::json(
-                Schema::object()
-                    ->required(
-                        'start_at',
-                        'is_repeating'
-                    )
-                    ->properties(
-                        Schema::string('start_at')->format(Schema::DATE_TIME),
-                        Schema::boolean('is_repeating')
-                    )
-            )
-        )->required();
+        $requestBody = Requests::json(
+            Schema::object()
+                ->required('start_at', 'is_repeating')
+                ->properties(
+                    Schema::string('start_at')->format(Schema::DATE_TIME),
+                    Schema::boolean('is_repeating')
+                )
+        );
 
         return Operation::post(...$responses)
             ->requestBody($requestBody)
