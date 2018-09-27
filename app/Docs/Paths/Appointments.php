@@ -27,13 +27,8 @@ class Appointments
     {
         $responses = [
             Responses::http200(
-                MediaType::json(
-                    AppointmentResource::list()
-                ),
-                MediaType::create(
-                    MediaType::TEXT_CALENDAR,
-                    Schema::string()
-                )
+                MediaType::json(AppointmentResource::list()),
+                MediaType::create(MediaType::TEXT_CALENDAR, Schema::string())
             )
         ];
 
