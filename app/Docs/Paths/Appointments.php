@@ -4,6 +4,7 @@ namespace App\Docs\Paths;
 
 use App\Docs\Requests;
 use App\Docs\Resources\AppointmentResource;
+use App\Docs\Resources\BaseResource;
 use App\Docs\Responses;
 use App\Docs\Tags;
 use GoldSpecDigital\ObjectOrientedOAS\Objects\MediaType;
@@ -141,6 +142,39 @@ EOT
 EOT
             )
             ->operationId('appointments.update')
+            ->tags(Tags::appointments()->name);
+    }
+
+    /**
+     * @return \GoldSpecDigital\ObjectOrientedOAS\Objects\Operation
+     */
+    public static function destroy(): Operation
+    {
+        $responses = [
+            Responses::http200(
+                MediaType::json(BaseResource::deleted())
+            ),
+        ];
+        $parameters = [
+            Parameter::path('appointment', Schema::string()->format(Schema::UUID))
+                ->description('The appointment ID')
+                ->required(),
+        ];
+
+        return Operation::delete(...$responses)
+            ->parameters(...$parameters)
+            ->summary('Delete a specific appointment')
+            ->description(<<<EOT
+**Permission:** `Community Worker`
+- Can delete any appointment from any user at a clinic they are a `Community Worker` for
+
+***
+
+An appointment can only be deleted if it has not been booked by a service user. If an appointment has been booked,
+it must first be cancelled before you can delete it.
+EOT
+            )
+            ->operationId('appointments.destroy')
             ->tags(Tags::appointments()->name);
     }
 }

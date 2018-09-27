@@ -74,4 +74,15 @@ abstract class BaseResource
                     )
             );
     }
+
+    /**
+     * @return \GoldSpecDigital\ObjectOrientedOAS\Objects\Schema
+     */
+    public static function deleted(): Schema
+    {
+        return Schema::object()
+            ->properties(
+                Schema::string('message')->example('Resource deleted')
+            );
+    }
 }
