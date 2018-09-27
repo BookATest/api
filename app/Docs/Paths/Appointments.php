@@ -64,8 +64,9 @@ class Appointments
         ];
         $requestBody = Requests::json(
             Schema::object()
-                ->required('start_at', 'is_repeating')
+                ->required('clinic_id', 'start_at', 'is_repeating')
                 ->properties(
+                    Schema::string('clinic_id')->format(Schema::UUID),
                     Schema::string('start_at')->format(Schema::DATE_TIME),
                     Schema::boolean('is_repeating')
                 )
