@@ -86,7 +86,7 @@ class OpenApi
     {
         return Paths::create(
             PathItem::create('/appointments', Appointments::index(), Appointments::store()),
-            PathItem::create('/appointments/{appointment}', Appointments::show())
+            PathItem::create('/appointments/{appointment}', Appointments::show(), Appointments::update())
         );
     }
 

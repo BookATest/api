@@ -107,4 +107,40 @@ EOT
             ->operationId('appointments.show')
             ->tags(Tags::appointments()->name);
     }
+
+    /**
+     * @return \GoldSpecDigital\ObjectOrientedOAS\Objects\Operation
+     */
+    public static function update(): Operation
+    {
+        $responses = [
+            Responses::http200(
+                MediaType::json(AppointmentResource::show())
+            ),
+        ];
+        $parameters = [
+            Parameter::path('appointment', Schema::string()->format(Schema::UUID))
+                ->description('The appointment ID')
+                ->required(),
+        ];
+        $requestBody = Requests::json(
+            Schema::object()
+                ->required('did_not_attend')
+                ->properties(
+                    Schema::boolean('did_not_attend')
+                )
+        );
+
+        return Operation::put(...$responses)
+            ->parameters(...$parameters)
+            ->requestBody($requestBody)
+            ->summary('Update a specific appointment')
+            ->description(<<<EOT
+**Permission:** `Community Worker`
+- Update their own appointment
+EOT
+            )
+            ->operationId('appointments.update')
+            ->tags(Tags::appointments()->name);
+    }
 }
