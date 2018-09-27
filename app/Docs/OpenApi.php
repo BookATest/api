@@ -3,6 +3,7 @@
 namespace App\Docs;
 
 use App\Docs\Paths\Appointments;
+use App\Docs\Paths\Audits;
 use GoldSpecDigital\ObjectOrientedOAS\Objects\Components;
 use GoldSpecDigital\ObjectOrientedOAS\Objects\Contact;
 use GoldSpecDigital\ObjectOrientedOAS\Objects\ExternalDocs;
@@ -103,6 +104,10 @@ class OpenApi
             PathItem::create(
                 '/appointments/{appointment}/schedule',
                 Appointments::destroySchedule()
+            ),
+            PathItem::create(
+                '/audits',
+                Audits::index()
             )
         );
     }
