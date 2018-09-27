@@ -3,6 +3,7 @@
 namespace App\Docs\Paths;
 
 use App\Docs\Requests;
+use App\Docs\Resources\BaseResource;
 use App\Docs\Resources\ClinicResource;
 use App\Docs\Responses;
 use App\Docs\Tags;
@@ -79,7 +80,7 @@ class Clinics
 
         return Operation::post(...$responses)
             ->requestBody($requestBody)
-            ->summary('Create a new clinics')
+            ->summary('Create a new clinic')
             ->description('**Permission:** `Organisation Admin`')
             ->operationId('clinics.store')
             ->tags(Tags::clinics()->name);
@@ -155,13 +156,44 @@ class Clinics
         return Operation::put(...$responses)
             ->parameters(...$parameters)
             ->requestBody($requestBody)
-            ->summary('Updated a specific clinics')
+            ->summary('Updated a specific clinic')
             ->description(<<<EOT
 **Permission:** `Clinic Admin`
 * Update a clinic they are a `Clinic Admin` for
 EOT
             )
             ->operationId('clinics.update')
+            ->tags(Tags::clinics()->name);
+    }
+
+    /**
+     * @return \GoldSpecDigital\ObjectOrientedOAS\Objects\Operation
+     */
+    public static function destroy(): Operation
+    {
+        $responses = [
+            Responses::http200(
+                MediaType::json(BaseResource::deleted())
+            ),
+        ];
+        $parameters = [
+            Parameter::path('clinic', Schema::string()->format(Schema::UUID))
+                ->description('The clinic ID')
+                ->required(),
+        ];
+
+        return Operation::delete(...$responses)
+            ->parameters(...$parameters)
+            ->summary('Delete a specific clinic')
+            ->description(<<<EOT
+**Permission:** `Organisation Admin`
+
+***
+
+This only soft deletes the clinic.
+EOT
+            )
+            ->operationId('clinics.destroy')
             ->tags(Tags::clinics()->name);
     }
 }
