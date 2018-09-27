@@ -31,7 +31,6 @@ class Appointments
                 MediaType::create(MediaType::TEXT_CALENDAR, Schema::string())
             )
         ];
-
         $parameters = [
             Parameter::query('user_id', Schema::string()->format(Schema::UUID))
                 ->description('Comma separated user IDs'),
@@ -48,6 +47,30 @@ class Appointments
             ->summary('List all appointments')
             ->description('**Permission:** `Community Worker`')
             ->operationId('appointments.index')
+            ->tags(Tags::appointments()->name);
+    }
+
+    /**
+     * @return \GoldSpecDigital\ObjectOrientedOAS\Objects\Operation
+     */
+    public static function show(): Operation
+    {
+        $responses = [
+            Responses::http200(
+                MediaType::json(AppointmentResource::show())
+            )
+        ];
+        $parameters = [
+            Parameter::path('appointment', Schema::string()->format(Schema::UUID))
+                ->description('The appointment ID')
+                ->required()
+        ];
+
+        return Operation::get(...$responses)
+            ->parameters(...$parameters)
+            ->summary('Get a specific appointment')
+            ->description('**Permission:** `Community Worker`')
+            ->operationId('appointments.show')
             ->tags(Tags::appointments()->name);
     }
 }

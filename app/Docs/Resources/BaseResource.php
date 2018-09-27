@@ -39,20 +39,17 @@ abstract class BaseResource
      * @param \GoldSpecDigital\ObjectOrientedOAS\Objects\Schema $resource
      * @return \GoldSpecDigital\ObjectOrientedOAS\Objects\Schema
      */
-    public static function single(Schema $resource): Schema
+    protected static function single(Schema $resource): Schema
     {
         return Schema::object()
-            ->properties(
-                Schema::object('data')
-                    ->properties($resource)
-            );
+            ->properties($resource->name('data'));
     }
 
     /**
      * @param \GoldSpecDigital\ObjectOrientedOAS\Objects\Schema $resource
      * @return \GoldSpecDigital\ObjectOrientedOAS\Objects\Schema
      */
-    public static function collection(Schema $resource): Schema
+    protected static function collection(Schema $resource): Schema
     {
         return Schema::object()
             ->properties(
