@@ -221,4 +221,38 @@ EOT
             ->operationId('appointments.cancel')
             ->tags(Tags::appointments()->name);
     }
+
+    /**
+     * @return \GoldSpecDigital\ObjectOrientedOAS\Objects\Operation
+     */
+    public static function destroySchedule(): Operation
+    {
+        $responses = [
+            Responses::http200(
+                MediaType::json(BaseResource::deleted())
+            ),
+        ];
+        $parameters = [
+            Parameter::path('appointment', Schema::string()->format(Schema::UUID))
+                ->description('The appointment ID')
+                ->required(),
+        ];
+
+        return Operation::delete(...$responses)
+            ->parameters(...$parameters)
+            ->summary('Delete a specific repeating appointment')
+            ->description(<<<EOT
+**Permission:** `Community Worker`
+- Can delete any appointment schedule for any user at a clinic they are a `Community Worker` for
+
+***
+
+Deleting the appointment schedule will attempt to delete all future appointments from the appointment specified.
+If any of the future appointments have been booked, they will be skipped and not deleted. If you want them to be
+deleted, you must manually cancel them and delete them individually after.
+EOT
+            )
+            ->operationId('appointments.schedule.destroy')
+            ->tags(Tags::appointments()->name);
+    }
 }
