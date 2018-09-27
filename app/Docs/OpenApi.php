@@ -5,6 +5,7 @@ namespace App\Docs;
 use App\Docs\Paths\Appointments;
 use App\Docs\Paths\Audits;
 use App\Docs\Paths\Bookings;
+use App\Docs\Paths\Clinics;
 use GoldSpecDigital\ObjectOrientedOAS\Objects\Components;
 use GoldSpecDigital\ObjectOrientedOAS\Objects\Contact;
 use GoldSpecDigital\ObjectOrientedOAS\Objects\ExternalDocs;
@@ -102,7 +103,8 @@ class OpenApi
             PathItem::create('/appointments/{appointment}/schedule', Appointments::destroySchedule()),
             PathItem::create('/audits', Audits::index()),
             PathItem::create('/bookings', Bookings::store()),
-            PathItem::create('/bookings/eligible-clinics', Bookings::eligibleClinics())
+            PathItem::create('/bookings/eligible-clinics', Bookings::eligibleClinics()),
+            PathItem::create('/clinics', Clinics::index())
         );
     }
 

@@ -17,7 +17,7 @@ class Responses
     }
 
     /**
-     * @param \GoldSpecDigital\ObjectOrientedOAS\Objects\MediaType ...$content
+     * @param \GoldSpecDigital\ObjectOrientedOAS\Objects\MediaType[] $content
      * @return \GoldSpecDigital\ObjectOrientedOAS\Objects\Response
      */
     public static function http200(MediaType ...$content): Response
@@ -30,7 +30,7 @@ class Responses
     }
 
     /**
-     * @param \GoldSpecDigital\ObjectOrientedOAS\Objects\MediaType ...$content
+     * @param \GoldSpecDigital\ObjectOrientedOAS\Objects\MediaType[] $content
      * @return \GoldSpecDigital\ObjectOrientedOAS\Objects\Response
      */
     public static function http201(MediaType ...$content): Response

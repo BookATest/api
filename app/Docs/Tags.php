@@ -24,7 +24,7 @@ class Tags
             static::audits(),
             static::bookings(),
             static::calendarFeed(),
-            static::clinicLocations(),
+            static::clinics(),
             static::questions(),
             static::reports(),
             static::reportSchedules(),
@@ -74,10 +74,10 @@ class Tags
     /**
      * @return \GoldSpecDigital\ObjectOrientedOAS\Objects\Tag
      */
-    public static function clinicLocations(): Tag
+    public static function clinics(): Tag
     {
-        return Tag::create('Clinic locations')
-            ->description('Set by clinics to specify which answers make the user eligible');
+        return Tag::create('Clinics')
+            ->description('Clinic location');
     }
 
     /**
