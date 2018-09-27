@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "cf9f341d95b4924a23e5a22f54ce563e",
+    "content-hash": "5a57016adf5727e9ea401817aea13d98",
     "packages": [
         {
             "name": "defuse/php-encryption",
@@ -477,16 +477,16 @@
         },
         {
             "name": "goldspecdigital/oooas",
-            "version": "v0.2.1",
+            "version": "v0.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/goldspecdigital/oooas.git",
-                "reference": "8bc33fe93db50f1ea4b4bf2d9f1c02a6e206f90a"
+                "reference": "068b22800948a8456b839ffbae4876343e60ed68"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/goldspecdigital/oooas/zipball/8bc33fe93db50f1ea4b4bf2d9f1c02a6e206f90a",
-                "reference": "8bc33fe93db50f1ea4b4bf2d9f1c02a6e206f90a",
+                "url": "https://api.github.com/repos/goldspecdigital/oooas/zipball/068b22800948a8456b839ffbae4876343e60ed68",
+                "reference": "068b22800948a8456b839ffbae4876343e60ed68",
                 "shasum": ""
             },
             "require": {
@@ -520,7 +520,7 @@
                 "openapi",
                 "php"
             ],
-            "time": "2018-09-27T12:08:26+00:00"
+            "time": "2018-09-27T12:38:28+00:00"
         },
         {
             "name": "guzzlehttp/guzzle",

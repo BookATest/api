@@ -39,16 +39,12 @@ abstract class BaseResource
      * @param \GoldSpecDigital\ObjectOrientedOAS\Objects\Schema $resource
      * @return \GoldSpecDigital\ObjectOrientedOAS\Objects\Schema
      */
-    public static function collection(Schema $resource): Schema
+    public static function single(Schema $resource): Schema
     {
         return Schema::object()
             ->properties(
-                Schema::array('data')
-                    ->items($resource),
-                Schema::object('link')
-                    ->properties(),
-                Schema::object('meta')
-                    ->properties()
+                Schema::object('data')
+                    ->properties($resource)
             );
     }
 
@@ -56,12 +52,29 @@ abstract class BaseResource
      * @param \GoldSpecDigital\ObjectOrientedOAS\Objects\Schema $resource
      * @return \GoldSpecDigital\ObjectOrientedOAS\Objects\Schema
      */
-    public static function single(Schema $resource): Schema
+    public static function collection(Schema $resource): Schema
     {
         return Schema::object()
             ->properties(
-                Schema::object('data')
-                    ->properties($resource)
+                Schema::array('data')
+                    ->items($resource),
+                Schema::object('link')
+                    ->properties(
+                        Schema::string('first')->example('https://api.example.com/v1/resource?page=1'),
+                        Schema::string('last')->example('https://api.example.com/v1/resource?page=10'),
+                        Schema::string('prev')->example('https://api.example.com/v1/resource?page=4')->nullable(),
+                        Schema::string('next')->example('https://api.example.com/v1/resource?page=6')->nullable()
+                    ),
+                Schema::object('meta')
+                    ->properties(
+                        Schema::integer('current_page')->example(5),
+                        Schema::integer('from')->example(51),
+                        Schema::integer('last_page')->example(10),
+                        Schema::string('path')->example('https://api.example.com/v1/resource'),
+                        Schema::integer('per_page')->example(10),
+                        Schema::integer('to')->example(60),
+                        Schema::integer('total')->example(100)
+                    )
             );
     }
 }
