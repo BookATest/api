@@ -17,7 +17,7 @@ class EligibleAnswerResource extends BaseResource
             Schema::string('question_id')->format(Schema::UUID),
             Schema::object('answer')->properties(
                 Schema::string('type'),
-                Schema::string('interval')
+                Schema::integer('interval')
             ),
             Schema::string('updated_at')->format('date-time')
         );
