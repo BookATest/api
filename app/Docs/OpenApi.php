@@ -88,27 +88,15 @@ class OpenApi
     protected function getPaths(): Paths
     {
         return Paths::create(
-            PathItem::create(
-                '/appointments',
-                Appointments::index(),
-                Appointments::store()
-            ),
-            PathItem::create(
-                '/appointments/{appointment}',
-                Appointments::show(),
-                Appointments::update(),
-                Appointments::destroy()
-            ),
+            PathItem::create('/appointments', Appointments::index(), Appointments::store()),
+            PathItem::create('/appointments/{appointment}', Appointments::show(), Appointments::update(), Appointments::destroy()),
             PathItem::create('/appointments/{appointment}/cancel', Appointments::cancel()),
             PathItem::create('/appointments/{appointment}/schedule', Appointments::destroySchedule()),
             PathItem::create('/audits', Audits::index()),
             PathItem::create('/bookings', Bookings::store()),
             PathItem::create('/bookings/eligible-clinics', Bookings::eligibleClinics()),
-            PathItem::create(
-                '/clinics',
-                Clinics::index(),
-                Clinics::store()
-            )
+            PathItem::create('/clinics', Clinics::index(), Clinics::store()),
+            PathItem::create('/clinics/{clinic}', Clinics::show())
         );
     }
 

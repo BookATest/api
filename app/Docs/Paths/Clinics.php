@@ -8,6 +8,7 @@ use App\Docs\Responses;
 use App\Docs\Tags;
 use GoldSpecDigital\ObjectOrientedOAS\Objects\MediaType;
 use GoldSpecDigital\ObjectOrientedOAS\Objects\Operation;
+use GoldSpecDigital\ObjectOrientedOAS\Objects\Parameter;
 use GoldSpecDigital\ObjectOrientedOAS\Objects\Schema;
 
 class Clinics
@@ -79,6 +80,30 @@ class Clinics
             ->summary('Create a new clinics')
             ->description('**Permission:** `Organisation Admin`')
             ->operationId('clinics.store')
+            ->tags(Tags::clinics()->name);
+    }
+
+    /**
+     * @return \GoldSpecDigital\ObjectOrientedOAS\Objects\Operation
+     */
+    public static function show(): Operation
+    {
+        $responses = [
+            Responses::http200(
+                MediaType::json(ClinicResource::show())
+            ),
+        ];
+        $parameters = [
+            Parameter::path('clinic', Schema::string()->format(Schema::UUID))
+                ->description('The clinic ID')
+                ->required(),
+        ];
+
+        return Operation::get(...$responses)
+            ->parameters(...$parameters)
+            ->summary('Get a specific clinic')
+            ->description('**Permission:** `Open`')
+            ->operationId('clinics.show')
             ->tags(Tags::clinics()->name);
     }
 }
