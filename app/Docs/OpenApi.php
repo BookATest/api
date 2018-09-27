@@ -97,18 +97,9 @@ class OpenApi
                 Appointments::update(),
                 Appointments::destroy()
             ),
-            PathItem::create(
-                '/appointments/{appointment}/cancel',
-                Appointments::cancel()
-            ),
-            PathItem::create(
-                '/appointments/{appointment}/schedule',
-                Appointments::destroySchedule()
-            ),
-            PathItem::create(
-                '/audits',
-                Audits::index()
-            )
+            PathItem::create('/appointments/{appointment}/cancel', Appointments::cancel()),
+            PathItem::create('/appointments/{appointment}/schedule', Appointments::destroySchedule()),
+            PathItem::create('/audits', Audits::index())
         );
     }
 

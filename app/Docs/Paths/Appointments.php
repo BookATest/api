@@ -42,6 +42,10 @@ class Appointments
                 ->description('Comma separated service user IDs'),
             Parameter::query('format', Schema::string()->enum('json', 'ics')->default('json'))
                 ->description('The desired format for the response'),
+            Parameter::query('calendar_feed_token', Schema::string())
+                ->description('The user\'s calendar feed token - required if the format is set to `ics`'),
+            Parameter::query('available', Schema::boolean())
+                ->description('If only available appointments should be returned. If the user is not authenticated, then they can only see appointments which are available'),
         ];
 
         return Operation::get(...$responses)
