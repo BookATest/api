@@ -3,6 +3,7 @@
 namespace App\Docs\Paths;
 
 use App\Docs\Requests;
+use App\Docs\Resources\AppointmentResource;
 use App\Docs\Resources\ClinicResource;
 use App\Docs\Responses;
 use App\Docs\Tags;
@@ -25,7 +26,47 @@ class Bookings
      */
     public static function store(): Operation
     {
-        // TODO
+        $responses = [
+            Responses::http200(
+                MediaType::json(AppointmentResource::show())
+            ),
+        ];
+        $requestBody = Requests::json(
+            Schema::object()
+                ->required('service_user', 'answers', 'notification')
+                ->properties(
+                    Schema::object('service_user')
+                        ->required('name', 'phone', 'email', 'preferred_contact_method')
+                        ->properties(
+                            Schema::string('name'),
+                            Schema::string('phone'),
+                            Schema::string('email'),
+                            Schema::string('preferred_contact_method')->enum('email', 'phone')
+                        ),
+                    Schema::array('answers')->items(Schema::object()
+                        ->required('question_id', 'answer')
+                        ->properties(
+                            Schema::string('question_id')->format(Schema::UUID),
+                            Schema::string('answer')
+                        )
+                    ),
+                    Schema::string('notification')
+                )
+        );
+
+        return Operation::post(...$responses)
+            ->requestBody($requestBody)
+            ->summary('Make a booking for the service user')
+            ->description(<<<EOT
+**Permission:** `Open`
+
+***
+
+Validation is in place to ensure only eligible service users can make a booking for this appointment. You should always first check which clinics the user is eligible at.
+EOT
+            )
+            ->operationId('bookings.store')
+            ->tags(Tags::bookings()->name);
     }
 
     /**
@@ -56,7 +97,7 @@ class Bookings
 
         return Operation::post(...$responses)
             ->requestBody($requestBody)
-            ->summary('Create a new appointment')
+            ->summary('Check which clinics the service user is eligible for')
             ->description(<<<EOT
 **Permission:** `Open`
 
