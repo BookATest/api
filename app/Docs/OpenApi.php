@@ -11,6 +11,7 @@ use App\Docs\Paths\Questions;
 use App\Docs\Paths\Reports;
 use App\Docs\Paths\ReportSchedules;
 use App\Docs\Paths\ServiceUsers;
+use App\Docs\Paths\Settings;
 use GoldSpecDigital\ObjectOrientedOAS\Objects\Components;
 use GoldSpecDigital\ObjectOrientedOAS\Objects\Contact;
 use GoldSpecDigital\ObjectOrientedOAS\Objects\ExternalDocs;
@@ -113,7 +114,7 @@ class OpenApi
             PathItem::create('/service-users/{service_user}', ServiceUsers::show()),
             PathItem::create('/service-users/access-code', ServiceUsers::accessCode()),
             PathItem::create('/service-users/token', ServiceUsers::token()),
-            PathItem::create('/settings'),
+            PathItem::create('/settings', Settings::index(), Settings::update()),
             PathItem::create('/stats'),
             PathItem::create('/users'),
             PathItem::create('/users/{user}'),
