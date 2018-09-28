@@ -10,6 +10,7 @@ use App\Docs\Paths\EligibleAnswers;
 use App\Docs\Paths\Questions;
 use App\Docs\Paths\Reports;
 use App\Docs\Paths\ReportSchedules;
+use App\Docs\Paths\ServiceUsers;
 use GoldSpecDigital\ObjectOrientedOAS\Objects\Components;
 use GoldSpecDigital\ObjectOrientedOAS\Objects\Contact;
 use GoldSpecDigital\ObjectOrientedOAS\Objects\ExternalDocs;
@@ -108,12 +109,16 @@ class OpenApi
             PathItem::create('/reports/{report}/download', Reports::download()),
             PathItem::create('/report-schedules', ReportSchedules::index(), ReportSchedules::store()),
             PathItem::create('/report-schedules/{report_schedule}', ReportSchedules::show(), ReportSchedules::update(), ReportSchedules::destroy()),
-            PathItem::create('/service-users'),
-            PathItem::create('/service-users/{service_user}'),
+            PathItem::create('/service-users', ServiceUsers::index()),
+            PathItem::create('/service-users/{service_user}', ServiceUsers::show()),
+            PathItem::create('/service-users/access-code', ServiceUsers::accessCode()),
+            PathItem::create('/service-users/token', ServiceUsers::token()),
             PathItem::create('/settings'),
             PathItem::create('/stats'),
             PathItem::create('/users'),
-            PathItem::create('/users/{user}')
+            PathItem::create('/users/{user}'),
+            PathItem::create('/users/{user}/profile-picture'),
+            PathItem::create('/users/{user}/profile-picture.png')
         );
     }
 

@@ -21,4 +21,16 @@ class ServiceUserResource extends BaseResource
             Schema::string('updated_at')->format('date-time')
         );
     }
+
+    /**
+     * @return \GoldSpecDigital\ObjectOrientedOAS\Objects\Schema
+     */
+    public static function showWithAppointments(): Schema
+    {
+        $properties = static::resource()->properties;
+        $properties[] = Schema::array('appointments')->items(AppointmentResource::resource());
+
+        return Schema::object()
+            ->properties(static::resource()->properties(...$properties)->name('data'));
+    }
 }
