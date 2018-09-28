@@ -100,7 +100,7 @@ class OpenApi
             PathItem::create('/clinics', Clinics::index(), Clinics::store()),
             PathItem::create('/clinics/{clinic}', Clinics::show(), Clinics::update(), Clinics::destroy()),
             PathItem::create('/clinics/{clinic}/eligible-answers', EligibleAnswers::index(), EligibleAnswers::update()),
-            PathItem::create('/questions', Questions::index())
+            PathItem::create('/questions', Questions::index(), Questions::store())
         );
     }
 
