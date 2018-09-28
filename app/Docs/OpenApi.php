@@ -8,6 +8,7 @@ use App\Docs\Paths\Bookings;
 use App\Docs\Paths\Clinics;
 use App\Docs\Paths\EligibleAnswers;
 use App\Docs\Paths\Questions;
+use App\Docs\Paths\Reports;
 use GoldSpecDigital\ObjectOrientedOAS\Objects\Components;
 use GoldSpecDigital\ObjectOrientedOAS\Objects\Contact;
 use GoldSpecDigital\ObjectOrientedOAS\Objects\ExternalDocs;
@@ -100,7 +101,18 @@ class OpenApi
             PathItem::create('/clinics', Clinics::index(), Clinics::store()),
             PathItem::create('/clinics/{clinic}', Clinics::show(), Clinics::update(), Clinics::destroy()),
             PathItem::create('/clinics/{clinic}/eligible-answers', EligibleAnswers::index(), EligibleAnswers::update()),
-            PathItem::create('/questions', Questions::index(), Questions::store())
+            PathItem::create('/questions', Questions::index(), Questions::store()),
+            PathItem::create('/reports', Reports::index(), Reports::store()),
+            PathItem::create('/reports/{report}', Reports::show(), Reports::destroy()),
+            PathItem::create('/reports/{report}/download', Reports::download()),
+            PathItem::create('/report-schedules'),
+            PathItem::create('/report-schedules/{report_schedule}'),
+            PathItem::create('/service-users'),
+            PathItem::create('/service-users/{service_user}'),
+            PathItem::create('/settings'),
+            PathItem::create('/stats'),
+            PathItem::create('/users'),
+            PathItem::create('/users/{user}')
         );
     }
 
