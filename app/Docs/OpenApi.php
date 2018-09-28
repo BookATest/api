@@ -9,6 +9,7 @@ use App\Docs\Paths\Clinics;
 use App\Docs\Paths\EligibleAnswers;
 use App\Docs\Paths\Questions;
 use App\Docs\Paths\Reports;
+use App\Docs\Paths\ReportSchedules;
 use GoldSpecDigital\ObjectOrientedOAS\Objects\Components;
 use GoldSpecDigital\ObjectOrientedOAS\Objects\Contact;
 use GoldSpecDigital\ObjectOrientedOAS\Objects\ExternalDocs;
@@ -105,8 +106,8 @@ class OpenApi
             PathItem::create('/reports', Reports::index(), Reports::store()),
             PathItem::create('/reports/{report}', Reports::show(), Reports::destroy()),
             PathItem::create('/reports/{report}/download', Reports::download()),
-            PathItem::create('/report-schedules'),
-            PathItem::create('/report-schedules/{report_schedule}'),
+            PathItem::create('/report-schedules', ReportSchedules::index(), ReportSchedules::store()),
+            PathItem::create('/report-schedules/{report_schedule}', ReportSchedules::show(), ReportSchedules::update(), ReportSchedules::destroy()),
             PathItem::create('/service-users'),
             PathItem::create('/service-users/{service_user}'),
             PathItem::create('/settings'),

@@ -104,7 +104,8 @@ EOT;
 
         $parameters = [
             Parameter::path('report', Schema::string()->format(Schema::UUID))
-                ->description('The report ID'),
+                ->description('The report ID')
+                ->required(),
         ];
 
         return Operation::get(...$responses)
@@ -133,7 +134,8 @@ EOT;
 
         $parameters = [
             Parameter::path('report', Schema::string()->format(Schema::UUID))
-                ->description('The report ID'),
+                ->description('The report ID')
+                ->required(),
         ];
 
         return Operation::delete(...$responses)
@@ -162,7 +164,8 @@ EOT;
 
         $parameters = [
             Parameter::path('report', Schema::string()->format(Schema::UUID))
-                ->description('The report ID'),
+                ->description('The report ID')
+                ->required(),
         ];
 
         return Operation::get(...$responses)
