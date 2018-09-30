@@ -1,5 +1,0 @@
-QuestionOption:
-  type: "object"
-  properties:
-    option:
-      type: "string"
