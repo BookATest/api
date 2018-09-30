@@ -15,6 +15,5 @@ use Illuminate\Support\Facades\Route;
 
 Route::resource('/docs', 'DocsController')
     ->only('index');
-Route::get('/docs/{path}', 'DocsController@openapi')
-    ->where('path', '.*(.yaml)')
+Route::get('/docs/openapi.json', 'DocsController@openapi')
     ->name('docs.openapi');

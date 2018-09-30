@@ -23,7 +23,6 @@ class Tags
             static::appointments(),
             static::audits(),
             static::bookings(),
-            static::calendarFeed(),
             static::clinics(),
             static::eligibleAnswers(),
             static::questions(),
@@ -61,15 +60,6 @@ class Tags
     {
         return Tag::create('Bookings')
             ->description('For service users to make appointment bookings');
-    }
-
-    /**
-     * @return \GoldSpecDigital\ObjectOrientedOAS\Objects\Tag
-     */
-    public static function calendarFeed(): Tag
-    {
-        return Tag::create('Calendar Feed')
-            ->description('Appointment calendar feed');
     }
 
     /**

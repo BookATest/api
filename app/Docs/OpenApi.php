@@ -13,6 +13,7 @@ use App\Docs\Paths\ReportSchedules;
 use App\Docs\Paths\ServiceUsers;
 use App\Docs\Paths\Settings;
 use App\Docs\Paths\Stats;
+use App\Docs\Paths\Users;
 use GoldSpecDigital\ObjectOrientedOAS\Objects\Components;
 use GoldSpecDigital\ObjectOrientedOAS\Objects\Contact;
 use GoldSpecDigital\ObjectOrientedOAS\Objects\ExternalDocs;
@@ -117,10 +118,10 @@ class OpenApi
             PathItem::create('/service-users/token', ServiceUsers::token()),
             PathItem::create('/settings', Settings::index(), Settings::update()),
             PathItem::create('/stats', Stats::index()),
-            PathItem::create('/users'),
-            PathItem::create('/users/{user}'),
-            PathItem::create('/users/{user}/profile-picture'),
-            PathItem::create('/users/{user}/profile-picture.png')
+            PathItem::create('/users', Users::index(), Users::store()),
+            PathItem::create('/users/{user}', Users::show(), Users::update(), Users::destroy()),
+            PathItem::create('/users/{user}/profile-picture.png', Users::profilePicture()),
+            PathItem::create('/users/{user}/calendar-feed-token', Users::calendarFeedToken())
         );
     }
 
