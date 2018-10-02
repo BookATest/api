@@ -142,4 +142,106 @@ class AppointmentsTest extends TestCase
         ]);
         $response->assertJsonMissing(['id' => $otherAppointment->id]);
     }
+
+    public function test_cw_can_list_them_filtering_by_clinic_id()
+    {
+        $clinic = factory(Clinic::class)->create();
+        $user = factory(User::class)->create()->makeCommunityWorker($clinic);
+        $clinicsAppointment = factory(Appointment::class)->create();
+        $otherAppointment = factory(Appointment::class)->create();
+
+        Passport::actingAs($user);
+        $response = $this->json('GET', "/v1/appointments?filter[clinic_id]={$clinicsAppointment->clinic_id}");
+
+        $clinicsAppointment = $clinicsAppointment->fresh();
+        $otherAppointment = $otherAppointment->fresh();
+
+        $response->assertStatus(Response::HTTP_OK);
+        $response->assertJsonFragment([
+            [
+                'id' => $clinicsAppointment->id,
+                'user_id' => $clinicsAppointment->user_id,
+                'clinic_id' => $clinicsAppointment->clinic_id,
+                'is_repeating' => $clinicsAppointment->appointment_schedule_id !== null,
+                'service_user_id' => $clinicsAppointment->service_user_id,
+                'start_at' => $clinicsAppointment->start_at->format(Carbon::ISO8601),
+                'booked_at' => null,
+                'did_not_attend' => $clinicsAppointment->did_not_attend,
+                'created_at' => $clinicsAppointment->created_at->format(Carbon::ISO8601),
+                'updated_at' => $clinicsAppointment->updated_at->format(Carbon::ISO8601),
+            ]
+        ]);
+        $response->assertJsonMissing(['id' => $otherAppointment->id]);
+    }
+
+    public function test_cw_can_list_them_filtering_by_service_user_id()
+    {
+        $clinic = factory(Clinic::class)->create();
+        $user = factory(User::class)->create()->makeCommunityWorker($clinic);
+        $serviceUsersAppointment = factory(Appointment::class)->create([
+            'service_user_id' => factory(ServiceUser::class)->create()->id,
+            'booked_at' => now(),
+        ]);
+        $otherAppointment = factory(Appointment::class)->create([
+            'service_user_id' => factory(ServiceUser::class)->create()->id,
+            'booked_at' => now(),
+        ]);
+
+        Passport::actingAs($user);
+        $response = $this->json('GET', "/v1/appointments?filter[service_user_id]={$serviceUsersAppointment->service_user_id}");
+
+        $serviceUsersAppointment = $serviceUsersAppointment->fresh();
+        $otherAppointment = $otherAppointment->fresh();
+
+        $response->assertStatus(Response::HTTP_OK);
+        $response->assertJsonFragment([
+            [
+                'id' => $serviceUsersAppointment->id,
+                'user_id' => $serviceUsersAppointment->user_id,
+                'clinic_id' => $serviceUsersAppointment->clinic_id,
+                'is_repeating' => $serviceUsersAppointment->appointment_schedule_id !== null,
+                'service_user_id' => $serviceUsersAppointment->service_user_id,
+                'start_at' => $serviceUsersAppointment->start_at->format(Carbon::ISO8601),
+                'booked_at' => $serviceUsersAppointment->booked_at->format(Carbon::ISO8601),
+                'did_not_attend' => $serviceUsersAppointment->did_not_attend,
+                'created_at' => $serviceUsersAppointment->created_at->format(Carbon::ISO8601),
+                'updated_at' => $serviceUsersAppointment->updated_at->format(Carbon::ISO8601),
+            ]
+        ]);
+        $response->assertJsonMissing(['id' => $otherAppointment->id]);
+    }
+
+    public function test_cw_can_list_them_filtering_by_availability()
+    {
+        $clinic = factory(Clinic::class)->create();
+        $user = factory(User::class)->create()->makeCommunityWorker($clinic);
+        $availableAppointment = factory(Appointment::class)->create();
+        $bookedAppointment = factory(Appointment::class)->create([
+            'service_user_id' => factory(ServiceUser::class)->create()->id,
+            'booked_at' => now(),
+        ]);
+
+        Passport::actingAs($user);
+        $response = $this->json('GET', "/v1/appointments?filter[available]=true");
+
+        $availableAppointment = $availableAppointment->fresh();
+        $bookedAppointment = $bookedAppointment->fresh();
+
+        $response->assertStatus(Response::HTTP_OK);
+        $response->assertJsonFragment([
+            [
+                'id' => $availableAppointment->id,
+                'user_id' => $availableAppointment->user_id,
+                'clinic_id' => $availableAppointment->clinic_id,
+                'is_repeating' => $availableAppointment->appointment_schedule_id !== null,
+                'service_user_id' => $availableAppointment->service_user_id,
+                'start_at' => $availableAppointment->start_at->format(Carbon::ISO8601),
+                'booked_at' => null,
+                'did_not_attend' => $availableAppointment->did_not_attend,
+                'created_at' => $availableAppointment->created_at->format(Carbon::ISO8601),
+                'updated_at' => $availableAppointment->updated_at->format(Carbon::ISO8601),
+            ]
+        ]);
+        $response->assertJsonMissing(['id' => $bookedAppointment->id]);
+    }
 }
