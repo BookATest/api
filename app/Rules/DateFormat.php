@@ -20,7 +20,7 @@ class DateFormat
      */
     public function __invoke(string $format): string
     {
-        return 'date_format:'.$format;
+        return 'date_format:' . $format;
     }
 
     /**

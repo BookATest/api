@@ -2,7 +2,6 @@
 
 namespace App\Rules;
 
-use App\Models\Appointment;
 use App\Models\Clinic;
 use App\Models\User;
 use Illuminate\Contracts\Validation\Rule;

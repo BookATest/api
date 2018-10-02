@@ -5,8 +5,8 @@ namespace App\Models;
 use App\Models\Mutators\UserMutators;
 use App\Models\Relationships\UserRelationships;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
 use Laravel\Passport\HasApiTokens;
 use RuntimeException;
 

@@ -55,7 +55,7 @@ EOT;
             Parameter::query('calendar_feed_token', Schema::string())
                 ->description('The user\'s calendar feed token - required if the format is set to `ics`'),
             Parameter::query('sort', Schema::string()->default('-created_at'))
-                ->description('The field to sort the results by [`created_at`]')
+                ->description('The field to sort the results by [`created_at`]'),
         ];
 
         return Operation::get(...$responses)

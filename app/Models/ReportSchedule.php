@@ -11,5 +11,5 @@ class ReportSchedule extends Model
     use ReportScheduleRelationships;
 
     const WEEKLY = 'weekly';
-    const MONTHLY= 'monthly';
+    const MONTHLY = 'monthly';
 }

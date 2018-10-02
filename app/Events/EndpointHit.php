@@ -4,9 +4,9 @@ namespace App\Events;
 
 use App\Models\Audit;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Http\Request;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Foundation\Events\Dispatchable;
 use Laravel\Passport\Client;
 
 class EndpointHit

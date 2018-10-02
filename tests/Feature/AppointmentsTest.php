@@ -47,7 +47,7 @@ class AppointmentsTest extends TestCase
                 'did_not_attend' => $availableAppointment->did_not_attend,
                 'created_at' => $availableAppointment->created_at->format(Carbon::ISO8601),
                 'updated_at' => $availableAppointment->updated_at->format(Carbon::ISO8601),
-            ]
+            ],
         ]);
         $response->assertJsonMissing(['id' => $bookedAppointment->id]);
     }
@@ -82,7 +82,7 @@ class AppointmentsTest extends TestCase
                 'did_not_attend' => $availableAppointment->did_not_attend,
                 'created_at' => $availableAppointment->created_at->format(Carbon::ISO8601),
                 'updated_at' => $availableAppointment->updated_at->format(Carbon::ISO8601),
-            ]
+            ],
         ]);
         $response->assertJsonFragment([
             [
@@ -96,7 +96,7 @@ class AppointmentsTest extends TestCase
                 'did_not_attend' => $bookedAppointment->did_not_attend,
                 'created_at' => $bookedAppointment->created_at->format(Carbon::ISO8601),
                 'updated_at' => $bookedAppointment->updated_at->format(Carbon::ISO8601),
-            ]
+            ],
         ]);
     }
 
@@ -138,7 +138,7 @@ class AppointmentsTest extends TestCase
                 'did_not_attend' => $usersAppointment->did_not_attend,
                 'created_at' => $usersAppointment->created_at->format(Carbon::ISO8601),
                 'updated_at' => $usersAppointment->updated_at->format(Carbon::ISO8601),
-            ]
+            ],
         ]);
         $response->assertJsonMissing(['id' => $otherAppointment->id]);
     }
@@ -169,7 +169,7 @@ class AppointmentsTest extends TestCase
                 'did_not_attend' => $clinicsAppointment->did_not_attend,
                 'created_at' => $clinicsAppointment->created_at->format(Carbon::ISO8601),
                 'updated_at' => $clinicsAppointment->updated_at->format(Carbon::ISO8601),
-            ]
+            ],
         ]);
         $response->assertJsonMissing(['id' => $otherAppointment->id]);
     }
@@ -188,7 +188,8 @@ class AppointmentsTest extends TestCase
         ]);
 
         Passport::actingAs($user);
-        $response = $this->json('GET', "/v1/appointments?filter[service_user_id]={$serviceUsersAppointment->service_user_id}");
+        $response = $this->json('GET',
+            "/v1/appointments?filter[service_user_id]={$serviceUsersAppointment->service_user_id}");
 
         $serviceUsersAppointment = $serviceUsersAppointment->fresh();
         $otherAppointment = $otherAppointment->fresh();
@@ -206,7 +207,7 @@ class AppointmentsTest extends TestCase
                 'did_not_attend' => $serviceUsersAppointment->did_not_attend,
                 'created_at' => $serviceUsersAppointment->created_at->format(Carbon::ISO8601),
                 'updated_at' => $serviceUsersAppointment->updated_at->format(Carbon::ISO8601),
-            ]
+            ],
         ]);
         $response->assertJsonMissing(['id' => $otherAppointment->id]);
     }
@@ -240,8 +241,19 @@ class AppointmentsTest extends TestCase
                 'did_not_attend' => $availableAppointment->did_not_attend,
                 'created_at' => $availableAppointment->created_at->format(Carbon::ISO8601),
                 'updated_at' => $availableAppointment->updated_at->format(Carbon::ISO8601),
-            ]
+            ],
         ]);
         $response->assertJsonMissing(['id' => $bookedAppointment->id]);
+    }
+
+    /*
+     * Create one.
+     */
+
+    public function test_guest_cannot_create_one()
+    {
+        $response = $this->json('POST', '/v1/appointments');
+
+        $response->assertStatus(Response::HTTP_UNAUTHORIZED);
     }
 }

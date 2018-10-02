@@ -97,7 +97,8 @@ class OpenApi
     {
         return Paths::create(
             PathItem::create('/appointments', Appointments::index(), Appointments::store()),
-            PathItem::create('/appointments/{appointment}', Appointments::show(), Appointments::update(), Appointments::destroy()),
+            PathItem::create('/appointments/{appointment}', Appointments::show(), Appointments::update(),
+                Appointments::destroy()),
             PathItem::create('/appointments/{appointment}/cancel', Appointments::cancel()),
             PathItem::create('/appointments/{appointment}/schedule', Appointments::destroySchedule()),
             PathItem::create('/audits', Audits::index()),
@@ -112,7 +113,8 @@ class OpenApi
             PathItem::create('/reports/{report}', Reports::show(), Reports::destroy()),
             PathItem::create('/reports/{report}/download', Reports::download()),
             PathItem::create('/report-schedules', ReportSchedules::index(), ReportSchedules::store()),
-            PathItem::create('/report-schedules/{report_schedule}', ReportSchedules::show(), ReportSchedules::update(), ReportSchedules::destroy()),
+            PathItem::create('/report-schedules/{report_schedule}', ReportSchedules::show(), ReportSchedules::update(),
+                ReportSchedules::destroy()),
             PathItem::create('/service-users', ServiceUsers::index()),
             PathItem::create('/service-users/{service_user}', ServiceUsers::show()),
             PathItem::create('/service-users/access-code', ServiceUsers::accessCode()),
@@ -142,7 +144,7 @@ class OpenApi
     protected function getComponents(): Components
     {
         $passwordFlow = [
-            'tokenUrl' => url('/oauth/token')
+            'tokenUrl' => url('/oauth/token'),
         ];
 
         return Components::create()
@@ -157,7 +159,7 @@ class OpenApi
     protected function getSecurity(): array
     {
         return [
-            ['OAuth2' => []]
+            ['OAuth2' => []],
         ];
     }
 

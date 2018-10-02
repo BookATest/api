@@ -40,6 +40,6 @@ class EndpointHitSubscriber
     public function subscribe(Dispatcher $events)
     {
         // Appointment events.
-        $events->listen(EndpointHit::class, static::class.'@onHit');
+        $events->listen(EndpointHit::class, static::class . '@onHit');
     }
 }
