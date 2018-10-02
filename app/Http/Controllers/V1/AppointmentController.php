@@ -4,7 +4,7 @@ namespace App\Http\Controllers\V1;
 
 use App\Events\EndpointHit;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Appointment\{IndexRequest, StoreRequest};
+use App\Http\Requests\Appointment\{IndexRequest, ShowRequest, StoreRequest};
 use App\Http\Resources\AppointmentResource;
 use App\Models\Appointment;
 use App\Models\AppointmentSchedule;
@@ -13,7 +13,6 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Laravel\Passport\Passport;
 use Spatie\QueryBuilder\Filter;
 use Spatie\QueryBuilder\QueryBuilder;
 
@@ -106,12 +105,15 @@ class AppointmentController extends Controller
     /**
      * Display the specified resource.
      *
+     * @param \App\Http\Requests\Appointment\ShowRequest $request
      * @param  \App\Models\Appointment $appointment
-     * @return \Illuminate\Http\Response
+     * @return \App\Http\Resources\AppointmentResource
      */
-    public function show(Appointment $appointment)
+    public function show(ShowRequest $request, Appointment $appointment)
     {
-        //
+        event(EndpointHit::onRead($request, "Viewed appointment [{$appointment->id}]"));
+
+        return new AppointmentResource($appointment);
     }
 
     /**

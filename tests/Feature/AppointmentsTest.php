@@ -8,6 +8,7 @@ use App\Models\Audit;
 use App\Models\Clinic;
 use App\Models\ServiceUser;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Response;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Event;
@@ -102,7 +103,7 @@ class AppointmentsTest extends TestCase
 
     public function test_audit_created_when_listed()
     {
-        Event::fake();
+        $this->fakeEvents();
 
         $this->json('GET', '/v1/appointments');
 
@@ -328,5 +329,80 @@ class AppointmentsTest extends TestCase
             'user_id' => $user->id,
             'clinic_id' => $clinic->id,
         ]);
+    }
+
+    public function test_audit_created_when_created()
+    {
+        $this->fakeEvents();
+
+        $clinic = factory(Clinic::class)->create();
+        $user = factory(User::class)->create()->makeCommunityWorker($clinic);
+
+        Passport::actingAs($user);
+
+        $this->json('POST', '/v1/appointments', [
+            'clinic_id' => $clinic->id,
+            'start_at' => today()->format(Carbon::ISO8601),
+            'is_repeating' => false,
+        ]);
+
+        Event::assertDispatched(EndpointHit::class, function (EndpointHit $event) {
+            $this->assertEquals(Audit::CREATE, $event->getAction());
+            return true;
+        });
+    }
+
+    /*
+     * Read one.
+     */
+
+    public function test_guest_cannot_read_booked_one()
+    {
+        $serviceUser = factory(ServiceUser::class)->create();
+        $appointment = factory(Appointment::class)->create([
+            'service_user_id' => $serviceUser->id,
+            'booked_at' => now(),
+        ]);
+
+        $response = $this->json('GET', "/v1/appointments/{$appointment->id}");
+
+        $response->assertStatus(Response::HTTP_FORBIDDEN);
+    }
+
+    public function test_guest_can_read_available_one()
+    {
+        $appointment = factory(Appointment::class)->create();
+
+        $response = $this->json('GET', "/v1/appointments/{$appointment->id}");
+
+        $response->assertStatus(Response::HTTP_OK);
+        $response->assertJsonFragment([
+            [
+                'id' => $appointment->id,
+                'user_id' => $appointment->user_id,
+                'clinic_id' => $appointment->clinic_id,
+                'is_repeating' => $appointment->appointment_schedule_id !== null,
+                'service_user_id' => $appointment->service_user_id,
+                'start_at' => $appointment->start_at->format(Carbon::ISO8601),
+                'booked_at' => null,
+                'did_not_attend' => $appointment->did_not_attend,
+                'created_at' => $appointment->created_at->format(Carbon::ISO8601),
+                'updated_at' => $appointment->updated_at->format(Carbon::ISO8601),
+            ],
+        ]);
+    }
+
+    public function test_audit_created_when_read()
+    {
+        $this->fakeEvents();
+
+        $appointment = factory(Appointment::class)->create();
+
+        $this->json('GET', "/v1/appointments/{$appointment->id}");
+
+        Event::assertDispatched(EndpointHit::class, function (EndpointHit $event) {
+            $this->assertEquals(Audit::READ, $event->getAction());
+            return true;
+        });
     }
 }

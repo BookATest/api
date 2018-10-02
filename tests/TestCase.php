@@ -2,10 +2,12 @@
 
 namespace Tests;
 
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Event;
 
 abstract class TestCase extends BaseTestCase
 {
@@ -27,5 +29,15 @@ abstract class TestCase extends BaseTestCase
 
         // Set the log path.
         Config::set('logging.channels.single.path', storage_path('logs/testing.log'));
+    }
+
+    /**
+     * Fakes all events with exception of model events.
+     */
+    protected function fakeEvents()
+    {
+        $initialDispatcher = Event::getFacadeRoot();
+        Event::fake();
+        Model::setEventDispatcher($initialDispatcher);
     }
 }
