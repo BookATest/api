@@ -14,7 +14,7 @@ class ShowRequest extends FormRequest
     public function authorize()
     {
         // Forbidden if a guest is requesting a booked appointment.
-        if (!$this->user() && $this->appointment->isBooked()) {
+        if (!$this->user() && $this->appointment->is_booked) {
             return false;
         }
 

@@ -31,7 +31,7 @@ class AppointmentMustBeBooked implements Rule
      */
     public function passes($attribute, $value)
     {
-        return $this->appointment->isBooked();
+        return $this->appointment->is_booked;
     }
 
     /**

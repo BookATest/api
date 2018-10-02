@@ -24,12 +24,4 @@ class Appointment extends Model
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
     ];
-
-    /**
-     * @return bool
-     */
-    public function isBooked(): bool
-    {
-        return $this->service_user_id !== null;
-    }
 }

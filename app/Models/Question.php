@@ -29,38 +29,6 @@ class Question extends Model
     ];
 
     /**
-     * @return bool
-     */
-    public function isSelect(): bool
-    {
-        return $this->type === static::SELECT;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isCheckbox(): bool
-    {
-        return $this->type === static::CHECKBOX;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isDate(): bool
-    {
-        return $this->type === static::DATE;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isText(): bool
-    {
-        return $this->type === static::TEXT;
-    }
-
-    /**
      * @return string[]
      */
     public function getAvailableOptions(): array
