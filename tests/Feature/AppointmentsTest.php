@@ -5,10 +5,13 @@ namespace Tests\Feature;
 use App\Events\EndpointHit;
 use App\Models\Appointment;
 use App\Models\Audit;
+use App\Models\Clinic;
 use App\Models\ServiceUser;
+use App\Models\User;
 use Illuminate\Http\Response;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Event;
+use Laravel\Passport\Passport;
 use Tests\TestCase;
 
 class AppointmentsTest extends TestCase
@@ -51,6 +54,8 @@ class AppointmentsTest extends TestCase
 
     public function test_cw_can_list_them_all()
     {
+        $clinic = factory(Clinic::class)->create();
+        $user = factory(User::class)->create()->makeCommunityWorker($clinic);
         $serviceUser = factory(ServiceUser::class)->create();
         $availableAppointment = factory(Appointment::class)->create();
         $bookedAppointment = factory(Appointment::class)->create([
@@ -58,6 +63,7 @@ class AppointmentsTest extends TestCase
             'booked_at' => now(),
         ]);
 
+        Passport::actingAs($user);
         $response = $this->json('GET', '/v1/appointments');
 
         $availableAppointment = $availableAppointment->fresh();
@@ -78,7 +84,7 @@ class AppointmentsTest extends TestCase
                 'updated_at' => $availableAppointment->updated_at->format(Carbon::ISO8601),
             ]
         ]);
-        $response->assertJsonMissing([
+        $response->assertJsonFragment([
             [
                 'id' => $bookedAppointment->id,
                 'user_id' => $bookedAppointment->user_id,
@@ -104,5 +110,36 @@ class AppointmentsTest extends TestCase
             $this->assertEquals(Audit::READ, $event->getAction());
             return true;
         });
+    }
+
+    public function test_cw_can_list_them_filtering_by_user_id()
+    {
+        $clinic = factory(Clinic::class)->create();
+        $user = factory(User::class)->create()->makeCommunityWorker($clinic);
+        $usersAppointment = factory(Appointment::class)->create();
+        $otherAppointment = factory(Appointment::class)->create();
+
+        Passport::actingAs($user);
+        $response = $this->json('GET', "/v1/appointments?filter[user_id]={$usersAppointment->user_id}");
+
+        $usersAppointment = $usersAppointment->fresh();
+        $otherAppointment = $otherAppointment->fresh();
+
+        $response->assertStatus(Response::HTTP_OK);
+        $response->assertJsonFragment([
+            [
+                'id' => $usersAppointment->id,
+                'user_id' => $usersAppointment->user_id,
+                'clinic_id' => $usersAppointment->clinic_id,
+                'is_repeating' => $usersAppointment->appointment_schedule_id !== null,
+                'service_user_id' => $usersAppointment->service_user_id,
+                'start_at' => $usersAppointment->start_at->format(Carbon::ISO8601),
+                'booked_at' => null,
+                'did_not_attend' => $usersAppointment->did_not_attend,
+                'created_at' => $usersAppointment->created_at->format(Carbon::ISO8601),
+                'updated_at' => $usersAppointment->updated_at->format(Carbon::ISO8601),
+            ]
+        ]);
+        $response->assertJsonMissing(['id' => $otherAppointment->id]);
     }
 }
