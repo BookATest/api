@@ -585,7 +585,6 @@ class AppointmentsTest extends TestCase
 
         $response = $this->json('PUT', "/v1/appointments/{$appointment->id}/cancel", [
             'service_user_token' => $serviceUser->generateToken(),
-            'booked_at' => now(),
         ]);
 
         $response->assertStatus(Response::HTTP_FORBIDDEN);
@@ -634,6 +633,60 @@ class AppointmentsTest extends TestCase
                 'created_at' => $appointment->created_at->format(Carbon::ISO8601),
                 'updated_at' => $appointment->updated_at->format(Carbon::ISO8601),
             ],
+        ]);
+    }
+
+    public function test_cw_cannot_cancel_available_one()
+    {
+        $clinic = factory(Clinic::class)->create();
+        $user = factory(User::class)->create()->makeCommunityWorker($clinic);
+
+        $appointment = factory(Appointment::class)->create([
+            'clinic_id' => $clinic->id,
+        ]);
+
+        Passport::actingAs($user);
+        $response = $this->json('PUT', "/v1/appointments/{$appointment->id}/cancel");
+
+        $response->assertStatus(Response::HTTP_FORBIDDEN);
+    }
+
+    public function test_cw_cannot_cancel_one_for_another_clinic()
+    {
+        $clinic = factory(Clinic::class)->create();
+        $user = factory(User::class)->create()->makeCommunityWorker($clinic);
+
+        $appointment = factory(Appointment::class)->create([
+            'clinic_id' => factory(Clinic::class)->create()->id,
+            'service_user_id' => factory(ServiceUser::class)->create()->id,
+            'booked_at' => now(),
+        ]);
+
+        Passport::actingAs($user);
+        $response = $this->json('PUT', "/v1/appointments/{$appointment->id}/cancel");
+
+        $response->assertStatus(Response::HTTP_FORBIDDEN);
+    }
+
+    public function test_cw_can_cancel_one()
+    {
+        $clinic = factory(Clinic::class)->create();
+        $user = factory(User::class)->create()->makeCommunityWorker($clinic);
+
+        $appointment = factory(Appointment::class)->create([
+            'clinic_id' => $clinic->id,
+            'service_user_id' => factory(ServiceUser::class)->create()->id,
+            'booked_at' => now(),
+        ]);
+
+        Passport::actingAs($user);
+        $response = $this->json('PUT', "/v1/appointments/{$appointment->id}/cancel");
+
+        $response->assertStatus(Response::HTTP_OK);
+        $this->assertDatabaseHas($appointment->getTable(), [
+            'id' => $appointment->id,
+            'service_user_id' => null,
+            'booked_at' => null,
         ]);
     }
 }
