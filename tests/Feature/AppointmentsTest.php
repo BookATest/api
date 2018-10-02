@@ -299,4 +299,34 @@ class AppointmentsTest extends TestCase
             'did_not_attend' => null,
         ]);
     }
+
+    public function test_cw_can_create_appointment_schedule()
+    {
+        $clinic = factory(Clinic::class)->create();
+        $user = factory(User::class)->create()->makeCommunityWorker($clinic);
+        $startAt = today();
+
+        Passport::actingAs($user);
+
+        $response = $this->json('POST', '/v1/appointments', [
+            'clinic_id' => $clinic->id,
+            'start_at' => $startAt->format(Carbon::ISO8601),
+            'is_repeating' => true,
+        ]);
+
+        $response->assertStatus(Response::HTTP_CREATED);
+        $response->assertJsonFragment([
+            'user_id' => $user->id,
+            'clinic_id' => $clinic->id,
+            'is_repeating' => true,
+            'service_user_id' => null,
+            'start_at' => $startAt->format(Carbon::ISO8601),
+            'booked_at' => null,
+            'did_not_attend' => null,
+        ]);
+        $this->assertDatabaseHas('appointment_schedules', [
+            'user_id' => $user->id,
+            'clinic_id' => $clinic->id,
+        ]);
+    }
 }
