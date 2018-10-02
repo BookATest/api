@@ -433,7 +433,7 @@ class AppointmentsTest extends TestCase
         $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
     }
 
-    public function test_cw_cannot_one_for_another_clinic()
+    public function test_cw_cannot_update_one_for_another_clinic()
     {
         $clinic = factory(Clinic::class)->create();
         $user = factory(User::class)->create()->makeCommunityWorker($clinic);
@@ -503,6 +503,64 @@ class AppointmentsTest extends TestCase
 
         Event::assertDispatched(EndpointHit::class, function (EndpointHit $event) {
             $this->assertEquals(Audit::UPDATE, $event->getAction());
+            return true;
+        });
+    }
+
+    /*
+     * Delete one.
+     */
+
+    public function test_guest_cannot_delete_one()
+    {
+        $appointment = factory(Appointment::class)->create();
+
+        $response = $this->json('DELETE', "/v1/appointments/{$appointment->id}");
+
+        $response->assertStatus(Response::HTTP_UNAUTHORIZED);
+    }
+
+    public function test_cw_cannot_delete_one_for_another_clinic()
+    {
+        $clinic = factory(Clinic::class)->create();
+        $user = factory(User::class)->create()->makeCommunityWorker($clinic);
+
+        $appointment = factory(Appointment::class)->create();
+
+        Passport::actingAs($user);
+        $response = $this->json('DELETE', "/v1/appointments/{$appointment->id}");
+
+        $response->assertStatus(Response::HTTP_FORBIDDEN);
+    }
+
+    public function test_cw_can_delete_one()
+    {
+        $clinic = factory(Clinic::class)->create();
+        $user = factory(User::class)->create()->makeCommunityWorker($clinic);
+
+        $appointment = factory(Appointment::class)->create(['clinic_id' => $clinic]);
+
+        Passport::actingAs($user);
+        $response = $this->json('DELETE', "/v1/appointments/{$appointment->id}");
+
+        $response->assertStatus(Response::HTTP_OK);
+        $this->assertModelDeleted($appointment);
+    }
+
+    public function test_audit_created_when_deleted()
+    {
+        $this->fakeEvents();
+
+        $clinic = factory(Clinic::class)->create();
+        $user = factory(User::class)->create()->makeCommunityWorker($clinic);
+
+        $appointment = factory(Appointment::class)->create(['clinic_id' => $clinic]);
+
+        Passport::actingAs($user);
+        $this->json('DELETE', "/v1/appointments/{$appointment->id}");
+
+        Event::assertDispatched(EndpointHit::class, function (EndpointHit $event) {
+            $this->assertEquals(Audit::DELETE, $event->getAction());
             return true;
         });
     }

@@ -40,4 +40,12 @@ abstract class TestCase extends BaseTestCase
         Event::fake();
         Model::setEventDispatcher($initialDispatcher);
     }
+
+    /**
+     * @param \Illuminate\Database\Eloquent\Model $model
+     */
+    protected function assertModelDeleted(Model $model)
+    {
+        $this->assertDatabaseMissing($model->getTable(), ['id' => $model->id]);
+    }
 }

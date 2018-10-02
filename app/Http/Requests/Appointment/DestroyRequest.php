@@ -2,10 +2,9 @@
 
 namespace App\Http\Requests\Appointment;
 
-use App\Rules\AppointmentMustBeBooked;
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateRequest extends FormRequest
+class DestroyRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -29,11 +28,7 @@ class UpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'did_not_attend' => [
-                'required',
-                'boolean',
-                new AppointmentMustBeBooked($this->appointment),
-            ],
+            //
         ];
     }
 }

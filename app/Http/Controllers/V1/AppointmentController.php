@@ -4,8 +4,9 @@ namespace App\Http\Controllers\V1;
 
 use App\Events\EndpointHit;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Appointment\{IndexRequest, ShowRequest, StoreRequest, UpdateRequest};
+use App\Http\Requests\Appointment\{DestroyRequest, IndexRequest, ShowRequest, StoreRequest, UpdateRequest};
 use App\Http\Resources\AppointmentResource;
+use App\Http\Responses\ResourceDeletedResponse;
 use App\Models\Appointment;
 use App\Models\AppointmentSchedule;
 use Illuminate\Http\Request;
@@ -140,11 +141,20 @@ class AppointmentController extends Controller
     /**
      * Remove the specified resource from storage.
      *
+     * @param \App\Http\Requests\Appointment\DestroyRequest $request
      * @param  \App\Models\Appointment $appointment
-     * @return \Illuminate\Http\Response
+     * @return \App\Http\Responses\ResourceDeletedResponse
      */
-    public function destroy(Appointment $appointment)
+    public function destroy(DestroyRequest $request, Appointment $appointment)
     {
-        //
+        $appointmentId = $appointment->id;
+
+        DB::transaction(function () use ($appointment) {
+            $appointment->delete();
+        });
+
+        event(EndpointHit::onDelete($request, "Deleted appointment [{$appointmentId}]"));
+
+        return new ResourceDeletedResponse(Appointment::class);
     }
 }

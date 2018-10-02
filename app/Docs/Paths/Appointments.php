@@ -157,7 +157,7 @@ EOT;
 
         $description = <<<EOT
 **Permission:** `Community Worker`
-- Update their own appointment
+- Can update any appointment from any user at a clinic they are a `Community Worker` for
 EOT;
 
         return Operation::put(...$responses)
