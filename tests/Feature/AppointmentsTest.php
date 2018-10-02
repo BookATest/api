@@ -430,7 +430,7 @@ class AppointmentsTest extends TestCase
             'did_not_attend' => true,
         ]);
 
-        $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
+        $response->assertStatus(Response::HTTP_FORBIDDEN);
     }
 
     public function test_cw_cannot_update_one_for_another_clinic()
@@ -563,5 +563,77 @@ class AppointmentsTest extends TestCase
             $this->assertEquals(Audit::DELETE, $event->getAction());
             return true;
         });
+    }
+
+    /*
+     * Cancel one.
+     */
+
+    public function test_guest_cannot_cancel_one_without_service_user_token()
+    {
+        $appointment = factory(Appointment::class)->create();
+
+        $response = $this->json('PUT', "/v1/appointments/{$appointment->id}/cancel");
+
+        $response->assertStatus(Response::HTTP_FORBIDDEN);
+    }
+
+    public function test_guest_cannot_cancel_available_one()
+    {
+        $serviceUser = factory(ServiceUser::class)->create();
+        $appointment = factory(Appointment::class)->create();
+
+        $response = $this->json('PUT', "/v1/appointments/{$appointment->id}/cancel", [
+            'service_user_token' => $serviceUser->generateToken(),
+            'booked_at' => now(),
+        ]);
+
+        $response->assertStatus(Response::HTTP_FORBIDDEN);
+    }
+
+    public function test_guest_cannot_cancel_booked_one_for_another_su()
+    {
+        $serviceUser = factory(ServiceUser::class)->create();
+        $appointment = factory(Appointment::class)->create([
+            'service_user_id' => factory(ServiceUser::class)->create()->id,
+            'booked_at' => now(),
+        ]);
+
+        $response = $this->json('PUT', "/v1/appointments/{$appointment->id}/cancel", [
+            'service_user_token' => $serviceUser->generateToken(),
+        ]);
+
+        $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
+    }
+
+    public function test_guest_can_cancel_booked_one()
+    {
+        $serviceUser = factory(ServiceUser::class)->create();
+        $appointment = factory(Appointment::class)->create([
+            'service_user_id' => $serviceUser->id,
+            'booked_at' => now(),
+        ]);
+
+        $response = $this->json('PUT', "/v1/appointments/{$appointment->id}/cancel", [
+            'service_user_token' => $serviceUser->generateToken(),
+        ]);
+
+        $appointment = $appointment->fresh();
+
+        $response->assertStatus(Response::HTTP_OK);
+        $response->assertJsonFragment([
+            [
+                'id' => $appointment->id,
+                'user_id' => $appointment->user_id,
+                'clinic_id' => $appointment->clinic_id,
+                'is_repeating' => $appointment->appointment_schedule_id !== null,
+                'service_user_id' => null,
+                'start_at' => $appointment->start_at->format(Carbon::ISO8601),
+                'booked_at' => null,
+                'did_not_attend' => $appointment->did_not_attend,
+                'created_at' => $appointment->created_at->format(Carbon::ISO8601),
+                'updated_at' => $appointment->updated_at->format(Carbon::ISO8601),
+            ],
+        ]);
     }
 }

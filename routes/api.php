@@ -20,7 +20,7 @@ Route::get('/', 'ApiController@v1');
 Route::prefix('v1')->namespace('V1')->group(function () {
     // Appointment Routes.
     Route::apiResource('appointments', 'AppointmentController');
-    // TODO: Route::put('/appointments/{appointment}/cancel', 'Appointment\\CancelController')->name('appointments.cancel');
+    Route::put('appointments/{appointment}/cancel', 'Appointment\\CancelController')->name('appointments.cancel');
     // TODO: Route::delete('/appointments/{appointment}/schedule', 'Appointment\\ScheduleController@destroy')->name('appointments.schedule.destroy');
 
     // Audit Routes.

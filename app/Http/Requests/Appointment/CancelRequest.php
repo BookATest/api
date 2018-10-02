@@ -2,9 +2,10 @@
 
 namespace App\Http\Requests\Appointment;
 
+use App\Rules\ServiceUserTokenIsValid;
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateRequest extends FormRequest
+class CancelRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -18,7 +19,8 @@ class UpdateRequest extends FormRequest
             return false;
         }
 
-        if (!$this->user()->isCommunityWorker($this->appointment->clinic)) {
+        // If an authenticated user is making the request for a clinic they do not belong to.
+        if ($this->user() && !$this->user()->isCommunityWorker($this->appointment->clinic)) {
             return false;
         }
 
@@ -32,10 +34,20 @@ class UpdateRequest extends FormRequest
      */
     public function rules()
     {
+        $serviceUser = $this->appointment->serviceUser;
+
+        // For authenticated users.
+        if ($this->user()) {
+            return [
+                //
+            ];
+        }
+
+        // For guests.
         return [
-            'did_not_attend' => [
+            'service_user_token' => [
                 'required',
-                'boolean',
+                new ServiceUserTokenIsValid($serviceUser),
             ],
         ];
     }
