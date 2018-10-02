@@ -8,8 +8,12 @@ use Illuminate\Http\Response;
 use Laravel\Passport\Passport;
 use Tests\TestCase;
 
-class CalendarFeedTest extends TestCase
+class UsersTest extends TestCase
 {
+    /*
+     * Calendar feed.
+     */
+
     public function test_cw_can_refresh_their_own_calendar_feed_token()
     {
         $clinic = factory(Clinic::class)->create();

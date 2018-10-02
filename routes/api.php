@@ -25,7 +25,7 @@ Route::prefix('v1')->group(function () {
     Route::apiResource('/service-users.appointments', 'V1\\ServiceUser\\AppointmentController')->only('index', 'store');
 
     // Audit Routes.
-    Route::apiResource('/audits', 'V1\\AuditController')->only('index');
+    Route::apiResource('/audits', 'V1\\AuditController')->only('index', 'show');
 
     // Booking Routes.
 
