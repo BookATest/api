@@ -4,11 +4,16 @@ namespace App\Http\Controllers\V1;
 
 use App\Events\EndpointHit;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Appointment\{IndexRequest};
+use App\Http\Requests\Appointment\{IndexRequest, StoreRequest};
 use App\Http\Resources\AppointmentResource;
 use App\Models\Appointment;
+use App\Models\AppointmentSchedule;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Laravel\Passport\Passport;
 use Spatie\QueryBuilder\Filter;
 use Spatie\QueryBuilder\QueryBuilder;
 
@@ -58,12 +63,44 @@ class AppointmentController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
+     * @param \App\Http\Requests\Appointment\StoreRequest $request
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function store(Request $request)
+    public function store(StoreRequest $request)
     {
-        //
+        $appointment = DB::transaction(function () use ($request) {
+            $startAt = Carbon::createFromFormat(Carbon::ISO8601, $request->start_at)
+                ->second(0);
+
+            // For repeating appointments.
+            if ($request->is_repeating) {
+                /** @var \App\Models\AppointmentSchedule $appointmentSchedule */
+                $appointmentSchedule = AppointmentSchedule::create([
+                    'user_id' => $request->user()->id,
+                    'clinic_id' => $request->clinic_id,
+                    'weekly_on' => $startAt->dayOfWeek,
+                    'weekly_at' => $startAt->toTimeString(),
+                ]);
+
+                $daysToSkip = 0;
+                $appointments = $appointmentSchedule->createAppointments($daysToSkip);
+
+                return $appointments->first();
+            }
+
+            // For a single appointments.
+            return Appointment::create([
+                'user_id' => $request->user()->id,
+                'clinic_id' => $request->clinic_id,
+                'start_at' => $startAt,
+            ]);
+        });
+
+        event(EndpointHit::onCreate($request, "Created appointment [{$appointment->id}]"));
+
+        return (new AppointmentResource($appointment->fresh()))
+            ->response()
+            ->setStatusCode(Response::HTTP_CREATED);
     }
 
     /**

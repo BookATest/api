@@ -2,7 +2,7 @@
 
 namespace App\Rules;
 
-use App\Support\Carbon;
+use Illuminate\Support\Carbon;
 
 class DateFormat
 {
@@ -18,7 +18,7 @@ class DateFormat
      * @param string $format
      * @return string
      */
-    public function __invoke(string $format): string
+    public static function format(string $format): string
     {
         return 'date_format:' . $format;
     }
@@ -28,6 +28,6 @@ class DateFormat
      */
     public static function iso8601(): string
     {
-        return static(Carbon::ISO8601);
+        return static::format(Carbon::ISO8601);
     }
 }

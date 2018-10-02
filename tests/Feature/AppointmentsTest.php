@@ -256,4 +256,47 @@ class AppointmentsTest extends TestCase
 
         $response->assertStatus(Response::HTTP_UNAUTHORIZED);
     }
+
+    public function test_cw_cannot_create_one_for_a_different_clinic()
+    {
+        $clinic = factory(Clinic::class)->create();
+        $anotherClinic = factory(Clinic::class)->create();
+        $user = factory(User::class)->create()->makeCommunityWorker($clinic);
+
+        Passport::actingAs($user);
+
+        $response = $this->json('POST', '/v1/appointments', [
+            'clinic_id' => $anotherClinic->id,
+            'start_at' => today()->format(Carbon::ISO8601),
+            'is_repeating' => false,
+        ]);
+
+        $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
+    }
+
+    public function test_cw_can_create_one()
+    {
+        $clinic = factory(Clinic::class)->create();
+        $user = factory(User::class)->create()->makeCommunityWorker($clinic);
+        $startAt = today();
+
+        Passport::actingAs($user);
+
+        $response = $this->json('POST', '/v1/appointments', [
+            'clinic_id' => $clinic->id,
+            'start_at' => $startAt->format(Carbon::ISO8601),
+            'is_repeating' => false,
+        ]);
+
+        $response->assertStatus(Response::HTTP_CREATED);
+        $response->assertJsonFragment([
+            'user_id' => $user->id,
+            'clinic_id' => $clinic->id,
+            'is_repeating' => false,
+            'service_user_id' => null,
+            'start_at' => $startAt->format(Carbon::ISO8601),
+            'booked_at' => null,
+            'did_not_attend' => null,
+        ]);
+    }
 }

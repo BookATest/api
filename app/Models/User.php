@@ -122,19 +122,19 @@ class User extends Authenticatable
     }
 
     /**
-     * @param \App\Models\Clinic $clinic
+     * @param \App\Models\Clinic|null $clinic
      * @return bool
      */
-    public function isCommunityWorker(Clinic $clinic): bool
+    public function isCommunityWorker(Clinic $clinic = null): bool
     {
         return $this->hasRole(Role::communityWorker(), $clinic) || $this->hasRole(Role::organisationAdmin());
     }
 
     /**
-     * @param \App\Models\Clinic $clinic
+     * @param \App\Models\Clinic|null $clinic
      * @return bool
      */
-    public function isClinicAdmin(Clinic $clinic): bool
+    public function isClinicAdmin(Clinic $clinic = null): bool
     {
         return $this->hasRole(Role::clinicAdmin(), $clinic) || $this->hasRole(Role::organisationAdmin());
     }
