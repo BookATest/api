@@ -3,16 +3,14 @@
 namespace App\Http\Controllers\V1;
 
 use App\Events\EndpointHit;
-use App\Http\Requests\Appointment\DestroyRequest;
-use App\Http\Requests\Appointment\IndexRequest;
-use App\Http\Requests\Appointment\ShowRequest;
-use App\Http\Requests\Appointment\UpdateRequest;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\Appointment\{IndexRequest};
 use App\Http\Resources\AppointmentResource;
-use App\Http\Responses\ResourceDeletedResponse;
 use App\Models\Appointment;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
+use Spatie\QueryBuilder\Filter;
+use Spatie\QueryBuilder\QueryBuilder;
 
 class AppointmentController extends Controller
 {
@@ -21,7 +19,7 @@ class AppointmentController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth:api');
+        $this->middleware('auth:api')->except('index', 'show');
     }
 
     /**
@@ -32,9 +30,27 @@ class AppointmentController extends Controller
      */
     public function index(IndexRequest $request)
     {
-        event(EndpointHit::onRead($request, 'Viewed all appointments'));
+        // Prepare the base query.
+        $baseQuery = Appointment::query();
 
-        $appointments = Appointment::orderByDesc('created_at')->paginate();
+        // If a guest made the request, then limit to only available appointments.
+        if (Auth::guest()) {
+            $baseQuery = $baseQuery->available();
+        }
+
+        // Specify allowed modifications to the query via the GET parameters.
+        $appointments = QueryBuilder::for($baseQuery)
+            ->allowedFilters(
+                Filter::exact('user_id'),
+                Filter::exact('clinic_id'),
+                Filter::exact('service_user_id'),
+                Filter::scope('available')
+            )
+            ->defaultSort('-created_at')
+            ->allowedSorts('created_at')
+            ->paginate();
+
+        event(EndpointHit::onRead($request, 'Listed all appointments'));
 
         return AppointmentResource::collection($appointments);
     }
@@ -42,7 +58,7 @@ class AppointmentController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request $request
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -53,53 +69,34 @@ class AppointmentController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param \App\Http\Requests\Appointment\ShowRequest $request
-     * @param  \App\Models\Appointment $appointment
-     * @return \App\Http\Resources\AppointmentResource
+     * @param  \App\Models\Appointment  $appointment
+     * @return \Illuminate\Http\Response
      */
-    public function show(ShowRequest $request, Appointment $appointment)
+    public function show(Appointment $appointment)
     {
-        event(EndpointHit::onRead($request, "Viewed appointment [$appointment->id]"));
-
-        return new AppointmentResource($appointment);
+        //
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\Appointment\UpdateRequest $request
-     * @param  \App\Models\Appointment $appointment
-     * @return \App\Http\Resources\AppointmentResource
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Appointment  $appointment
+     * @return \Illuminate\Http\Response
      */
-    public function update(UpdateRequest $request, Appointment $appointment)
+    public function update(Request $request, Appointment $appointment)
     {
-        event(EndpointHit::onUpdate($request, "Updated appointment [$appointment->id]"));
-
-        $appointment = DB::transaction(function () use ($request, $appointment) {
-            $appointment->did_not_attend = $request->input('did_not_attend');
-            $appointment->save();
-
-            return $appointment;
-        });
-
-        return new AppointmentResource($appointment);
+        //
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param \App\Http\Requests\Appointment\DestroyRequest $request
-     * @param  \App\Models\Appointment $appointment
+     * @param  \App\Models\Appointment  $appointment
      * @return \Illuminate\Http\Response
      */
-    public function destroy(DestroyRequest $request, Appointment $appointment)
+    public function destroy(Appointment $appointment)
     {
-        event(EndpointHit::onDelete($request, "Deleted appointment [$appointment->id]"));
-
-        return DB::transaction(function () use ($appointment) {
-            $appointment->delete();
-
-            return new ResourceDeletedResponse(Appointment::class);
-        });
+        //
     }
 }

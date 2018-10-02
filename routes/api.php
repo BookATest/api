@@ -19,30 +19,30 @@ Route::get('/', 'ApiController@v1');
 // V1 Routes.
 Route::prefix('v1')->namespace('V1')->group(function () {
     // Appointment Routes.
-    Route::apiResource('/appointments', 'AppointmentController');
-    Route::put('/appointments/{appointment}/cancel', 'Appointment\\CancelController')->name('appointments.cancel');
-    Route::delete('/appointments/{appointment}/schedule', 'Appointment\\ScheduleController@destroy')->name('appointments.schedule.destroy');
+    Route::apiResource('appointments', 'AppointmentController');
+    // TODO: Route::put('/appointments/{appointment}/cancel', 'Appointment\\CancelController')->name('appointments.cancel');
+    // TODO: Route::delete('/appointments/{appointment}/schedule', 'Appointment\\ScheduleController@destroy')->name('appointments.schedule.destroy');
 
     // Audit Routes.
-    Route::apiResource('/audits', 'AuditController')->only('index', 'show');
+    // TODO
 
     // Booking Routes.
     // TODO
 
     // Clinic Routes.
-    Route::apiResource('/clinics', 'ClinicController');
+    // TODO
 
     // Eligible Answer Routes.
     // TODO
 
     // Question Routes.
-    Route::apiResource('/questions', 'QuestionController')->only('index', 'store');
+    // TODO
 
     // Report Routes.
     // TODO
 
     // Report Schedule Routes.
-    Route::apiResource('/report-schedules', 'User\\ReportScheduleController');
+    // TODO
 
     // Service User Routes.
     // TODO
