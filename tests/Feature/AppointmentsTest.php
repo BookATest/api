@@ -2,10 +2,13 @@
 
 namespace Tests\Feature;
 
+use App\Events\EndpointHit;
 use App\Models\Appointment;
+use App\Models\Audit;
 use App\Models\ServiceUser;
 use Illuminate\Http\Response;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Event;
 use Tests\TestCase;
 
 class AppointmentsTest extends TestCase
@@ -14,7 +17,7 @@ class AppointmentsTest extends TestCase
      * List them.
      */
 
-    public function test_guest_can_only_view_available_appointments()
+    public function test_guest_can_only_list_available_ones()
     {
         $serviceUser = factory(ServiceUser::class)->create();
         $availableAppointment = factory(Appointment::class)->create();
@@ -46,7 +49,7 @@ class AppointmentsTest extends TestCase
         $response->assertJsonMissing(['id' => $bookedAppointment->id]);
     }
 
-    public function test_cw_can_view_all_appointments()
+    public function test_cw_can_list_them_all()
     {
         $serviceUser = factory(ServiceUser::class)->create();
         $availableAppointment = factory(Appointment::class)->create();
@@ -89,5 +92,17 @@ class AppointmentsTest extends TestCase
                 'updated_at' => $bookedAppointment->updated_at->format(Carbon::ISO8601),
             ]
         ]);
+    }
+
+    public function test_audit_created_when_listed()
+    {
+        Event::fake();
+
+        $this->json('GET', '/v1/appointments');
+
+        Event::assertDispatched(EndpointHit::class, function (EndpointHit $event) {
+            $this->assertEquals(Audit::READ, $event->getAction());
+            return true;
+        });
     }
 }
