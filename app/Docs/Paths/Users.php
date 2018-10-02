@@ -137,7 +137,7 @@ EOT;
     public static function update(): Operation
     {
         $responses = [
-            Responses::http201(
+            Responses::http200(
                 MediaType::json(UserResource::show())
             ),
         ];
@@ -195,7 +195,7 @@ EOT;
 Update a specific users along with their roles
 EOT;
 
-        return Operation::post(...$responses)
+        return Operation::put(...$responses)
             ->parameters(...$parameters)
             ->requestBody($requestBody)
             ->summary('Update a specified user')
