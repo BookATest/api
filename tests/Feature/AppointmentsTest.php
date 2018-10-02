@@ -8,7 +8,6 @@ use App\Models\Audit;
 use App\Models\Clinic;
 use App\Models\ServiceUser;
 use App\Models\User;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Response;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Event;
@@ -402,6 +401,108 @@ class AppointmentsTest extends TestCase
 
         Event::assertDispatched(EndpointHit::class, function (EndpointHit $event) {
             $this->assertEquals(Audit::READ, $event->getAction());
+            return true;
+        });
+    }
+
+    /*
+     * Update one.
+     */
+
+    public function test_guest_cannot_update_one()
+    {
+        $appointment = factory(Appointment::class)->create();
+
+        $response = $this->json('PUT', "/v1/appointments/{$appointment->id}");
+
+        $response->assertStatus(Response::HTTP_UNAUTHORIZED);
+    }
+
+    public function test_cw_cannot_update_available_one()
+    {
+        $clinic = factory(Clinic::class)->create();
+        $user = factory(User::class)->create()->makeCommunityWorker($clinic);
+
+        $appointment = factory(Appointment::class)->create(['clinic_id' => $clinic->id]);
+
+        Passport::actingAs($user);
+        $response = $this->json('PUT', "/v1/appointments/{$appointment->id}", [
+            'did_not_attend' => true,
+        ]);
+
+        $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
+    }
+
+    public function test_cw_cannot_one_for_another_clinic()
+    {
+        $clinic = factory(Clinic::class)->create();
+        $user = factory(User::class)->create()->makeCommunityWorker($clinic);
+
+        $appointment = factory(Appointment::class)->create();
+
+        Passport::actingAs($user);
+        $response = $this->json('PUT', "/v1/appointments/{$appointment->id}", [
+            'did_not_attend' => true,
+        ]);
+
+        $response->assertStatus(Response::HTTP_FORBIDDEN);
+    }
+
+    public function test_cw_can_update_booked_one()
+    {
+        $clinic = factory(Clinic::class)->create();
+        $user = factory(User::class)->create()->makeCommunityWorker($clinic);
+
+        $appointment = factory(Appointment::class)->create([
+            'clinic_id' => $clinic->id,
+            'service_user_id' => factory(ServiceUser::class)->create()->id,
+            'booked_at' => now(),
+        ]);
+
+        Passport::actingAs($user);
+        $response = $this->json('PUT', "/v1/appointments/{$appointment->id}", [
+            'did_not_attend' => true,
+        ]);
+
+        $appointment = $appointment->fresh();
+
+        $response->assertStatus(Response::HTTP_OK);
+        $response->assertJsonFragment([
+            [
+                'id' => $appointment->id,
+                'user_id' => $appointment->user_id,
+                'clinic_id' => $appointment->clinic_id,
+                'is_repeating' => $appointment->appointment_schedule_id !== null,
+                'service_user_id' => $appointment->service_user_id,
+                'start_at' => $appointment->start_at->format(Carbon::ISO8601),
+                'booked_at' => $appointment->booked_at->format(Carbon::ISO8601),
+                'did_not_attend' => true,
+                'created_at' => $appointment->created_at->format(Carbon::ISO8601),
+                'updated_at' => $appointment->updated_at->format(Carbon::ISO8601),
+            ],
+        ]);
+    }
+
+    public function test_audit_created_when_updated()
+    {
+        $this->fakeEvents();
+
+        $clinic = factory(Clinic::class)->create();
+        $user = factory(User::class)->create()->makeCommunityWorker($clinic);
+
+        $appointment = factory(Appointment::class)->create([
+            'clinic_id' => $clinic->id,
+            'service_user_id' => factory(ServiceUser::class)->create()->id,
+            'booked_at' => now(),
+        ]);
+
+        Passport::actingAs($user);
+        $this->json('PUT', "/v1/appointments/{$appointment->id}", [
+            'did_not_attend' => true,
+        ]);
+
+        Event::assertDispatched(EndpointHit::class, function (EndpointHit $event) {
+            $this->assertEquals(Audit::UPDATE, $event->getAction());
             return true;
         });
     }

@@ -4,7 +4,7 @@ namespace App\Http\Controllers\V1;
 
 use App\Events\EndpointHit;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Appointment\{IndexRequest, ShowRequest, StoreRequest};
+use App\Http\Requests\Appointment\{IndexRequest, ShowRequest, StoreRequest, UpdateRequest};
 use App\Http\Resources\AppointmentResource;
 use App\Models\Appointment;
 use App\Models\AppointmentSchedule;
@@ -67,7 +67,7 @@ class AppointmentController extends Controller
      */
     public function store(StoreRequest $request)
     {
-        $appointment = DB::transaction(function () use ($request) {
+        $appointment = DB::transaction(function () use ($request): Appointment {
             $startAt = Carbon::createFromFormat(Carbon::ISO8601, $request->start_at)
                 ->second(0);
 
@@ -119,13 +119,22 @@ class AppointmentController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request $request
+     * @param \App\Http\Requests\Appointment\UpdateRequest $request
      * @param  \App\Models\Appointment $appointment
-     * @return \Illuminate\Http\Response
+     * @return \App\Http\Resources\AppointmentResource
      */
-    public function update(Request $request, Appointment $appointment)
+    public function update(UpdateRequest $request, Appointment $appointment)
     {
-        //
+        $appointment = DB::transaction(function () use ($request, $appointment): Appointment {
+            $appointment->did_not_attend = $request->did_not_attend;
+            $appointment->save();
+
+            return $appointment;
+        });
+
+        event(EndpointHit::onUpdate($request, "Updated appointment [{$appointment->id}]"));
+
+        return new AppointmentResource($appointment);
     }
 
     /**

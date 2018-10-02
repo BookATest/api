@@ -39,7 +39,7 @@ class StoreRequest extends FormRequest
             'clinic_id' => [
                 'required',
                 'exists:clinics,id',
-                new IsCommunityWorkerForClinic($user),
+                new IsCommunityWorkerForClinic($user, $clinic),
             ],
             'start_at' => [
                 'required',

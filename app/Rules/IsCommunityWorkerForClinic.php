@@ -14,35 +14,36 @@ class IsCommunityWorkerForClinic implements Rule
     protected $user;
 
     /**
+     * @var \App\Models\Clinic|null
+     */
+    protected $clinic;
+
+    /**
      * Create a new rule instance.
      *
      * @param \App\Models\User $user
+     * @param \App\Models\Clinic|null $clinic
      */
-    public function __construct(User $user)
+    public function __construct(User $user, ?Clinic $clinic)
     {
         $this->user = $user;
+        $this->clinic = $clinic;
     }
 
     /**
      * Determine if the validation rule passes.
      *
      * @param  string $attribute
-     * @param  mixed $clinicId
+     * @param  mixed $value
      * @return bool
      */
-    public function passes($attribute, $clinicId)
+    public function passes($attribute, $value)
     {
-        if (!is_string($clinicId)) {
+        if ($this->clinic === null) {
             return false;
         }
 
-        $clinic = Clinic::find($clinicId);
-
-        if ($clinic === null) {
-            return false;
-        }
-
-        return $this->user->isCommunityWorker($clinic);
+        return $this->user->isCommunityWorker($this->clinic);
     }
 
     /**
