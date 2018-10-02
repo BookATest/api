@@ -127,7 +127,7 @@ class User extends Authenticatable
      */
     public function isCommunityWorker(Clinic $clinic): bool
     {
-        return $this->hasRole(Role::communityWorker(), $clinic);
+        return $this->hasRole(Role::communityWorker(), $clinic) || $this->hasRole(Role::organisationAdmin());
     }
 
     /**
@@ -136,7 +136,7 @@ class User extends Authenticatable
      */
     public function isClinicAdmin(Clinic $clinic): bool
     {
-        return $this->hasRole(Role::clinicAdmin(), $clinic);
+        return $this->hasRole(Role::clinicAdmin(), $clinic) || $this->hasRole(Role::organisationAdmin());
     }
 
     /**

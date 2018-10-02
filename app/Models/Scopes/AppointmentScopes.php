@@ -8,11 +8,14 @@ trait AppointmentScopes
 {
     /**
      * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param bool $available
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeAvailable(Builder $query): Builder
+    public function scopeAvailable(Builder $query, bool $available = true): Builder
     {
-        return $query->whereNull('appointments.service_user_id');
+        return $available
+            ? $query->whereNull('appointments.service_user_id')
+            : $query->whereNotNull('appointments.service_user_id');
     }
 
     /**

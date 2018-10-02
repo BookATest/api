@@ -13,35 +13,46 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::prefix('v1')->group(function () {
-    Route::get('/', 'ApiController@v1');
+// API Routes.
+Route::get('/', 'ApiController@v1');
 
+// V1 Routes.
+Route::prefix('v1')->namespace('V1')->group(function () {
     // Appointment Routes.
-    Route::apiResource('/appointments', 'V1\\AppointmentController');
-    Route::delete('/appointments/{appointment}/schedule', 'V1\\Appointment\\ScheduleController@destroy')->name('appointments.schedule.destroy');
-    Route::put('/appointments/{appointment}/cancel', 'V1\\Appointment\\CancelController@update')->name('appointments.cancel.update');
-    Route::apiResource('/users.appointments', 'V1\\User\\AppointmentController')->only('index');
-    Route::apiResource('/clinics.appointments', 'V1\\Clinic\\AppointmentController')->only('index', 'store');
-    Route::apiResource('/service-users.appointments', 'V1\\ServiceUser\\AppointmentController')->only('index', 'store');
+    Route::apiResource('/appointments', 'AppointmentController');
+    Route::put('/appointments/{appointment}/cancel', 'Appointment\\CancelController')->name('appointments.cancel');
+    Route::delete('/appointments/{appointment}/schedule', 'Appointment\\ScheduleController@destroy')->name('appointments.schedule.destroy');
 
     // Audit Routes.
-    Route::apiResource('/audits', 'V1\\AuditController')->only('index', 'show');
+    Route::apiResource('/audits', 'AuditController')->only('index', 'show');
 
     // Booking Routes.
-
-    // Calendar Feed Routes.
-    Route::put('/users/{user}/calendar-feed-token', 'V1\\User\\CalendarFeedTokenController@update')->name('users.calendar-feed-token.update');
+    // TODO
 
     // Clinic Routes.
-    Route::apiResource('/clinics', 'V1\\ClinicController');
+    Route::apiResource('/clinics', 'ClinicController');
 
     // Eligible Answer Routes.
+    // TODO
 
     // Question Routes.
-    Route::apiResource('/questions', 'V1\\QuestionController')->only('index', 'store');
+    Route::apiResource('/questions', 'QuestionController')->only('index', 'store');
 
     // Report Routes.
+    // TODO
 
     // Report Schedule Routes.
-    Route::apiResource('/users.report-schedules', 'V1\\User\\ReportScheduleController')->only('index', 'store');
+    Route::apiResource('/report-schedules', 'User\\ReportScheduleController');
+
+    // Service User Routes.
+    // TODO
+
+    // Setting Routes.
+    // TODO
+
+    // Stat Routes.
+    // TODO
+
+    // User Routes.
+    // TODO
 });

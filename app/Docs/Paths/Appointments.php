@@ -27,6 +27,14 @@ class Appointments
      */
     public static function index(): Operation
     {
+        $description = <<<EOT
+**Permission:** `Open`
+* View all available appointments
+
+**Permission:** `Community Worker`
+* View all appointments
+EOT;
+
         $responses = [
             Responses::http200(
                 MediaType::json(AppointmentResource::list()),
@@ -34,24 +42,27 @@ class Appointments
             ),
         ];
         $parameters = [
-            Parameter::query('user_id', Schema::string()->format(Schema::UUID))
+            Parameter::query('filter[user_id]', Schema::string()->format(Schema::UUID))
                 ->description('Comma separated user IDs'),
-            Parameter::query('clinic_id', Schema::string()->format(Schema::UUID))
+            Parameter::query('filter[clinic_id]', Schema::string()->format(Schema::UUID))
                 ->description('Comma separated clinic IDs'),
-            Parameter::query('service_user_id', Schema::string()->format(Schema::UUID))
+            Parameter::query('filter[service_user_id]', Schema::string()->format(Schema::UUID))
                 ->description('Comma separated service user IDs'),
+            Parameter::query('filter[available]', Schema::boolean())
+                ->description('If only available appointments should be returned. If the user is not authenticated, then they can only see appointments which are available'),
             Parameter::query('format', Schema::string()->enum('json', 'ics')->default('json'))
                 ->description('The desired format for the response'),
             Parameter::query('calendar_feed_token', Schema::string())
                 ->description('The user\'s calendar feed token - required if the format is set to `ics`'),
-            Parameter::query('available', Schema::boolean())
-                ->description('If only available appointments should be returned. If the user is not authenticated, then they can only see appointments which are available'),
+            Parameter::query('sort', Schema::string()->default('-created_at'))
+                ->description('The field to sort the results by [`created_at`]')
         ];
 
         return Operation::get(...$responses)
+            ->security([])
             ->parameters(...$parameters)
             ->summary('List all appointments')
-            ->description('**Permission:** `Community Worker`')
+            ->description($description)
             ->operationId('appointments.index')
             ->tags(Tags::appointments()->name);
     }
@@ -94,6 +105,13 @@ EOT;
      */
     public static function show(): Operation
     {
+        $description = <<<EOT
+**Permission:** `Open`
+* View appointment if available
+
+**Permission:** `Community Worker`
+* View all appointments
+EOT;
         $responses = [
             Responses::http200(
                 MediaType::json(AppointmentResource::show())
@@ -106,9 +124,10 @@ EOT;
         ];
 
         return Operation::get(...$responses)
+            ->security([])
             ->parameters(...$parameters)
             ->summary('Get a specific appointment')
-            ->description('**Permission:** `Community Worker`')
+            ->description($description)
             ->operationId('appointments.show')
             ->tags(Tags::appointments()->name);
     }
@@ -222,6 +241,7 @@ If the service user is cancelling their own appointment then the `service_user_t
 EOT;
 
         return Operation::put(...$responses)
+            ->security([])
             ->parameters(...$parameters)
             ->requestBody($requestBody)
             ->summary('Cancel a specific appointment')

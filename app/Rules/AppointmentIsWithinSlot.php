@@ -16,39 +16,45 @@ class AppointmentIsWithinSlot implements Rule
     protected $user;
 
     /**
-     * @var \App\Models\Clinic
+     * @var \App\Models\Clinic|clinic
      */
     protected $clinic;
-
-    /**
-     * @var \Illuminate\Support\Carbon
-     */
-    protected $startAt;
 
     /**
      * Create a new rule instance.
      *
      * @param \App\Models\User $user
-     * @param \App\Models\Clinic $clinic
-     * @param \Illuminate\Support\Carbon $startAt
+     * @param \App\Models\Clinic|null $clinic
      */
-    public function __construct(User $user, Clinic $clinic, Carbon $startAt)
+    public function __construct(User $user, ?Clinic $clinic)
     {
         $this->user = $user;
         $this->clinic = $clinic;
-        $this->startAt = $startAt;
     }
 
     /**
      * Determine if the validation rule passes.
      *
-     * @param  string  $attribute
-     * @param  mixed  $value
+     * @param  string $attribute
+     * @param  mixed $startAt
      * @return bool
      */
-    public function passes($attribute, $value)
+    public function passes($attribute, $startAt)
     {
-        $totalMinutes = $this->startAt->copy()->startOfDay()->diffInMinutes($this->startAt);
+        if ($this->clinic === null) {
+            return false;
+        }
+
+        if (!is_string($startAt)) {
+            return false;
+        }
+
+        if (Carbon::hasFormat($startAt, Carbon::ISO8601)) {
+            return false;
+        }
+
+        $startAt = Carbon::createFromFormat(Carbon::ISO8601, $startAt)->second(0);
+        $totalMinutes = $startAt->copy()->startOfDay()->diffInMinutes($startAt);
         $isInSlot = ($totalMinutes % $this->clinic->appointment_duration) === 0;
 
         return $isInSlot;

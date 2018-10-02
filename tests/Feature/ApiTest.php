@@ -8,11 +8,11 @@ class ApiTest extends TestCase
 {
     public function test_v1_contains_correct_information()
     {
-        $response = $this->get('/v1');
+        $response = $this->get('/');
 
         $response->assertStatus(200);
         $response->assertJson([
-            'version' => 'v1.0',
+            'version' => 'v1.0.0',
             'base_path' => url('/v1'),
         ]);
     }
