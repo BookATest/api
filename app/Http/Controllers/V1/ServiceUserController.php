@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\V1;
 
 use App\Events\EndpointHit;
-use App\Http\Requests\ServiceUser\{IndexRequest};
+use App\Http\Requests\ServiceUser\{IndexRequest, ShowRequest};
 use App\Http\Resources\ServiceUserResource;
 use App\Models\ServiceUser;
 use App\Http\Controllers\Controller;
@@ -46,11 +46,14 @@ class ServiceUserController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\ServiceUser  $serviceUser
-     * @return \Illuminate\Http\Response
+     * @param \App\Http\Requests\ServiceUser\ShowRequest $request
+     * @param  \App\Models\ServiceUser $serviceUser
+     * @return \App\Http\Resources\ServiceUserResource
      */
-    public function show(ServiceUser $serviceUser)
+    public function show(ShowRequest $request, ServiceUser $serviceUser)
     {
-        //
+        event(EndpointHit::onRead($request, "Viewed service user [{$serviceUser->id}]"));
+
+        return new ServiceUserResource($serviceUser);
     }
 }
