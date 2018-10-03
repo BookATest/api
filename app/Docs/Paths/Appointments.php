@@ -42,11 +42,13 @@ EOT;
             ),
         ];
         $parameters = [
-            Parameter::query('filter[user_id]', Schema::string()->format(Schema::UUID))
+            Parameter::query('filter[id]', Schema::string())
+                ->description('Comma separated appointment IDs'),
+            Parameter::query('filter[user_id]', Schema::string())
                 ->description('Comma separated user IDs'),
-            Parameter::query('filter[clinic_id]', Schema::string()->format(Schema::UUID))
+            Parameter::query('filter[clinic_id]', Schema::string())
                 ->description('Comma separated clinic IDs'),
-            Parameter::query('filter[service_user_id]', Schema::string()->format(Schema::UUID))
+            Parameter::query('filter[service_user_id]', Schema::string())
                 ->description('Comma separated service user IDs'),
             Parameter::query('filter[available]', Schema::boolean())
                 ->description('If only available appointments should be returned. If the user is not authenticated, then they can only see appointments which are available'),

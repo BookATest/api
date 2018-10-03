@@ -24,7 +24,7 @@ Route::prefix('v1')->namespace('V1')->group(function () {
     Route::delete('appointments/{appointment}/schedule', 'Appointment\\ScheduleController@destroy')->name('appointments.schedule.destroy');
 
     // Audit Routes.
-    // TODO
+    Route::apiResource('audits', 'AuditController')->only('index', 'show');
 
     // Booking Routes.
     // TODO

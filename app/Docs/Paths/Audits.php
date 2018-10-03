@@ -30,8 +30,13 @@ class Audits
                 MediaType::json(AuditResource::list())
             ),
         ];
+        $parameters = [
+            Parameter::query('filter[id]', Schema::string())
+                ->description('Comma separated audit IDs'),
+        ];
 
         return Operation::get(...$responses)
+            ->parameters(...$parameters)
             ->summary('List all audits')
             ->description('**Permission:** `Organisation Admin`')
             ->operationId('audits.index')
@@ -57,7 +62,7 @@ class Audits
         return Operation::get(...$responses)
             ->parameters(...$parameters)
             ->summary('Get a specific audit')
-            ->description('**Permission:** `Organisation Worker`')
+            ->description('**Permission:** `Organisation Admin`')
             ->operationId('audits.show')
             ->tags(Tags::audits()->name);
     }

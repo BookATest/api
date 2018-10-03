@@ -9,7 +9,6 @@ use App\Http\Resources\AppointmentResource;
 use App\Http\Responses\ResourceDeletedResponse;
 use App\Models\Appointment;
 use App\Models\AppointmentSchedule;
-use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
@@ -46,6 +45,7 @@ class AppointmentController extends Controller
         // Specify allowed modifications to the query via the GET parameters.
         $appointments = QueryBuilder::for($baseQuery)
             ->allowedFilters(
+                Filter::exact('id'),
                 Filter::exact('user_id'),
                 Filter::exact('clinic_id'),
                 Filter::exact('service_user_id'),
