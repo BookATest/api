@@ -35,4 +35,12 @@ trait QuestionMutators
     {
         return $this->type === static::TEXT;
     }
+
+    /**
+     * @return string[]
+     */
+    public function getAvailableOptionsAttribute(): array
+    {
+        return $this->questionOptions->map->option->toArray();
+    }
 }

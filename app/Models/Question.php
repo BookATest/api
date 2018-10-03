@@ -29,14 +29,6 @@ class Question extends Model
     ];
 
     /**
-     * @return string[]
-     */
-    public function getAvailableOptions(): array
-    {
-        return $this->questionOptions->map->option->toArray();
-    }
-
-    /**
      * Soft deletes all the questions.
      *
      * @throws \Exception
