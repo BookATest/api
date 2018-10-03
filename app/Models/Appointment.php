@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\Mutators\AppointmentMutators;
 use App\Models\Relationships\AppointmentRelationships;
 use App\Models\Scopes\AppointmentScopes;
+use Illuminate\Support\Carbon;
 
 class Appointment extends Model
 {
@@ -31,6 +32,23 @@ class Appointment extends Model
     public function hasSchedule(): bool
     {
         return $this->appointment_schedule_id !== null;
+    }
+
+    /**
+     * @param \App\Models\ServiceUser $serviceUser
+     * @param \Illuminate\Support\Carbon|null $bookedAt
+     * @return \App\Models\Appointment
+     */
+    public function book(ServiceUser $serviceUser, Carbon $bookedAt = null): self
+    {
+        $bookedAt = $bookedAt ?? now();
+
+        $this->update([
+            'service_user_id' => $serviceUser->id,
+            'booked_at' => $bookedAt,
+        ]);
+
+        return $this;
     }
 
     /**

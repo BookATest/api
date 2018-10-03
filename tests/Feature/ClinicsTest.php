@@ -3,8 +3,10 @@
 namespace Tests\Feature;
 
 use App\Events\EndpointHit;
+use App\Models\Appointment;
 use App\Models\Audit;
 use App\Models\Clinic;
+use App\Models\ServiceUser;
 use App\Models\User;
 use Illuminate\Http\Response;
 use Illuminate\Support\Carbon;
@@ -374,5 +376,22 @@ class ClinicsTest extends TestCase
             $this->assertEquals(Audit::DELETE, $event->getAction());
             return true;
         });
+    }
+
+    public function test_future_appointments_cancelled_and_deleted_when_deleted()
+    {
+        $user = factory(User::class)->create()->makeOrganisationAdmin();
+
+        $serviceUser = factory(ServiceUser::class)->create();
+        $clinic = factory(Clinic::class)->create();
+        $appointment = factory(Appointment::class)->create([
+            'clinic_id' => $clinic->id,
+            'start_at' => today()->addWeek(),
+        ])->book($serviceUser);
+
+        Passport::actingAs($user);
+        $this->json('DELETE', "/v1/clinics/{$clinic->id}");
+
+        $this->assertModelDeleted($appointment);
     }
 }
