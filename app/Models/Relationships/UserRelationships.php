@@ -6,6 +6,7 @@ use App\Models\Appointment;
 use App\Models\AppointmentSchedule;
 use App\Models\Audit;
 use App\Models\File;
+use App\Models\Notification;
 use App\Models\Report;
 use App\Models\ReportSchedule;
 use App\Models\Role;
@@ -75,5 +76,13 @@ trait UserRelationships
     public function audits()
     {
         return $this->morphMany(Audit::class, 'auditable');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
+     */
+    public function notifications()
+    {
+        return $this->morphMany(Notification::class, 'notifiable');
     }
 }

@@ -6,14 +6,12 @@ use App\Models\Mutators\UserMutators;
 use App\Models\Relationships\UserRelationships;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
 use Laravel\Passport\HasApiTokens;
 use RuntimeException;
 
 class User extends Authenticatable
 {
     use HasApiTokens;
-    use Notifiable;
     use UserMutators;
     use UserRelationships;
 

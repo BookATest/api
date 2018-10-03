@@ -5,6 +5,7 @@ namespace App\Models\Relationships;
 use App\Models\Answer;
 use App\Models\Appointment;
 use App\Models\Audit;
+use App\Models\Notification;
 
 trait ServiceUserRelationships
 {
@@ -30,5 +31,13 @@ trait ServiceUserRelationships
     public function audits()
     {
         return $this->morphMany(Audit::class, 'auditable');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
+     */
+    public function notifications()
+    {
+        return $this->morphMany(Notification::class, 'notifiable');
     }
 }

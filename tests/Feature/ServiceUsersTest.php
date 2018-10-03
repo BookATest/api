@@ -7,8 +7,10 @@ use App\Models\Audit;
 use App\Models\Clinic;
 use App\Models\ServiceUser;
 use App\Models\User;
+use App\Notifications\Sms\AccessCodeSms;
 use Illuminate\Http\Response;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Queue;
 use Laravel\Passport\Passport;
 use Tests\TestCase;
 
@@ -121,6 +123,42 @@ class ServiceUsersTest extends TestCase
     /*
      * Access code.
      */
+
+    public function test_guest_cannot_request_access_code()
+    {
+        Queue::fake();
+
+        $serviceUser = factory(ServiceUser::class)->create(['phone' => '07700000000']);
+
+        $response = $this->json('POST', '/v1/service-users/access-code', [
+            'phone' => '07799999999',
+        ]);
+
+        $response->assertStatus(Response::HTTP_OK);
+        Queue::assertNotPushed(AccessCodeSms::class);
+        $this->assertDatabaseMissing('notifications', [
+            'notifiable_type' => $serviceUser->getTable(),
+            'notifiable_id' => $serviceUser->id,
+        ]);
+    }
+
+    public function test_guest_can_request_access_code()
+    {
+        Queue::fake();
+
+        $serviceUser = factory(ServiceUser::class)->create(['phone' => '07700000000']);
+
+        $response = $this->json('POST', '/v1/service-users/access-code', [
+            'phone' => $serviceUser->phone,
+        ]);
+
+        $response->assertStatus(Response::HTTP_OK);
+        Queue::assertPushed(AccessCodeSms::class);
+        $this->assertDatabaseHas('notifications', [
+            'notifiable_type' => $serviceUser->getTable(),
+            'notifiable_id' => $serviceUser->id,
+        ]);
+    }
 
     /*
      * Token.
