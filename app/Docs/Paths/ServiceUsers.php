@@ -31,8 +31,15 @@ class ServiceUsers
                 MediaType::json(ServiceUserResource::list())
             ),
         ];
+        $parameters = [
+            Parameter::query('filter[id]', Schema::string())
+                ->description('Comma separated appointment IDs'),
+            Parameter::query('sort', Schema::string()->default('name'))
+                ->description('The field to sort the results by [`name`]'),
+        ];
 
         return Operation::get(...$responses)
+            ->parameters(...$parameters)
             ->summary('List all service users')
             ->description('**Permission:** `Community Worker`')
             ->operationId('service-users.index')

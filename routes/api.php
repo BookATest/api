@@ -13,46 +13,79 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// API Routes.
+/*
+ * API Routes.
+ */
 Route::get('/', 'ApiController@v1');
 
-// V1 Routes.
+/*
+ * V1 Routes.
+ */
 Route::prefix('v1')->namespace('V1')->group(function () {
-    // Appointment Routes.
+    /*
+     * Appointment Routes.
+     */
     Route::apiResource('appointments', 'AppointmentController');
-    Route::put('appointments/{appointment}/cancel', 'Appointment\\CancelController')->name('appointments.cancel');
-    Route::delete('appointments/{appointment}/schedule', 'Appointment\\ScheduleController@destroy')->name('appointments.schedule.destroy');
+    Route::put('appointments/{appointment}/cancel', 'Appointment\\CancelController')
+        ->name('appointments.cancel');
+    Route::delete('appointments/{appointment}/schedule', 'Appointment\\ScheduleController@destroy')
+        ->name('appointments.schedule.destroy');
 
-    // Audit Routes.
-    Route::apiResource('audits', 'AuditController')->only('index', 'show');
+    /*
+     * Audit Routes.
+     */
+    Route::apiResource('audits', 'AuditController')
+        ->only('index', 'show');
 
-    // Booking Routes.
+    /*
+     * Booking Routes.
+     */
     // TODO
 
-    // Clinic Routes.
+    /*
+     * Clinic Routes.
+     */
     Route::apiResource('clinics', 'ClinicController');
 
-    // Eligible Answer Routes.
+    /*
+     * Eligible Answer Routes.
+     */
     // TODO
 
-    // Question Routes.
-    Route::apiResource('questions', 'QuestionController')->only('index', 'store');
+    /*
+     * Question Routes.
+     */
+    Route::apiResource('questions', 'QuestionController')
+        ->only('index', 'store');
 
-    // Report Routes.
+    /*
+     * Report Routes.
+     */
     // TODO
 
-    // Report Schedule Routes.
+    /*
+     * Report Schedule Routes.
+     */
     // TODO
 
-    // Service User Routes.
+    /*
+     * Service User Routes.
+     */
+    Route::apiResource('service-users', 'ServiceUserController')
+        ->only('index', 'show');
+
+    /*
+     * Setting Routes.
+     */
     // TODO
 
-    // Setting Routes.
+    /*
+     * Stat Routes.
+     */
     // TODO
 
-    // Stat Routes.
-    // TODO
-
-    // User Routes.
+    /*
+     * User Routes.
+     */
     // TODO
 });
