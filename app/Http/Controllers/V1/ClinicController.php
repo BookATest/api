@@ -3,10 +3,12 @@
 namespace App\Http\Controllers\V1;
 
 use App\Events\EndpointHit;
-use App\Http\Requests\Clinic\{IndexRequest, ShowRequest, StoreRequest, UpdateRequest};
+use App\Http\Requests\Clinic\{DestroyRequest, IndexRequest, ShowRequest, StoreRequest, UpdateRequest};
 use App\Http\Resources\ClinicResource;
+use App\Http\Responses\ResourceDeletedResponse;
 use App\Models\Clinic;
 use App\Http\Controllers\Controller;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
 use Spatie\QueryBuilder\Filter;
 use Spatie\QueryBuilder\QueryBuilder;
@@ -124,11 +126,35 @@ class ClinicController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Clinic  $clinic
-     * @return \Illuminate\Http\Response
+     * @param \App\Http\Requests\Clinic\DestroyRequest $request
+     * @param  \App\Models\Clinic $clinic
+     * @return \App\Http\Responses\ResourceDeletedResponse
      */
-    public function destroy(Clinic $clinic)
+    public function destroy(DestroyRequest $request, Clinic $clinic)
     {
-        //
+        $clinicId = $clinic->id;
+
+        DB::transaction(function () use ($clinic) {
+            // Cancel all booked appointments in the future.
+            $clinic->appointments()
+                ->booked()
+                ->where('start_at', '>', now())
+                ->chunk(200, function (Collection $appointments) {
+                    $appointments->each->cancel();
+                });
+
+            // Delete all appointment schedules.
+            $clinic->appointmentSchedules()->delete();
+
+            // Delete all unbooked appointments.
+            $clinic->appointments()->available()->delete();
+
+            // Soft delete the clinic.
+            $clinic->delete();
+        });
+
+        event(EndpointHit::onDelete($request, "Deleted clinic [{$clinicId}]"));
+
+        return new ResourceDeletedResponse(Clinic::class);
     }
 }

@@ -197,7 +197,11 @@ EOT;
 
 ***
 
-This only soft deletes the clinic.
+This will:
+* Cancel all booked appointments in the future
+* Delete all appointment schedules
+* Delete all unbooked appointments
+* Soft delete the clinic
 EOT;
 
         return Operation::delete(...$responses)

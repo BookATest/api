@@ -306,4 +306,73 @@ class ClinicsTest extends TestCase
             return true;
         });
     }
+    
+    /*
+     * Delete one.
+     */
+
+    public function test_guest_cannot_delete_one()
+    {
+        $clinic = factory(Clinic::class)->create();
+
+        $response = $this->json('DELETE', "/v1/clinics/{$clinic->id}");
+
+        $response->assertStatus(Response::HTTP_UNAUTHORIZED);
+    }
+
+    public function test_cw_cannot_delete_one()
+    {
+        $clinic = factory(Clinic::class)->create();
+        $user = factory(User::class)->create()->makeCommunityWorker($clinic);
+
+        $clinic = factory(Clinic::class)->create();
+
+        Passport::actingAs($user);
+        $response = $this->json('DELETE', "/v1/clinics/{$clinic->id}");
+
+        $response->assertStatus(Response::HTTP_FORBIDDEN);
+    }
+
+    public function test_ca_cannot_delete_one()
+    {
+        $clinic = factory(Clinic::class)->create();
+        $user = factory(User::class)->create()->makeClinicAdmin($clinic);
+
+        $clinic = factory(Clinic::class)->create();
+
+        Passport::actingAs($user);
+        $response = $this->json('DELETE', "/v1/clinics/{$clinic->id}");
+
+        $response->assertStatus(Response::HTTP_FORBIDDEN);
+    }
+
+    public function test_oa_can_delete_one()
+    {
+        $user = factory(User::class)->create()->makeOrganisationAdmin();
+
+        $clinic = factory(Clinic::class)->create();
+
+        Passport::actingAs($user);
+        $response = $this->json('DELETE', "/v1/clinics/{$clinic->id}");
+
+        $response->assertStatus(Response::HTTP_OK);
+        $this->assertModelSoftDeleted($clinic);
+    }
+
+    public function test_audit_created_when_deleted()
+    {
+        $this->fakeEvents();
+
+        $user = factory(User::class)->create()->makeOrganisationAdmin();
+
+        $clinic = factory(Clinic::class)->create();
+
+        Passport::actingAs($user);
+        $this->json('DELETE', "/v1/clinics/{$clinic->id}");
+
+        Event::assertDispatched(EndpointHit::class, function (EndpointHit $event) {
+            $this->assertEquals(Audit::DELETE, $event->getAction());
+            return true;
+        });
+    }
 }

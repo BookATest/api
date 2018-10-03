@@ -54,6 +54,7 @@ abstract class TestCase extends BaseTestCase
      */
     protected function assertModelSoftDeleted(Model $model)
     {
+        $this->assertDatabaseHas($model->getTable(), ['id' => $model->id]);
         $this->assertDatabaseMissing($model->getTable(), ['id' => $model->id, 'deleted_at' => null]);
     }
 }

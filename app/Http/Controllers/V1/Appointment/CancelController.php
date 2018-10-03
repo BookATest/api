@@ -19,11 +19,7 @@ class CancelController extends Controller
     public function __invoke(CancelRequest $request, Appointment $appointment)
     {
         $appointment = DB::transaction(function () use ($appointment) {
-            $appointment->service_user_id = null;
-            $appointment->booked_at = null;
-            $appointment->save();
-
-            return $appointment;
+            return $appointment->cancel();
         });
 
         event(EndpointHit::onUpdate($request, "Cancelled appointment [{$appointment->id}]"));

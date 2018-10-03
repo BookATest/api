@@ -32,4 +32,17 @@ class Appointment extends Model
     {
         return $this->appointment_schedule_id !== null;
     }
+
+    /**
+     * @return \App\Models\Appointment
+     */
+    public function cancel(): self
+    {
+        $this->update([
+            'service_user_id' => null,
+            'booked_at' => null,
+        ]);
+
+        return $this;
+    }
 }
