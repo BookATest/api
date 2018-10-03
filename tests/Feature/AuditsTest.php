@@ -8,7 +8,6 @@ use App\Models\Clinic;
 use App\Models\User;
 use Illuminate\Http\Response;
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\Event;
 use Laravel\Passport\Passport;
 use Tests\TestCase;
 
@@ -81,9 +80,8 @@ class AuditsTest extends TestCase
         Passport::actingAs($user);
         $this->json('GET', '/v1/audits');
 
-        Event::assertDispatched(EndpointHit::class, function (EndpointHit $event) {
+        $this->assertEventDispatched(EndpointHit::class, function (EndpointHit $event) {
             $this->assertEquals(Audit::READ, $event->getAction());
-            return true;
         });
     }
 
@@ -163,9 +161,8 @@ class AuditsTest extends TestCase
         Passport::actingAs($user);
         $this->json('GET', "/v1/audits/{$audit->id}");
 
-        Event::assertDispatched(EndpointHit::class, function (EndpointHit $event) {
+        $this->assertEventDispatched(EndpointHit::class, function (EndpointHit $event) {
             $this->assertEquals(Audit::READ, $event->getAction());
-            return true;
         });
     }
 }

@@ -11,7 +11,6 @@ use App\Models\ServiceUser;
 use App\Models\User;
 use Illuminate\Http\Response;
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\Event;
 use Laravel\Passport\Passport;
 use Tests\TestCase;
 
@@ -107,9 +106,8 @@ class AppointmentsTest extends TestCase
 
         $this->json('GET', '/v1/appointments');
 
-        Event::assertDispatched(EndpointHit::class, function (EndpointHit $event) {
+        $this->assertEventDispatched(EndpointHit::class, function (EndpointHit $event) {
             $this->assertEquals(Audit::READ, $event->getAction());
-            return true;
         });
     }
 
@@ -346,9 +344,8 @@ class AppointmentsTest extends TestCase
             'is_repeating' => false,
         ]);
 
-        Event::assertDispatched(EndpointHit::class, function (EndpointHit $event) {
+        $this->assertEventDispatched(EndpointHit::class, function (EndpointHit $event) {
             $this->assertEquals(Audit::CREATE, $event->getAction());
-            return true;
         });
     }
 
@@ -400,9 +397,8 @@ class AppointmentsTest extends TestCase
 
         $this->json('GET', "/v1/appointments/{$appointment->id}");
 
-        Event::assertDispatched(EndpointHit::class, function (EndpointHit $event) {
+        $this->assertEventDispatched(EndpointHit::class, function (EndpointHit $event) {
             $this->assertEquals(Audit::READ, $event->getAction());
-            return true;
         });
     }
 
@@ -502,9 +498,8 @@ class AppointmentsTest extends TestCase
             'did_not_attend' => true,
         ]);
 
-        Event::assertDispatched(EndpointHit::class, function (EndpointHit $event) {
+        $this->assertEventDispatched(EndpointHit::class, function (EndpointHit $event) {
             $this->assertEquals(Audit::UPDATE, $event->getAction());
-            return true;
         });
     }
 
@@ -560,9 +555,8 @@ class AppointmentsTest extends TestCase
         Passport::actingAs($user);
         $this->json('DELETE', "/v1/appointments/{$appointment->id}");
 
-        Event::assertDispatched(EndpointHit::class, function (EndpointHit $event) {
+        $this->assertEventDispatched(EndpointHit::class, function (EndpointHit $event) {
             $this->assertEquals(Audit::DELETE, $event->getAction());
-            return true;
         });
     }
 
@@ -707,9 +701,8 @@ class AppointmentsTest extends TestCase
         Passport::actingAs($user);
         $this->json('PUT', "/v1/appointments/{$appointment->id}/cancel");
 
-        Event::assertDispatched(EndpointHit::class, function (EndpointHit $event) {
+        $this->assertEventDispatched(EndpointHit::class, function (EndpointHit $event) {
             $this->assertEquals(Audit::UPDATE, $event->getAction());
-            return true;
         });
     }
 
@@ -849,9 +842,8 @@ class AppointmentsTest extends TestCase
         Passport::actingAs($user);
         $this->json('DELETE', "/v1/appointments/{$appointment->id}/schedule");
 
-        Event::assertDispatched(EndpointHit::class, function (EndpointHit $event) {
+        $this->assertEventDispatched(EndpointHit::class, function (EndpointHit $event) {
             $this->assertEquals(Audit::DELETE, $event->getAction());
-            return true;
         });
     }
 }

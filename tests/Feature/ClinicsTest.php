@@ -10,7 +10,6 @@ use App\Models\ServiceUser;
 use App\Models\User;
 use Illuminate\Http\Response;
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\Event;
 use Laravel\Passport\Passport;
 use Tests\TestCase;
 
@@ -53,9 +52,8 @@ class ClinicsTest extends TestCase
 
         $this->json('GET', '/v1/clinics');
 
-        Event::assertDispatched(EndpointHit::class, function (EndpointHit $event) {
+        $this->assertEventDispatched(EndpointHit::class, function (EndpointHit $event) {
             $this->assertEquals(Audit::READ, $event->getAction());
-            return true;
         });
     }
 
@@ -148,9 +146,8 @@ class ClinicsTest extends TestCase
             'appointment_booking_threshold' => 120,
         ]);
 
-        Event::assertDispatched(EndpointHit::class, function (EndpointHit $event) {
+        $this->assertEventDispatched(EndpointHit::class, function (EndpointHit $event) {
             $this->assertEquals(Audit::CREATE, $event->getAction());
-            return true;
         });
     }
 
@@ -193,9 +190,8 @@ class ClinicsTest extends TestCase
 
         $this->json('GET', "/v1/clinics/{$clinic->id}");
 
-        Event::assertDispatched(EndpointHit::class, function (EndpointHit $event) {
+        $this->assertEventDispatched(EndpointHit::class, function (EndpointHit $event) {
             $this->assertEquals(Audit::READ, $event->getAction());
-            return true;
         });
     }
     
@@ -303,9 +299,8 @@ class ClinicsTest extends TestCase
             'appointment_booking_threshold' => 120,
         ]);
 
-        Event::assertDispatched(EndpointHit::class, function (EndpointHit $event) {
+        $this->assertEventDispatched(EndpointHit::class, function (EndpointHit $event) {
             $this->assertEquals(Audit::UPDATE, $event->getAction());
-            return true;
         });
     }
     
@@ -372,9 +367,8 @@ class ClinicsTest extends TestCase
         Passport::actingAs($user);
         $this->json('DELETE', "/v1/clinics/{$clinic->id}");
 
-        Event::assertDispatched(EndpointHit::class, function (EndpointHit $event) {
+        $this->assertEventDispatched(EndpointHit::class, function (EndpointHit $event) {
             $this->assertEquals(Audit::DELETE, $event->getAction());
-            return true;
         });
     }
 
