@@ -30,12 +30,10 @@ class Question extends Model
 
     /**
      * Soft deletes all the questions.
-     *
-     * @throws \Exception
      */
     public static function invalidateAll()
     {
-        static::delete();
+        static::query()->delete();
     }
 
     /**
