@@ -24,4 +24,12 @@ class Appointment extends Model
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
     ];
+
+    /**
+     * @return bool
+     */
+    public function hasSchedule(): bool
+    {
+        return $this->appointment_schedule_id !== null;
+    }
 }

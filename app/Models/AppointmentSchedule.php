@@ -77,4 +77,17 @@ class AppointmentSchedule extends Model
 
         return $appointments;
     }
+
+    /**
+     * @param \Illuminate\Support\Carbon $date
+     */
+    public function deleteFrom(Carbon $date)
+    {
+        $this->appointments()
+            ->available()
+            ->where('appointments.start_at', '>=', $date)
+            ->delete();
+
+        $this->delete();
+    }
 }

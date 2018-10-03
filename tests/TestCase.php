@@ -48,4 +48,12 @@ abstract class TestCase extends BaseTestCase
     {
         $this->assertDatabaseMissing($model->getTable(), ['id' => $model->id]);
     }
+
+    /**
+     * @param \Illuminate\Database\Eloquent\Model $model
+     */
+    protected function assertModelSoftDeleted(Model $model)
+    {
+        $this->assertDatabaseMissing($model->getTable(), ['id' => $model->id, 'deleted_at' => null]);
+    }
 }

@@ -31,7 +31,7 @@ trait AppointmentRelationships
      */
     public function appointmentSchedule()
     {
-        return $this->belongsTo(AppointmentSchedule::class);
+        return $this->belongsTo(AppointmentSchedule::class)->withTrashed();
     }
 
     /**

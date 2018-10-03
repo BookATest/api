@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Events\EndpointHit;
 use App\Models\Appointment;
+use App\Models\AppointmentSchedule;
 use App\Models\Audit;
 use App\Models\Clinic;
 use App\Models\ServiceUser;
@@ -688,5 +689,119 @@ class AppointmentsTest extends TestCase
             'service_user_id' => null,
             'booked_at' => null,
         ]);
+    }
+
+    /*
+     * Delete schedule.
+     */
+
+    public function test_guest_cannot_delete_schedule()
+    {
+        $clinic = factory(Clinic::class)->create();
+        $user = factory(User::class)->create()->makeCommunityWorker($clinic);
+
+        /** @var \App\Models\AppointmentSchedule $appointmentSchedule */
+        $appointmentSchedule = AppointmentSchedule::create([
+            'user_id' => $user->id,
+            'clinic_id' => $clinic->id,
+            'weekly_on' => today()->dayOfWeek,
+            'weekly_at' => today()->toTimeString(),
+        ]);
+
+        $daysToSkip = 0;
+        $appointments = $appointmentSchedule->createAppointments($daysToSkip);
+        $appointment = $appointments->first();
+
+        $response = $this->json('DELETE', "/v1/appointments/{$appointment->id}/schedule");
+
+        $response->assertStatus(Response::HTTP_UNAUTHORIZED);
+    }
+
+    public function test_cw_cannot_delete_schedule_for_another_clinic()
+    {
+        $clinic = factory(Clinic::class)->create();
+        $user = factory(User::class)->create()->makeCommunityWorker($clinic);
+
+        /** @var \App\Models\AppointmentSchedule $appointmentSchedule */
+        $appointmentSchedule = AppointmentSchedule::create([
+            'user_id' => $user->id,
+            'clinic_id' => factory(Clinic::class)->create()->id,
+            'weekly_on' => today()->dayOfWeek,
+            'weekly_at' => today()->toTimeString(),
+        ]);
+
+        $daysToSkip = 0;
+        $appointments = $appointmentSchedule->createAppointments($daysToSkip);
+        $appointment = $appointments->first();
+
+        Passport::actingAs($user);
+        $response = $this->json('DELETE', "/v1/appointments/{$appointment->id}/schedule");
+
+        $response->assertStatus(Response::HTTP_FORBIDDEN);
+    }
+
+    public function test_cw_can_delete_schedule()
+    {
+        $clinic = factory(Clinic::class)->create();
+        $user = factory(User::class)->create()->makeCommunityWorker($clinic);
+
+        /** @var \App\Models\AppointmentSchedule $appointmentSchedule */
+        $appointmentSchedule = AppointmentSchedule::create([
+            'user_id' => $user->id,
+            'clinic_id' => $clinic->id,
+            'weekly_on' => today()->dayOfWeek,
+            'weekly_at' => today()->toTimeString(),
+        ]);
+
+        $daysToSkip = 0;
+        $appointments = $appointmentSchedule->createAppointments($daysToSkip);
+        $appointment = $appointments->first();
+
+        Passport::actingAs($user);
+        $response = $this->json('DELETE', "/v1/appointments/{$appointment->id}/schedule");
+
+        $response->assertStatus(Response::HTTP_OK);
+        $this->assertModelSoftDeleted($appointmentSchedule);
+        $this->assertDatabaseMissing($appointment->getTable(), [
+            'appointment_schedule_id' => $appointmentSchedule->id,
+        ]);
+    }
+
+    public function test_schedule_booked_appointments_remain_when_schedule_deleted()
+    {
+        $clinic = factory(Clinic::class)->create();
+        $user = factory(User::class)->create()->makeCommunityWorker($clinic);
+        $serviceUser = factory(ServiceUser::class)->create();
+
+        /** @var \App\Models\AppointmentSchedule $appointmentSchedule */
+        $appointmentSchedule = AppointmentSchedule::create([
+            'user_id' => $user->id,
+            'clinic_id' => $clinic->id,
+            'weekly_on' => today()->dayOfWeek,
+            'weekly_at' => today()->toTimeString(),
+        ]);
+
+        $daysToSkip = 0;
+        $appointments = $appointmentSchedule->createAppointments($daysToSkip);
+        $appointment = $appointments->first();
+        $appointment->service_user_id = $serviceUser->id;
+        $appointment->booked_at = now();
+        $appointment->save();
+
+        Passport::actingAs($user);
+        $response = $this->json('DELETE', "/v1/appointments/{$appointment->id}/schedule");
+
+        $response->assertStatus(Response::HTTP_OK);
+        $this->assertModelSoftDeleted($appointmentSchedule);
+        foreach ($appointments as $loopedAppointment) {
+            if ($loopedAppointment->id === $appointment->id) {
+                continue;
+            }
+
+            $this->assertDatabaseMissing($loopedAppointment->getTable(), [
+                'id' => $loopedAppointment->id,
+            ]);
+        }
+        $this->assertDatabaseHas($appointment->getTable(), ['id' => $appointment->id]);
     }
 }
