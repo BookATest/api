@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\V1;
 
 use App\Events\EndpointHit;
-use App\Http\Requests\Clinic\{IndexRequest, StoreRequest};
+use App\Http\Requests\Clinic\{IndexRequest, ShowRequest, StoreRequest};
 use App\Http\Resources\ClinicResource;
 use App\Models\Clinic;
 use Illuminate\Http\Request;
@@ -79,12 +79,15 @@ class ClinicController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Clinic  $clinic
-     * @return \Illuminate\Http\Response
+     * @param \App\Http\Requests\Clinic\ShowRequest $request
+     * @param  \App\Models\Clinic $clinic
+     * @return \App\Http\Resources\ClinicResource
      */
-    public function show(Clinic $clinic)
+    public function show(ShowRequest $request, Clinic $clinic)
     {
-        //
+        event(EndpointHit::onRead($request, "Viewed clinic [{$clinic->id}]"));
+
+        return new ClinicResource($clinic);
     }
 
     /**
