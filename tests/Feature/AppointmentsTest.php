@@ -691,6 +691,28 @@ class AppointmentsTest extends TestCase
         ]);
     }
 
+    public function test_audit_created_when_canceled()
+    {
+        $this->fakeEvents();
+
+        $clinic = factory(Clinic::class)->create();
+        $user = factory(User::class)->create()->makeCommunityWorker($clinic);
+
+        $appointment = factory(Appointment::class)->create([
+            'clinic_id' => $clinic->id,
+            'service_user_id' => factory(ServiceUser::class)->create()->id,
+            'booked_at' => now(),
+        ]);
+
+        Passport::actingAs($user);
+        $this->json('PUT', "/v1/appointments/{$appointment->id}/cancel");
+
+        Event::assertDispatched(EndpointHit::class, function (EndpointHit $event) {
+            $this->assertEquals(Audit::UPDATE, $event->getAction());
+            return true;
+        });
+    }
+
     /*
      * Delete schedule.
      */
@@ -803,5 +825,33 @@ class AppointmentsTest extends TestCase
             ]);
         }
         $this->assertDatabaseHas($appointment->getTable(), ['id' => $appointment->id]);
+    }
+
+    public function test_audit_created_when_schedule_deleted()
+    {
+        $this->fakeEvents();
+
+        $clinic = factory(Clinic::class)->create();
+        $user = factory(User::class)->create()->makeCommunityWorker($clinic);
+
+        /** @var \App\Models\AppointmentSchedule $appointmentSchedule */
+        $appointmentSchedule = AppointmentSchedule::create([
+            'user_id' => $user->id,
+            'clinic_id' => $clinic->id,
+            'weekly_on' => today()->dayOfWeek,
+            'weekly_at' => today()->toTimeString(),
+        ]);
+
+        $daysToSkip = 0;
+        $appointments = $appointmentSchedule->createAppointments($daysToSkip);
+        $appointment = $appointments->first();
+
+        Passport::actingAs($user);
+        $this->json('DELETE', "/v1/appointments/{$appointment->id}/schedule");
+
+        Event::assertDispatched(EndpointHit::class, function (EndpointHit $event) {
+            $this->assertEquals(Audit::DELETE, $event->getAction());
+            return true;
+        });
     }
 }
