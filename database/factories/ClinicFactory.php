@@ -11,7 +11,7 @@ $factory->define(Clinic::class, function (Faker $faker) {
         'address_line_1' => $faker->streetAddress,
         'city' => $faker->city,
         'postcode' => $faker->postcode,
-        'directions' => 'Go straight past the town hall and it is on the left',
+        'directions' => $faker->sentence,
         'appointment_duration' => 30,
         'appointment_booking_threshold' => 120,
     ];

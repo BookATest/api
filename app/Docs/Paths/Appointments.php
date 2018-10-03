@@ -52,12 +52,12 @@ EOT;
                 ->description('Comma separated service user IDs'),
             Parameter::query('filter[available]', Schema::boolean())
                 ->description('If only available appointments should be returned. If the user is not authenticated, then they can only see appointments which are available'),
+            Parameter::query('sort', Schema::string()->default('-created_at'))
+                ->description('The field to sort the results by [`created_at`]'),
             Parameter::query('format', Schema::string()->enum('json', 'ics')->default('json'))
                 ->description('The desired format for the response'),
             Parameter::query('calendar_feed_token', Schema::string())
                 ->description('The user\'s calendar feed token - required if the format is set to `ics`'),
-            Parameter::query('sort', Schema::string()->default('-created_at'))
-                ->description('The field to sort the results by [`created_at`]'),
         ];
 
         return Operation::get(...$responses)

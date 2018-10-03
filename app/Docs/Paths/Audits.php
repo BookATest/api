@@ -33,6 +33,8 @@ class Audits
         $parameters = [
             Parameter::query('filter[id]', Schema::string())
                 ->description('Comma separated audit IDs'),
+            Parameter::query('sort', Schema::string()->default('-created_at'))
+                ->description('The field to sort the results by [`created_at`]'),
         ];
 
         return Operation::get(...$responses)

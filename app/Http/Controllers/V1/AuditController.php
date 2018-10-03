@@ -29,10 +29,12 @@ class AuditController extends Controller
     public function index(IndexRequest $request)
     {
         // Prepare the base query.
-        $baseQuery = Audit::query()->orderByDesc('created_at');
+        $baseQuery = Audit::query();
 
         // Specify allowed modifications to the query via the GET parameters.
         $audits = QueryBuilder::for($baseQuery)
+            ->defaultSort('-created_at')
+            ->allowedSorts('created_at')
             ->allowedFilters(
                 Filter::exact('id')
             )

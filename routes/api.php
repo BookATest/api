@@ -30,7 +30,7 @@ Route::prefix('v1')->namespace('V1')->group(function () {
     // TODO
 
     // Clinic Routes.
-    // TODO
+    Route::apiResource('clinics', 'ClinicController');
 
     // Eligible Answer Routes.
     // TODO

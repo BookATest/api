@@ -33,8 +33,9 @@ class Bookings
         ];
         $requestBody = Requests::json(
             Schema::object()
-                ->required('service_user', 'answers', 'notification')
+                ->required('appointment_id', 'service_user', 'answers', 'notification')
                 ->properties(
+                    Schema::string('appointment_id')->format(Schema::UUID),
                     Schema::object('service_user')
                         ->required('name', 'phone', 'email', 'preferred_contact_method')
                         ->properties(
@@ -63,6 +64,7 @@ Validation is in place to ensure only eligible service users can make a booking 
 EOT;
 
         return Operation::post(...$responses)
+            ->security([])
             ->requestBody($requestBody)
             ->summary('Make a booking for the service user')
             ->description($description)
@@ -107,6 +109,7 @@ A postcode must be provided to order the clinics by distance.
 EOT;
 
         return Operation::post(...$responses)
+            ->security([])
             ->requestBody($requestBody)
             ->summary('Check which clinics the service user is eligible for')
             ->description($description)

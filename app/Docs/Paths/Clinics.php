@@ -32,8 +32,16 @@ class Clinics
                 MediaType::json(ClinicResource::list())
             ),
         ];
+        $parameters = [
+            Parameter::query('filter[id]', Schema::string())
+                ->description('Comma separated clinic IDs'),
+            Parameter::query('sort', Schema::string()->default('-created_at'))
+                ->description('The field to sort the results by [`created_at`]'),
+        ];
 
         return Operation::get(...$responses)
+            ->security([])
+            ->parameters(...$parameters)
             ->summary('List all clinics')
             ->description('**Permission:** `Open`')
             ->operationId('clinics.index')
@@ -103,6 +111,7 @@ class Clinics
         ];
 
         return Operation::get(...$responses)
+            ->security([])
             ->parameters(...$parameters)
             ->summary('Get a specific clinic')
             ->description('**Permission:** `Open`')
