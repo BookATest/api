@@ -196,4 +196,114 @@ class ClinicsTest extends TestCase
             return true;
         });
     }
+    
+    /*
+     * Update one.
+     */
+
+    public function test_guest_cannot_update_one()
+    {
+        $clinic = factory(Clinic::class)->create();
+
+        $response = $this->json('PUT', "/v1/clinics/{$clinic->id}");
+
+        $response->assertStatus(Response::HTTP_UNAUTHORIZED);
+    }
+
+    public function test_cw_cannot_update_one()
+    {
+        $clinic = factory(Clinic::class)->create();
+        $user = factory(User::class)->create()->makeCommunityWorker($clinic);
+
+        $clinic = factory(Clinic::class)->create();
+
+        Passport::actingAs($user);
+        $response = $this->json('PUT', "/v1/clinics/{$clinic->id}");
+
+        $response->assertStatus(Response::HTTP_FORBIDDEN);
+    }
+
+    public function test_ca_cannot_update_one()
+    {
+        $clinic = factory(Clinic::class)->create();
+        $user = factory(User::class)->create()->makeClinicAdmin($clinic);
+
+        $clinic = factory(Clinic::class)->create();
+
+        Passport::actingAs($user);
+        $response = $this->json('PUT', "/v1/clinics/{$clinic->id}");
+
+        $response->assertStatus(Response::HTTP_FORBIDDEN);
+    }
+
+    public function test_oa_can_update_one()
+    {
+        $user = factory(User::class)->create()->makeOrganisationAdmin();
+
+        $clinic = factory(Clinic::class)->create();
+
+        Passport::actingAs($user);
+        $response = $this->json('PUT', "/v1/clinics/{$clinic->id}", [
+            'name' => 'Ayup Digital',
+            'phone' => '01130000000',
+            'email' => 'info@example.com',
+            'address_line_1' => '10 Fake Street',
+            'address_line_2' => null,
+            'address_line_3' => null,
+            'city' => 'Fake City',
+            'postcode' => 'LS1 1AB',
+            'directions' => 'Lorem ipsum dolar sit amet',
+            // TODO: 'appointment_duration' => 30,
+            'appointment_booking_threshold' => 120,
+        ]);
+
+        $response->assertStatus(Response::HTTP_OK);
+        $response->assertJsonFragment([
+            [
+                'id' => $clinic->id,
+                'name' => 'Ayup Digital',
+                'phone' => '01130000000',
+                'email' => 'info@example.com',
+                'address_line_1' => '10 Fake Street',
+                'address_line_2' => null,
+                'address_line_3' => null,
+                'city' => 'Fake City',
+                'postcode' => 'LS1 1AB',
+                'directions' => 'Lorem ipsum dolar sit amet',
+                'appointment_duration' => $clinic->appointment_duration,
+                'appointment_booking_threshold' => 120,
+                'created_at' => $clinic->created_at->format(Carbon::ISO8601),
+                'updated_at' => $clinic->updated_at->format(Carbon::ISO8601),
+            ]
+        ]);
+    }
+
+    public function test_audit_created_when_updated()
+    {
+        $this->fakeEvents();
+
+        $user = factory(User::class)->create()->makeOrganisationAdmin();
+
+        $clinic = factory(Clinic::class)->create();
+
+        Passport::actingAs($user);
+        $this->json('PUT', "/v1/clinics/{$clinic->id}", [
+            'name' => 'Ayup Digital',
+            'phone' => '01130000000',
+            'email' => 'info@example.com',
+            'address_line_1' => '10 Fake Street',
+            'address_line_2' => null,
+            'address_line_3' => null,
+            'city' => 'Fake City',
+            'postcode' => 'LS1 1AB',
+            'directions' => 'Lorem ipsum dolar sit amet',
+            // TODO: 'appointment_duration' => 30,
+            'appointment_booking_threshold' => 120,
+        ]);
+
+        Event::assertDispatched(EndpointHit::class, function (EndpointHit $event) {
+            $this->assertEquals(Audit::UPDATE, $event->getAction());
+            return true;
+        });
+    }
 }

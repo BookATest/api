@@ -127,8 +127,9 @@ class AppointmentController extends Controller
     public function update(UpdateRequest $request, Appointment $appointment)
     {
         $appointment = DB::transaction(function () use ($request, $appointment): Appointment {
-            $appointment->did_not_attend = $request->did_not_attend;
-            $appointment->save();
+            $appointment->update([
+                'did_not_attend' => $request->did_not_attend,
+            ]);
 
             return $appointment;
         });

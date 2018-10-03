@@ -3,10 +3,9 @@
 namespace App\Http\Controllers\V1;
 
 use App\Events\EndpointHit;
-use App\Http\Requests\Clinic\{IndexRequest, ShowRequest, StoreRequest};
+use App\Http\Requests\Clinic\{IndexRequest, ShowRequest, StoreRequest, UpdateRequest};
 use App\Http\Resources\ClinicResource;
 use App\Models\Clinic;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 use Spatie\QueryBuilder\Filter;
@@ -93,13 +92,33 @@ class ClinicController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Clinic  $clinic
-     * @return \Illuminate\Http\Response
+     * @param \App\Http\Requests\Clinic\UpdateRequest $request
+     * @param  \App\Models\Clinic $clinic
+     * @return \App\Http\Resources\ClinicResource
      */
-    public function update(Request $request, Clinic $clinic)
+    public function update(UpdateRequest $request, Clinic $clinic)
     {
-        //
+        $clinic = DB::transaction(function () use ($request, $clinic) {
+            $clinic->update([
+                'name' => $request->name,
+                'phone' => $request->phone,
+                'email' => $request->email,
+                'address_line_1' => $request->address_line_1,
+                'address_line_2' => $request->address_line_2,
+                'address_line_3' => $request->address_line_3,
+                'city' => $request->city,
+                'postcode' => $request->postcode,
+                'directions' => $request->directions,
+                // TODO: 'appointment_duration' => $request->appointment_duration,
+                'appointment_booking_threshold' => $request->appointment_booking_threshold,
+            ]);
+
+            return $clinic;
+        });
+
+        event(EndpointHit::onUpdate($request, "Updated clinic [{$clinic->id}]"));
+
+        return new ClinicResource($clinic);
     }
 
     /**

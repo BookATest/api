@@ -55,6 +55,7 @@ class AppointmentDoesntOverlap implements Rule
 
         $startAt = Carbon::createFromFormat(Carbon::ISO8601, $startAt)->second(0);
 
+        // TODO: Use appointment durations to ensure no overlap.
         return Appointment::query()
             ->where('user_id', $this->user->id)
             ->where('clinic_id', $this->clinic->id)
