@@ -20,8 +20,6 @@ class QuestionResource extends JsonResource
             'question' => $this->question,
             'type' => $this->type,
             'options' => $this->when($this->is_select, $this->available_options),
-            'created_at' => $this->created_at->format(Carbon::ISO8601),
-            'updated_at' => $this->updated_at->format(Carbon::ISO8601),
         ];
     }
 }

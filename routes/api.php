@@ -36,7 +36,7 @@ Route::prefix('v1')->namespace('V1')->group(function () {
     // TODO
 
     // Question Routes.
-    // TODO
+    Route::apiResource('questions', 'QuestionController')->only('index', 'store');
 
     // Report Routes.
     // TODO

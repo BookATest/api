@@ -43,6 +43,7 @@ EOT;
         ];
 
         return Operation::get(...$responses)
+            ->security([])
             ->summary('List all questions')
             ->description($description)
             ->operationId('questions.index')
@@ -79,12 +80,7 @@ EOT;
                     ->properties(
                         Schema::string('question'),
                         Schema::string('type'),
-                        Schema::array('options')->items(Schema::object()
-                            ->required('option')
-                            ->properties(
-                                Schema::string('option')
-                            )
-                        )
+                        Schema::array('options')->items(Schema::string())
                     )
                 )
             )

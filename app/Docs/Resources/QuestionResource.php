@@ -15,13 +15,7 @@ class QuestionResource extends BaseResource
             Schema::string('id')->format(Schema::UUID),
             Schema::string('question'),
             Schema::string('type')->enum('select', 'checkbox', 'date', 'text'),
-            Schema::array('options')->items(
-                Schema::object()->properties(
-                    Schema::string('option')
-                )
-            ),
-            Schema::string('created_at')->format('date-time'),
-            Schema::string('updated_at')->format('date-time')
+            Schema::array('options')->items(Schema::string())
         );
     }
 }
