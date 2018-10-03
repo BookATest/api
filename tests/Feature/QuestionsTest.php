@@ -2,6 +2,8 @@
 
 namespace Tests\Feature;
 
+use App\Events\EndpointHit;
+use App\Models\Audit;
 use App\Models\Clinic;
 use App\Models\Question;
 use App\Models\User;
@@ -54,6 +56,17 @@ class QuestionsTest extends TestCase
                 'type' => Question::TEXT,
             ]
         ]);
+    }
+
+    public function test_audit_created_when_listed()
+    {
+        $this->fakeEvents();
+
+        $this->json('GET', '/v1/questions');
+
+        $this->assertEventDispatched(EndpointHit::class, function (EndpointHit $event) {
+            $this->assertEquals(Audit::READ, $event->getAction());
+        });
     }
 
     /*
@@ -126,5 +139,23 @@ class QuestionsTest extends TestCase
             'type' => Question::TEXT,
             'deleted_at' => null,
         ]);
+    }
+
+    public function test_audit_created_when_created()
+    {
+        $this->fakeEvents();
+
+        $user = factory(User::class)->create()->makeOrganisationAdmin();
+
+        Passport::actingAs($user);
+        $this->json('POST', '/v1/questions', [
+            'questions' => [
+                ['type' => Question::CHECKBOX, 'question' => 'Are you over 18?'],
+            ]
+        ]);
+
+        $this->assertEventDispatched(EndpointHit::class, function (EndpointHit $event) {
+            $this->assertEquals(Audit::CREATE, $event->getAction());
+        });
     }
 }

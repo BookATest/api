@@ -42,6 +42,21 @@ abstract class TestCase extends BaseTestCase
     }
 
     /**
+     * @param string $eventClass
+     * @param callable|null $callback
+     */
+    protected function assertEventDispatched(string $eventClass, callable $callback = null)
+    {
+        Event::assertDispatched($eventClass, function ($event) use ($callback) {
+            if ($callback) {
+                $callback($event);
+            }
+
+            return true;
+        });
+    }
+
+    /**
      * @param \Illuminate\Database\Eloquent\Model $model
      */
     protected function assertModelDeleted(Model $model)
