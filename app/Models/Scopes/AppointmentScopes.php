@@ -20,10 +20,13 @@ trait AppointmentScopes
 
     /**
      * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param bool $booked
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeBooked(Builder $query): Builder
+    public function scopeBooked(Builder $query, bool $booked = true): Builder
     {
-        return $query->whereNotNull('appointments.service_user_id');
+        return $booked
+            ? $query->whereNotNull('appointments.service_user_id')
+            : $query->whereNull('appointments.service_user_id');
     }
 }
