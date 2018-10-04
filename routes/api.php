@@ -92,5 +92,5 @@ Route::prefix('v1')->namespace('V1')->group(function () {
     /*
      * User Routes.
      */
-    // TODO
+    Route::apiResource('users', 'UserController');
 });

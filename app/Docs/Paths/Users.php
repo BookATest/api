@@ -32,10 +32,12 @@ class Users
             ),
         ];
         $parameters = [
-            Parameter::query('id', Schema::string()->format(Schema::UUID))
+            Parameter::query('filter[id]', Schema::string()->format(Schema::UUID))
                 ->description('Comma separated user IDs'),
-            Parameter::query('clinic_id', Schema::string()->format(Schema::UUID))
+            Parameter::query('filter[clinic_id]', Schema::string()->format(Schema::UUID))
                 ->description('Comma separated clinic IDs'),
+            Parameter::query('sort', Schema::string()->default('first_name,last_name'))
+                ->description('The field to sort the results by [`first_name`, `last_name`]'),
         ];
 
         return Operation::get(...$responses)
@@ -126,7 +128,7 @@ EOT;
         return Operation::get(...$responses)
             ->parameters(...$parameters)
             ->summary('Get a specific user')
-            ->description('**Permission:** `Open`')
+            ->description('**Permission:** `Community Worker`')
             ->operationId('users.show')
             ->tags(Tags::users()->name);
     }
