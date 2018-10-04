@@ -55,4 +55,92 @@ class UsersTest extends TestCase
             ]
         ]);
     }
+
+    /*
+     * Create one.
+     */
+
+    public function test_guest_cannot_create_one()
+    {
+        $response = $this->json('POST', '/v1/users');
+
+        $response->assertStatus(Response::HTTP_UNAUTHORIZED);
+    }
+
+    public function test_cw_cannot_create_one()
+    {
+        $clinic = factory(Clinic::class)->create();
+        $user = factory(User::class)->create()->makeCommunityWorker($clinic);
+
+        Passport::actingAs($user);
+        $response = $this->json('POST', '/v1/users');
+
+        $response->assertStatus(Response::HTTP_FORBIDDEN);
+    }
+
+    public function test_ca_can_create_one()
+    {
+        $clinic = factory(Clinic::class)->create();
+        $user = factory(User::class)->create()->makeClinicAdmin($clinic);
+
+        Passport::actingAs($user);
+        $response = $this->json('POST', '/v1/users', [
+            'first_name' => 'John',
+            'last_name' => 'Doe',
+            'email' => 'john.doe@example.com',
+            'phone' => '07700000000',
+            'password' => 'P@55word.',
+            'display_email' => false,
+            'display_phone' => false,
+            'include_calendar_attachment' => false,
+            'roles' => [
+                [
+                    'role' => Role::COMMUNITY_WORKER,
+                    'clinic_id' => $clinic->id,
+                ]
+            ],
+        ]);
+
+        $response->assertStatus(Response::HTTP_CREATED);
+        $response->assertJsonFragment([
+            'first_name' => 'John',
+            'last_name' => 'Doe',
+            'email' => 'john.doe@example.com',
+            'phone' => '07700000000',
+            'display_email' => false,
+            'display_phone' => false,
+            'include_calendar_attachment' => false,
+            'roles' => [
+                [
+                    'role' => Role::COMMUNITY_WORKER,
+                    'clinic_id' => $clinic->id,
+                ]
+            ],
+        ]);
+    }
+
+    public function test_ca_cannot_create_oa()
+    {
+        $clinic = factory(Clinic::class)->create();
+        $user = factory(User::class)->create()->makeClinicAdmin($clinic);
+
+        Passport::actingAs($user);
+        $response = $this->json('POST', '/v1/users', [
+            'first_name' => 'John',
+            'last_name' => 'Doe',
+            'email' => 'john.doe@example.com',
+            'phone' => '07700000000',
+            'password' => 'P@55word.',
+            'display_email' => false,
+            'display_phone' => false,
+            'include_calendar_attachment' => false,
+            'roles' => [
+                [
+                    'role' => Role::ORGANISATION_ADMIN,
+                ]
+            ],
+        ]);
+
+        $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
+    }
 }

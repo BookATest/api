@@ -120,6 +120,23 @@ class User extends Authenticatable
     }
 
     /**
+     * @param \App\Models\Role $role
+     * @param \App\Models\Clinic|null $clinic
+     * @return bool
+     */
+    protected function canAssignRole(Role $role, Clinic $clinic = null): bool
+    {
+        switch ($role->name) {
+            case Role::COMMUNITY_WORKER:
+                return $this->isCommunityWorker($clinic);
+            case Role::CLINIC_ADMIN:
+                return $this->isClinicAdmin($clinic);
+            case Role::ORGANISATION_ADMIN:
+                return $this->isOrganisationAdmin();
+        }
+    }
+
+    /**
      * @param \App\Models\Clinic|null $clinic
      * @return bool
      */
@@ -220,10 +237,36 @@ class User extends Authenticatable
     }
 
     /**
-     * @param int $attempts
-     * @return \App\Models\User
+     * @param \App\Models\Clinic $clinic
+     * @return bool
      */
-    public function generateCalendarFeedToken(int $attempts = 0): self
+    public function canMakeCommunityWorker(Clinic $clinic): bool
+    {
+        return $this->canAssignRole(Role::communityWorker(), $clinic);
+    }
+
+    /**
+     * @param \App\Models\Clinic $clinic
+     * @return bool
+     */
+    public function canMakeClinicAdmin(Clinic $clinic): bool
+    {
+        return $this->canAssignRole(Role::clinicAdmin(), $clinic);
+    }
+
+    /**
+     * @return bool
+     */
+    public function canMakeOrganisationAdmin(): bool
+    {
+        return $this->canAssignRole(Role::organisationAdmin());
+    }
+
+    /**
+     * @param int $attempts
+     * @return string
+     */
+    public static function generateCalendarFeedToken(int $attempts = 0): string
     {
         // Prevent infinite loop.
         if ($attempts > 10) {
@@ -231,17 +274,13 @@ class User extends Authenticatable
         }
 
         // Generate the token.
-        $token = str_random(10);
+        $token = strtoupper(str_random(10));
 
         // Use recursion if the token has already been used.
         if (static::where('calendar_feed_token', $token)->exists()) {
-            $token = $this->generateCalendarFeedToken(++$attempts);
+            $token = static::generateCalendarFeedToken(++$attempts);
         }
 
-        // Set the token on the model.
-        $this->calendar_feed_token = $token;
-        $this->save();
-
-        return $this;
+        return $token;
     }
 }

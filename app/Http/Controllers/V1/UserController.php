@@ -3,11 +3,14 @@
 namespace App\Http\Controllers\V1;
 
 use App\Events\EndpointHit;
-use App\Http\Requests\User\{IndexRequest};
+use App\Http\Requests\User\{IndexRequest, StoreRequest};
 use App\Http\Resources\UserResource;
+use App\Models\Clinic;
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\DB;
 use Spatie\QueryBuilder\Filter;
 use Spatie\QueryBuilder\QueryBuilder;
 
@@ -50,12 +53,60 @@ class UserController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param \App\Http\Requests\User\StoreRequest $request
+     * @return \App\Http\Resources\UserResource
      */
-    public function store(Request $request)
+    public function store(StoreRequest $request)
     {
-        //
+        $user = DB::transaction(function () use ($request) {
+            // Create the user.
+            $user = User::create([
+                'first_name' => $request->first_name,
+                'last_name' => $request->last_name,
+                'email' => $request->email,
+                'phone' => $request->phone,
+                'password' => bcrypt($request->password),
+                'display_email' => $request->display_email,
+                'display_phone' => $request->display_phone,
+                'include_calendar_attachment' => $request->include_calendar_attachment,
+                'calendar_feed_token' => User::generateCalendarFeedToken(),
+            ]);
+
+            // Create the roles.
+            foreach ($request->roles as $role) {
+                switch ($role['role']) {
+                    case Role::COMMUNITY_WORKER:
+                        $user->makeCommunityWorker(
+                            Clinic::findOrFail($role['clinic_id'])
+                        );
+                        break;
+                    case Role::CLINIC_ADMIN:
+                        $user->makeClinicAdmin(
+                            Clinic::findOrFail($role['clinic_id'])
+                        );
+                        break;
+                    case Role::ORGANISATION_ADMIN:
+                        $user->makeOrganisationAdmin();
+                        break;
+                }
+            }
+
+            // Upload the profile picture.
+            if ($request->has('profile_picture')) {
+                $profilePicture = $user->profilePictureFile()->create([
+                    'filename' => 'profile-picture.png',
+                    'mime_type' => 'image/png',
+                ]);
+
+                $profilePicture->uploadBase64EncodedPng($request->profile_picture);
+            }
+
+            return $user;
+        });
+
+        event(EndpointHit::onCreate($request, "Created user [{$user->id}]"));
+
+        return new UserResource($user);
     }
 
     /**

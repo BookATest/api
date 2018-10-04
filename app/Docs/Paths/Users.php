@@ -78,6 +78,7 @@ class Users
                     Schema::string('phone'),
                     Schema::string('password')->format(Schema::PASSWORD),
                     Schema::boolean('display_email'),
+                    Schema::boolean('display_phone'),
                     Schema::boolean('include_calendar_attachment'),
                     Schema::array('roles')->items(Schema::object()
                         ->required('role')
