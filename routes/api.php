@@ -81,7 +81,8 @@ Route::prefix('v1')->namespace('V1')->group(function () {
     /*
      * Setting Routes.
      */
-    // TODO
+    Route::get('settings', 'SettingController@index')->name('settings.index');
+    Route::put('settings', 'SettingController@update')->name('settings.update');
 
     /*
      * Stat Routes.

@@ -31,6 +31,7 @@ class Settings
         ];
 
         return Operation::get(...$responses)
+            ->security([])
             ->summary('List all the organisation settings')
             ->description('**Permission:** `Open`')
             ->operationId('settings.index')
