@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\Mutators\SettingMutators;
 use App\Models\Relationships\SettingRelationships;
+use Illuminate\Database\Eloquent\Collection;
 
 class Setting extends Model
 {
@@ -34,5 +35,15 @@ class Setting extends Model
     public static function getValue(string $key)
     {
         return static::findOrFail($key)->value;
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public static function getAll(): Collection
+    {
+        return static::all()->mapWithKeys(function (Setting $setting) {
+            return [$setting->key => $setting->value];
+        });
     }
 }
