@@ -153,6 +153,7 @@ class ServiceUsersTest extends TestCase
         ]);
 
         $response->assertStatus(Response::HTTP_OK);
+        $response->assertJsonStructure(['message']);
         Queue::assertPushed(AccessCodeSms::class);
         $this->assertDatabaseHas('notifications', [
             'notifiable_type' => $serviceUser->getTable(),
@@ -161,6 +162,61 @@ class ServiceUsersTest extends TestCase
     }
 
     /*
-     * Token.
+     * Create token.
      */
+
+    public function test_guest_cannot_request_token()
+    {
+        factory(ServiceUser::class)->create();
+
+        $response = $this->json('POST', '/v1/service-users/token', [
+            'access_code' => '12345',
+        ]);
+
+        $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
+    }
+
+    public function test_guest_can_request_token()
+    {
+        $serviceUser = factory(ServiceUser::class)->create();
+
+        $response = $this->json('POST', '/v1/service-users/token', [
+            'access_code' => $serviceUser->generateAccessCode(),
+        ]);
+
+        $response->assertStatus(Response::HTTP_OK);
+        $response->assertJsonStructure(['token']);
+    }
+
+    /*
+     * Show from token.
+     */
+
+    public function test_guest_cannot_read_one_from_token()
+    {
+        $response = $this->json('GET', '/v1/service-users/token/incorrect-token');
+
+        $response->assertStatus(Response::HTTP_NOT_FOUND);
+    }
+
+    public function test_guest_can_read_one_from_token()
+    {
+        $serviceUser = factory(ServiceUser::class)->create();
+        $token = $serviceUser->generateToken();
+
+        $response = $this->json('GET', "/v1/service-users/token/{$token}");
+
+        $response->assertStatus(Response::HTTP_OK);
+        $response->assertJsonFragment([
+            [
+                'id' => $serviceUser->id,
+                'name' => $serviceUser->name,
+                'phone' => $serviceUser->phone,
+                'email' => $serviceUser->email,
+                'preferred_contact_method' => $serviceUser->preferred_contact_method,
+                'created_at' => $serviceUser->created_at->format(Carbon::ISO8601),
+                'updated_at' => $serviceUser->updated_at->format(Carbon::ISO8601),
+            ]
+        ]);
+    }
 }

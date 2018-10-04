@@ -29,7 +29,7 @@ class AccessCodeController extends Controller
             $this->dispatch(new AccessCodeSms($serviceUser, $accessCode));
         }
 
-        event(EndpointHit::onCreate($request, "Requested access code [{$request->phone}]"));
+        event(EndpointHit::onCreate($request, "Requested access code with phone [{$request->phone}]"));
 
         return response()->json([
             'message' => 'If the number provided has been used to make a booking, then an access code has been sent.',

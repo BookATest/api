@@ -73,6 +73,8 @@ Route::prefix('v1')->namespace('V1')->group(function () {
      */
     Route::post('service-users/access-code', 'ServiceUser\\AccessCodeController')
         ->name('service-users.access-code');
+    Route::apiResource('service-users/token', 'ServiceUser\\TokenController')
+        ->only('store', 'show');
     Route::apiResource('service-users', 'ServiceUserController')
         ->only('index', 'show');
 

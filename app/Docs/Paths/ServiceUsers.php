@@ -103,7 +103,9 @@ class ServiceUsers
     {
         $responses = [
             Responses::http201(
-                MediaType::json(ServiceUserResource::showWithAppointments())
+                MediaType::json(Schema::object()->properties(
+                    Schema::string('token')
+                ))
             ),
         ];
         $requestBody = Requests::json(
@@ -117,6 +119,31 @@ class ServiceUsers
             ->summary('Request a short lived token to manage their appointments')
             ->description('**Permission:** `Open`')
             ->operationId('service-users.token')
+            ->tags(Tags::serviceUsers()->name);
+    }
+
+    /**
+     * @return \GoldSpecDigital\ObjectOrientedOAS\Objects\Operation
+     */
+    public static function showToken(): Operation
+    {
+        $responses = [
+            Responses::http200(
+                MediaType::json(ServiceUserResource::show())
+            ),
+        ];
+        $parameters = [
+            Parameter::path('token', Schema::string())
+                ->description('The token requested with the access code')
+                ->required(),
+        ];
+
+        return Operation::get(...$responses)
+            ->security([])
+            ->parameters(...$parameters)
+            ->summary('Get the service user for the token')
+            ->description('**Permission:** `Open`')
+            ->operationId('service-users.token.show')
             ->tags(Tags::serviceUsers()->name);
     }
 }

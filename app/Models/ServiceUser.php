@@ -22,13 +22,12 @@ class ServiceUser extends Model
      */
     public function generateAccessCode(): string
     {
-        $accessCode = mt_rand(10000, 99999);
+        do {
+            $accessCode = mt_rand(10000, 99999);
+            $cacheKey = sprintf(static::CACHE_KEY_FOR_ACCESS_CODE, $accessCode);
+        } while (Cache::has($cacheKey));
 
-        Cache::put(
-            sprintf(static::CACHE_KEY_FOR_ACCESS_CODE, $this->id),
-            $accessCode,
-            config('cache.lifetimes.service_user_access_code')
-        );
+        Cache::put($cacheKey, $this->id, config('cache.lifetimes.service_user_access_code'));
 
         return $accessCode;
     }
@@ -37,11 +36,22 @@ class ServiceUser extends Model
      * @param string $accessCode
      * @return bool
      */
-    public function validateAccessCode(string $accessCode): bool
+    public static function validateAccessCode(string $accessCode): bool
     {
-        $cacheKey = sprintf(static::CACHE_KEY_FOR_ACCESS_CODE, $this->id);
+        $cacheKey = sprintf(static::CACHE_KEY_FOR_ACCESS_CODE, $accessCode);
+        return Cache::has($cacheKey);
+    }
 
-        return Cache::get($cacheKey) === $accessCode;
+    /**
+     * @param string $accessCode
+     * @return \App\Models\ServiceUser|null
+     */
+    public static function findByAccessCode(string $accessCode): ?self
+    {
+        $cacheKey = sprintf(static::CACHE_KEY_FOR_ACCESS_CODE, $accessCode);
+        $serviceUserId = Cache::get($cacheKey);
+
+        return $serviceUserId ? static::findOrFail($serviceUserId) : null;
     }
 
     /**
@@ -52,8 +62,8 @@ class ServiceUser extends Model
         $token = str_random(10);
 
         Cache::put(
-            sprintf(static::CACHE_KEY_FOR_TOKEN, $this->id),
-            $token,
+            sprintf(static::CACHE_KEY_FOR_TOKEN, $token),
+            $this->id,
             config('cache.lifetimes.service_user_token')
         );
 
@@ -64,11 +74,23 @@ class ServiceUser extends Model
      * @param string $token
      * @return bool
      */
-    public function validateToken(string $token): bool
+    public static function validateToken(string $token): bool
     {
-        $cacheKey = sprintf(static::CACHE_KEY_FOR_TOKEN, $this->id);
+        $cacheKey = sprintf(static::CACHE_KEY_FOR_TOKEN, $token);
 
-        return Cache::get($cacheKey) === $token;
+        return Cache::has($cacheKey);
+    }
+
+    /**
+     * @param string $token
+     * @return \App\Models\ServiceUser|null
+     */
+    public static function findByToken(string $token): ?self
+    {
+        $cacheKey = sprintf(static::CACHE_KEY_FOR_TOKEN, $token);
+        $serviceUserId = Cache::get($cacheKey);
+
+        return $serviceUserId ? static::findOrFail($serviceUserId) : null;
     }
 
     /**
