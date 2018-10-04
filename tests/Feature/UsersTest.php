@@ -2,6 +2,8 @@
 
 namespace Tests\Feature;
 
+use App\Events\EndpointHit;
+use App\Models\Audit;
 use App\Models\Clinic;
 use App\Models\Role;
 use App\Models\User;
@@ -54,6 +56,21 @@ class UsersTest extends TestCase
                 ]
             ]
         ]);
+    }
+
+    public function test_audit_created_when_listed()
+    {
+        $this->fakeEvents();
+
+        $clinic = factory(Clinic::class)->create();
+        $user = factory(User::class)->create()->makeCommunityWorker($clinic);
+
+        Passport::actingAs($user);
+        $this->json('GET', '/v1/users');
+
+        $this->assertEventDispatched(EndpointHit::class, function (EndpointHit $event) {
+            $this->assertEquals(Audit::READ, $event->getAction());
+        });
     }
 
     /*
@@ -142,5 +159,35 @@ class UsersTest extends TestCase
         ]);
 
         $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
+    }
+
+    public function test_audit_created_when_created()
+    {
+        $this->fakeEvents();
+
+        $clinic = factory(Clinic::class)->create();
+        $user = factory(User::class)->create()->makeClinicAdmin($clinic);
+
+        Passport::actingAs($user);
+        $this->json('POST', '/v1/users', [
+            'first_name' => 'John',
+            'last_name' => 'Doe',
+            'email' => 'john.doe@example.com',
+            'phone' => '07700000000',
+            'password' => 'P@55word.',
+            'display_email' => false,
+            'display_phone' => false,
+            'include_calendar_attachment' => false,
+            'roles' => [
+                [
+                    'role' => Role::COMMUNITY_WORKER,
+                    'clinic_id' => $clinic->id,
+                ]
+            ],
+        ]);
+
+        $this->assertEventDispatched(EndpointHit::class, function (EndpointHit $event) {
+            $this->assertEquals(Audit::CREATE, $event->getAction());
+        });
     }
 }
