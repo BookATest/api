@@ -3,13 +3,13 @@
 namespace App\Http\Controllers\V1;
 
 use App\Events\EndpointHit;
-use App\Http\Requests\User\{IndexRequest, StoreRequest};
+use App\Http\Controllers\Controller;
+use App\Http\Requests\User\{IndexRequest, ShowRequest, StoreRequest};
 use App\Http\Resources\UserResource;
 use App\Models\Clinic;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 use Spatie\QueryBuilder\Filter;
 use Spatie\QueryBuilder\QueryBuilder;
@@ -112,19 +112,22 @@ class UserController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\User  $user
-     * @return \Illuminate\Http\Response
+     * @param \App\Http\Requests\User\ShowRequest $request
+     * @param  \App\Models\User $user
+     * @return \App\Http\Resources\UserResource
      */
-    public function show(User $user)
+    public function show(ShowRequest $request, User $user)
     {
-        //
+        event(EndpointHit::onRead($request, "Viewed user [{$user->id}]"));
+
+        return new UserResource($user);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\User  $user
+     * @param  \Illuminate\Http\Request $request
+     * @param  \App\Models\User $user
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, User $user)
@@ -135,7 +138,7 @@ class UserController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\User  $user
+     * @param  \App\Models\User $user
      * @return \Illuminate\Http\Response
      */
     public function destroy(User $user)
