@@ -35,7 +35,11 @@ class ServiceUserTokenIsValid implements Rule
             return false;
         }
 
-        return $this->serviceUser->validateToken($serviceUserToken);
+        if (!ServiceUser::validateToken($serviceUserToken)) {
+            return false;
+        }
+
+        return ServiceUser::findByToken($serviceUserToken)->id === $this->serviceUser->id;
     }
 
     /**
