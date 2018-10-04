@@ -5,15 +5,19 @@ namespace Tests\Feature;
 use App\Events\EndpointHit;
 use App\Models\Audit;
 use App\Models\Clinic;
+use App\Models\File;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Response;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Storage;
 use Laravel\Passport\Passport;
 use Tests\TestCase;
 
 class UsersTest extends TestCase
 {
+    const BASE64_PNG = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII=';
+
     /*
      * List them.
      */
@@ -189,5 +193,37 @@ class UsersTest extends TestCase
         $this->assertEventDispatched(EndpointHit::class, function (EndpointHit $event) {
             $this->assertEquals(Audit::CREATE, $event->getAction());
         });
+    }
+
+    public function test_ca_can_create_one_with_profile_picture()
+    {
+        Storage::fake('cloud');
+
+        $clinic = factory(Clinic::class)->create();
+        $user = factory(User::class)->create()->makeClinicAdmin($clinic);
+
+        Passport::actingAs($user);
+        $response = $this->json('POST', '/v1/users', [
+            'first_name' => 'John',
+            'last_name' => 'Doe',
+            'email' => 'john.doe@example.com',
+            'phone' => '07700000000',
+            'password' => 'P@55word.',
+            'display_email' => false,
+            'display_phone' => false,
+            'include_calendar_attachment' => false,
+            'roles' => [
+                [
+                    'role' => Role::COMMUNITY_WORKER,
+                    'clinic_id' => $clinic->id,
+                ]
+            ],
+            'profile_picture' => static::BASE64_PNG,
+        ]);
+
+        $file = File::first();
+
+        $response->assertStatus(Response::HTTP_CREATED);
+        Storage::cloud()->assertExists($file->path());
     }
 }

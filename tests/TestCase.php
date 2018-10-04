@@ -8,6 +8,7 @@ use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\Storage;
 
 abstract class TestCase extends BaseTestCase
 {
@@ -29,6 +30,19 @@ abstract class TestCase extends BaseTestCase
 
         // Set the log path.
         Config::set('logging.channels.single.path', storage_path('logs/testing.log'));
+    }
+
+    /**
+     * Clean up the testing environment before the next test.
+     *
+     * @return void
+     */
+    protected function tearDown()
+    {
+        // Remove the files directory including any files uploaded during testing.
+        Storage::cloud()->deleteDirectory('files');
+
+        parent::tearDown();
     }
 
     /**
