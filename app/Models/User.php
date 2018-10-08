@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\Mutators\UserMutators;
 use App\Models\Relationships\UserRelationships;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Laravel\Passport\HasApiTokens;
 use RuntimeException;
@@ -134,6 +135,23 @@ class User extends Authenticatable
             case Role::ORGANISATION_ADMIN:
                 return $this->isOrganisationAdmin();
         }
+    }
+
+    /**
+     * @param \App\Models\User $subjectUser
+     * @return bool
+     */
+    public function canRevokeRole(User $subjectUser): bool
+    {
+        if ($this->isOrganisationAdmin()) {
+            return true;
+        }
+
+        if ($this->isClinicAdmin()) {
+            return !$subjectUser->isOrganisationAdmin();
+        }
+
+        return false;
     }
 
     /**
@@ -282,5 +300,72 @@ class User extends Authenticatable
         }
 
         return $token;
+    }
+
+    /**
+     * @param \Illuminate\Database\Eloquent\Collection $updatedRoles
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public function getAssignedRoles(Collection $updatedRoles): Collection
+    {
+        $assignedRoles = new Collection();
+
+        foreach ($updatedRoles as $updatedRole) {
+            switch ($updatedRole->role->name) {
+                case Role::COMMUNITY_WORKER:
+                    if ($this->isCommunityWorker($updatedRole->clinic)) {
+                        $assignedRoles->push($updatedRole);
+                    }
+                    break;
+                case Role::CLINIC_ADMIN:
+                    if ($this->isClinicAdmin($updatedRole->clinic)) {
+                        $assignedRoles->push($updatedRole);
+                    }
+                    break;
+                case Role::ORGANISATION_ADMIN:
+                    if ($this->isOrganisationAdmin()) {
+                        $assignedRoles->push($updatedRole);
+                    }
+                    break;
+            }
+        }
+
+        return $assignedRoles;
+    }
+
+    /**
+     * @param \Illuminate\Database\Eloquent\Collection $updatedRoles
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public function getRevokedRoles(Collection $updatedRoles): Collection
+    {
+        return $this->userRoles
+            ->load('role')
+            ->reject(function (UserRole $userRole) use ($updatedRoles) {
+                // Loop through each of the new set of roles.
+                foreach ($updatedRoles as $updatedRole) {
+                    // If the updated roles contain the current existing role then return true as a match.
+                    switch ($updatedRole->role->name) {
+                        case Role::COMMUNITY_WORKER:
+                            if ($userRole->isCommunityWorker($updatedRole->clinic)) {
+                                return true;
+                            }
+                            break;
+                        case Role::CLINIC_ADMIN:
+                            if ($userRole->isClinicAdmin($updatedRole->clinic)) {
+                                return true;
+                            }
+                            break;
+                        case Role::ORGANISATION_ADMIN:
+                            if ($userRole->isOrganisationAdmin()) {
+                                return true;
+                            }
+                            break;
+                    }
+                }
+
+                // If after looping, their are no matches, then return false.
+                return false;
+            });
     }
 }

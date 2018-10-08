@@ -16,13 +16,20 @@ class CanAddRole implements Rule
     protected $user;
 
     /**
+     * @var \App\Models\User|null
+     */
+    protected $subjectUser;
+
+    /**
      * Create a new rule instance.
      *
-     * @param \App\Models\User $user
+     * @param \App\Models\User $requestingUser
+     * @param \App\Models\User|null $subjectUser
      */
-    public function __construct(User $user)
+    public function __construct(User $requestingUser, User $subjectUser = null)
     {
-        $this->user = $user;
+        $this->user = $requestingUser;
+        $this->subjectUser = $subjectUser;
     }
 
     /**
@@ -39,20 +46,50 @@ class CanAddRole implements Rule
         }
 
         try {
-            switch ($role['role']) {
-                case Role::COMMUNITY_WORKER:
-                    return $this->user->canMakeCommunityWorker(
-                        Clinic::findOrFail($role['clinic_id'])
-                    );
-                case Role::CLINIC_ADMIN:
-                    return $this->user->canMakeClinicAdmin(
-                        Clinic::findOrFail($role['clinic_id'])
-                    );
-                case Role::ORGANISATION_ADMIN:
-                    return $this->user->canMakeOrganisationAdmin();
-            }
+            // Prepare variables.
+            $isNewUser = $this->subjectUser === null;
+            $roleName = $role['role'];
+            $clinic = isset($role['clinic_id']) ? Clinic::findOrFail($role['clinic_id']) : null;
+
+            return $isNewUser
+                ? $this->passesForNewUser($roleName, $clinic)
+                : $this->passesForExistingUser($roleName, $clinic);
         } catch (Throwable $throwable) {
             return false;
+        }
+    }
+
+    /**
+     * @param string $roleName
+     * @param \App\Models\Clinic|null $clinic
+     * @return bool
+     */
+    protected function passesForNewUser(string $roleName, Clinic $clinic = null): bool
+    {
+        switch ($roleName) {
+            case Role::COMMUNITY_WORKER:
+                return $this->user->canMakeCommunityWorker($clinic);
+            case Role::CLINIC_ADMIN:
+                return $this->user->canMakeClinicAdmin($clinic);
+            case Role::ORGANISATION_ADMIN:
+                return $this->user->canMakeOrganisationAdmin();
+        }
+    }
+
+    /**
+     * @param string $roleName
+     * @param \App\Models\Clinic|null $clinic
+     * @return bool
+     */
+    protected function passesForExistingUser(string $roleName, Clinic $clinic = null): bool
+    {
+        switch ($roleName) {
+            case Role::COMMUNITY_WORKER:
+                return $this->subjectUser->isCommunityWorker($clinic) ?: $this->user->canMakeCommunityWorker($clinic);
+            case Role::CLINIC_ADMIN:
+                return $this->subjectUser->isClinicAdmin($clinic) ?: $this->user->canMakeClinicAdmin($clinic);
+            case Role::ORGANISATION_ADMIN:
+                return $this->subjectUser->isOrganisationAdmin() ?: $this->user->canMakeOrganisationAdmin();
         }
     }
 
@@ -63,6 +100,6 @@ class CanAddRole implements Rule
      */
     public function message()
     {
-        return 'You\'re not authorised to add this role.';
+        return 'You are not authorised to add this role.';
     }
 }

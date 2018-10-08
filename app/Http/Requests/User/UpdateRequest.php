@@ -5,10 +5,12 @@ namespace App\Http\Requests\User;
 use App\Models\Role;
 use App\Rules\Base64EncodedPng;
 use App\Rules\CanAddRole;
+use App\Rules\CanRemoveRoles;
 use App\Rules\Password;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
-class StoreRequest extends FormRequest
+class UpdateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -17,11 +19,15 @@ class StoreRequest extends FormRequest
      */
     public function authorize()
     {
-        if (!$this->user()->isClinicAdmin()) {
-            return false;
+        if ($this->user()->id === $this->route('user')->id) {
+            return true;
         }
 
-        return true;
+        if ($this->user()->isClinicAdmin()) {
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -46,7 +52,7 @@ class StoreRequest extends FormRequest
                 'required',
                 'email',
                 'max:255',
-                'unique:users,email',
+                Rule::unique('users', 'email')->ignoreModel($this->user()),
             ],
             'phone' => [
                 'required',
@@ -54,7 +60,6 @@ class StoreRequest extends FormRequest
                 'max:255',
             ],
             'password' => [
-                'required',
                 'string',
                 'max:255',
                 new Password(),
@@ -74,11 +79,12 @@ class StoreRequest extends FormRequest
             'roles' => [
                 'required',
                 'array',
+                new CanRemoveRoles($this->user(), $this->route('user')),
             ],
             'roles.*' => [
                 'required',
                 'array',
-                new CanAddRole($this->user()),
+                new CanAddRole($this->user(), $this->route('user')),
             ],
             'roles.*.role' => [
                 'required',

@@ -4,12 +4,12 @@ namespace App\Http\Controllers\V1;
 
 use App\Events\EndpointHit;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\User\{IndexRequest, ShowRequest, StoreRequest};
+use App\Http\Requests\User\{IndexRequest, ShowRequest, StoreRequest, UpdateRequest};
 use App\Http\Resources\UserResource;
 use App\Models\Clinic;
 use App\Models\Role;
 use App\Models\User;
-use Illuminate\Http\Request;
+use App\Models\UserRole;
 use Illuminate\Support\Facades\DB;
 use Spatie\QueryBuilder\Filter;
 use Spatie\QueryBuilder\QueryBuilder;
@@ -73,17 +73,14 @@ class UserController extends Controller
             ]);
 
             // Create the roles.
-            foreach ($request->roles as $role) {
-                switch ($role['role']) {
+            $userRoles = UserRole::parseArray($request->roles);
+            foreach ($userRoles as $userRole) {
+                switch ($userRole->role->name) {
                     case Role::COMMUNITY_WORKER:
-                        $user->makeCommunityWorker(
-                            Clinic::findOrFail($role['clinic_id'])
-                        );
+                        $user->makeCommunityWorker($userRole->clinic);
                         break;
                     case Role::CLINIC_ADMIN:
-                        $user->makeClinicAdmin(
-                            Clinic::findOrFail($role['clinic_id'])
-                        );
+                        $user->makeClinicAdmin($userRole->clinic);
                         break;
                     case Role::ORGANISATION_ADMIN:
                         $user->makeOrganisationAdmin();
@@ -126,13 +123,80 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request $request
+     * @param \App\Http\Requests\User\UpdateRequest $request
      * @param  \App\Models\User $user
-     * @return \Illuminate\Http\Response
+     * @return \App\Http\Resources\UserResource
      */
-    public function update(Request $request, User $user)
+    public function update(UpdateRequest $request, User $user)
     {
-        //
+        $user = DB::transaction(function () use ($request, $user) {
+            // Update the user.
+            $user->update([
+                'first_name' => $request->first_name,
+                'last_name' => $request->last_name,
+                'email' => $request->email,
+                'phone' => $request->phone,
+                'display_email' => $request->display_email,
+                'display_phone' => $request->display_phone,
+                'include_calendar_attachment' => $request->include_calendar_attachment,
+            ]);
+
+            // If a password was given with the request, then update the password.
+            if ($request->has('password')) {
+                $user->update(['password' => bcrypt($request->password)]);
+            }
+
+            // Update the user roles.
+            $userRoles = UserRole::parseArray($request->roles);
+            $newRoles = $user->getRevokedRoles($userRoles);
+            $deletedRoles = $user->getRevokedRoles($userRoles);
+
+            // Assign the new roles.
+            foreach ($newRoles as $newRole) {
+                switch ($newRole->role->name) {
+                    case Role::COMMUNITY_WORKER:
+                        $user->makeCommunityWorker($newRole->clinic);
+                        break;
+                    case Role::CLINIC_ADMIN:
+                        $user->makeClinicAdmin($newRole->clinic);
+                        break;
+                    case Role::ORGANISATION_ADMIN:
+                        $user->makeOrganisationAdmin();
+                        break;
+                }
+            }
+
+            // Revoke the deleted roles.
+            foreach ($deletedRoles as $deletedRole) {
+                switch ($deletedRole->role->name) {
+                    case Role::COMMUNITY_WORKER:
+                        $user->revokeCommunityWorker($deletedRole->clinic);
+                        break;
+                    case Role::CLINIC_ADMIN:
+                        $user->revokeClinicAdmin($deletedRole->clinic);
+                        break;
+                    case Role::ORGANISATION_ADMIN:
+                        $user->revokeOrganisationAdmin();
+                        break;
+                }
+            }
+
+            // Upload the profile picture.
+            if ($request->has('profile_picture')) {
+                $profilePicture = $user->profilePictureFile()->create([
+                    'filename' => 'profile-picture.png',
+                    'mime_type' => 'image/png',
+                ]);
+
+                $profilePicture->uploadBase64EncodedPng($request->profile_picture);
+            }
+
+            return $user;
+        });
+
+        event(EndpointHit::onUpdate($request, "Updated user [{$user->id}]"));
+
+        return new UserResource($user);
     }
 
     /**
