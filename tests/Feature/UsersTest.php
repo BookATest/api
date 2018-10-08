@@ -354,4 +354,34 @@ class UsersTest extends TestCase
             ],
         ]);
     }
+
+    public function test_audit_created_when_updated()
+    {
+        $this->fakeEvents();
+
+        $clinic = factory(Clinic::class)->create();
+        $user = factory(User::class)->create()->makeCommunityWorker($clinic);
+
+        Passport::actingAs($user);
+        $this->json('PUT', "/v1/users/{$user->id}", [
+            'first_name' => 'John',
+            'last_name' => 'Doe',
+            'email' => 'john.doe@example.com',
+            'phone' => '07700000000',
+            'password' => 'P@55word.',
+            'display_email' => false,
+            'display_phone' => false,
+            'include_calendar_attachment' => false,
+            'roles' => [
+                [
+                    'role' => Role::COMMUNITY_WORKER,
+                    'clinic_id' => $clinic->id,
+                ]
+            ],
+        ]);
+
+        $this->assertEventDispatched(EndpointHit::class, function (EndpointHit $event) {
+            $this->assertEquals(Audit::UPDATE, $event->getAction());
+        });
+    }
 }
