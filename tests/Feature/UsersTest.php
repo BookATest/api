@@ -355,6 +355,55 @@ class UsersTest extends TestCase
         ]);
     }
 
+    public function test_ca_can_promote_ca_to_cw()
+    {
+        $clinic = factory(Clinic::class)->create();
+        $clinicAdmin = factory(User::class)->create()->makeClinicAdmin($clinic);
+        $communityWorker = factory(User::class)->create()->makeCommunityWorker($clinic);
+
+        Passport::actingAs($clinicAdmin);
+        $response = $this->json('PUT', "/v1/users/{$communityWorker->id}", [
+            'first_name' => $communityWorker->first_name,
+            'last_name' => $communityWorker->last_name,
+            'email' => $communityWorker->email,
+            'phone' => $communityWorker->phone,
+            'display_email' => $communityWorker->display_email,
+            'display_phone' => $communityWorker->display_phone,
+            'include_calendar_attachment' => $communityWorker->include_calendar_attachment,
+            'roles' => [
+                [
+                    'role' => Role::COMMUNITY_WORKER,
+                    'clinic_id' => $clinic->id,
+                ],
+                [
+                    'role' => Role::CLINIC_ADMIN,
+                    'clinic_id' => $clinic->id,
+                ],
+            ],
+        ]);
+
+        $response->assertStatus(Response::HTTP_OK);
+        $response->assertJsonFragment([
+            'first_name' => $communityWorker->first_name,
+            'last_name' => $communityWorker->last_name,
+            'email' => $communityWorker->email,
+            'phone' => $communityWorker->phone,
+            'display_email' => $communityWorker->display_email,
+            'display_phone' => $communityWorker->display_phone,
+            'include_calendar_attachment' => $communityWorker->include_calendar_attachment,
+            'roles' => [
+                [
+                    'role' => Role::COMMUNITY_WORKER,
+                    'clinic_id' => $clinic->id,
+                ],
+                [
+                    'role' => Role::CLINIC_ADMIN,
+                    'clinic_id' => $clinic->id,
+                ],
+            ],
+        ]);
+    }
+
     public function test_audit_created_when_updated()
     {
         $this->fakeEvents();

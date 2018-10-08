@@ -16,6 +16,8 @@ class User extends Authenticatable
     use UserMutators;
     use UserRelationships;
 
+    const EXCLUSIVE = true;
+
     /**
      * Indicates if the IDs are auto-incrementing.
      *
@@ -129,7 +131,7 @@ class User extends Authenticatable
     {
         switch ($role->name) {
             case Role::COMMUNITY_WORKER:
-                return $this->isCommunityWorker($clinic);
+                return $this->isClinicAdmin($clinic);
             case Role::CLINIC_ADMIN:
                 return $this->isClinicAdmin($clinic);
             case Role::ORGANISATION_ADMIN:
@@ -156,20 +158,32 @@ class User extends Authenticatable
 
     /**
      * @param \App\Models\Clinic|null $clinic
+     * @param bool $exclusive
      * @return bool
      */
-    public function isCommunityWorker(Clinic $clinic = null): bool
+    public function isCommunityWorker(Clinic $clinic = null, bool $exclusive = false): bool
     {
-        return $this->hasRole(Role::communityWorker(), $clinic) || $this->hasRole(Role::organisationAdmin());
+        $hasRole = $this->hasRole(Role::communityWorker(), $clinic);
+        $isOrganisationAdmin = $this->hasRole(Role::organisationAdmin());
+
+        return $exclusive
+            ? $hasRole
+            : ($hasRole || $isOrganisationAdmin);
     }
 
     /**
      * @param \App\Models\Clinic|null $clinic
+     * @param bool $exclusive
      * @return bool
      */
-    public function isClinicAdmin(Clinic $clinic = null): bool
+    public function isClinicAdmin(Clinic $clinic = null, bool $exclusive = false): bool
     {
-        return $this->hasRole(Role::clinicAdmin(), $clinic) || $this->hasRole(Role::organisationAdmin());
+        $hasRole = $this->hasRole(Role::clinicAdmin(), $clinic);
+        $isOrganisationAdmin = $this->hasRole(Role::organisationAdmin());
+
+        return $exclusive
+            ? $hasRole
+            : ($hasRole || $isOrganisationAdmin);
     }
 
     /**
@@ -313,17 +327,17 @@ class User extends Authenticatable
         foreach ($updatedRoles as $updatedRole) {
             switch ($updatedRole->role->name) {
                 case Role::COMMUNITY_WORKER:
-                    if ($this->isCommunityWorker($updatedRole->clinic)) {
+                    if (!$this->isCommunityWorker($updatedRole->clinic, User::EXCLUSIVE)) {
                         $assignedRoles->push($updatedRole);
                     }
                     break;
                 case Role::CLINIC_ADMIN:
-                    if ($this->isClinicAdmin($updatedRole->clinic)) {
+                    if (!$this->isClinicAdmin($updatedRole->clinic, User::EXCLUSIVE)) {
                         $assignedRoles->push($updatedRole);
                     }
                     break;
                 case Role::ORGANISATION_ADMIN:
-                    if ($this->isOrganisationAdmin()) {
+                    if (!$this->isOrganisationAdmin()) {
                         $assignedRoles->push($updatedRole);
                     }
                     break;

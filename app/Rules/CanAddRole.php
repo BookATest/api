@@ -85,11 +85,14 @@ class CanAddRole implements Rule
     {
         switch ($roleName) {
             case Role::COMMUNITY_WORKER:
-                return $this->subjectUser->isCommunityWorker($clinic) ?: $this->user->canMakeCommunityWorker($clinic);
+                $isAlreadyCommunityWorker = $this->subjectUser->isCommunityWorker($clinic);
+                return $isAlreadyCommunityWorker ?: $this->user->canMakeCommunityWorker($clinic);
             case Role::CLINIC_ADMIN:
-                return $this->subjectUser->isClinicAdmin($clinic) ?: $this->user->canMakeClinicAdmin($clinic);
+                $isAlreadyClinicAdmin = $this->subjectUser->isClinicAdmin($clinic);
+                return $isAlreadyClinicAdmin ?: $this->user->canMakeClinicAdmin($clinic);
             case Role::ORGANISATION_ADMIN:
-                return $this->subjectUser->isOrganisationAdmin() ?: $this->user->canMakeOrganisationAdmin();
+                $isAlreadyOrganisationAdmin = $this->subjectUser->isOrganisationAdmin();
+                return $isAlreadyOrganisationAdmin ?: $this->user->canMakeOrganisationAdmin();
         }
     }
 

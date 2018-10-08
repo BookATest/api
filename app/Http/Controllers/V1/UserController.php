@@ -148,7 +148,7 @@ class UserController extends Controller
 
             // Update the user roles.
             $userRoles = UserRole::parseArray($request->roles);
-            $newRoles = $user->getRevokedRoles($userRoles);
+            $newRoles = $user->getAssignedRoles($userRoles);
             $deletedRoles = $user->getRevokedRoles($userRoles);
 
             // Assign the new roles.
@@ -196,7 +196,7 @@ class UserController extends Controller
 
         event(EndpointHit::onUpdate($request, "Updated user [{$user->id}]"));
 
-        return new UserResource($user);
+        return new UserResource($user->fresh());
     }
 
     /**

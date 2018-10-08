@@ -19,11 +19,24 @@ class UpdateRequest extends FormRequest
      */
     public function authorize()
     {
-        if ($this->user()->id === $this->route('user')->id) {
+        /** @var \App\Models\User $requestingUser */
+        $requestingUser = $this->user();
+
+        /** @var \App\Models\User $subjectUser */
+        $subjectUser = $this->route('user');
+
+        // If the user is updating their own profile.
+        if ($requestingUser->id === $subjectUser->id) {
             return true;
         }
 
-        if ($this->user()->isClinicAdmin()) {
+        // Always allow if the user is an organisation admin.
+        if ($requestingUser->isOrganisationAdmin()) {
+            return true;
+        }
+
+        // Only allow if the user is a clinic admin and the subject is not.
+        if ($requestingUser->isClinicAdmin() && !$subjectUser->isClinicAdmin()) {
             return true;
         }
 
@@ -52,7 +65,7 @@ class UpdateRequest extends FormRequest
                 'required',
                 'email',
                 'max:255',
-                Rule::unique('users', 'email')->ignoreModel($this->user()),
+                Rule::unique('users', 'email')->ignoreModel($this->route('user')),
             ],
             'phone' => [
                 'required',
