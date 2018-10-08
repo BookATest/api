@@ -466,4 +466,18 @@ class UsersTest extends TestCase
             $this->assertEquals(Audit::UPDATE, $event->getAction());
         });
     }
+
+    /*
+     * Delete one.
+     */
+
+    public function test_guest_cannot_delete_one()
+    {
+        $clinic = factory(Clinic::class)->create();
+        $user = factory(User::class)->create()->makeCommunityWorker($clinic);
+
+        $response = $this->json('DELETE', "/v1/users/{$user->id}");
+
+        $response->assertStatus(Response::HTTP_UNAUTHORIZED);
+    }
 }
