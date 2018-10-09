@@ -7,6 +7,7 @@ use App\Models\Relationships\UserRelationships;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Support\Carbon;
 use Laravel\Passport\HasApiTokens;
 use RuntimeException;
 
@@ -60,6 +61,28 @@ class User extends Authenticatable
                 $model->{$model->getKeyName()} = uuid();
             }
         });
+    }
+
+    /**
+     * @param \Illuminate\Support\Carbon|null $dateTime
+     * @return \App\Models\User
+     */
+    public function disable(Carbon $dateTime = null): self
+    {
+        $dateTime = $dateTime ?? now();
+        $this->update(['disabled_at' => $dateTime]);
+
+        return $this;
+    }
+
+    /**
+     * @return \App\Models\User
+     */
+    public function enable(): self
+    {
+        $this->update(['disabled_at' => null]);
+
+        return $this;
     }
 
     /**

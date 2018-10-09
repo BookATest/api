@@ -29,4 +29,13 @@ trait AppointmentScopes
             ? $query->whereNotNull('appointments.service_user_id')
             : $query->whereNull('appointments.service_user_id');
     }
+
+    /**
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeFuture(Builder $query): Builder
+    {
+        return $query->where('appointments.start_at', '>', now());
+    }
 }

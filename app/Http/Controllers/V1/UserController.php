@@ -4,12 +4,13 @@ namespace App\Http\Controllers\V1;
 
 use App\Events\EndpointHit;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\User\{IndexRequest, ShowRequest, StoreRequest, UpdateRequest};
+use App\Http\Requests\User\{DestroyRequest, IndexRequest, ShowRequest, StoreRequest, UpdateRequest};
 use App\Http\Resources\UserResource;
-use App\Models\Clinic;
+use App\Http\Responses\ResourceDeletedResponse;
 use App\Models\Role;
 use App\Models\User;
 use App\Models\UserRole;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
 use Spatie\QueryBuilder\Filter;
 use Spatie\QueryBuilder\QueryBuilder;
@@ -202,11 +203,32 @@ class UserController extends Controller
     /**
      * Remove the specified resource from storage.
      *
+     * @param \App\Http\Requests\User\DestroyRequest $request
      * @param  \App\Models\User $user
-     * @return \Illuminate\Http\Response
+     * @return \App\Http\Responses\ResourceDeletedResponse
      */
-    public function destroy(User $user)
+    public function destroy(DestroyRequest $request, User $user)
     {
-        //
+        $userId = $user->id;
+
+        DB::transaction(function () use ($user) {
+            // Cancel all future booked appointments.
+            $user->appointments()
+                ->booked()
+                ->future()
+                ->chunk(200, function (Collection $appointments) {
+                    $appointments->each->cancel();
+                });
+
+            // Delete all future appointments.
+            $user->appointments()->future()->delete();
+
+            // Delete the user.
+            $user->disable();
+        });
+
+        event(EndpointHit::onDelete($request, "Disabled user [$userId]"));
+
+        return new ResourceDeletedResponse(User::class);
     }
 }

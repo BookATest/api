@@ -2,6 +2,7 @@
 
 namespace Tests;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
@@ -85,5 +86,14 @@ abstract class TestCase extends BaseTestCase
     {
         $this->assertDatabaseHas($model->getTable(), ['id' => $model->id]);
         $this->assertDatabaseMissing($model->getTable(), ['id' => $model->id, 'deleted_at' => null]);
+    }
+
+    /**
+     * @param \App\Models\User $user
+     */
+    protected function assertUserDisabled(User $user)
+    {
+        $this->assertDatabaseHas($user->getTable(), ['id' => $user->id]);
+        $this->assertDatabaseMissing($user->getTable(), ['id' => $user->id, 'disabled_at' => null]);
     }
 }

@@ -471,7 +471,7 @@ class UsersTest extends TestCase
      * Delete one.
      */
 
-    public function test_guest_cannot_delete_one()
+    public function test_guest_cannot_disable_one()
     {
         $clinic = factory(Clinic::class)->create();
         $user = factory(User::class)->create()->makeCommunityWorker($clinic);
@@ -479,5 +479,70 @@ class UsersTest extends TestCase
         $response = $this->json('DELETE', "/v1/users/{$user->id}");
 
         $response->assertStatus(Response::HTTP_UNAUTHORIZED);
+    }
+
+    public function test_cw_cannot_disable_cw()
+    {
+        $clinic = factory(Clinic::class)->create();
+        $user = factory(User::class)->create()->makeCommunityWorker($clinic);
+        $anotherUser = factory(User::class)->create()->makeCommunityWorker($clinic);
+
+        Passport::actingAs($user);
+        $response = $this->json('DELETE', "/v1/users/{$anotherUser->id}");
+
+        $response->assertStatus(Response::HTTP_FORBIDDEN);
+    }
+
+    public function test_ca_cannot_disable_cw()
+    {
+        $clinic = factory(Clinic::class)->create();
+        $user = factory(User::class)->create()->makeClinicAdmin($clinic);
+        $anotherUser = factory(User::class)->create()->makeCommunityWorker($clinic);
+
+        Passport::actingAs($user);
+        $response = $this->json('DELETE', "/v1/users/{$anotherUser->id}");
+
+        $response->assertStatus(Response::HTTP_FORBIDDEN);
+    }
+
+    public function test_oa_can_disable_cw()
+    {
+        $clinic = factory(Clinic::class)->create();
+        $user = factory(User::class)->create()->makeOrganisationAdmin();
+        $anotherUser = factory(User::class)->create()->makeCommunityWorker($clinic);
+
+        Passport::actingAs($user);
+        $response = $this->json('DELETE', "/v1/users/{$anotherUser->id}");
+
+        $response->assertStatus(Response::HTTP_OK);
+        $this->assertUserDisabled($anotherUser);
+    }
+
+    public function test_oa_can_disable_oa()
+    {
+        $user = factory(User::class)->create()->makeOrganisationAdmin();
+        $anotherUser = factory(User::class)->create()->makeOrganisationAdmin();
+
+        Passport::actingAs($user);
+        $response = $this->json('DELETE', "/v1/users/{$anotherUser->id}");
+
+        $response->assertStatus(Response::HTTP_OK);
+        $this->assertUserDisabled($anotherUser);
+    }
+
+    public function test_audit_created_when_disabled()
+    {
+        $this->fakeEvents();
+
+        $clinic = factory(Clinic::class)->create();
+        $user = factory(User::class)->create()->makeOrganisationAdmin();
+        $anotherUser = factory(User::class)->create()->makeCommunityWorker($clinic);
+
+        Passport::actingAs($user);
+        $this->json('DELETE', "/v1/users/{$anotherUser->id}");
+
+        $this->assertEventDispatched(EndpointHit::class, function (EndpointHit $event) {
+            $this->assertEquals(Audit::DELETE, $event->getAction());
+        });
     }
 }
