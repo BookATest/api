@@ -50,7 +50,8 @@ Route::prefix('v1')->namespace('V1')->group(function () {
     /*
      * Eligible Answer Routes.
      */
-    // TODO
+    Route::get('clinics/{clinic}/eligible-answers', 'EligibleAnswerController@index')
+        ->name('clinics.eligible-answers.index');
 
     /*
      * Question Routes.
