@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\V1;
 
 use App\Events\EndpointHit;
+use App\Exceptions\CannotRevokeRoleException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\User\{DestroyRequest, IndexRequest, ShowRequest, StoreRequest, UpdateRequest};
 use App\Http\Resources\UserResource;

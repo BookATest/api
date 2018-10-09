@@ -55,11 +55,16 @@ class CanRemoveRoles implements Rule
 
         try {
             // Filter down array to removed roles.
-            $rolesHaveBeenRevoked = $this->getRevokedRoles($roles)->count() > 0;
+            $revokedRoles = $this->getRevokedRoles($roles);
 
-            return $rolesHaveBeenRevoked
-                ? $this->requestingUser->canRevokeRole($this->subjectUser)
-                : true;
+            // Loop through each revoked role and check if the requesting user can remove it.
+            foreach ($revokedRoles as $revokedRole) {
+                if (!$this->requestingUser->canRevokeRole($this->subjectUser, $revokedRole)) {
+                    return false;
+                }
+            }
+
+            return true;
         } catch (Throwable $throwable) {
             return false;
         }

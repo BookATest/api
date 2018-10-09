@@ -90,21 +90,21 @@ class UpdateRequest extends FormRequest
                 'boolean',
             ],
             'roles' => [
-                'required',
+                'present',
                 'array',
                 new CanRemoveRoles($this->user(), $this->route('user')),
             ],
             'roles.*' => [
-                'required',
                 'array',
                 new CanAddRole($this->user(), $this->route('user')),
             ],
             'roles.*.role' => [
-                'required',
+                'required_with:roles.*',
                 'exists:roles,name',
             ],
             'roles.*.clinic_id' => [
-                'required_unless:roles.*.role,' . Role::ORGANISATION_ADMIN,
+                'required_if:roles.*.role,' . Role::COMMUNITY_WORKER,
+                'required_if:roles.*.role,' . Role::CLINIC_ADMIN,
                 'exists:clinics,id',
             ],
             'profile_picture' => [

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Exceptions\CannotRevokeRoleException;
 use App\Models\Mutators\UserMutators;
 use App\Models\Relationships\UserRelationships;
 use Illuminate\Database\Eloquent\Builder;
@@ -92,7 +93,7 @@ class User extends Authenticatable
      * @param \App\Models\Clinic|null $clinic
      * @return bool
      */
-    protected function hasRole(Role $role, Clinic $clinic = null): bool
+    public function hasRole(Role $role, Clinic $clinic = null): bool
     {
         $query = $this->userRoles()->where('user_roles.role_id', $role->id);
 
@@ -128,7 +129,7 @@ class User extends Authenticatable
      * @param \App\Models\Clinic|null $clinic
      * @return \App\Models\User
      */
-    protected function removeRoll(Role $role, Clinic $clinic = null): self
+    public function removeRoll(Role $role, Clinic $clinic = null): self
     {
         // Check if the user doesn't already have the role.
         if (!$this->hasRole($role, $clinic)) {
@@ -152,7 +153,7 @@ class User extends Authenticatable
      * @param \App\Models\Clinic|null $clinic
      * @return bool
      */
-    protected function canAssignRole(Role $role, Clinic $clinic = null): bool
+    public function canAssignRole(Role $role, Clinic $clinic = null): bool
     {
         switch ($role->name) {
             case Role::COMMUNITY_WORKER:
@@ -166,16 +167,29 @@ class User extends Authenticatable
 
     /**
      * @param \App\Models\User $subjectUser
+     * @param \App\Models\UserRole $userRole
      * @return bool
      */
-    public function canRevokeRole(User $subjectUser): bool
+    public function canRevokeRole(User $subjectUser, UserRole $userRole): bool
     {
+        // Always allow if the user is an organisation admin.
         if ($this->isOrganisationAdmin()) {
             return true;
         }
 
-        if ($this->isClinicAdmin()) {
-            return !$subjectUser->isOrganisationAdmin();
+        /*
+         * Different logic depending on the role - user must be a clinic admin
+         * or community worker at this point.
+         */
+        switch ($userRole->role->name) {
+            case Role::ORGANISATION_ADMIN:
+                return false;
+            case Role::CLINIC_ADMIN:
+                return false;
+            case Role::COMMUNITY_WORKER:
+                $requesterIsClinicAdmin = $this->isClinicAdmin($userRole->clinic);
+                $subjectIsClinicAdmin = $subjectUser->isClinicAdmin($userRole->clinic);
+                return $requesterIsClinicAdmin && !$subjectIsClinicAdmin;
         }
 
         return false;
@@ -258,35 +272,27 @@ class User extends Authenticatable
     /**
      * @param \App\Models\Clinic $clinic
      * @return \App\Models\User
-     * @throws \Exception
      */
     public function revokeCommunityWorker(Clinic $clinic): self
     {
-        $clinicAdminRole = Role::clinicAdmin();
+        $this->revokeClinicAdmin($clinic);
 
-        if ($this->hasRole($clinicAdminRole, $clinic)) {
-            throw new \Exception('Cannot revoke community worker role when user is a clinic admin');
-        }
-
-        return $this->removeRoll($clinicAdminRole, $clinic);
+        return $this->removeRoll(Role::communityWorker(), $clinic);
     }
 
     /**
      * @param \App\Models\Clinic $clinic
      * @return \App\Models\User
-     * @throws \Exception
      */
     public function revokeClinicAdmin(Clinic $clinic): self
     {
-        $this->removeRoll(Role::clinicAdmin(), $clinic);
-        $this->removeRoll(Role::communityWorker(), $clinic);
+        $this->revokeOrganisationAdmin();
 
-        return $this;
+        return $this->removeRoll(Role::clinicAdmin(), $clinic);
     }
 
     /**
      * @return \App\Models\User
-     * @throws \Exception
      */
     public function revokeOrganisationAdmin(): self
     {
