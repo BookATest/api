@@ -211,7 +211,7 @@ class EligibleAnswersTest extends TestCase
         $response->assertStatus(Response::HTTP_FORBIDDEN);
     }
 
-    public function test_ca_can_update_a_new_set()
+    public function test_ca_can_update_a_new_set_of_only_a_select()
     {
         $clinic = factory(Clinic::class)->create();
         $user = factory(User::class)->create()->makeClinicAdmin($clinic);
@@ -237,6 +237,56 @@ class EligibleAnswersTest extends TestCase
         $response->assertJsonFragment([
             'question_id' => $selectQuestion->id,
             'answer' => ['Blue', 'Green'],
+        ]);
+    }
+
+    public function test_ca_can_update_a_new_set_of_all_types()
+    {
+        $clinic = factory(Clinic::class)->create();
+        $user = factory(User::class)->create()->makeClinicAdmin($clinic);
+
+        $selectQuestion = Question::createSelect('What sex are you?', 'Male', 'Female');
+        $dateQuestion = Question::createDate('What is your date of birth?');
+        $checkboxQuestion = Question::createCheckbox('Are you a smoker?');
+
+        $interval = now()->diffInSeconds(now()->subYears(18));
+
+        Passport::actingAs($user);
+        $response = $this->json('PUT', "/v1/clinics/$clinic->id/eligible-answers", [
+            'answers' => [
+                [
+                    'question_id' => $selectQuestion->id,
+                    'answer' => ['Male'],
+                ],
+                [
+                    'question_id' => $dateQuestion->id,
+                    'answer' => [
+                        'comparison' => '>',
+                        'interval' => $interval,
+                    ],
+                ],
+                [
+                    'question_id' => $checkboxQuestion->id,
+                    'answer' => false,
+                ],
+            ]
+        ]);
+
+        $response->assertStatus(Response::HTTP_OK);
+        $response->assertJsonFragment([
+            'question_id' => $selectQuestion->id,
+            'answer' => ['Male'],
+        ]);
+        $response->assertJsonFragment([
+            'question_id' => $dateQuestion->id,
+            'answer' => [
+                'comparison' => '>',
+                'interval' => $interval,
+            ],
+        ]);
+        $response->assertJsonFragment([
+            'question_id' => $checkboxQuestion->id,
+            'answer' => false,
         ]);
     }
 }
