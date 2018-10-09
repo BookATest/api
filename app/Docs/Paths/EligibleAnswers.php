@@ -65,11 +65,6 @@ EOT;
         $description = <<<EOT
 **Permission:** `Clinic Admin`
 - Can update the set of eligible answers for a clinic they are a `Clinic Admin` for
-
-***
-
-This endpoint can only be used if the client has already specified their eligible answers for the current set of
-questions.
 EOT;
 
         $responses = [
@@ -83,15 +78,21 @@ EOT;
                 ->required(),
         ];
         $requestBody = Requests::json(Schema::object()
-            ->required('question_id', 'answer')
+            ->required('questions')
             ->properties(
-                Schema::string('question_id')->format(Schema::UUID),
-                Schema::object('answer')
-                    ->required('type', 'interval')
-                    ->properties(
-                        Schema::string('type'),
-                        Schema::integer('interval')
-                    )
+                Schema::array('questions')->items(
+                    Schema::object()
+                        ->required('question_id', 'answer')
+                        ->properties(
+                            Schema::string('question_id')->format(Schema::UUID),
+                            Schema::object('answer')
+                                ->required('type', 'interval')
+                                ->properties(
+                                    Schema::string('type'),
+                                    Schema::integer('interval')
+                                )
+                        )
+                )
             )
         );
 
