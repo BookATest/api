@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\EligibleAnswer;
 
+use App\Rules\ValidAnswer;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateRequest extends FormRequest
@@ -24,7 +25,22 @@ class UpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'answers' => [
+                'required',
+                'array',
+            ],
+            'answers.*' => [
+                'required',
+                'array',
+                new ValidAnswer(),
+            ],
+            'answers.*.question_id' => [
+                'required',
+                'exists:questions,id',
+            ],
+            'answers.*.answer' => [
+                'required',
+            ],
         ];
     }
 }

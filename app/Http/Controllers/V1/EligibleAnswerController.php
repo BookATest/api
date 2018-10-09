@@ -8,6 +8,7 @@ use App\Http\Requests\EligibleAnswer\{IndexRequest, UpdateRequest};
 use App\Http\Resources\EligibleAnswerResource;
 use App\Models\Clinic;
 use App\Models\EligibleAnswer;
+use App\Models\Question;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
@@ -51,9 +52,23 @@ class EligibleAnswerController extends Controller
             $eligibleAnswers = new Collection();
 
             foreach ($request->answers as $answer) {
+                $question = Question::findOrFail($answer['question_id']);
+
+                switch ($question->type) {
+                    case Question::SELECT:
+                        $answer = EligibleAnswer::parseSelectAnswer($answer['answer'], $question);
+                        break;
+                    case Question::DATE:
+                        $answer = EligibleAnswer::parseDateAnswer($answer['answer']);
+                        break;
+                    case Question::CHECKBOX:
+                        $answer = EligibleAnswer::parseCheckboxAnswer($answer['answer']);
+                        break;
+                }
+
                 $eligibleAnswer = $clinic->eligibleAnswers()->updateOrCreate(
-                    ['question_id' => $answer['question_id']],
-                    ['answer' => $answer['answer']]
+                    ['question_id' => $question->id],
+                    ['answer' => $answer]
                 );
 
                 $eligibleAnswers->push($eligibleAnswer);
