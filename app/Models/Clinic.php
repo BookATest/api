@@ -22,4 +22,12 @@ class Clinic extends Model
         'updated_at' => 'datetime',
         'deleted_at' => 'datetime',
     ];
+
+    /**
+     * @return bool
+     */
+    public function hasEligibleAnswers(): bool
+    {
+        return $this->eligibleAnswers()->current()->exists();
+    }
 }

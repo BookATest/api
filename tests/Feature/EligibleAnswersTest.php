@@ -174,4 +174,40 @@ class EligibleAnswersTest extends TestCase
             $this->assertEquals(Audit::READ, $event->getAction());
         });
     }
+
+    /*
+     * Update them.
+     */
+
+    public function test_guest_cannot_update_them()
+    {
+        $clinic = factory(Clinic::class)->create();
+
+        $response = $this->json('PUT', "/v1/clinics/$clinic->id/eligible-answers");
+
+        $response->assertStatus(Response::HTTP_UNAUTHORIZED);
+    }
+
+    public function test_cw_cannot_update_them()
+    {
+        $clinic = factory(Clinic::class)->create();
+        $user = factory(User::class)->create()->makeCommunityWorker($clinic);
+
+        Passport::actingAs($user);
+        $response = $this->json('PUT', "/v1/clinics/$clinic->id/eligible-answers");
+
+        $response->assertStatus(Response::HTTP_FORBIDDEN);
+    }
+
+    public function test_ca_cannot_update_them_for_another_clinic()
+    {
+        $clinic = factory(Clinic::class)->create();
+        $user = factory(User::class)->create()->makeCommunityWorker($clinic);
+        $anotherClinic = factory(Clinic::class)->create();
+
+        Passport::actingAs($user);
+        $response = $this->json('PUT', "/v1/clinics/$anotherClinic->id/eligible-answers");
+
+        $response->assertStatus(Response::HTTP_FORBIDDEN);
+    }
 }

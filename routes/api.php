@@ -52,6 +52,8 @@ Route::prefix('v1')->namespace('V1')->group(function () {
      */
     Route::get('clinics/{clinic}/eligible-answers', 'EligibleAnswerController@index')
         ->name('clinics.eligible-answers.index');
+    Route::put('clinics/{clinic}/eligible-answers', 'EligibleAnswerController@update')
+        ->name('clinics.eligible-answers.update');
 
     /*
      * Question Routes.
