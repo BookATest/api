@@ -545,4 +545,44 @@ class UsersTest extends TestCase
             $this->assertEquals(Audit::DELETE, $event->getAction());
         });
     }
+
+    /*
+     * Read profile picture.
+     */
+
+    public function test_guest_can_read_profile_picture()
+    {
+        $clinic = factory(Clinic::class)->create();
+        $user = factory(User::class)->create()->makeClinicAdmin($clinic);
+
+        Passport::actingAs($user);
+        $response = $this->json('POST', '/v1/users', [
+            'first_name' => 'John',
+            'last_name' => 'Doe',
+            'email' => 'john.doe@example.com',
+            'phone' => '07700000000',
+            'password' => 'P@55word.',
+            'display_email' => false,
+            'display_phone' => false,
+            'include_calendar_attachment' => false,
+            'roles' => [
+                [
+                    'role' => Role::COMMUNITY_WORKER,
+                    'clinic_id' => $clinic->id,
+                ]
+            ],
+            'profile_picture' => static::BASE64_PNG,
+        ]);
+
+        $data = json_decode($response->getContent(), true);
+        $createdUserId = $data['data']['id'];
+
+        $response = $this->get("/v1/users/$createdUserId/profile-picture.png");
+        $response->assertStatus(Response::HTTP_OK);
+        $response->assertHeader('Content-Type', 'image/png');
+
+        $profilePictureBase64Encoded = 'data:image/png;base64,' . base64_encode($response->getContent());
+
+        $this->assertEquals(static::BASE64_PNG, $profilePictureBase64Encoded);
+    }
 }

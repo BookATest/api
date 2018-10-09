@@ -7,7 +7,9 @@ use App\Models\Relationships\UserRelationships;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Http\Response;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Storage;
 use Laravel\Passport\HasApiTokens;
 use RuntimeException;
 
@@ -404,5 +406,19 @@ class User extends Authenticatable
                 // If after looping, their are no matches, then return false.
                 return false;
             });
+    }
+
+    /**
+     * @return \Illuminate\Http\Response
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
+     */
+    public function placeholderProfilePicture(): Response
+    {
+        $content = Storage::disk('local')->get('placeholders/profile-picture.png');
+
+        return response()->make($content, Response::HTTP_OK, [
+            'Content-Type' => 'image/png',
+            'Content-Disposition' => "inline; filename=\"profile-picture.png\"",
+        ]);
     }
 }

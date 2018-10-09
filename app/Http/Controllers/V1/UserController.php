@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\User\{DestroyRequest, IndexRequest, ShowRequest, StoreRequest, UpdateRequest};
 use App\Http\Resources\UserResource;
 use App\Http\Responses\ResourceDeletedResponse;
+use App\Models\File;
 use App\Models\Role;
 use App\Models\User;
 use App\Models\UserRole;
@@ -91,10 +92,12 @@ class UserController extends Controller
 
             // Upload the profile picture.
             if ($request->has('profile_picture')) {
-                $profilePicture = $user->profilePictureFile()->create([
+                $profilePicture = File::create([
                     'filename' => 'profile-picture.png',
                     'mime_type' => 'image/png',
                 ]);
+                $user->profilePictureFile()->associate($profilePicture);
+                $user->save();
 
                 $profilePicture->uploadBase64EncodedPng($request->profile_picture);
             }
@@ -184,10 +187,12 @@ class UserController extends Controller
 
             // Upload the profile picture.
             if ($request->has('profile_picture')) {
-                $profilePicture = $user->profilePictureFile()->create([
+                $profilePicture = File::create([
                     'filename' => 'profile-picture.png',
                     'mime_type' => 'image/png',
                 ]);
+                $user->profilePictureFile()->associate($profilePicture);
+                $user->save();
 
                 $profilePicture->uploadBase64EncodedPng($request->profile_picture);
             }

@@ -81,8 +81,10 @@ Route::prefix('v1')->namespace('V1')->group(function () {
     /*
      * Setting Routes.
      */
-    Route::get('settings', 'SettingController@index')->name('settings.index');
-    Route::put('settings', 'SettingController@update')->name('settings.update');
+    Route::get('settings', 'SettingController@index')
+        ->name('settings.index');
+    Route::put('settings', 'SettingController@update')
+        ->name('settings.update');
 
     /*
      * Stat Routes.
@@ -93,4 +95,6 @@ Route::prefix('v1')->namespace('V1')->group(function () {
      * User Routes.
      */
     Route::apiResource('users', 'UserController');
+    Route::get('users/{user}/profile-picture.png', 'User\\ProfilePictureController')
+        ->name('users.profile-picture');
 });
