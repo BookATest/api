@@ -95,6 +95,8 @@ Route::prefix('v1')->namespace('V1')->group(function () {
      * User Routes.
      */
     Route::apiResource('users', 'UserController');
+    Route::put('users/{user}/calendar-feed-token', 'User\\CalendarFeedTokenController@update')
+        ->name('users.calendar-feed-token.update');
     Route::get('users/{user}/profile-picture.png', 'User\\ProfilePictureController')
         ->name('users.profile-picture');
 });

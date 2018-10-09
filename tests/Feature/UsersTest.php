@@ -585,4 +585,45 @@ class UsersTest extends TestCase
 
         $this->assertEquals(static::BASE64_PNG, $profilePictureBase64Encoded);
     }
+
+    /*
+     * Update calendar feed token.
+     */
+
+    public function test_guest_cannot_update_cw_calendar_feed_token()
+    {
+        $clinic = factory(Clinic::class)->create();
+        $user = factory(User::class)->create()->makeCommunityWorker($clinic);
+
+        $response = $this->json('PUT', "/v1/users/$user->id/calendar-feed-token");
+
+        $response->assertStatus(Response::HTTP_UNAUTHORIZED);
+    }
+
+    public function test_cw_cannot_update_calendar_feed_token_for_another_cw()
+    {
+        $clinic = factory(Clinic::class)->create();
+        $user = factory(User::class)->create()->makeCommunityWorker($clinic);
+        $anotherUser = factory(User::class)->create()->makeCommunityWorker($clinic);
+
+        Passport::actingAs($user);
+        $response = $this->json('PUT', "/v1/users/$anotherUser->id/calendar-feed-token");
+
+        $response->assertStatus(Response::HTTP_FORBIDDEN);
+    }
+
+    public function test_cw_can_update_calendar_feed_token_for_them_self()
+    {
+        $clinic = factory(Clinic::class)->create();
+        $user = factory(User::class)->create()->makeCommunityWorker($clinic);
+        $originalToken = $user->calendar_feed_token;
+
+        Passport::actingAs($user);
+        $response = $this->json('PUT', "/v1/users/$user->id/calendar-feed-token");
+
+        $user = $user->fresh();
+
+        $response->assertStatus(Response::HTTP_OK);
+        $this->assertNotEquals($originalToken, $user->calendar_feed_token);
+    }
 }
