@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\EligibleAnswer\{IndexRequest, UpdateRequest};
 use App\Http\Resources\EligibleAnswerResource;
 use App\Models\Clinic;
+use App\Models\EligibleAnswer;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
@@ -49,10 +50,13 @@ class EligibleAnswerController extends Controller
         $eligibleAnswers = DB::transaction(function () use ($request, $clinic): Collection {
             $eligibleAnswers = new Collection();
 
-            if ($clinic->hasEligibleAnswers()) {
-                // TODO: Update the existing set.
-            } else {
-                // TODO: Create a new set.
+            foreach ($request->answers as $answer) {
+                $eligibleAnswer = $clinic->eligibleAnswers()->updateOrCreate(
+                    ['question_id' => $answer['question_id']],
+                    ['answer' => $answer['answer']]
+                );
+
+                $eligibleAnswers->push($eligibleAnswer);
             }
 
             return $eligibleAnswers;

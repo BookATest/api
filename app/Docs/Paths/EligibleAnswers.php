@@ -78,9 +78,9 @@ EOT;
                 ->required(),
         ];
         $requestBody = Requests::json(Schema::object()
-            ->required('questions')
+            ->required('answers')
             ->properties(
-                Schema::array('questions')->items(
+                Schema::array('answers')->items(
                     Schema::object()
                         ->required('question_id', 'answer')
                         ->properties(

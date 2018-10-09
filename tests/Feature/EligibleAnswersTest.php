@@ -202,12 +202,41 @@ class EligibleAnswersTest extends TestCase
     public function test_ca_cannot_update_them_for_another_clinic()
     {
         $clinic = factory(Clinic::class)->create();
-        $user = factory(User::class)->create()->makeCommunityWorker($clinic);
+        $user = factory(User::class)->create()->makeClinicAdmin($clinic);
         $anotherClinic = factory(Clinic::class)->create();
 
         Passport::actingAs($user);
         $response = $this->json('PUT', "/v1/clinics/$anotherClinic->id/eligible-answers");
 
         $response->assertStatus(Response::HTTP_FORBIDDEN);
+    }
+
+    public function test_ca_can_update_a_new_set()
+    {
+        $clinic = factory(Clinic::class)->create();
+        $user = factory(User::class)->create()->makeClinicAdmin($clinic);
+
+        $selectQuestion = Question::createSelect(
+            'What is your favourite colour?',
+            'Blue',
+            'Red',
+            'Green'
+        );
+
+        Passport::actingAs($user);
+        $response = $this->json('PUT', "/v1/clinics/$clinic->id/eligible-answers", [
+            'answers' => [
+                [
+                    'question_id' => $selectQuestion->id,
+                    'answer' => ['Blue', 'Green'],
+                ]
+            ]
+        ]);
+
+        $response->assertStatus(Response::HTTP_OK);
+        $response->assertJsonFragment([
+            'question_id' => $selectQuestion->id,
+            'answer' => ['Blue', 'Green'],
+        ]);
     }
 }
