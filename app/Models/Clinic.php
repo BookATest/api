@@ -28,6 +28,12 @@ class Clinic extends Model
      */
     public function hasEligibleAnswers(): bool
     {
-        return $this->eligibleAnswers()->current()->exists();
+        $nonTextQuestionsExist = Question::query()
+            ->where('type', '!=', Question::TEXT)
+            ->exists();
+
+        return $nonTextQuestionsExist
+            ? $this->eligibleAnswers()->current()->exists()
+            : true;
     }
 }

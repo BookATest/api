@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Booking;
 
+use App\Models\Appointment;
 use App\Rules\AllAnswersPresent;
 use App\Rules\AppointmentAvailable;
 use App\Rules\UkPhoneNumber;
@@ -74,7 +75,7 @@ class StoreRequest extends FormRequest
             'answers.*' => [
                 'required',
                 'array',
-                new ValidAnswer(),
+                new ValidAnswer(Appointment::find($this->appointment_id)),
             ],
             'answers.*.question_id' => [
                 'required',

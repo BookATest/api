@@ -38,6 +38,10 @@ class AppointmentAvailable implements Rule
             return false;
         }
 
+        if (!$appointment->clinic->hasEligibleAnswers()) {
+            return false;
+        }
+
         return true;
     }
 
@@ -48,6 +52,6 @@ class AppointmentAvailable implements Rule
      */
     public function message()
     {
-        return 'The validation error message.';
+        return 'This clinic has not yet updated their eligible answers.';
     }
 }

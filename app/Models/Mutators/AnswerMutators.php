@@ -10,7 +10,7 @@ trait AnswerMutators
 
     public function getAnswerAttribute(string $answer)
     {
-        return json_decode($answer);
+        return json_decode($answer, true);
     }
 
     public function setAnswerAttribute($answer)

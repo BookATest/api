@@ -233,12 +233,68 @@ class BookingsTest extends TestCase
 
     public function test_guest_cannot_book_appointment_for_clinic_they_are_not_eligible_at()
     {
-        $this->markTestIncomplete();
+        // Create the questions.
+        $selectQuestion = Question::createSelect('What sex are you?', 'Male', 'Female');
+
+        // Create the clinic.
+        $clinic = factory(Clinic::class)->create();
+
+        // Create the eligible answers for the clinic.
+        $clinic->eligibleAnswers()->create([
+            'question_id' => $selectQuestion->id,
+            'answer' => EligibleAnswer::parseSelectAnswer(['Male'], $selectQuestion),
+        ]);
+
+        // Create an appointment at the clinic.
+        $appointment = factory(Appointment::class)->create(['clinic_id' => $clinic->id]);
+
+        $response = $this->json('POST', '/v1/bookings', [
+            'appointment_id' => $appointment->id,
+            'service_user' => [
+                'name' => 'John Doe',
+                'phone' => '00000000000',
+                'email' => null,
+                'preferred_contact_method' => 'phone',
+            ],
+            'answers' => [
+                [
+                    'question_id' => $selectQuestion->id,
+                    'answer' => 'Female',
+                ]
+            ],
+        ]);
+
+        $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
     }
 
     public function test_guest_cannot_book_appointment_for_clinic_that_has_not_updated_eligible_answers()
     {
-        $this->markTestIncomplete();
+        // Create the questions.
+        $selectQuestion = Question::createSelect('What sex are you?', 'Male', 'Female');
+
+        // Create the clinic.
+        $clinic = factory(Clinic::class)->create();
+
+        // Create an appointment at the clinic.
+        $appointment = factory(Appointment::class)->create(['clinic_id' => $clinic->id]);
+
+        $response = $this->json('POST', '/v1/bookings', [
+            'appointment_id' => $appointment->id,
+            'service_user' => [
+                'name' => 'John Doe',
+                'phone' => '00000000000',
+                'email' => null,
+                'preferred_contact_method' => 'phone',
+            ],
+            'answers' => [
+                [
+                    'question_id' => $selectQuestion->id,
+                    'answer' => 'Male',
+                ]
+            ],
+        ]);
+
+        $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
     }
 
     /*

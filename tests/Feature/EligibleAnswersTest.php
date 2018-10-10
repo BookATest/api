@@ -52,6 +52,8 @@ class EligibleAnswersTest extends TestCase
 
     public function test_ca_cannot_list_them_when_not_created()
     {
+        Question::createSelect('What sex are you?', 'Male', 'Female');
+
         $clinic = factory(Clinic::class)->create();
         $user = factory(User::class)->create()->makeClinicAdmin($clinic);
 
@@ -141,6 +143,14 @@ class EligibleAnswersTest extends TestCase
 
         $question = Question::createSelect('What sex are you?', 'Male', 'Female');
         $question->delete();
+
+        Question::createSelect(
+            'What sex are you?',
+            'Male',
+            'Female',
+            'Prefer not to say'
+        );
+
         EligibleAnswer::create([
             'clinic_id' => $clinic->id,
             'question_id' => $question->id,

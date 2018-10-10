@@ -10,7 +10,7 @@ trait SettingMutators
 
     public function getValueAttribute(string $value)
     {
-        return json_decode($value);
+        return json_decode($value, true);
     }
 
     public function setValueAttribute($value)
