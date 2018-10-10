@@ -26,7 +26,19 @@ class AppointmentAvailable implements Rule
             return false;
         }
 
-        return !$appointment->is_booked;
+        if ($appointment->is_booked) {
+            return false;
+        }
+
+        $latestBookingTime = $appointment->start_at->subMinutes(
+            $appointment->clinic->appointment_booking_threshold
+        );
+
+        if (now()->greaterThan($latestBookingTime)) {
+            return false;
+        }
+
+        return true;
     }
 
     /**

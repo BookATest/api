@@ -7,6 +7,7 @@ use App\Models\Clinic;
 use App\Models\EligibleAnswer;
 use App\Models\Question;
 use Illuminate\Http\Response;
+use Illuminate\Support\Carbon;
 use Tests\TestCase;
 
 class BookingsTest extends TestCase
@@ -104,6 +105,140 @@ class BookingsTest extends TestCase
         $this->assertDatabaseHas('anonymised_answers', ['question_id' => $checkboxQuestion->id]);
         $this->assertDatabaseHas('anonymised_answers', ['question_id' => $dateQuestion->id]);
         $this->assertDatabaseHas('anonymised_answers', ['question_id' => $textQuestion->id]);
+    }
+
+    public function test_guest_cannot_book_booked_appointment()
+    {
+        // Create the question.
+        $textQuestion = Question::createText('Where did you hear about us?');
+
+        // Create the clinic.
+        $clinic = factory(Clinic::class)->create();
+
+        // Create an appointment at the clinic.
+        $appointment = factory(Appointment::class)->create(['clinic_id' => $clinic->id]);
+
+        // Make the first booking.
+        $response = $this->json('POST', '/v1/bookings', [
+            'appointment_id' => $appointment->id,
+            'service_user' => [
+                'name' => 'John Doe',
+                'phone' => '00000000000',
+                'email' => null,
+                'preferred_contact_method' => 'phone',
+            ],
+            'answers' => [
+                [
+                    'question_id' => $textQuestion->id,
+                    'answer' => 'Result on a search engine',
+                ],
+            ],
+        ]);
+
+        $response->assertStatus(Response::HTTP_CREATED);
+
+        // Attempt to rebook the same appointment.
+        $response = $this->json('POST', '/v1/bookings', [
+            'appointment_id' => $appointment->id,
+            'service_user' => [
+                'name' => 'John Doe',
+                'phone' => '00000000000',
+                'email' => null,
+                'preferred_contact_method' => 'phone',
+            ],
+            'answers' => [
+                [
+                    'question_id' => $textQuestion->id,
+                    'answer' => 'Result on a search engine',
+                ],
+            ],
+        ]);
+
+        $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
+    }
+
+    public function test_guest_cannot_book_appointment_in_past()
+    {
+        // Create the question.
+        $textQuestion = Question::createText('Where did you hear about us?');
+
+        // Create the clinic.
+        $clinic = factory(Clinic::class)->create();
+
+        // Create an appointment at the clinic.
+        $appointment = factory(Appointment::class)->create([
+            'clinic_id' => $clinic->id,
+            'start_at' => today()->subDay(),
+        ]);
+
+        // Make the first booking.
+        $response = $this->json('POST', '/v1/bookings', [
+            'appointment_id' => $appointment->id,
+            'service_user' => [
+                'name' => 'John Doe',
+                'phone' => '00000000000',
+                'email' => null,
+                'preferred_contact_method' => 'phone',
+            ],
+            'answers' => [
+                [
+                    'question_id' => $textQuestion->id,
+                    'answer' => 'Result on a search engine',
+                ],
+            ],
+        ]);
+
+        $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
+    }
+
+    public function test_guest_cannot_booked_appointment_outside_booking_threshold()
+    {
+        // Fake the current time.
+        Carbon::setTestNow(today()->hour(20));
+
+        // Create the question.
+        $textQuestion = Question::createText('Where did you hear about us?');
+
+        // Create the clinic.
+        $clinic = factory(Clinic::class)->create([
+            'appointment_duration' => 60,
+            'appointment_booking_threshold' => 600,
+        ]);
+
+        // Create an appointment at the clinic.
+        $appointment = factory(Appointment::class)->create([
+            'clinic_id' => $clinic->id,
+            'start_at' => today()->addDay(),
+        ]);
+
+        // Make the first booking.
+        $response = $this->json('POST', '/v1/bookings', [
+            'appointment_id' => $appointment->id,
+            'service_user' => [
+                'name' => 'John Doe',
+                'phone' => '00000000000',
+                'email' => null,
+                'preferred_contact_method' => 'phone',
+            ],
+            'answers' => [
+                [
+                    'question_id' => $textQuestion->id,
+                    'answer' => 'Result on a search engine',
+                ],
+            ],
+        ]);
+
+        $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
+    }
+
+    public function test_guest_cannot_book_appointment_for_clinic_they_are_not_eligible_at()
+    {
+        $this->markTestIncomplete();
+    }
+
+    public function test_guest_cannot_book_appointment_for_clinic_that_has_not_updated_eligible_answers()
+    {
+        $this->markTestIncomplete();
     }
 
     /*
