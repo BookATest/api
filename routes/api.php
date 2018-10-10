@@ -40,7 +40,8 @@ Route::prefix('v1')->namespace('V1')->group(function () {
     /*
      * Booking Routes.
      */
-    // TODO
+    Route::post('bookings', 'BookingController@store')
+        ->name('bookings.store');
 
     /*
      * Clinic Routes.

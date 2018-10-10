@@ -50,8 +50,7 @@ class Bookings
                             Schema::string('question_id')->format(Schema::UUID),
                             Schema::string('answer')
                         )
-                    ),
-                    Schema::string('notification')
+                    )
                 )
         );
 

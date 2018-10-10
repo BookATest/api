@@ -6,6 +6,7 @@ use App\Models\Mutators\AppointmentMutators;
 use App\Models\Relationships\AppointmentRelationships;
 use App\Models\Scopes\AppointmentScopes;
 use Illuminate\Support\Carbon;
+use InvalidArgumentException;
 
 class Appointment extends Model
 {
@@ -62,5 +63,138 @@ class Appointment extends Model
         ]);
 
         return $this;
+    }
+
+    /**
+     * @param \App\Models\Question $question
+     * @param \App\Models\ServiceUser $serviceUser
+     * @param string $answer
+     * @return \App\Models\Answer
+     */
+    public function createSelectAnswer(Question $question, ServiceUser $serviceUser, string $answer): Answer
+    {
+        // Validation.
+        $questionType = Question::SELECT;
+
+        if ($question->type !== $questionType) {
+            throw new InvalidArgumentException("The question must be of type [{$questionType}]");
+        }
+
+        $options = $question->questionOptions()->pluck('option')->toArray();
+
+        if (!in_array($answer, $options)) {
+            throw new InvalidArgumentException('The answer must be a provided option for the question');
+        }
+
+        // Create the answer.
+        $answer = $this->answers()->create([
+            'service_user_id' => $serviceUser->id,
+            'question_id' => $question->id,
+            'answer' => $answer,
+        ]);
+
+        // Create an anonymised answer.
+        AnonymisedAnswer::create([
+            'clinic_id' => $this->clinic_id,
+            'question_id' => $question->id,
+            'answer' => $answer,
+        ]);
+
+        return $answer;
+    }
+
+    /**
+     * @param \App\Models\Question $question
+     * @param \App\Models\ServiceUser $serviceUser
+     * @param bool $answer
+     * @return \App\Models\Answer
+     */
+    public function createCheckboxAnswer(Question $question, ServiceUser $serviceUser, bool $answer): Answer
+    {
+        // Validation.
+        $questionType = Question::CHECKBOX;
+
+        if ($question->type !== $questionType) {
+            throw new InvalidArgumentException("The question must be of type [{$questionType}]");
+        }
+
+        // Create the answer.
+        $answer = $this->answers()->create([
+            'service_user_id' => $serviceUser->id,
+            'question_id' => $question->id,
+            'answer' => $answer,
+        ]);
+
+        // Create an anonymised answer.
+        AnonymisedAnswer::create([
+            'clinic_id' => $this->clinic_id,
+            'question_id' => $question->id,
+            'answer' => $answer,
+        ]);
+
+        return $answer;
+    }
+
+    /**
+     * @param \App\Models\Question $question
+     * @param \App\Models\ServiceUser $serviceUser
+     * @param \Illuminate\Support\Carbon $dateTime
+     * @return \App\Models\Answer
+     */
+    public function createDateAnswer(Question $question, ServiceUser $serviceUser, Carbon $dateTime): Answer {
+        // Validation.
+        $questionType = Question::DATE;
+
+        if ($question->type !== $questionType) {
+            throw new InvalidArgumentException("The question must be of type [{$questionType}]");
+        }
+
+        // Create the answer.
+        $answer = $this->answers()->create([
+            'service_user_id' => $serviceUser->id,
+            'question_id' => $question->id,
+            'answer' => $dateTime->toDateTimeString(),
+        ]);
+
+        // Create an anonymised answer.
+        AnonymisedAnswer::create([
+            'clinic_id' => $this->clinic_id,
+            'question_id' => $question->id,
+            'answer' => $dateTime->toDateTimeString(),
+        ]);
+
+        return $answer;
+    }
+
+    /**
+     * @param \App\Models\Question $question
+     * @param \App\Models\ServiceUser $serviceUser
+     * @param string $answer
+     * @return \App\Models\Answer
+     */
+    public function createTextAnswer(Question $question, ServiceUser $serviceUser, string $answer): Answer
+    {
+        // Validation.
+        $questionType = Question::TEXT;
+
+        if ($question->type !== $questionType) {
+            throw new InvalidArgumentException("The question must be of type [{$questionType}]");
+        }
+
+        // Create the answer.
+        $answer = $this->answers()->create([
+            'service_user_id' => $serviceUser->id,
+            'question_id' => $question->id,
+            'answer' => $answer,
+        ]);
+
+        // Create an anonymised answer.
+        AnonymisedAnswer::create([
+            'clinic_id' => $this->clinic_id,
+            'question_id' => $question->id,
+            'answer' => $answer,
+        ]);
+
+        return $answer;
     }
 }

@@ -10,6 +10,6 @@ $factory->define(App\Models\Appointment::class, function (Faker $faker) {
         'clinic_id' => function () {
             return factory(\App\Models\Clinic::class)->create()->id;
         },
-        'start_at' => \Illuminate\Support\Carbon::now()->setTime(15, 0),
+        'start_at' => \Illuminate\Support\Carbon::today()->addWeek(),
     ];
 });
