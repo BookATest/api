@@ -7,7 +7,6 @@ use App\Models\Clinic;
 use App\Models\EligibleAnswer;
 use App\Models\Question;
 use Illuminate\Http\Response;
-use Illuminate\Support\Carbon;
 use Tests\TestCase;
 
 class BookingsTest extends TestCase

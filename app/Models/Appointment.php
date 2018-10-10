@@ -86,16 +86,16 @@ class Appointment extends Model
             throw new InvalidArgumentException('The answer must be a provided option for the question');
         }
 
-        // Create the answer.
-        $answer = $this->answers()->create([
-            'service_user_id' => $serviceUser->id,
+        // Create an anonymised answer.
+        AnonymisedAnswer::create([
+            'clinic_id' => $this->clinic_id,
             'question_id' => $question->id,
             'answer' => $answer,
         ]);
 
-        // Create an anonymised answer.
-        AnonymisedAnswer::create([
-            'clinic_id' => $this->clinic_id,
+        // Create the answer.
+        $answer = $this->answers()->create([
+            'service_user_id' => $serviceUser->id,
             'question_id' => $question->id,
             'answer' => $answer,
         ]);
@@ -118,16 +118,16 @@ class Appointment extends Model
             throw new InvalidArgumentException("The question must be of type [{$questionType}]");
         }
 
-        // Create the answer.
-        $answer = $this->answers()->create([
-            'service_user_id' => $serviceUser->id,
+        // Create an anonymised answer.
+        AnonymisedAnswer::create([
+            'clinic_id' => $this->clinic_id,
             'question_id' => $question->id,
             'answer' => $answer,
         ]);
 
-        // Create an anonymised answer.
-        AnonymisedAnswer::create([
-            'clinic_id' => $this->clinic_id,
+        // Create the answer.
+        $answer = $this->answers()->create([
+            'service_user_id' => $serviceUser->id,
             'question_id' => $question->id,
             'answer' => $answer,
         ]);
@@ -149,16 +149,16 @@ class Appointment extends Model
             throw new InvalidArgumentException("The question must be of type [{$questionType}]");
         }
 
-        // Create the answer.
-        $answer = $this->answers()->create([
-            'service_user_id' => $serviceUser->id,
+        // Create an anonymised answer.
+        AnonymisedAnswer::create([
+            'clinic_id' => $this->clinic_id,
             'question_id' => $question->id,
             'answer' => $dateTime->toDateTimeString(),
         ]);
 
-        // Create an anonymised answer.
-        AnonymisedAnswer::create([
-            'clinic_id' => $this->clinic_id,
+        // Create the answer.
+        $answer = $this->answers()->create([
+            'service_user_id' => $serviceUser->id,
             'question_id' => $question->id,
             'answer' => $dateTime->toDateTimeString(),
         ]);
@@ -181,16 +181,16 @@ class Appointment extends Model
             throw new InvalidArgumentException("The question must be of type [{$questionType}]");
         }
 
-        // Create the answer.
-        $answer = $this->answers()->create([
-            'service_user_id' => $serviceUser->id,
+        // Create an anonymised answer.
+        AnonymisedAnswer::create([
+            'clinic_id' => $this->clinic_id,
             'question_id' => $question->id,
             'answer' => $answer,
         ]);
 
-        // Create an anonymised answer.
-        AnonymisedAnswer::create([
-            'clinic_id' => $this->clinic_id,
+        // Create the answer.
+        $answer = $this->answers()->create([
+            'service_user_id' => $serviceUser->id,
             'question_id' => $question->id,
             'answer' => $answer,
         ]);
