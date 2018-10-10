@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\EligibleAnswer;
 
+use App\Rules\AllAnswersPresent;
 use App\Rules\ValidAnswer;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -28,6 +29,7 @@ class UpdateRequest extends FormRequest
             'answers' => [
                 'required',
                 'array',
+                new AllAnswersPresent(),
             ],
             'answers.*' => [
                 'required',

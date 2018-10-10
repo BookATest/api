@@ -38,7 +38,7 @@ class Question extends Model
 
     /**
      * @param string $question
-     * @param string ...$options
+     * @param string[] $options
      * @return \App\Models\Question
      */
     public static function createSelect(string $question, string ...$options): self

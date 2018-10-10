@@ -248,6 +248,7 @@ class EligibleAnswersTest extends TestCase
         $selectQuestion = Question::createSelect('What sex are you?', 'Male', 'Female');
         $dateQuestion = Question::createDate('What is your date of birth?');
         $checkboxQuestion = Question::createCheckbox('Are you a smoker?');
+        Question::createText('Where did you hear about us?');
 
         $interval = now()->diffInSeconds(now()->subYears(18));
 
@@ -288,5 +289,37 @@ class EligibleAnswersTest extends TestCase
             'question_id' => $checkboxQuestion->id,
             'answer' => false,
         ]);
+    }
+
+    public function test_ca_must_provide_answers_for_all_non_text_questions()
+    {
+        $clinic = factory(Clinic::class)->create();
+        $user = factory(User::class)->create()->makeClinicAdmin($clinic);
+
+        $selectQuestion = Question::createSelect('What sex are you?', 'Male', 'Female');
+        $dateQuestion = Question::createDate('What is your date of birth?');
+        Question::createCheckbox('Are you a smoker?');
+
+        $interval = now()->diffInSeconds(now()->subYears(18));
+
+        Passport::actingAs($user);
+        $response = $this->json('PUT', "/v1/clinics/$clinic->id/eligible-answers", [
+            'answers' => [
+                [
+                    'question_id' => $selectQuestion->id,
+                    'answer' => ['Male'],
+                ],
+                [
+                    'question_id' => $dateQuestion->id,
+                    'answer' => [
+                        'comparison' => '>',
+                        'interval' => $interval,
+                    ],
+                ],
+                // Purposely missing the checkbox answer here.
+            ]
+        ]);
+
+        $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
     }
 }
