@@ -74,7 +74,6 @@ class BookingsTest extends TestCase
                 ],
             ],
         ]);
-        dump($response->getContent());
 
         $appointment->refresh();
 
