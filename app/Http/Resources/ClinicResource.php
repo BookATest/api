@@ -3,7 +3,6 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
-use Illuminate\Support\Carbon;
 
 class ClinicResource extends JsonResource
 {
@@ -28,8 +27,8 @@ class ClinicResource extends JsonResource
             'directions' => $this->directions,
             'appointment_duration' => $this->appointment_duration,
             'appointment_booking_threshold' => $this->appointment_booking_threshold,
-            'created_at' => $this->created_at->format(Carbon::ISO8601),
-            'updated_at' => $this->updated_at->format(Carbon::ISO8601),
+            'created_at' => $this->created_at->toIso8601String(),
+            'updated_at' => $this->updated_at->toIso8601String(),
         ];
     }
 }

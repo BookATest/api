@@ -28,6 +28,6 @@ class DateFormat
      */
     public static function iso8601(): string
     {
-        return static::format(Carbon::ISO8601);
+        return static::format(Carbon::ATOM);
     }
 }

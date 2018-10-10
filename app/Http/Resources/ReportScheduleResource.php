@@ -3,7 +3,6 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
-use Illuminate\Support\Carbon;
 
 class ReportScheduleResource extends JsonResource
 {
@@ -21,8 +20,8 @@ class ReportScheduleResource extends JsonResource
             'clinic_id' => $this->clinic_id,
             'report_type' => $this->reportType->name,
             'repeat_type' => $this->repeat_type,
-            'created_at' => $this->created_at->format(Carbon::ISO8601),
-            'updated_at' => $this->updated_at->format(Carbon::ISO8601),
+            'created_at' => $this->created_at->toIso8601String(),
+            'updated_at' => $this->updated_at->toIso8601String(),
         ];
     }
 }

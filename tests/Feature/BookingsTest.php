@@ -66,7 +66,7 @@ class BookingsTest extends TestCase
                 ],
                 [
                     'question_id' => $dateQuestion->id,
-                    'answer' => now()->subYears(21)->format(Carbon::ISO8601),
+                    'answer' => now()->subYears(21)->toIso8601String(),
                 ],
                 [
                     'question_id' => $textQuestion->id,
@@ -74,6 +74,7 @@ class BookingsTest extends TestCase
                 ],
             ],
         ]);
+        dump($response->getContent());
 
         $appointment->refresh();
 
@@ -83,7 +84,7 @@ class BookingsTest extends TestCase
             'user_id' => $appointment->user_id,
             'clinic_id' => $appointment->clinic_id,
             'is_repeating' => false,
-            'start_at' => $appointment->start_at->format(Carbon::ISO8601),
+            'start_at' => $appointment->start_at->toIso8601String(),
             'did_not_attend' => $appointment->did_not_attend,
         ]);
         $response->assertJsonMissing([

@@ -40,8 +40,8 @@ class ClinicsTest extends TestCase
                 'directions' => $clinic->directions,
                 'appointment_duration' => $clinic->appointment_duration,
                 'appointment_booking_threshold' => $clinic->appointment_booking_threshold,
-                'created_at' => $clinic->created_at->format(Carbon::ISO8601),
-                'updated_at' => $clinic->updated_at->format(Carbon::ISO8601),
+                'created_at' => $clinic->created_at->toIso8601String(),
+                'updated_at' => $clinic->updated_at->toIso8601String(),
             ]
         ]);
     }
@@ -176,8 +176,8 @@ class ClinicsTest extends TestCase
                 'directions' => $clinic->directions,
                 'appointment_duration' => $clinic->appointment_duration,
                 'appointment_booking_threshold' => $clinic->appointment_booking_threshold,
-                'created_at' => $clinic->created_at->format(Carbon::ISO8601),
-                'updated_at' => $clinic->updated_at->format(Carbon::ISO8601),
+                'created_at' => $clinic->created_at->toIso8601String(),
+                'updated_at' => $clinic->updated_at->toIso8601String(),
             ]
         ]);
     }
@@ -270,8 +270,8 @@ class ClinicsTest extends TestCase
                 'directions' => 'Lorem ipsum dolar sit amet',
                 'appointment_duration' => $clinic->appointment_duration,
                 'appointment_booking_threshold' => 120,
-                'created_at' => $clinic->created_at->format(Carbon::ISO8601),
-                'updated_at' => $clinic->updated_at->format(Carbon::ISO8601),
+                'created_at' => $clinic->created_at->toIso8601String(),
+                'updated_at' => $clinic->updated_at->toIso8601String(),
             ]
         ]);
     }

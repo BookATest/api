@@ -55,8 +55,8 @@ class UsersTest extends TestCase
                             'clinic_id' => $clinic->id,
                         ]
                     ],
-                    'created_at' => $user->created_at->format(Carbon::ISO8601),
-                    'updated_at' => $user->updated_at->format(Carbon::ISO8601),
+                    'created_at' => $user->created_at->toIso8601String(),
+                    'updated_at' => $user->updated_at->toIso8601String(),
                 ]
             ]
         ]);
@@ -266,8 +266,8 @@ class UsersTest extends TestCase
                         'clinic_id' => $clinic->id,
                     ]
                 ],
-                'created_at' => $user->created_at->format(Carbon::ISO8601),
-                'updated_at' => $user->updated_at->format(Carbon::ISO8601),
+                'created_at' => $user->created_at->toIso8601String(),
+                'updated_at' => $user->updated_at->toIso8601String(),
             ]
         ]);
     }

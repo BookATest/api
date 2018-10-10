@@ -5,7 +5,7 @@ use Faker\Generator as Faker;
 
 $factory->define(Clinic::class, function (Faker $faker) {
     return [
-        'name' => $faker->company,
+        'name' => $faker->unique()->company,
         'phone' => $faker->phoneNumber,
         'email' => $faker->companyEmail,
         'address_line_1' => $faker->streetAddress,

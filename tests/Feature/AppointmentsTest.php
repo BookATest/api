@@ -42,11 +42,11 @@ class AppointmentsTest extends TestCase
                 'clinic_id' => $availableAppointment->clinic_id,
                 'is_repeating' => $availableAppointment->appointment_schedule_id !== null,
                 'service_user_id' => $availableAppointment->service_user_id,
-                'start_at' => $availableAppointment->start_at->format(Carbon::ISO8601),
-                'booked_at' => optional($availableAppointment->booked_at)->format(Carbon::ISO8601),
+                'start_at' => $availableAppointment->start_at->toIso8601String(),
+                'booked_at' => optional($availableAppointment->booked_at)->toIso8601String(),
                 'did_not_attend' => $availableAppointment->did_not_attend,
-                'created_at' => $availableAppointment->created_at->format(Carbon::ISO8601),
-                'updated_at' => $availableAppointment->updated_at->format(Carbon::ISO8601),
+                'created_at' => $availableAppointment->created_at->toIso8601String(),
+                'updated_at' => $availableAppointment->updated_at->toIso8601String(),
             ],
         ]);
         $response->assertJsonMissing(['id' => $bookedAppointment->id]);
@@ -77,11 +77,11 @@ class AppointmentsTest extends TestCase
                 'clinic_id' => $availableAppointment->clinic_id,
                 'is_repeating' => $availableAppointment->appointment_schedule_id !== null,
                 'service_user_id' => $availableAppointment->service_user_id,
-                'start_at' => $availableAppointment->start_at->format(Carbon::ISO8601),
+                'start_at' => $availableAppointment->start_at->toIso8601String(),
                 'booked_at' => null,
                 'did_not_attend' => $availableAppointment->did_not_attend,
-                'created_at' => $availableAppointment->created_at->format(Carbon::ISO8601),
-                'updated_at' => $availableAppointment->updated_at->format(Carbon::ISO8601),
+                'created_at' => $availableAppointment->created_at->toIso8601String(),
+                'updated_at' => $availableAppointment->updated_at->toIso8601String(),
             ],
         ]);
         $response->assertJsonFragment([
@@ -91,11 +91,11 @@ class AppointmentsTest extends TestCase
                 'clinic_id' => $bookedAppointment->clinic_id,
                 'is_repeating' => $bookedAppointment->appointment_schedule_id !== null,
                 'service_user_id' => $bookedAppointment->service_user_id,
-                'start_at' => $bookedAppointment->start_at->format(Carbon::ISO8601),
-                'booked_at' => $bookedAppointment->booked_at->format(Carbon::ISO8601),
+                'start_at' => $bookedAppointment->start_at->toIso8601String(),
+                'booked_at' => $bookedAppointment->booked_at->toIso8601String(),
                 'did_not_attend' => $bookedAppointment->did_not_attend,
-                'created_at' => $bookedAppointment->created_at->format(Carbon::ISO8601),
-                'updated_at' => $bookedAppointment->updated_at->format(Carbon::ISO8601),
+                'created_at' => $bookedAppointment->created_at->toIso8601String(),
+                'updated_at' => $bookedAppointment->updated_at->toIso8601String(),
             ],
         ]);
     }
@@ -132,11 +132,11 @@ class AppointmentsTest extends TestCase
                 'clinic_id' => $usersAppointment->clinic_id,
                 'is_repeating' => $usersAppointment->appointment_schedule_id !== null,
                 'service_user_id' => $usersAppointment->service_user_id,
-                'start_at' => $usersAppointment->start_at->format(Carbon::ISO8601),
+                'start_at' => $usersAppointment->start_at->toIso8601String(),
                 'booked_at' => null,
                 'did_not_attend' => $usersAppointment->did_not_attend,
-                'created_at' => $usersAppointment->created_at->format(Carbon::ISO8601),
-                'updated_at' => $usersAppointment->updated_at->format(Carbon::ISO8601),
+                'created_at' => $usersAppointment->created_at->toIso8601String(),
+                'updated_at' => $usersAppointment->updated_at->toIso8601String(),
             ],
         ]);
         $response->assertJsonMissing(['id' => $otherAppointment->id]);
@@ -163,11 +163,11 @@ class AppointmentsTest extends TestCase
                 'clinic_id' => $clinicsAppointment->clinic_id,
                 'is_repeating' => $clinicsAppointment->appointment_schedule_id !== null,
                 'service_user_id' => $clinicsAppointment->service_user_id,
-                'start_at' => $clinicsAppointment->start_at->format(Carbon::ISO8601),
+                'start_at' => $clinicsAppointment->start_at->toIso8601String(),
                 'booked_at' => null,
                 'did_not_attend' => $clinicsAppointment->did_not_attend,
-                'created_at' => $clinicsAppointment->created_at->format(Carbon::ISO8601),
-                'updated_at' => $clinicsAppointment->updated_at->format(Carbon::ISO8601),
+                'created_at' => $clinicsAppointment->created_at->toIso8601String(),
+                'updated_at' => $clinicsAppointment->updated_at->toIso8601String(),
             ],
         ]);
         $response->assertJsonMissing(['id' => $otherAppointment->id]);
@@ -201,11 +201,11 @@ class AppointmentsTest extends TestCase
                 'clinic_id' => $serviceUsersAppointment->clinic_id,
                 'is_repeating' => $serviceUsersAppointment->appointment_schedule_id !== null,
                 'service_user_id' => $serviceUsersAppointment->service_user_id,
-                'start_at' => $serviceUsersAppointment->start_at->format(Carbon::ISO8601),
-                'booked_at' => $serviceUsersAppointment->booked_at->format(Carbon::ISO8601),
+                'start_at' => $serviceUsersAppointment->start_at->toIso8601String(),
+                'booked_at' => $serviceUsersAppointment->booked_at->toIso8601String(),
                 'did_not_attend' => $serviceUsersAppointment->did_not_attend,
-                'created_at' => $serviceUsersAppointment->created_at->format(Carbon::ISO8601),
-                'updated_at' => $serviceUsersAppointment->updated_at->format(Carbon::ISO8601),
+                'created_at' => $serviceUsersAppointment->created_at->toIso8601String(),
+                'updated_at' => $serviceUsersAppointment->updated_at->toIso8601String(),
             ],
         ]);
         $response->assertJsonMissing(['id' => $otherAppointment->id]);
@@ -235,11 +235,11 @@ class AppointmentsTest extends TestCase
                 'clinic_id' => $availableAppointment->clinic_id,
                 'is_repeating' => $availableAppointment->appointment_schedule_id !== null,
                 'service_user_id' => $availableAppointment->service_user_id,
-                'start_at' => $availableAppointment->start_at->format(Carbon::ISO8601),
+                'start_at' => $availableAppointment->start_at->toIso8601String(),
                 'booked_at' => null,
                 'did_not_attend' => $availableAppointment->did_not_attend,
-                'created_at' => $availableAppointment->created_at->format(Carbon::ISO8601),
-                'updated_at' => $availableAppointment->updated_at->format(Carbon::ISO8601),
+                'created_at' => $availableAppointment->created_at->toIso8601String(),
+                'updated_at' => $availableAppointment->updated_at->toIso8601String(),
             ],
         ]);
         $response->assertJsonMissing(['id' => $bookedAppointment->id]);
@@ -266,7 +266,7 @@ class AppointmentsTest extends TestCase
 
         $response = $this->json('POST', '/v1/appointments', [
             'clinic_id' => $anotherClinic->id,
-            'start_at' => today()->format(Carbon::ISO8601),
+            'start_at' => today()->toIso8601String(),
             'is_repeating' => false,
         ]);
 
@@ -283,7 +283,7 @@ class AppointmentsTest extends TestCase
 
         $response = $this->json('POST', '/v1/appointments', [
             'clinic_id' => $clinic->id,
-            'start_at' => $startAt->format(Carbon::ISO8601),
+            'start_at' => $startAt->toIso8601String(),
             'is_repeating' => false,
         ]);
 
@@ -293,7 +293,7 @@ class AppointmentsTest extends TestCase
             'clinic_id' => $clinic->id,
             'is_repeating' => false,
             'service_user_id' => null,
-            'start_at' => $startAt->format(Carbon::ISO8601),
+            'start_at' => $startAt->toIso8601String(),
             'booked_at' => null,
             'did_not_attend' => null,
         ]);
@@ -309,7 +309,7 @@ class AppointmentsTest extends TestCase
 
         $response = $this->json('POST', '/v1/appointments', [
             'clinic_id' => $clinic->id,
-            'start_at' => $startAt->format(Carbon::ISO8601),
+            'start_at' => $startAt->toIso8601String(),
             'is_repeating' => true,
         ]);
 
@@ -319,7 +319,7 @@ class AppointmentsTest extends TestCase
             'clinic_id' => $clinic->id,
             'is_repeating' => true,
             'service_user_id' => null,
-            'start_at' => $startAt->format(Carbon::ISO8601),
+            'start_at' => $startAt->toIso8601String(),
             'booked_at' => null,
             'did_not_attend' => null,
         ]);
@@ -340,7 +340,7 @@ class AppointmentsTest extends TestCase
 
         $this->json('POST', '/v1/appointments', [
             'clinic_id' => $clinic->id,
-            'start_at' => today()->format(Carbon::ISO8601),
+            'start_at' => today()->toIso8601String(),
             'is_repeating' => false,
         ]);
 
@@ -380,11 +380,11 @@ class AppointmentsTest extends TestCase
                 'clinic_id' => $appointment->clinic_id,
                 'is_repeating' => $appointment->appointment_schedule_id !== null,
                 'service_user_id' => $appointment->service_user_id,
-                'start_at' => $appointment->start_at->format(Carbon::ISO8601),
+                'start_at' => $appointment->start_at->toIso8601String(),
                 'booked_at' => null,
                 'did_not_attend' => $appointment->did_not_attend,
-                'created_at' => $appointment->created_at->format(Carbon::ISO8601),
-                'updated_at' => $appointment->updated_at->format(Carbon::ISO8601),
+                'created_at' => $appointment->created_at->toIso8601String(),
+                'updated_at' => $appointment->updated_at->toIso8601String(),
             ],
         ]);
     }
@@ -471,11 +471,11 @@ class AppointmentsTest extends TestCase
                 'clinic_id' => $appointment->clinic_id,
                 'is_repeating' => $appointment->appointment_schedule_id !== null,
                 'service_user_id' => $appointment->service_user_id,
-                'start_at' => $appointment->start_at->format(Carbon::ISO8601),
-                'booked_at' => $appointment->booked_at->format(Carbon::ISO8601),
+                'start_at' => $appointment->start_at->toIso8601String(),
+                'booked_at' => $appointment->booked_at->toIso8601String(),
                 'did_not_attend' => true,
-                'created_at' => $appointment->created_at->format(Carbon::ISO8601),
-                'updated_at' => $appointment->updated_at->format(Carbon::ISO8601),
+                'created_at' => $appointment->created_at->toIso8601String(),
+                'updated_at' => $appointment->updated_at->toIso8601String(),
             ],
         ]);
     }
@@ -622,11 +622,11 @@ class AppointmentsTest extends TestCase
                 'clinic_id' => $appointment->clinic_id,
                 'is_repeating' => $appointment->appointment_schedule_id !== null,
                 'service_user_id' => null,
-                'start_at' => $appointment->start_at->format(Carbon::ISO8601),
+                'start_at' => $appointment->start_at->toIso8601String(),
                 'booked_at' => null,
                 'did_not_attend' => $appointment->did_not_attend,
-                'created_at' => $appointment->created_at->format(Carbon::ISO8601),
-                'updated_at' => $appointment->updated_at->format(Carbon::ISO8601),
+                'created_at' => $appointment->created_at->toIso8601String(),
+                'updated_at' => $appointment->updated_at->toIso8601String(),
             ],
         ]);
     }

@@ -3,7 +3,6 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
-use Illuminate\Support\Carbon;
 
 class AppointmentResource extends JsonResource
 {
@@ -21,11 +20,11 @@ class AppointmentResource extends JsonResource
             'clinic_id' => $this->clinic_id,
             'is_repeating' => $this->appointment_schedule_id !== null,
             'service_user_id' => $this->service_user_id,
-            'start_at' => $this->start_at->format(Carbon::ISO8601),
-            'booked_at' => optional($this->booked_at)->format(Carbon::ISO8601),
+            'start_at' => $this->start_at->toIso8601String(),
+            'booked_at' => optional($this->booked_at)->toIso8601String(),
             'did_not_attend' => $this->did_not_attend,
-            'created_at' => $this->created_at->format(Carbon::ISO8601),
-            'updated_at' => $this->updated_at->format(Carbon::ISO8601),
+            'created_at' => $this->created_at->toIso8601String(),
+            'updated_at' => $this->updated_at->toIso8601String(),
         ];
     }
 }

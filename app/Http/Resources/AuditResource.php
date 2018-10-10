@@ -3,7 +3,6 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
-use Illuminate\Support\Carbon;
 
 class AuditResource extends JsonResource
 {
@@ -24,8 +23,8 @@ class AuditResource extends JsonResource
             'description' => $this->description,
             'ip_address' => $this->ip_address,
             'user_agent' => $this->user_agent,
-            'created_at' => $this->created_at->format(Carbon::ISO8601),
-            'updated_at' => $this->updated_at->format(Carbon::ISO8601),
+            'created_at' => $this->created_at->toIso8601String(),
+            'updated_at' => $this->updated_at->toIso8601String(),
         ];
     }
 }

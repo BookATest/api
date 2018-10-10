@@ -3,7 +3,6 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
-use Illuminate\Support\Carbon;
 
 class UserResource extends JsonResource
 {
@@ -25,8 +24,8 @@ class UserResource extends JsonResource
             'display_phone' => $this->display_phone,
             'include_calendar_attachment' => $this->include_calendar_attachment,
             'roles' => RoleResource::collection($this->userRoles->load('role')),
-            'created_at' => $this->created_at->format(Carbon::ISO8601),
-            'updated_at' => $this->updated_at->format(Carbon::ISO8601),
+            'created_at' => $this->created_at->toIso8601String(),
+            'updated_at' => $this->updated_at->toIso8601String(),
         ];
     }
 }

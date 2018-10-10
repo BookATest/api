@@ -4,10 +4,8 @@ namespace App\Rules;
 
 use App\Models\Question;
 use Illuminate\Contracts\Validation\Rule;
-use Illuminate\Support\Carbon;
-use InvalidArgumentException;
 
-class ValidAnswer implements Rule
+class ValidEligibleAnswer implements Rule
 {
     /**
      * Determine if the validation rule passes.
@@ -44,7 +42,6 @@ class ValidAnswer implements Rule
             case Question::CHECKBOX:
                 return $this->checkboxPasses($answer['answer']);
             case Question::TEXT:
-                return $this->textPasses($answer['answer']);
             default:
                 return false;
         }
@@ -59,34 +56,56 @@ class ValidAnswer implements Rule
      */
     protected function selectPasses($answer, Question $question): bool
     {
-        if (!is_string($answer)) {
+        if (!is_array($answer)) {
             return false;
+        }
+
+        foreach ($answer as $option) {
+            if (!is_string($option)) {
+                return false;
+            }
         }
 
         $options = $question->questionOptions()->pluck('option')->toArray();
 
-        if (!in_array($answer, $options)) {
-            return false;
+        foreach ($answer as $option) {
+            if (!in_array($option, $options)) {
+                return false;
+            }
         }
 
         return true;
     }
 
     /**
-     * Ensures that the answer is a valid date time string.
+     * Ensures that the answer is a valid date comparison object.
      *
      * @param mixed $answer
      * @return bool
      */
     protected function datePasses($answer): bool
     {
-        if (!is_string($answer)) {
+        if (!is_array($answer)) {
             return false;
         }
 
-        try {
-            Carbon::createFromFormat(Carbon::ATOM, $answer);
-        } catch (InvalidArgumentException $exception) {
+        if (!isset($answer['comparison']) || !isset($answer['interval'])) {
+            return false;
+        }
+
+        if (!is_string($answer['comparison'])) {
+            return false;
+        }
+
+        if (!in_array($answer['comparison'], ['<', '>'])) {
+            return false;
+        }
+
+        if (!is_int($answer['interval'])) {
+            return false;
+        }
+
+        if ($answer['interval'] < 0) {
             return false;
         }
 
@@ -102,17 +121,6 @@ class ValidAnswer implements Rule
     protected function checkboxPasses($answer): bool
     {
         return is_bool($answer);
-    }
-
-    /**
-     * Ensures that the answer is a string.
-     *
-     * @param mixed $answer
-     * @return bool
-     */
-    protected function textPasses($answer): bool
-    {
-        return is_string($answer);
     }
 
     /**

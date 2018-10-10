@@ -65,8 +65,8 @@ class AuditsTest extends TestCase
                 'description' => $audit->description,
                 'ip_address' => $audit->ip_address,
                 'user_agent' => $audit->user_agent,
-                'created_at' => $audit->created_at->format(Carbon::ISO8601),
-                'updated_at' => $audit->updated_at->format(Carbon::ISO8601),
+                'created_at' => $audit->created_at->toIso8601String(),
+                'updated_at' => $audit->updated_at->toIso8601String(),
             ]
         ]);
     }
@@ -144,8 +144,8 @@ class AuditsTest extends TestCase
                 'description' => $audit->description,
                 'ip_address' => $audit->ip_address,
                 'user_agent' => $audit->user_agent,
-                'created_at' => $audit->created_at->format(Carbon::ISO8601),
-                'updated_at' => $audit->updated_at->format(Carbon::ISO8601),
+                'created_at' => $audit->created_at->toIso8601String(),
+                'updated_at' => $audit->updated_at->toIso8601String(),
             ]
         ]);
     }
