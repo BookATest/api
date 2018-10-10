@@ -95,11 +95,12 @@ class User extends Authenticatable
      */
     public function hasRole(Role $role, Clinic $clinic = null): bool
     {
-        $query = $this->userRoles()->where('user_roles.role_id', $role->id);
-
-        return $clinic
-            ? $query->where('user_roles.clinic_id', $clinic->id)->exists()
-            : $query->exists();
+        return $this->userRoles()
+            ->where('user_roles.role_id', $role->id)
+            ->when($clinic, function (Builder $query) use ($clinic): Builder {
+                return $query->where('user_roles.clinic_id', $clinic->id);
+            })
+            ->exists();
     }
 
     /**
@@ -110,7 +111,7 @@ class User extends Authenticatable
     protected function assignRole(Role $role, Clinic $clinic = null): self
     {
         // Check if the user already has the role.
-        if ($this->hasRole($role)) {
+        if ($this->hasRole($role, $clinic)) {
             return $this;
         }
 
