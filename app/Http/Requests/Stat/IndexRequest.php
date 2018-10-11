@@ -24,7 +24,9 @@ class IndexRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'filter.clinic_id' => [
+                'string',
+            ],
         ];
     }
 }

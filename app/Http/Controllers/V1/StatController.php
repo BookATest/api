@@ -5,6 +5,7 @@ namespace App\Http\Controllers\V1;
 use App\Events\EndpointHit;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Stat\IndexRequest;
+use App\Models\Clinic;
 
 class StatController extends Controller
 {
@@ -22,11 +23,16 @@ class StatController extends Controller
      */
     public function index(IndexRequest $request)
     {
-        $totalAppointments = $request->user()->appointmentsThisWeek();
-        $appointmentsAvailable = $request->user()->appointmentsAvailable();
-        $appointmentsBooked = $request->user()->appointmentsBooked();
-        $attendanceRate = $request->user()->attendanceRateThisWeek();
-        $didNotAttendRate = $request->user()->didNotAttendRateThisWeek();
+        $clinicIds = $request->input('filter', [])['clinic_id'] ?? null;
+        $clinicIds = explode(',', $clinicIds);
+        $clinics = Clinic::query()->whereIn('id', $clinicIds)->get();
+        $clinics = $clinics->isNotEmpty() ? $clinics : null;
+
+        $totalAppointments = $request->user()->appointmentsThisWeek($clinics);
+        $appointmentsAvailable = $request->user()->appointmentsAvailable($clinics);
+        $appointmentsBooked = $request->user()->appointmentsBooked($clinics);
+        $attendanceRate = $request->user()->attendanceRateThisWeek($clinics);
+        $didNotAttendRate = $request->user()->didNotAttendRateThisWeek($clinics);
         $startAt = today()->startOfWeek();
         $endAt = today()->endOfWeek();
 

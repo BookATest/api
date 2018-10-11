@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Exceptions\CannotRevokeRoleException;
 use App\Models\Mutators\UserMutators;
 use App\Models\Relationships\UserRelationships;
 use Illuminate\Database\Eloquent\Builder;
@@ -430,35 +429,59 @@ class User extends Authenticatable
     }
 
     /**
+     * @param \Illuminate\Database\Eloquent\Collection|null $clinics
      * @return int
      */
-    public function appointmentsThisWeek(): int
+    public function appointmentsThisWeek(Collection $clinics = null): int
     {
-        return $this->appointments()->thisWeek()->count();
+        return $this->appointments()
+            ->when($clinics, function (Builder $query) use ($clinics): Builder {
+                return $query->whereIn('appointments.clinic_id', $clinics->pluck('id')->toArray());
+            })
+            ->thisWeek()
+            ->count();
     }
 
     /**
+     * @param \Illuminate\Database\Eloquent\Collection|null $clinics
      * @return int
      */
-    public function appointmentsAvailable(): int
+    public function appointmentsAvailable(Collection $clinics = null): int
     {
-        return $this->appointments()->thisWeek()->available()->count();
+        return $this->appointments()
+            ->when($clinics, function (Builder $query) use ($clinics): Builder {
+                return $query->whereIn('appointments.clinic_id', $clinics->pluck('id')->toArray());
+            })
+            ->thisWeek()
+            ->available()
+            ->count();
     }
 
     /**
+     * @param \Illuminate\Database\Eloquent\Collection|null $clinics
      * @return int
      */
-    public function appointmentsBooked(): int
+    public function appointmentsBooked(Collection $clinics = null): int
     {
-        return $this->appointments()->thisWeek()->booked()->count();
+        return $this->appointments()
+            ->when($clinics, function (Builder $query) use ($clinics): Builder {
+                return $query->whereIn('appointments.clinic_id', $clinics->pluck('id')->toArray());
+            })
+            ->thisWeek()
+            ->booked()
+            ->count();
     }
 
     /**
+     * @param \Illuminate\Database\Eloquent\Collection|null $clinics
      * @return float|null
      */
-    public function attendanceRateThisWeek(): ?float
+    public function attendanceRateThisWeek(Collection $clinics = null): ?float
     {
         $appointmentsAttended = $this->appointments()
+            ->when($clinics, function (Builder $query) use ($clinics): Builder {
+                return $query->whereIn('appointments.clinic_id', $clinics->pluck('id')->toArray());
+            })
             ->thisWeek()
             ->where('appointments.did_not_attend', '=', false)
             ->count();
@@ -467,15 +490,19 @@ class User extends Authenticatable
             return null;
         }
 
-        return ($appointmentsAttended / $this->appointmentsThisWeek()) * 100;
+        return ($appointmentsAttended / $this->appointmentsThisWeek($clinics)) * 100;
     }
 
     /**
+     * @param \Illuminate\Database\Eloquent\Collection|null $clinics
      * @return float|null
      */
-    public function didNotAttendRateThisWeek(): ?float
+    public function didNotAttendRateThisWeek(Collection $clinics = null): ?float
     {
         $appointmentsNotAttended = $this->appointments()
+            ->when($clinics, function (Builder $query) use ($clinics): Builder {
+                return $query->whereIn('appointments.clinic_id', $clinics->pluck('id')->toArray());
+            })
             ->thisWeek()
             ->where('appointments.did_not_attend', '=', true)
             ->count();
@@ -484,6 +511,6 @@ class User extends Authenticatable
             return null;
         }
 
-        return ($appointmentsNotAttended / $this->appointmentsThisWeek()) * 100;
+        return ($appointmentsNotAttended / $this->appointmentsThisWeek($clinics)) * 100;
     }
 }

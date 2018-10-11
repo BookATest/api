@@ -115,4 +115,77 @@ class StatsTest extends TestCase
             ]
         ]);
     }
+
+    public function test_clinic_stats_are_correct()
+    {
+        Carbon::setTestNow(now()->startOfWeek());
+
+        $clinic = factory(Clinic::class)->create(['appointment_duration' => 60]);
+        $user = factory(User::class)->create()->makeCommunityWorker($clinic);
+
+        /*
+         * Available appointments.
+         */
+        factory(Appointment::class)->create([
+            'user_id' => $user->id,
+            'clinic_id' => $clinic->id,
+            'start_at' => today()->addDay(),
+        ]);
+
+        factory(Appointment::class)->create([
+            'user_id' => $user->id,
+            'start_at' => today()->addDay()->addHour(),
+        ]);
+
+        /*
+         * Appointment next week - so shouldn't show up in stats.
+         */
+        factory(Appointment::class)->create([
+            'user_id' => $user->id,
+            'start_at' => today()->addDays(10),
+        ]);
+
+        /*
+         * Booked appointments.
+         */
+        factory(Appointment::class)->create([
+            'user_id' => $user->id,
+            'start_at' => today()->addDay()->addHours(2),
+            'service_user_id' => factory(ServiceUser::class)->create()->id,
+            'booked_at' => now(),
+        ]);
+
+        factory(Appointment::class)->create([
+            'user_id' => $user->id,
+            'clinic_id' => $clinic->id,
+            'start_at' => today()->addDay()->addHours(3),
+            'service_user_id' => factory(ServiceUser::class)->create()->id,
+            'booked_at' => now(),
+        ]);
+
+        factory(Appointment::class)->create([
+            'user_id' => $user->id,
+            'clinic_id' => $clinic->id,
+            'start_at' => today()->addDay()->addHours(4),
+            'service_user_id' => factory(ServiceUser::class)->create()->id,
+            'booked_at' => now(),
+            'did_not_attend' => true,
+        ]);
+
+        Passport::actingAs($user);
+        $response = $this->json('GET', "/v1/stats?filter[clinic_id]=$clinic->id");
+
+        $response->assertStatus(Response::HTTP_OK);
+        $response->assertJson([
+            'data' => [
+                'total_appointments' => 3,
+                'appointments_available' => 1,
+                'appointments_booked' => 2,
+                'attendance_rate' => null,
+                'did_not_attend_rate' => 33.33,
+                'start_at' => today()->startOfWeek()->toDateString(),
+                'end_at' => today()->endOfWeek()->toDateString(),
+            ]
+        ]);
+    }
 }
