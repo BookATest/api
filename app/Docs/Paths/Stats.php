@@ -7,6 +7,8 @@ use App\Docs\Responses;
 use App\Docs\Tags;
 use GoldSpecDigital\ObjectOrientedOAS\Objects\MediaType;
 use GoldSpecDigital\ObjectOrientedOAS\Objects\Operation;
+use GoldSpecDigital\ObjectOrientedOAS\Objects\Parameter;
+use GoldSpecDigital\ObjectOrientedOAS\Objects\Schema;
 
 class Stats
 {
@@ -38,8 +40,13 @@ EOT;
                 MediaType::json(StatResource::show())
             ),
         ];
+        $parameters = [
+            Parameter::query('filter[clinic_id]', Schema::string())
+                ->description('Comma separated clinic IDs'),
+        ];
 
         return Operation::get(...$responses)
+            ->parameters(...$parameters)
             ->summary('The dashboard stats for the user')
             ->description($description)
             ->operationId('stats.index')
