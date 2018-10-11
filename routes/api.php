@@ -95,7 +95,8 @@ Route::prefix('v1')->namespace('V1')->group(function () {
     /*
      * Stat Routes.
      */
-    // TODO
+    Route::apiResource('stats', 'StatController')
+        ->only('index');
 
     /*
      * User Routes.

@@ -38,4 +38,13 @@ trait AppointmentScopes
     {
         return $query->where('appointments.start_at', '>', now());
     }
+
+    /**
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeThisWeek(Builder $query): Builder
+    {
+        return $query->whereBetween('appointments.start_at', [today()->startOfWeek(), today()->endOfWeek()]);
+    }
 }

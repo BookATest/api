@@ -428,4 +428,57 @@ class User extends Authenticatable
             'Content-Disposition' => "inline; filename=\"profile-picture.png\"",
         ]);
     }
+
+    /**
+     * @return int
+     */
+    public function appointmentsThisWeek(): int
+    {
+        return $this->appointments()->thisWeek()->exists();
+    }
+
+    /**
+     * @return int
+     */
+    public function appointmentsAvailable(): int
+    {
+        return $this->appointments()->thisWeek()->available()->exists();
+    }
+
+    /**
+     * @return int
+     */
+    public function appointmentsBooked(): int
+    {
+        return $this->appointments()->thisWeek()->booked()->exists();
+    }
+
+    /**
+     * @return float|null
+     */
+    public function attendanceRateThisWeek(): ?float
+    {
+        if ($this->appointmentsThisWeek() === 0) {
+            return false;
+        }
+
+        $appointmentsAttended = $this->appointments()
+            ->thisWeek()
+            ->where('appointments.did_not_attend', '=', false)
+            ->count();
+
+        return ($appointmentsAttended / $this->appointmentsThisWeek()) * 100;
+    }
+
+    /**
+     * @return float|null
+     */
+    public function didNotAttendRateThisWeek(): ?float
+    {
+        if ($this->appointmentsThisWeek() === 0) {
+            return false;
+        }
+
+        return 100 - $this->attendanceRateThisWeek();
+    }
 }

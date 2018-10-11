@@ -12,10 +12,13 @@ class StatResource extends BaseResource
     public static function resource(): Schema
     {
         return Schema::object()->properties(
-            Schema::string('stat_1'),
-            Schema::string('stat_2'),
-            Schema::string('stat_3'),
-            Schema::string('stat_4')
+            Schema::integer('total_appointments'),
+            Schema::integer('appointments_available'),
+            Schema::integer('appointments_booked'),
+            Schema::number('attendance_rate'),
+            Schema::number('did_not_attend_rate'),
+            Schema::string('start_at')->format(Schema::DATE),
+            Schema::string('end_at')->format(Schema::DATE)
         );
     }
 }
