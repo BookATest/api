@@ -99,7 +99,7 @@ class BookingController extends Controller
         $coordinate = $geocoder->geocode(new Postcode($request->postcode));
 
         // Order the clinics by distance.
-        $clinics->sortBy(function (Clinic $clinic) use ($coordinate) {
+        $clinics->sortByDesc(function (Clinic $clinic) use ($coordinate) {
             // If the location does not have a coordinate, then set the distance to the PHP max integer size.
             return optional($clinic->coordinate())->distanceFrom($coordinate) ?? PHP_INT_MAX;
         })->values();
