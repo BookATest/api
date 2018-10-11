@@ -47,7 +47,11 @@ class BookingController extends Controller
                         $appointment->createSelectAnswer($question, $serviceUser, $answer['answer']);
                         break;
                     case Question::DATE:
-                        $appointment->createDateAnswer($question, $serviceUser, new Carbon($answer['answer']));
+                        $appointment->createDateAnswer(
+                            $question,
+                            $serviceUser,
+                            Carbon::createFromFormat(Carbon::ATOM, $answer['answer'])
+                        );
                         break;
                     case Question::CHECKBOX:
                         $appointment->createCheckboxAnswer($question, $serviceUser, $answer['answer']);
