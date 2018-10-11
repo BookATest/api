@@ -19,7 +19,7 @@ class MockGeocoder implements Geocoder
      */
     public function __construct()
     {
-        $this->faker = Factory::create($locale ?? Factory::DEFAULT_LOCALE);
+        $this->faker = Factory::create(config('app.faker_locale') ?? Factory::DEFAULT_LOCALE);
     }
 
     /**

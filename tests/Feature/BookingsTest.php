@@ -303,6 +303,38 @@ class BookingsTest extends TestCase
 
     public function test_guest_can_check_eligibility()
     {
-        $this->markTestIncomplete();
+        // Create the questions.
+        $selectQuestion = Question::createSelect('What sex are you?', 'Male', 'Female');
+        $checkboxQuestion = Question::createCheckbox('Are you a smoker?');
+        $dateQuestion = Question::createDate('What is your date of birth?');
+        $textQuestion = Question::createText('Where did you hear about us?');
+
+        // Make the request.
+        $response = $this->json('POST', '/v1/bookings/eligibility', [
+            'postcode' => $this->faker->postcode,
+            'answers' => [
+                [
+                    'question_id' => $selectQuestion->id,
+                    'answer' => 'Male',
+                ],
+                [
+                    'question_id' => $checkboxQuestion->id,
+                    'answer' => false,
+                ],
+                [
+                    'question_id' => $dateQuestion->id,
+                    'answer' => now()->subYears(21)->toIso8601String(),
+                ],
+                [
+                    'question_id' => $textQuestion->id,
+                    'answer' => 'Result on a search engine',
+                ],
+            ],
+        ]);
+
+        $response->assertStatus(Response::HTTP_OK);
+
+        // There should be no clinics returned since no clinics have been created.
+        $response->assertJson(['data' => []]);
     }
 }

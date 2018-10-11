@@ -6,6 +6,8 @@ use InvalidArgumentException;
 
 class Coordinate
 {
+    const EARTH_RADIUS = 6371000;
+
     /**
      * @var float
      */
@@ -86,5 +88,25 @@ class Coordinate
         }
 
         return true;
+    }
+
+    /**
+     * @param \App\Support\Coordinate $from
+     * @return float
+     */
+    public function distanceFrom(Coordinate $from): float
+    {
+        // convert from degrees to radians
+        $latFrom = deg2rad($from->getLatitude());
+        $lonFrom = deg2rad($from->getLongitude());
+        $latTo = deg2rad($this->getLatitude());
+        $lonTo = deg2rad($this->getLongitude());
+
+        $latDelta = $latTo - $latFrom;
+        $lonDelta = $lonTo - $lonFrom;
+
+        $angle = 2 * asin(sqrt(pow(sin($latDelta / 2), 2) + cos($latFrom) * cos($latTo) * pow(sin($lonDelta / 2), 2)));
+
+        return $angle * static::EARTH_RADIUS;
     }
 }

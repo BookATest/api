@@ -78,7 +78,7 @@ EOT;
     {
         $responses = [
             Responses::http200(
-                MediaType::json(ClinicResource::list())
+                MediaType::json(ClinicResource::all())
             ),
         ];
         $requestBody = Requests::json(

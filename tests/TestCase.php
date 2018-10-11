@@ -34,6 +34,16 @@ abstract class TestCase extends BaseTestCase
     }
 
     /**
+     * Setup up the Faker instance.
+     *
+     * @return void
+     */
+    protected function setUpFaker()
+    {
+        $this->faker = $this->makeFaker(config('app.faker_locale'));
+    }
+
+    /**
      * Clean up the testing environment before the next test.
      *
      * @return void

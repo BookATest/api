@@ -6,7 +6,7 @@ use App\Models\Appointment;
 use App\Rules\AllAnswersPresent;
 use App\Rules\AppointmentAvailable;
 use App\Rules\UkPhoneNumber;
-use App\Rules\ValidAnswer;
+use App\Rules\ValidAnswerForAppointment;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -75,7 +75,7 @@ class StoreRequest extends FormRequest
             'answers.*' => [
                 'required',
                 'array',
-                new ValidAnswer(Appointment::find($this->appointment_id)),
+                new ValidAnswerForAppointment(Appointment::find($this->appointment_id)),
             ],
             'answers.*.question_id' => [
                 'required',

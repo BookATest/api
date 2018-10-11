@@ -2,13 +2,30 @@
 
 namespace App\Rules;
 
+use App\Models\Appointment;
+use App\Models\EligibleAnswer;
 use App\Models\Question;
 use Illuminate\Contracts\Validation\Rule;
 use Illuminate\Support\Carbon;
 use InvalidArgumentException;
 
-class ValidAnswer implements Rule
+class ValidAnswerForAppointment implements Rule
 {
+    /**
+     * @var \App\Models\Appointment|null
+     */
+    protected $appointment;
+
+    /**
+     * ValidAnswer constructor.
+     *
+     * @param \App\Models\Appointment|null $appointment
+     */
+    public function __construct(?Appointment $appointment)
+    {
+        $this->appointment = $appointment;
+    }
+
     /**
      * Determine if the validation rule passes.
      *
@@ -18,6 +35,10 @@ class ValidAnswer implements Rule
      */
     public function passes($attribute, $answer)
     {
+        if (!$this->appointment instanceof Appointment) {
+            return false;
+        }
+
         if (!is_array($answer)) {
             return false;
         }
@@ -36,13 +57,22 @@ class ValidAnswer implements Rule
             return false;
         }
 
+        $eligibleAnswer = EligibleAnswer::query()
+            ->where('clinic_id', $this->appointment->clinic_id)
+            ->where('question_id', $question->id)
+            ->first();
+
+        if ($eligibleAnswer === null && $question->type !== Question::TEXT) {
+            return false;
+        }
+
         switch($question->type) {
             case Question::SELECT:
-                return $this->selectPasses($answer['answer'], $question);
+                return $this->selectPasses($answer['answer'], $eligibleAnswer);
             case Question::DATE:
-                return $this->datePasses($answer['answer']);
+                return $this->datePasses($answer['answer'], $eligibleAnswer);
             case Question::CHECKBOX:
-                return $this->checkboxPasses($answer['answer']);
+                return $this->checkboxPasses($answer['answer'], $eligibleAnswer);
             case Question::TEXT:
                 return $this->textPasses($answer['answer']);
             default:
@@ -54,50 +84,59 @@ class ValidAnswer implements Rule
      * Ensures that the answer is an array of strings.
      *
      * @param mixed $answer
-     * @param \App\Models\Question $question
+     * @param \App\Models\EligibleAnswer $eligibleAnswer
      * @return bool
      */
-    protected function selectPasses($answer, Question $question): bool
+    protected function selectPasses($answer, EligibleAnswer $eligibleAnswer): bool
     {
         if (!is_string($answer)) {
             return false;
         }
 
-        $options = $question->questionOptions()->pluck('option')->toArray();
-
-        return in_array($answer, $options);
+        return in_array($answer, $eligibleAnswer->answer);
     }
 
     /**
      * Ensures that the answer is a valid date time string.
      *
      * @param mixed $answer
+     * @param \App\Models\EligibleAnswer $eligibleAnswer
      * @return bool
      */
-    protected function datePasses($answer): bool
+    protected function datePasses($answer, EligibleAnswer $eligibleAnswer): bool
     {
         if (!is_string($answer)) {
             return false;
         }
 
         try {
-            Carbon::createFromFormat(Carbon::ATOM, $answer);
+            $answer = Carbon::createFromFormat(Carbon::ATOM, $answer);
         } catch (InvalidArgumentException $exception) {
             return false;
         }
 
-        return true;
+        switch ($eligibleAnswer->answer['comparison']) {
+            case '>':
+                return now()->diffInSeconds($answer) >= $eligibleAnswer->answer['interval'];
+            case '<':
+                return now()->diffInSeconds($answer) <= $eligibleAnswer->answer['interval'];
+        }
     }
 
     /**
      * Ensures that the answer is a boolean.
      *
      * @param mixed $answer
+     * @param \App\Models\EligibleAnswer $eligibleAnswer
      * @return bool
      */
-    protected function checkboxPasses($answer): bool
+    protected function checkboxPasses($answer, EligibleAnswer $eligibleAnswer): bool
     {
-        return is_bool($answer);
+        if (!is_bool($answer)) {
+            return false;
+        }
+
+        return $answer === $eligibleAnswer->answer;
     }
 
     /**

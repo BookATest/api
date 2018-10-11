@@ -42,6 +42,8 @@ Route::prefix('v1')->namespace('V1')->group(function () {
      */
     Route::post('bookings', 'BookingController@store')
         ->name('bookings.store');
+    Route::post('bookings/eligibility', 'BookingController@eligibility')
+        ->name('bookings.eligibility');
 
     /*
      * Clinic Routes.
