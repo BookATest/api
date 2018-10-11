@@ -337,4 +337,86 @@ class BookingsTest extends TestCase
         // There should be no clinics returned since no clinics have been created.
         $response->assertJson(['data' => []]);
     }
+
+    public function test_uneligible_clinic_does_not_show_up()
+    {
+        // Create the questions.
+        $selectQuestion = Question::createSelect('What sex are you?', 'Male', 'Female');
+        $checkboxQuestion = Question::createCheckbox('Are you a smoker?');
+        $dateQuestion = Question::createDate('What is your date of birth?');
+        $textQuestion = Question::createText('Where did you hear about us?');
+
+        // Create an eligible clinic.
+        $eligibleClinic = factory(Clinic::class)->create();
+        $eligibleClinic->eligibleAnswers()->create([
+            'question_id' => $selectQuestion->id,
+            'answer' => EligibleAnswer::parseSelectAnswer(['Male'], $selectQuestion),
+        ]);
+        $eligibleClinic->eligibleAnswers()->create([
+            'question_id' => $checkboxQuestion->id,
+            'answer' => EligibleAnswer::parseCheckboxAnswer(false),
+        ]);
+        $eligibleClinic->eligibleAnswers()->create([
+            'question_id' => $dateQuestion->id,
+            'answer' => EligibleAnswer::parseDateAnswer([
+                'comparison' => '>',
+                'interval' => now()->diffInSeconds(now()->subYears(18)),
+            ]),
+        ]);
+
+        // Create an uneligible clinic.
+        $uneligibleClinic = factory(Clinic::class)->create();
+        $uneligibleClinic->eligibleAnswers()->create([
+            'question_id' => $selectQuestion->id,
+            'answer' => EligibleAnswer::parseSelectAnswer(['Female'], $selectQuestion),
+        ]);
+        $uneligibleClinic->eligibleAnswers()->create([
+            'question_id' => $checkboxQuestion->id,
+            'answer' => EligibleAnswer::parseCheckboxAnswer(false),
+        ]);
+        $uneligibleClinic->eligibleAnswers()->create([
+            'question_id' => $dateQuestion->id,
+            'answer' => EligibleAnswer::parseDateAnswer([
+                'comparison' => '>',
+                'interval' => now()->diffInSeconds(now()->subYears(18)),
+            ]),
+        ]);
+
+        // Create a clinic which has not updated their eligible answers.
+        $noEligibleAnswersClinic = factory(Clinic::class)->create();
+
+        // Make the request.
+        $response = $this->json('POST', '/v1/bookings/eligibility', [
+            'postcode' => $this->faker->postcode,
+            'answers' => [
+                [
+                    'question_id' => $selectQuestion->id,
+                    'answer' => 'Male',
+                ],
+                [
+                    'question_id' => $checkboxQuestion->id,
+                    'answer' => false,
+                ],
+                [
+                    'question_id' => $dateQuestion->id,
+                    'answer' => now()->subYears(21)->toIso8601String(),
+                ],
+                [
+                    'question_id' => $textQuestion->id,
+                    'answer' => 'Result on a search engine',
+                ],
+            ],
+        ]);
+
+        $response->assertStatus(Response::HTTP_OK);
+
+        $response->assertJsonFragment(['id' => $eligibleClinic->id]);
+        $response->assertJsonMissing(['id' => $uneligibleClinic->id]);
+        $response->assertJsonMissing(['id' => $noEligibleAnswersClinic->id]);
+    }
+
+    public function test_eligible_clinics_are_ordered_by_distance()
+    {
+        $this->markTestIncomplete();
+    }
 }

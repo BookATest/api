@@ -68,7 +68,7 @@ class ClinicController extends Controller
     public function store(StoreRequest $request)
     {
         $clinic = DB::transaction(function () use ($request) {
-            $clinic = Clinic::create([
+            $clinic = new Clinic([
                 'name' => $request->name,
                 'phone' => $request->phone,
                 'email' => $request->email,

@@ -8,7 +8,7 @@ $factory->define(Clinic::class, function (Faker $faker) {
         'name' => $faker->unique()->company,
         'phone' => $faker->phoneNumber,
         'email' => $faker->companyEmail,
-        'address_line_1' => $faker->streetAddress,
+        'address_line_1' => mt_rand(1, 100) . ' ' . $faker->streetName,
         'city' => $faker->city,
         'postcode' => $faker->postcode,
         'directions' => $faker->sentence,

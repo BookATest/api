@@ -58,25 +58,30 @@ class Clinic extends Model
      */
     public function isEligible(array $answers): bool
     {
-        foreach ($answers as $answer) {
-            $eligibleAnswer = $this->eligibleAnswers()
-                ->with('question')
-                ->where('question_id', $answer['question_id'])
-                ->firstOrFail();
+        if (!$this->hasEligibleAnswers()) {
+            return false;
+        }
 
-            switch ($eligibleAnswer->question->type) {
+        foreach ($answers as $answer) {
+            $question = Question::findOrFail($answer['question_id']);
+
+            $eligibleAnswer = $this->eligibleAnswers()
+                ->where('question_id', $question->id)
+                ->first();
+
+            switch ($question->type) {
                 case Question::SELECT:
-                    if (!$this->selectIsEligible($answer, $eligibleAnswer->answer)) {
+                    if (!$this->selectIsEligible($answer['answer'], $eligibleAnswer)) {
                         return false;
                     }
                     continue;
                 case Question::DATE:
-                    if (!$this->dateIsEligible($answer, $eligibleAnswer->answer)) {
+                    if (!$this->dateIsEligible($answer['answer'], $eligibleAnswer)) {
                         return false;
                     }
                     continue;
                 case Question::CHECKBOX:
-                    if (!$this->checkboxIsEligible($answer, $eligibleAnswer->answer)) {
+                    if (!$this->checkboxIsEligible($answer['answer'], $eligibleAnswer)) {
                         return false;
                     }
                     continue;
@@ -124,11 +129,11 @@ class Clinic extends Model
     }
 
     /**
-     * @param string $answer
+     * @param bool $answer
      * @param \App\Models\EligibleAnswer $eligibleAnswer
      * @return bool
      */
-    protected function checkboxIsEligible(string $answer, EligibleAnswer $eligibleAnswer): bool
+    protected function checkboxIsEligible(bool $answer, EligibleAnswer $eligibleAnswer): bool
     {
         return $answer === $eligibleAnswer->answer;
     }
