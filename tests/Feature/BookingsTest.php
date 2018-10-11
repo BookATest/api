@@ -300,4 +300,9 @@ class BookingsTest extends TestCase
     /*
      * Check eligibility.
      */
+
+    public function test_guest_can_check_eligibility()
+    {
+        $this->markTestIncomplete();
+    }
 }

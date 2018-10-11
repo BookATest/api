@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\Mutators\ClinicMutators;
 use App\Models\Relationships\ClinicRelationships;
+use App\Support\Coordinate;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Clinic extends Model
@@ -35,5 +36,17 @@ class Clinic extends Model
         return $nonTextQuestionsExist
             ? $this->eligibleAnswers()->current()->exists()
             : true;
+    }
+
+    /**
+     * @param \App\Support\Coordinate $coordinate
+     * @return \App\Models\Clinic
+     */
+    public function setCoordinate(Coordinate $coordinate): self
+    {
+        $this->lat = $coordinate->getLatitude();
+        $this->lon = $coordinate->getLongitude();
+
+        return $this;
     }
 }

@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers\V1;
 
+use App\Contracts\Geocoder;
 use App\Events\EndpointHit;
 use App\Http\Requests\Clinic\{DestroyRequest, IndexRequest, ShowRequest, StoreRequest, UpdateRequest};
 use App\Http\Resources\ClinicResource;
 use App\Http\Responses\ResourceDeletedResponse;
 use App\Models\Clinic;
 use App\Http\Controllers\Controller;
+use App\Support\Postcode;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
 use Spatie\QueryBuilder\Filter;
@@ -16,11 +18,20 @@ use Spatie\QueryBuilder\QueryBuilder;
 class ClinicController extends Controller
 {
     /**
-     * ClinicController constructor.
+     * @var \App\Contracts\Geocoder
      */
-    public function __construct()
+    protected $geocoder;
+
+    /**
+     * ClinicController constructor.
+     *
+     * @param \App\Contracts\Geocoder $geocoder
+     */
+    public function __construct(Geocoder $geocoder)
     {
         $this->middleware('auth:api')->except('index', 'show');
+
+        $this->geocoder = $geocoder;
     }
 
     /**
@@ -57,7 +68,7 @@ class ClinicController extends Controller
     public function store(StoreRequest $request)
     {
         $clinic = DB::transaction(function () use ($request) {
-            return Clinic::create([
+            $clinic = Clinic::create([
                 'name' => $request->name,
                 'phone' => $request->phone,
                 'email' => $request->email,
@@ -65,11 +76,18 @@ class ClinicController extends Controller
                 'address_line_2' => $request->address_line_2,
                 'address_line_3' => $request->address_line_3,
                 'city' => $request->city,
-                'postcode' => $request->postcode,
+                'postcode' => strtoupper($request->postcode),
                 'directions' => $request->directions,
                 'appointment_duration' => $request->appointment_duration,
                 'appointment_booking_threshold' => $request->appointment_booking_threshold,
             ]);
+
+            $coordinate = $this->geocoder->geocode(
+                new Postcode($request->postcode)
+            );
+            $clinic->setCoordinate($coordinate)->save();
+
+            return $clinic;
         });
 
         event(EndpointHit::onCreate($request, "Created clinic [{$clinic->id}]"));
@@ -109,11 +127,16 @@ class ClinicController extends Controller
                 'address_line_2' => $request->address_line_2,
                 'address_line_3' => $request->address_line_3,
                 'city' => $request->city,
-                'postcode' => $request->postcode,
+                'postcode' => strtoupper($request->postcode),
                 'directions' => $request->directions,
                 // TODO: 'appointment_duration' => $request->appointment_duration,
                 'appointment_booking_threshold' => $request->appointment_booking_threshold,
             ]);
+
+            $coordinate = $this->geocoder->geocode(
+                new Postcode($request->postcode)
+            );
+            $clinic->setCoordinate($coordinate)->save();
 
             return $clinic;
         });

@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Clinic;
 
 use App\Rules\DurationFitsIntoDay;
+use App\Rules\Postcode;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreRequest extends FormRequest
@@ -77,6 +78,7 @@ class StoreRequest extends FormRequest
                 'string',
                 'min:1',
                 'max:255',
+                new Postcode(),
             ],
             'directions' => [
                 'required',

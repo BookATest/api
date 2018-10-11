@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Clinic;
 
+use App\Rules\Postcode;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateRequest extends FormRequest
@@ -76,6 +77,7 @@ class UpdateRequest extends FormRequest
                 'string',
                 'min:1',
                 'max:255',
+                new Postcode(),
             ],
             'directions' => [
                 'required',
