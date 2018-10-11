@@ -434,7 +434,7 @@ class User extends Authenticatable
      */
     public function appointmentsThisWeek(): int
     {
-        return $this->appointments()->thisWeek()->exists();
+        return $this->appointments()->thisWeek()->count();
     }
 
     /**
@@ -442,7 +442,7 @@ class User extends Authenticatable
      */
     public function appointmentsAvailable(): int
     {
-        return $this->appointments()->thisWeek()->available()->exists();
+        return $this->appointments()->thisWeek()->available()->count();
     }
 
     /**
@@ -450,7 +450,7 @@ class User extends Authenticatable
      */
     public function appointmentsBooked(): int
     {
-        return $this->appointments()->thisWeek()->booked()->exists();
+        return $this->appointments()->thisWeek()->booked()->count();
     }
 
     /**
@@ -458,14 +458,14 @@ class User extends Authenticatable
      */
     public function attendanceRateThisWeek(): ?float
     {
-        if ($this->appointmentsThisWeek() === 0) {
-            return false;
-        }
-
         $appointmentsAttended = $this->appointments()
             ->thisWeek()
             ->where('appointments.did_not_attend', '=', false)
             ->count();
+
+        if ($appointmentsAttended === 0) {
+            return null;
+        }
 
         return ($appointmentsAttended / $this->appointmentsThisWeek()) * 100;
     }
@@ -475,10 +475,15 @@ class User extends Authenticatable
      */
     public function didNotAttendRateThisWeek(): ?float
     {
-        if ($this->appointmentsThisWeek() === 0) {
-            return false;
+        $appointmentsNotAttended = $this->appointments()
+            ->thisWeek()
+            ->where('appointments.did_not_attend', '=', true)
+            ->count();
+
+        if ($appointmentsNotAttended === 0) {
+            return null;
         }
 
-        return 100 - $this->attendanceRateThisWeek();
+        return ($appointmentsNotAttended / $this->appointmentsThisWeek()) * 100;
     }
 }

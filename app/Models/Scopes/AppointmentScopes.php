@@ -45,6 +45,9 @@ trait AppointmentScopes
      */
     public function scopeThisWeek(Builder $query): Builder
     {
-        return $query->whereBetween('appointments.start_at', [today()->startOfWeek(), today()->endOfWeek()]);
+        return $query->whereBetween('appointments.start_at', [
+            today()->startOfWeek(),
+            today()->endOfWeek(),
+        ]);
     }
 }
