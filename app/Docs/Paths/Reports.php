@@ -39,8 +39,10 @@ EOT;
         ];
 
         $parameters = [
-            Parameter::query('user_id', Schema::string()->format(Schema::UUID))
-                ->description('Comma separated user IDs'),
+            Parameter::query('filter[id]', Schema::string())
+                ->description('Comma separated report IDs'),
+            Parameter::query('filter[clinic_id]', Schema::string())
+                ->description('Comma separated clinic IDs'),
         ];
 
         return Operation::get(...$responses)

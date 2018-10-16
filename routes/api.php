@@ -67,7 +67,7 @@ Route::prefix('v1')->namespace('V1')->group(function () {
     /*
      * Report Routes.
      */
-    // TODO
+    Route::apiResource('reports', 'ReportController');
 
     /*
      * Report Schedule Routes.

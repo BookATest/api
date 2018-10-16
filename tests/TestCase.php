@@ -52,6 +52,7 @@ abstract class TestCase extends BaseTestCase
     {
         // Remove the files directory including any files uploaded during testing.
         Storage::cloud()->deleteDirectory('files');
+        Storage::cloud()->deleteDirectory('reports');
 
         parent::tearDown();
     }
