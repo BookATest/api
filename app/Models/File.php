@@ -13,6 +13,9 @@ class File extends Model implements Responsable
     use FileMutators;
     use FileRelationships;
 
+    const MIME_PNG = 'image/png';
+    const MIME_XLSX = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
+
     /**
      * Create an HTTP response that represents the object.
      *

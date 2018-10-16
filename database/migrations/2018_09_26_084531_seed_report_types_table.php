@@ -13,10 +13,7 @@ class SeedReportTypesTable extends MigrationSeeder
      */
     public function up()
     {
-        $this->addRecord(ReportType::COUNT_APPOINTMENTS_AVAILABLE);
-        $this->addRecord(ReportType::COUNT_APPOINTMENTS_BOOKED);
-        $this->addRecord(ReportType::COUNT_DID_NOT_ATTEND);
-        $this->addRecord(ReportType::COUNT_TESTING_TYPES);
+        $this->addRecord(ReportType::GENERAL_EXPORT);
     }
 
     /**

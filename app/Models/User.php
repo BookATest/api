@@ -423,7 +423,7 @@ class User extends Authenticatable
         $content = Storage::disk('local')->get('placeholders/profile-picture.png');
 
         return response()->make($content, Response::HTTP_OK, [
-            'Content-Type' => 'image/png',
+            'Content-Type' => File::MIME_PNG,
             'Content-Disposition' => "inline; filename=\"profile-picture.png\"",
         ]);
     }

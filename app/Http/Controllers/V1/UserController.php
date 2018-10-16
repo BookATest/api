@@ -95,7 +95,7 @@ class UserController extends Controller
             if ($request->has('profile_picture')) {
                 $profilePicture = File::create([
                     'filename' => 'profile-picture.png',
-                    'mime_type' => 'image/png',
+                    'mime_type' => File::MIME_PNG,
                 ]);
                 $user->profilePictureFile()->associate($profilePicture);
                 $user->save();
@@ -190,7 +190,7 @@ class UserController extends Controller
             if ($request->has('profile_picture')) {
                 $profilePicture = File::create([
                     'filename' => 'profile-picture.png',
-                    'mime_type' => 'image/png',
+                    'mime_type' => File::MIME_PNG,
                 ]);
                 $user->profilePictureFile()->associate($profilePicture);
                 $user->save();

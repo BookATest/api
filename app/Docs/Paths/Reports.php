@@ -70,9 +70,8 @@ EOT;
         ];
 
         $requestBody = Requests::json(Schema::object()
-            ->required('user_id', 'type', 'start_at', 'end_at')
+            ->required('type', 'start_at', 'end_at')
             ->properties(
-                Schema::string('user_id')->format(Schema::UUID),
                 Schema::string('clinic_id')->format(Schema::UUID),
                 Schema::string('type'),
                 Schema::string('start_at')->format(Schema::DATE),

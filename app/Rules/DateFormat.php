@@ -7,14 +7,6 @@ use Illuminate\Support\Carbon;
 class DateFormat
 {
     /**
-     * DateFormat constructor.
-     */
-    protected function __construct()
-    {
-        //
-    }
-
-    /**
      * @param string $format
      * @return string
      */
@@ -29,5 +21,13 @@ class DateFormat
     public static function iso8601(): string
     {
         return static::format(Carbon::ATOM);
+    }
+
+    /**
+     * @return string
+     */
+    public static function date(): string
+    {
+        return static::format('Y-m-d');
     }
 }

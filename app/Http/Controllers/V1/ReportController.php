@@ -3,11 +3,16 @@
 namespace App\Http\Controllers\V1;
 
 use App\Events\EndpointHit;
-use App\Http\Requests\Report\{IndexRequest};
+use App\Http\Requests\Report\{IndexRequest, StoreRequest};
 use App\Http\Resources\ReportResource;
+use App\Models\File;
 use App\Models\Report;
+use App\Models\ReportType;
+use App\ReportGenerators\ReportGeneratorFactory;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\DB;
 use Spatie\QueryBuilder\Filter;
 use Spatie\QueryBuilder\QueryBuilder;
 
@@ -57,12 +62,39 @@ class ReportController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param \App\Http\Requests\Report\StoreRequest $request
+     * @return \App\Http\Resources\ReportResource
      */
-    public function store(Request $request)
+    public function store(StoreRequest $request)
     {
-        //
+        $report = DB::transaction(function () use ($request) {
+            // Create the file.
+            $file = File::create([
+                'filename' => "{$request->type}_{$request->start_at}-{$request->end_at}.xlsx",
+                'mime_type' => File::MIME_XLSX,
+            ]);
+
+            // Create the report model.
+            $report = Report::create([
+                'user_id' => $request->user()->id,
+                'file_id' => $file->id,
+                'clinic_id' => $request->clinic_id,
+                'report_type_id' => ReportType::findByName($request->type)->id,
+                'start_at' => Carbon::createFromFormat('Y-m-d', $request->start_at),
+                'end_at' => Carbon::createFromFormat('Y-m-d', $request->end_at),
+            ]);
+
+            // Generate the report.
+            $file->upload(
+                ReportGeneratorFactory::for($report)->generate()
+            );
+
+            return $report;
+        });
+
+        event(EndpointHit::onCreate($request, "Created report [$report->id]"));
+
+        return new ReportResource($report);
     }
 
     /**

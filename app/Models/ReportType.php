@@ -10,17 +10,14 @@ class ReportType extends Model
     use ReportTypeMutators;
     use ReportTypeRelationships;
 
-    const COUNT_APPOINTMENTS_AVAILABLE = 'count_appointments_available';
-    const COUNT_APPOINTMENTS_BOOKED = 'count_appointments_booked';
-    const COUNT_DID_NOT_ATTEND = 'count_did_not_attend';
-    const COUNT_TESTING_TYPES = 'count_testing_types';
+    const GENERAL_EXPORT = 'general_export';
 
     /**
      * @param string $name
-     * @return string
+     * @return \App\Models\ReportType
      */
-    public static function getIdFor(string $name): string
+    public static function findByName(string $name): self
     {
-        return static::query()->where('name', $name)->firstOrFail()->id;
+        return static::query()->where('name', $name)->firstOrFail();
     }
 }

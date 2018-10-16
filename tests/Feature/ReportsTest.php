@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Models\Clinic;
 use App\Models\File;
 use App\Models\Report;
+use App\Models\ReportType;
 use App\Models\User;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Storage;
@@ -13,6 +14,10 @@ use Tests\TestCase;
 
 class ReportsTest extends TestCase
 {
+    /*
+     * List them.
+     */
+
     public function test_guest_cannot_list_them()
     {
         $response = $this->json('GET', '/v1/reports');
@@ -49,5 +54,45 @@ class ReportsTest extends TestCase
             'created_at' => $report->created_at->toIso8601String(),
             'updated_at' => $report->updated_at->toIso8601String(),
         ]);
+    }
+
+    /*
+     * Create one.
+     */
+
+    public function test_guest_cannot_create_one()
+    {
+        $response = $this->json('POST', '/v1/reports');
+
+        $response->assertStatus(Response::HTTP_UNAUTHORIZED);
+    }
+
+    public function test_cw_can_create_one()
+    {
+        Storage::fake();
+
+        $clinic = factory(Clinic::class)->create();
+        $user = factory(User::class)->create()->makeCommunityWorker($clinic);
+        $reportType = ReportType::findByName(ReportType::GENERAL_EXPORT);
+
+        Passport::actingAs($user);
+        $response = $this->json('POST', '/v1/reports', [
+            'clinic_id' => null,
+            'type' => $reportType->name,
+            'start_at' => today()->startOfWeek()->toDateString(),
+            'end_at' => today()->endOfWeek()->toDateString(),
+        ]);
+
+        $response->assertStatus(Response::HTTP_CREATED);
+        $response->assertJsonFragment([
+            'user_id' => $user->id,
+            'clinic_id' => null,
+            'type' => $reportType->name,
+            'start_at' => today()->startOfWeek()->toDateString(),
+            'end_at' => today()->endOfWeek()->toDateString(),
+        ]);
+
+        $file = Report::query()->firstOrFail()->file;
+        Storage::cloud()->assertExists($file->path());
     }
 }
