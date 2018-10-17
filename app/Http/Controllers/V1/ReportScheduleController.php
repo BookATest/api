@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\V1;
 
 use App\Events\EndpointHit;
-use App\Http\Requests\ReportSchedule\{IndexRequest, StoreRequest};
+use App\Http\Requests\ReportSchedule\{IndexRequest, ShowRequest, StoreRequest};
 use App\Http\Resources\ReportScheduleResource;
 use App\Models\ReportSchedule;
 use App\Models\ReportType;
@@ -75,12 +75,15 @@ class ReportScheduleController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\ReportSchedule  $reportSchedule
-     * @return \Illuminate\Http\Response
+     * @param \App\Http\Requests\ReportSchedule\ShowRequest $request
+     * @param  \App\Models\ReportSchedule $reportSchedule
+     * @return \App\Http\Resources\ReportScheduleResource
      */
-    public function show(ReportSchedule $reportSchedule)
+    public function show(ShowRequest $request, ReportSchedule $reportSchedule)
     {
-        //
+        event(EndpointHit::onRead($request, "Viewed report schedule [$reportSchedule->id]"));
+
+        return new ReportScheduleResource($reportSchedule);
     }
 
     /**
