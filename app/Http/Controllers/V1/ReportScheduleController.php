@@ -87,18 +87,6 @@ class ReportScheduleController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\ReportSchedule  $reportSchedule
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, ReportSchedule $reportSchedule)
-    {
-        //
-    }
-
-    /**
      * Remove the specified resource from storage.
      *
      * @param  \App\Models\ReportSchedule  $reportSchedule

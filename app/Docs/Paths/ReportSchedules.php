@@ -121,45 +121,6 @@ EOT;
     /**
      * @return \GoldSpecDigital\ObjectOrientedOAS\Objects\Operation
      */
-    public static function update(): Operation
-    {
-        $responses = [
-            Responses::http200(
-                MediaType::json(ReportScheduleResource::show())
-            ),
-        ];
-        $parameters = [
-            Parameter::path('report_schedule', Schema::string()->format(Schema::UUID))
-                ->description('The report schedule ID')
-                ->required(),
-        ];
-        $requestBody = Requests::json(
-            Schema::object()
-                ->required('report_type', 'repeat_type')
-                ->properties(
-                    Schema::string('clinic_id')->format(Schema::UUID),
-                    Schema::string('report_type')->enum('general_export'),
-                    Schema::string('repeat_type')->enum('weekly', 'monthly')
-                )
-        );
-
-        $description = <<<EOT
-**Permission:** `Community Worker`
-- Delete their own report schedule
-EOT;
-
-        return Operation::put(...$responses)
-            ->parameters(...$parameters)
-            ->requestBody($requestBody)
-            ->summary('Update a specific report schedule')
-            ->description($description)
-            ->operationId('report-schedules.update')
-            ->tags(Tags::reportSchedules()->name);
-    }
-
-    /**
-     * @return \GoldSpecDigital\ObjectOrientedOAS\Objects\Operation
-     */
     public static function destroy(): Operation
     {
         $description = <<<EOT

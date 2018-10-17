@@ -75,7 +75,8 @@ Route::prefix('v1')->namespace('V1')->group(function () {
     /*
      * Report Schedule Routes.
      */
-    Route::apiResource('report-schedules', 'ReportScheduleController');
+    Route::apiResource('report-schedules', 'ReportScheduleController')
+        ->only('index', 'store', 'show', 'destroy');
 
     /*
      * Service User Routes.

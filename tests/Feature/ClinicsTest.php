@@ -255,6 +255,8 @@ class ClinicsTest extends TestCase
             'appointment_booking_threshold' => 120,
         ]);
 
+        $clinic->refresh();
+
         $response->assertStatus(Response::HTTP_OK);
         $response->assertJsonFragment([
             [

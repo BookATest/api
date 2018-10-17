@@ -116,7 +116,7 @@ class OpenApi
             PathItem::create('/reports/{report}', Reports::show(), Reports::destroy()),
             PathItem::create('/reports/{report}/download', Reports::download()),
             PathItem::create('/report-schedules', ReportSchedules::index(), ReportSchedules::store()),
-            PathItem::create('/report-schedules/{report_schedule}', ReportSchedules::show(), ReportSchedules::update(), ReportSchedules::destroy()),
+            PathItem::create('/report-schedules/{report_schedule}', ReportSchedules::show(), ReportSchedules::destroy()),
             PathItem::create('/service-users', ServiceUsers::index()),
             PathItem::create('/service-users/{service_user}', ServiceUsers::show()),
             PathItem::create('/service-users/access-code', ServiceUsers::accessCode()),
