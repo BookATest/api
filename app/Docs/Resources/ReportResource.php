@@ -15,7 +15,7 @@ class ReportResource extends BaseResource
             Schema::string('id')->format(Schema::UUID),
             Schema::string('user_id')->format(Schema::UUID),
             Schema::string('clinic_id')->format(Schema::UUID)->nullable(),
-            Schema::string('type')->enum('Report Type 1', 'Report Type 2'),
+            Schema::string('type')->enum('general_export'),
             Schema::string('start_at')->format('date'),
             Schema::string('end_at')->format('date'),
             Schema::string('created_at')->format('date-time'),

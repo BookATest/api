@@ -74,9 +74,8 @@ EOT;
         $requestBody = Requests::json(Schema::object()
             ->required('user_id', 'report_type', 'repeat_type')
             ->properties(
-                Schema::string('user_id')->format(Schema::UUID),
                 Schema::string('clinic_id')->format(Schema::UUID),
-                Schema::string('report_type')->enum('Report Type 1', 'Report Type 2'),
+                Schema::string('report_type')->enum('general_export'),
                 Schema::string('repeat_type')->enum('weekly', 'monthly')
             )
         );
@@ -139,7 +138,7 @@ EOT;
                 ->required('report_type', 'repeat_type')
                 ->properties(
                     Schema::string('clinic_id')->format(Schema::UUID),
-                    Schema::string('report_type')->enum('Report Type 1', 'Report Type 2'),
+                    Schema::string('report_type')->enum('general_export'),
                     Schema::string('repeat_type')->enum('weekly', 'monthly')
                 )
         );

@@ -73,7 +73,7 @@ EOT;
             ->required('type', 'start_at', 'end_at')
             ->properties(
                 Schema::string('clinic_id')->format(Schema::UUID),
-                Schema::string('type'),
+                Schema::string('type')->enum('general_export'),
                 Schema::string('start_at')->format(Schema::DATE),
                 Schema::string('end_at')->format(Schema::DATE)
             )

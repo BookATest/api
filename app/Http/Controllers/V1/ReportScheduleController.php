@@ -3,11 +3,13 @@
 namespace App\Http\Controllers\V1;
 
 use App\Events\EndpointHit;
-use App\Http\Requests\ReportSchedule\{IndexRequest};
+use App\Http\Requests\ReportSchedule\{IndexRequest, StoreRequest};
 use App\Http\Resources\ReportScheduleResource;
 use App\Models\ReportSchedule;
+use App\Models\ReportType;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\DB;
 use Spatie\QueryBuilder\Filter;
 use Spatie\QueryBuilder\QueryBuilder;
 
@@ -51,12 +53,23 @@ class ReportScheduleController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param \App\Http\Requests\ReportSchedule\StoreRequest $request
+     * @return \App\Http\Resources\ReportScheduleResource
      */
-    public function store(Request $request)
+    public function store(StoreRequest $request)
     {
-        //
+        $reportSchedule = DB::transaction(function () use ($request) {
+            return ReportSchedule::create([
+                'user_id' => $request->user()->id,
+                'clinic_id' => $request->clinic_id,
+                'report_type_id' => ReportType::findByName($request->report_type)->id,
+                'repeat_type' => $request->repeat_type,
+            ]);
+        });
+
+        event(EndpointHit::onCreate($request, "Created report schedule [$reportSchedule->id]"));
+
+        return new ReportScheduleResource($reportSchedule);
     }
 
     /**

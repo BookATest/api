@@ -15,7 +15,7 @@ class ReportScheduleResource extends BaseResource
             Schema::string('id')->format(Schema::UUID),
             Schema::string('user_id')->format(Schema::UUID),
             Schema::string('clinic_id')->format(Schema::UUID)->nullable(),
-            Schema::string('report_type')->enum('Report Type 1', 'Report Type 2'),
+            Schema::string('report_type')->enum('general_export'),
             Schema::string('repeat_type')->enum('weekly', 'monthly'),
             Schema::string('created_at')->format('date-time'),
             Schema::string('updated_at')->format('date-time')

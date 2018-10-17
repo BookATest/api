@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Models\Clinic;
 use App\Models\ReportSchedule;
+use App\Models\ReportType;
 use App\Models\User;
 use Illuminate\Http\Response;
 use Laravel\Passport\Passport;
@@ -59,5 +60,73 @@ class ReportSchedulesTest extends TestCase
 
         $response->assertStatus(Response::HTTP_OK);
         $response->assertJsonMissing(['id' => $reportSchedule->id]);
+    }
+
+    /*
+     * Create one.
+     */
+
+    public function test_guest_cannot_create_one()
+    {
+        $response = $this->json('POST', '/v1/report-schedules');
+
+        $response->assertStatus(Response::HTTP_UNAUTHORIZED);
+    }
+
+    public function test_cw_can_create_one()
+    {
+        $clinic = factory(Clinic::class)->create();
+        $user = factory(User::class)->create()->makeCommunityWorker($clinic);
+
+        Passport::actingAs($user);
+        $response = $this->json('POST', '/v1/report-schedules', [
+            'clinic_id' => null,
+            'report_type' => ReportType::GENERAL_EXPORT,
+            'repeat_type' => ReportSchedule::WEEKLY,
+        ]);
+
+        $response->assertStatus(Response::HTTP_CREATED);
+        $response->assertJsonFragment([
+            'user_id' => $user->id,
+            'clinic_id' => null,
+            'report_type' => ReportType::GENERAL_EXPORT,
+            'repeat_type' => ReportSchedule::WEEKLY,
+        ]);
+    }
+
+    public function test_cw_can_create_one_for_their_clinic()
+    {
+        $clinic = factory(Clinic::class)->create();
+        $user = factory(User::class)->create()->makeCommunityWorker($clinic);
+
+        Passport::actingAs($user);
+        $response = $this->json('POST', '/v1/report-schedules', [
+            'clinic_id' => $clinic->id,
+            'report_type' => ReportType::GENERAL_EXPORT,
+            'repeat_type' => ReportSchedule::WEEKLY,
+        ]);
+
+        $response->assertStatus(Response::HTTP_CREATED);
+        $response->assertJsonFragment([
+            'user_id' => $user->id,
+            'clinic_id' => $clinic->id,
+            'report_type' => ReportType::GENERAL_EXPORT,
+            'repeat_type' => ReportSchedule::WEEKLY,
+        ]);
+    }
+
+    public function test_cw_cannot_create_one_for_another_clinic()
+    {
+        $clinic = factory(Clinic::class)->create();
+        $user = factory(User::class)->create()->makeCommunityWorker($clinic);
+
+        Passport::actingAs($user);
+        $response = $this->json('POST', '/v1/report-schedules', [
+            'clinic_id' => factory(Clinic::class)->create()->id,
+            'report_type' => ReportType::GENERAL_EXPORT,
+            'repeat_type' => ReportSchedule::WEEKLY,
+        ]);
+
+        $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
     }
 }
