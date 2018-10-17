@@ -13,7 +13,7 @@ class RunCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'schedule:run';
+    protected $signature = 'schedule:loop';
 
     /**
      * The console command description.
@@ -30,6 +30,9 @@ class RunCommand extends Command
     public function handle()
     {
         while (true) {
+            $time = now()->toDateTimeString();
+            $this->line("Running scheduler [$time]");
+
             $this->call('schedule:run');
 
             sleep(static::ONE_MINUTE);
