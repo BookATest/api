@@ -1,0 +1,19 @@
+version: "3"
+
+services:
+  api:
+    ports:
+      - "${APP_PORT}:80"
+  mysql:
+    ports:
+      - "${DB_PORT}:3306"
+
+  mysql-testing:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: "${DB_ROOT_PASS}"
+      MYSQL_DATABASE: "${DB_NAME}_testing"
+      MYSQL_USER: "${DB_USER}"
+      MYSQL_PASSWORD: "${DB_PASS}"
+    networks:
+      - app-net
