@@ -13,7 +13,19 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::resource('/docs', 'DocsController')
+// Authentication Routes.
+Route::get('login', 'Auth\LoginController@showLoginForm')->name('login');
+Route::post('login', 'Auth\LoginController@login');
+Route::post('logout', 'Auth\LoginController@logout')->name('logout');
+
+// Password Reset Routes.
+Route::get('password/reset', 'Auth\ForgotPasswordController@showLinkRequestForm')->name('password.request');
+Route::post('password/email', 'Auth\ForgotPasswordController@sendResetLinkEmail')->name('password.email');
+Route::get('password/reset/{token}', 'Auth\ResetPasswordController@showResetForm')->name('password.reset');
+Route::post('password/reset', 'Auth\ResetPasswordController@reset');
+
+// API Docs Routes.
+Route::resource('docs', 'DocsController')
     ->only('index');
-Route::get('/docs/openapi.json', 'DocsController@openapi')
+Route::get('docs/openapi.json', 'DocsController@openapi')
     ->name('docs.openapi');

@@ -69,6 +69,8 @@ Route::prefix('v1')->namespace('V1')->group(function () {
      */
     Route::apiResource('reports', 'ReportController')
         ->only('index', 'store', 'show', 'destroy');
+    Route::get('reports/{report}/download', 'Report\\DownloadController')
+        ->name('reports.download');
 
     /*
      * Report Schedule Routes.

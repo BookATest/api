@@ -7,6 +7,7 @@ use App\Models\File;
 use App\Models\Report;
 use App\Models\ReportType;
 use App\Models\User;
+use App\ReportGenerators\ReportGeneratorFactory;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Storage;
 use Laravel\Passport\Passport;
@@ -227,5 +228,56 @@ class ReportsTest extends TestCase
         $response->assertStatus(Response::HTTP_OK);
         $this->assertDatabaseMissing($report->getTable(), ['id' => $report->id]);
         $this->assertDatabaseMissing($file->getTable(), ['id' => $file->id]);
+    }
+
+    /*
+     * Download one.
+     */
+
+    public function test_guest_cannot_download_one()
+    {
+        $report = factory(Report::class)->create();
+
+        $response = $this->get("/v1/reports/$report->id/download");
+
+        $response->assertStatus(Response::HTTP_FOUND);
+    }
+
+    public function test_cw_cannot_download_someone_elses()
+    {
+        $clinic = factory(Clinic::class)->create();
+        $user = factory(User::class)->create()->makeCommunityWorker($clinic);
+
+        $report = factory(Report::class)->create();
+
+        Passport::actingAs($user);
+        $response = $this->get("/v1/reports/$report->id/download");
+
+        $response->assertStatus(Response::HTTP_FORBIDDEN);
+    }
+
+    public function test_cw_can_download_their_own()
+    {
+        $clinic = factory(Clinic::class)->create();
+        $user = factory(User::class)->create()->makeCommunityWorker($clinic);
+
+        $file = factory(File::class)->create([
+            'filename' => "dummy_report_type_2018-01-01-2018-12-31.xlsx",
+            'mime_type' => File::MIME_XLSX,
+        ]);
+        $report = factory(Report::class)->create([
+            'user_id' => $user->id,
+            'clinic_id' => $clinic->id,
+            'file_id' => $file->id,
+        ]);
+        $reportContents = ReportGeneratorFactory::for($report)->generate();
+        $report->file->upload($reportContents);
+
+        Passport::actingAs($user);
+        $response = $this->get("/v1/reports/$report->id/download");
+
+        $response->assertStatus(Response::HTTP_OK);
+        $response->assertHeader('Content-Type', File::MIME_XLSX);
+        $this->assertEquals($reportContents, $response->getContent());
     }
 }
