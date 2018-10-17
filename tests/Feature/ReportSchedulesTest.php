@@ -2,12 +2,62 @@
 
 namespace Tests\Feature;
 
+use App\Models\Clinic;
+use App\Models\ReportSchedule;
+use App\Models\User;
+use Illuminate\Http\Response;
+use Laravel\Passport\Passport;
 use Tests\TestCase;
 
 class ReportSchedulesTest extends TestCase
 {
-    public function test_placeholder()
+    /*
+     * List them.
+     */
+
+    public function test_guest_cannot_list_them()
     {
-        $this->markTestIncomplete('Need to figure out reports needed first');
+        $response = $this->json('GET', '/v1/report-schedules');
+
+        $response->assertStatus(Response::HTTP_UNAUTHORIZED);
+    }
+
+    public function test_cw_can_list_their_own()
+    {
+        $clinic = factory(Clinic::class)->create();
+        $user = factory(User::class)->create()->makeCommunityWorker($clinic);
+
+        $reportSchedule = factory(ReportSchedule::class)->create([
+            'user_id' => $user->id,
+            'clinic_id' => $clinic->id,
+        ]);
+
+        Passport::actingAs($user);
+        $response = $this->json('GET', '/v1/report-schedules');
+
+        $response->assertStatus(Response::HTTP_OK);
+        $response->assertJsonFragment([
+            'id' => $reportSchedule->id,
+            'user_id' => $reportSchedule->user_id,
+            'clinic_id' => $reportSchedule->clinic_id,
+            'report_type' => $reportSchedule->reportType->name,
+            'repeat_type' => $reportSchedule->repeat_type,
+            'created_at' => $reportSchedule->created_at->toIso8601String(),
+            'updated_at' => $reportSchedule->updated_at->toIso8601String(),
+        ]);
+    }
+
+    public function test_cw_cannot_list_someone_elses()
+    {
+        $clinic = factory(Clinic::class)->create();
+        $user = factory(User::class)->create()->makeCommunityWorker($clinic);
+
+        $reportSchedule = factory(ReportSchedule::class)->create();
+
+        Passport::actingAs($user);
+        $response = $this->json('GET', '/v1/report-schedules');
+
+        $response->assertStatus(Response::HTTP_OK);
+        $response->assertJsonMissing(['id' => $reportSchedule->id]);
     }
 }
