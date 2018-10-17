@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\Mutators\ClinicMutators;
 use App\Models\Relationships\ClinicRelationships;
 use App\Support\Coordinate;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
 use InvalidArgumentException;
@@ -25,6 +26,26 @@ class Clinic extends Model
         'updated_at' => 'datetime',
         'deleted_at' => 'datetime',
     ];
+
+    /**
+     * Called just before the model is deleted.
+     */
+    protected function onDeleting()
+    {
+        // Cancel all booked appointments in the future.
+        $this->appointments()
+            ->booked()
+            ->where('start_at', '>', now())
+            ->chunk(200, function (Collection $appointments) {
+                $appointments->each->cancel();
+            });
+
+        // Delete all appointment schedules.
+        $this->appointmentSchedules()->get()->each->delete();
+
+        // Delete all unbooked appointments.
+        $this->appointments()->available()->get()->each->delete();
+    }
 
     /**
      * @return bool

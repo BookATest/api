@@ -86,6 +86,8 @@ class AppointmentSchedule extends Model
         $this->appointments()
             ->available()
             ->where('appointments.start_at', '>=', $date)
+            ->get()
+            ->each
             ->delete();
 
         $this->delete();

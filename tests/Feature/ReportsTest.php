@@ -197,4 +197,35 @@ class ReportsTest extends TestCase
             'updated_at' => $report->updated_at->toIso8601String(),
         ]);
     }
+
+    /*
+     * Delete one.
+     */
+
+    public function test_guest_cannot_delete_one()
+    {
+        $report = factory(Report::class)->create();
+
+        $response = $this->json('DELETE', "/v1/reports/$report->id");
+
+        $response->assertStatus(Response::HTTP_UNAUTHORIZED);
+    }
+
+    public function test_cw_can_delete_their_own()
+    {
+        $clinic = factory(Clinic::class)->create();
+        $user = factory(User::class)->create()->makeCommunityWorker($clinic);
+        $report = factory(Report::class)->create([
+            'user_id' => $user->id,
+            'clinic_id' => $clinic->id,
+        ]);
+        $file = $report->file;
+
+        Passport::actingAs($user);
+        $response = $this->json('DELETE', "/v1/reports/$report->id");
+
+        $response->assertStatus(Response::HTTP_OK);
+        $this->assertDatabaseMissing($report->getTable(), ['id' => $report->id]);
+        $this->assertDatabaseMissing($file->getTable(), ['id' => $file->id]);
+    }
 }

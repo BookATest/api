@@ -58,11 +58,23 @@ class User extends Authenticatable
     {
         parent::boot();
 
-        static::creating(function ($model) {
+        static::creating(function (self $model) {
             if (empty($model->{$model->getKeyName()})) {
                 $model->{$model->getKeyName()} = uuid();
             }
         });
+
+        static::deleting(function (self $model) {
+            $model->onDeleting();
+        });
+    }
+
+    /**
+     * Called just before the model is deleted.
+     */
+    protected function onDeleting()
+    {
+        //
     }
 
     /**

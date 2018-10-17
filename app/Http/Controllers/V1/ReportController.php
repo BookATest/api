@@ -3,8 +3,9 @@
 namespace App\Http\Controllers\V1;
 
 use App\Events\EndpointHit;
-use App\Http\Requests\Report\{IndexRequest, ShowRequest, StoreRequest};
+use App\Http\Requests\Report\{DestroyRequest, IndexRequest, ShowRequest, StoreRequest};
 use App\Http\Resources\ReportResource;
+use App\Http\Responses\ResourceDeletedResponse;
 use App\Models\File;
 use App\Models\Report;
 use App\Models\ReportType;
@@ -112,25 +113,22 @@ class ReportController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Report  $report
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Report $report)
-    {
-        //
-    }
-
-    /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Report  $report
-     * @return \Illuminate\Http\Response
+     * @param \App\Http\Requests\Report\DestroyRequest $request
+     * @param  \App\Models\Report $report
+     * @return \App\Http\Responses\ResourceDeletedResponse
      */
-    public function destroy(Report $report)
+    public function destroy(DestroyRequest $request, Report $report)
     {
-        //
+        $reportId = $report->id;
+
+        DB::transaction(function () use ($report) {
+            $report->delete();
+        });
+
+        event(EndpointHit::onDelete($request, "Deleted report [$reportId]"));
+
+        return new ResourceDeletedResponse(Report::class);
     }
 }

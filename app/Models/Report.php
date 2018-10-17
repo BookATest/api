@@ -21,4 +21,14 @@ class Report extends Model
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
     ];
+
+    /**
+     * Called just before the model is deleted.
+     *
+     * @param \App\Models\Model $report
+     */
+    protected function onDeleted(Model $report)
+    {
+        $report->file->delete();
+    }
 }

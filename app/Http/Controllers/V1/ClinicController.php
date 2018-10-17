@@ -158,21 +158,6 @@ class ClinicController extends Controller
         $clinicId = $clinic->id;
 
         DB::transaction(function () use ($clinic) {
-            // Cancel all booked appointments in the future.
-            $clinic->appointments()
-                ->booked()
-                ->where('start_at', '>', now())
-                ->chunk(200, function (Collection $appointments) {
-                    $appointments->each->cancel();
-                });
-
-            // Delete all appointment schedules.
-            $clinic->appointmentSchedules()->delete();
-
-            // Delete all unbooked appointments.
-            $clinic->appointments()->available()->delete();
-
-            // Soft delete the clinic.
             $clinic->delete();
         });
 
