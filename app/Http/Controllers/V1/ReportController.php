@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\V1;
 
 use App\Events\EndpointHit;
-use App\Http\Requests\Report\{IndexRequest, StoreRequest};
+use App\Http\Requests\Report\{IndexRequest, ShowRequest, StoreRequest};
 use App\Http\Resources\ReportResource;
 use App\Models\File;
 use App\Models\Report;
@@ -100,12 +100,15 @@ class ReportController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Report  $report
-     * @return \Illuminate\Http\Response
+     * @param \App\Http\Requests\Report\ShowRequest $request
+     * @param  \App\Models\Report $report
+     * @return \App\Http\Resources\ReportResource
      */
-    public function show(Report $report)
+    public function show(ShowRequest $request, Report $report)
     {
-        //
+        event(EndpointHit::onRead($request, "Viewed report [$report->id]"));
+
+        return new ReportResource($report);
     }
 
     /**

@@ -95,4 +95,106 @@ class ReportsTest extends TestCase
         $file = Report::query()->firstOrFail()->file;
         Storage::cloud()->assertExists($file->path());
     }
+
+    /*
+     * Read one.
+     */
+
+    public function test_guest_cannot_read_one()
+    {
+        $report = factory(Report::class)->create();
+
+        $response = $this->json('GET', "/v1/reports/$report->id");
+
+        $response->assertStatus(Response::HTTP_UNAUTHORIZED);
+    }
+
+    public function test_cw_can_view_own_report()
+    {
+        $clinic = factory(Clinic::class)->create();
+        $user = factory(User::class)->create()->makeCommunityWorker($clinic);
+        $report = factory(Report::class)->create([
+            'user_id' => $user->id,
+            'clinic_id' => $clinic->id,
+        ]);
+
+        Passport::actingAs($user);
+        $response = $this->json('GET', "/v1/reports/$report->id");
+
+        $response->assertStatus(Response::HTTP_OK);
+        $response->assertJsonFragment([
+            'id' => $report->id,
+            'user_id' => $user->id,
+            'clinic_id' => $clinic->id,
+            'type' => $report->reportType->name,
+            'start_at' => $report->start_at->toDateString(),
+            'end_at' => $report->end_at->toDateString(),
+            'created_at' => $report->created_at->toIso8601String(),
+            'updated_at' => $report->updated_at->toIso8601String(),
+        ]);
+    }
+
+    public function test_cw_cannot_view_another_cw_report()
+    {
+        $clinic = factory(Clinic::class)->create();
+        $user = factory(User::class)->create()->makeCommunityWorker($clinic);
+        $report = factory(Report::class)->create([
+            'clinic_id' => $clinic->id,
+        ]);
+
+        Passport::actingAs($user);
+        $response = $this->json('GET', "/v1/reports/$report->id");
+
+        $response->assertStatus(Response::HTTP_FORBIDDEN);
+    }
+
+    public function test_cw_can_view_their_global_report()
+    {
+        $clinic = factory(Clinic::class)->create();
+        $user = factory(User::class)->create()->makeCommunityWorker($clinic);
+        $report = factory(Report::class)->create([
+            'user_id' => $user->id,
+            'clinic_id' => null,
+        ]);
+
+        Passport::actingAs($user);
+        $response = $this->json('GET', "/v1/reports/$report->id");
+
+        $response->assertStatus(Response::HTTP_OK);
+        $response->assertJsonFragment([
+            'id' => $report->id,
+            'user_id' => $user->id,
+            'clinic_id' => null,
+            'type' => $report->reportType->name,
+            'start_at' => $report->start_at->toDateString(),
+            'end_at' => $report->end_at->toDateString(),
+            'created_at' => $report->created_at->toIso8601String(),
+            'updated_at' => $report->updated_at->toIso8601String(),
+        ]);
+    }
+
+    public function test_oa_can_view_global_report()
+    {
+        $clinic = factory(Clinic::class)->create();
+        $user = factory(User::class)->create()->makeOrganisationAdmin($clinic);
+        $report = factory(Report::class)->create([
+            'user_id' => $user->id,
+            'clinic_id' => null,
+        ]);
+
+        Passport::actingAs($user);
+        $response = $this->json('GET', "/v1/reports/$report->id");
+
+        $response->assertStatus(Response::HTTP_OK);
+        $response->assertJsonFragment([
+            'id' => $report->id,
+            'user_id' => $user->id,
+            'clinic_id' => null,
+            'type' => $report->reportType->name,
+            'start_at' => $report->start_at->toDateString(),
+            'end_at' => $report->end_at->toDateString(),
+            'created_at' => $report->created_at->toIso8601String(),
+            'updated_at' => $report->updated_at->toIso8601String(),
+        ]);
+    }
 }

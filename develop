@@ -41,9 +41,9 @@ if [ $# -gt 0  ]; then
             -w /var/www/html \
             api \
             composer "$@"
-    # If "test" is used, run unit tests.
+    # If "phpunit" is used, run unit tests.
     # Pass-through any arguments to PHPUnit.
-    elif [ "$1" == "test" ]; then
+    elif [ "$1" == "phpunit" ]; then
         shift 1
         ${COMPOSE} run --rm ${TTY} \
             -w /var/www/html \
