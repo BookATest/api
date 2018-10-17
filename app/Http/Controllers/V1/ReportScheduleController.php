@@ -3,8 +3,9 @@
 namespace App\Http\Controllers\V1;
 
 use App\Events\EndpointHit;
-use App\Http\Requests\ReportSchedule\{IndexRequest, ShowRequest, StoreRequest};
+use App\Http\Requests\ReportSchedule\{DestroyRequest, IndexRequest, ShowRequest, StoreRequest};
 use App\Http\Resources\ReportScheduleResource;
+use App\Http\Responses\ResourceDeletedResponse;
 use App\Models\ReportSchedule;
 use App\Models\ReportType;
 use Illuminate\Http\Request;
@@ -89,11 +90,20 @@ class ReportScheduleController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\ReportSchedule  $reportSchedule
-     * @return \Illuminate\Http\Response
+     * @param \App\Http\Requests\ReportSchedule\DestroyRequest $request
+     * @param  \App\Models\ReportSchedule $reportSchedule
+     * @return \App\Http\Responses\ResourceDeletedResponse
      */
-    public function destroy(ReportSchedule $reportSchedule)
+    public function destroy(DestroyRequest $request, ReportSchedule $reportSchedule)
     {
-        //
+        $reportScheduleId = $reportSchedule->id;
+
+        DB::transaction(function () use ($reportSchedule) {
+            $reportSchedule->delete();
+        });
+
+        event(EndpointHit::onDelete($request, "Deleted report schedule [$reportScheduleId]"));
+
+        return new ResourceDeletedResponse(ReportSchedule::class);
     }
 }
