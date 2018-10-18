@@ -87,6 +87,8 @@ Route::prefix('v1')->namespace('V1')->group(function () {
         ->only('store', 'show');
     Route::apiResource('service-users', 'ServiceUserController')
         ->only('index', 'show');
+    Route::apiResource('service-users.appointments', 'ServiceUser\\AppointmentController')
+        ->only('index');
 
     /*
      * Setting Routes.

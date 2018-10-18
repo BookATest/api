@@ -3,6 +3,7 @@
 namespace App\Docs\Paths;
 
 use App\Docs\Requests;
+use App\Docs\Resources\AppointmentResource;
 use App\Docs\Resources\ServiceUserResource;
 use App\Docs\Responses;
 use App\Docs\Tags;
@@ -145,5 +146,48 @@ class ServiceUsers
             ->description('**Permission:** `Open`')
             ->operationId('service-users.token.show')
             ->tags(Tags::serviceUsers()->name);
+    }
+
+    /**
+     * @return \GoldSpecDigital\ObjectOrientedOAS\Objects\Operation
+     */
+    public static function appointments(): Operation
+    {
+        $description = <<<EOT
+**Permission:** `Service User`
+* View all their appointments
+EOT;
+
+        $responses = [
+            Responses::http200(
+                MediaType::json(AppointmentResource::list())
+            ),
+        ];
+        $parameters = [
+            Parameter::path('service_user', Schema::string()->format(Schema::UUID))
+                ->description('The service user ID')
+                ->required(),
+            Parameter::query('service_user_token',  Schema::string())
+                ->description('The short lived service user token')
+                ->required(),
+            Parameter::query('filter[id]', Schema::string())
+                ->description('Comma separated appointment IDs'),
+            Parameter::query('filter[user_id]', Schema::string())
+                ->description('Comma separated user IDs'),
+            Parameter::query('filter[clinic_id]', Schema::string())
+                ->description('Comma separated clinic IDs'),
+            Parameter::query('filter[available]', Schema::boolean())
+                ->description('If only available appointments should be returned. If the user is not authenticated, then they can only see appointments which are available'),
+            Parameter::query('sort', Schema::string()->default('-created_at'))
+                ->description('The field to sort the results by [`created_at`]')
+        ];
+
+        return Operation::get(...$responses)
+            ->security([])
+            ->parameters(...$parameters)
+            ->summary('List all appointments for the service user')
+            ->description($description)
+            ->operationId('service-users.appointments.index')
+            ->tags(Tags::appointments()->name, Tags::serviceUsers()->name);
     }
 }
