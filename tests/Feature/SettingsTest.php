@@ -24,8 +24,6 @@ class SettingsTest extends TestCase
             'data' => [
                 'default_appointment_booking_threshold' => Setting::getValue('default_appointment_booking_threshold'),
                 'default_appointment_duration' => Setting::getValue('default_appointment_duration'),
-                'default_notification_message' => Setting::getValue('default_notification_message'),
-                'default_notification_subject' => Setting::getValue('default_notification_subject'),
                 'language' => (array)Setting::getValue('language'),
                 'logo_file_id' => Setting::getValue('logo_file_id'),
                 'name' => Setting::getValue('name'),
@@ -76,8 +74,6 @@ class SettingsTest extends TestCase
         $response = $this->json('PUT', '/v1/settings', [
             'default_appointment_booking_threshold' => 100,
             'default_appointment_duration' => 10,
-            'default_notification_message' => 'Lorem ipsum dolar sit amet.',
-            'default_notification_subject' => 'Test Subject',
             'language' => [
                 'booking_questions_help_text' => 'Test 1',
                 'booking_notification_help_text' => 'Test 2',
@@ -96,8 +92,6 @@ class SettingsTest extends TestCase
             'data' => [
                 'default_appointment_booking_threshold' => 100,
                 'default_appointment_duration' => 10,
-                'default_notification_message' => 'Lorem ipsum dolar sit amet.',
-                'default_notification_subject' => 'Test Subject',
                 'language' => [
                     'booking_questions_help_text' => 'Test 1',
                     'booking_notification_help_text' => 'Test 2',

@@ -41,15 +41,6 @@ class UpdateRequest extends FormRequest
                 'min:1',
                 'max:1440',
             ],
-            'default_notification_message' => [
-                'required',
-                'string',
-            ],
-            'default_notification_subject' => [
-                'required',
-                'string',
-                'max:255',
-            ],
             'language' => [
                 'required',
                 'array',

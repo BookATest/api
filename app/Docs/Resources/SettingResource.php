@@ -14,8 +14,6 @@ class SettingResource extends BaseResource
         return Schema::object()->properties(
             Schema::integer('default_appointment_booking_threshold'),
             Schema::integer('default_appointment_duration'),
-            Schema::string('default_notification_message'),
-            Schema::string('default_notification_subject'),
             Schema::object('language')->properties(
                 Schema::string('booking_questions_help_text'),
                 Schema::string('booking_notification_help_text'),

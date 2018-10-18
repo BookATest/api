@@ -46,12 +46,6 @@ class SettingController extends Controller
             Setting::findOrFail('default_appointment_duration')
                 ->update(['value' => (int)$request->default_appointment_duration]);
 
-            Setting::findOrFail('default_notification_message')
-                ->update(['value' => (string)$request->default_notification_message]);
-
-            Setting::findOrFail('default_notification_subject')
-                ->update(['value' => (string)$request->default_notification_subject]);
-
             Setting::findOrFail('language')->update(['value' => [
                 'booking_questions_help_text' => (string)$request->language['booking_questions_help_text'],
                 'booking_notification_help_text' => (string)$request->language['booking_notification_help_text'],
