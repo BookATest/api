@@ -91,6 +91,7 @@ class BookingsTest extends TestCase
         $response->assertJsonMissing([
             'service_user_id' => null,
             'booked_at' => null,
+            'consented_at' => null,
         ]);
         $this->assertDatabaseHas('service_users', [
             'id' => $appointment->service_user_id,

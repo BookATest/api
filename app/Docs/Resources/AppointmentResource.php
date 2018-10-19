@@ -19,6 +19,7 @@ class AppointmentResource extends BaseResource
             Schema::string('service_user_id')->format(Schema::UUID),
             Schema::string('start_at')->format('date-time'),
             Schema::string('booked_at')->format('date-time'),
+            Schema::string('consented_at')->format('date-time'),
             Schema::boolean('did_not_attend'),
             Schema::string('created_at')->format('date-time'),
             Schema::string('updated_at')->format('date-time')

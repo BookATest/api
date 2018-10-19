@@ -82,6 +82,7 @@ class StatsTest extends TestCase
             'start_at' => today()->addDay()->addHours(2),
             'service_user_id' => factory(ServiceUser::class)->create()->id,
             'booked_at' => now(),
+            'consented_at' => now(),
         ]);
 
         factory(Appointment::class)->create([
@@ -89,6 +90,7 @@ class StatsTest extends TestCase
             'start_at' => today()->addDay()->addHours(3),
             'service_user_id' => factory(ServiceUser::class)->create()->id,
             'booked_at' => now(),
+            'consented_at' => now(),
         ]);
 
         factory(Appointment::class)->create([
@@ -96,6 +98,7 @@ class StatsTest extends TestCase
             'start_at' => today()->addDay()->addHours(4),
             'service_user_id' => factory(ServiceUser::class)->create()->id,
             'booked_at' => now(),
+            'consented_at' => now(),
             'did_not_attend' => true,
         ]);
 
@@ -153,6 +156,7 @@ class StatsTest extends TestCase
             'start_at' => today()->addDay()->addHours(2),
             'service_user_id' => factory(ServiceUser::class)->create()->id,
             'booked_at' => now(),
+            'consented_at' => now(),
         ]);
 
         factory(Appointment::class)->create([
@@ -161,6 +165,7 @@ class StatsTest extends TestCase
             'start_at' => today()->addDay()->addHours(3),
             'service_user_id' => factory(ServiceUser::class)->create()->id,
             'booked_at' => now(),
+            'consented_at' => now(),
         ]);
 
         factory(Appointment::class)->create([
@@ -169,6 +174,7 @@ class StatsTest extends TestCase
             'start_at' => today()->addDay()->addHours(4),
             'service_user_id' => factory(ServiceUser::class)->create()->id,
             'booked_at' => now(),
+            'consented_at' => now(),
             'did_not_attend' => true,
         ]);
 

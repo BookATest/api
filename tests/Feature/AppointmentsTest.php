@@ -27,6 +27,7 @@ class AppointmentsTest extends TestCase
         $bookedAppointment = factory(Appointment::class)->create([
             'service_user_id' => $serviceUser->id,
             'booked_at' => now(),
+            'consented_at' => now(),
         ]);
 
         $response = $this->json('GET', '/v1/appointments');
@@ -44,6 +45,7 @@ class AppointmentsTest extends TestCase
                 'service_user_id' => $availableAppointment->service_user_id,
                 'start_at' => $availableAppointment->start_at->toIso8601String(),
                 'booked_at' => optional($availableAppointment->booked_at)->toIso8601String(),
+                'consented_at' => optional($availableAppointment->consented_at)->toIso8601String(),
                 'did_not_attend' => $availableAppointment->did_not_attend,
                 'created_at' => $availableAppointment->created_at->toIso8601String(),
                 'updated_at' => $availableAppointment->updated_at->toIso8601String(),
@@ -61,6 +63,7 @@ class AppointmentsTest extends TestCase
         $bookedAppointment = factory(Appointment::class)->create([
             'service_user_id' => $serviceUser->id,
             'booked_at' => now(),
+            'consented_at' => now(),
         ]);
 
         Passport::actingAs($user);
@@ -79,6 +82,7 @@ class AppointmentsTest extends TestCase
                 'service_user_id' => $availableAppointment->service_user_id,
                 'start_at' => $availableAppointment->start_at->toIso8601String(),
                 'booked_at' => null,
+                'consented_at' => null,
                 'did_not_attend' => $availableAppointment->did_not_attend,
                 'created_at' => $availableAppointment->created_at->toIso8601String(),
                 'updated_at' => $availableAppointment->updated_at->toIso8601String(),
@@ -93,6 +97,7 @@ class AppointmentsTest extends TestCase
                 'service_user_id' => $bookedAppointment->service_user_id,
                 'start_at' => $bookedAppointment->start_at->toIso8601String(),
                 'booked_at' => $bookedAppointment->booked_at->toIso8601String(),
+                'consented_at' => $bookedAppointment->consented_at->toIso8601String(),
                 'did_not_attend' => $bookedAppointment->did_not_attend,
                 'created_at' => $bookedAppointment->created_at->toIso8601String(),
                 'updated_at' => $bookedAppointment->updated_at->toIso8601String(),
@@ -134,6 +139,7 @@ class AppointmentsTest extends TestCase
                 'service_user_id' => $usersAppointment->service_user_id,
                 'start_at' => $usersAppointment->start_at->toIso8601String(),
                 'booked_at' => null,
+                'consented_at' => null,
                 'did_not_attend' => $usersAppointment->did_not_attend,
                 'created_at' => $usersAppointment->created_at->toIso8601String(),
                 'updated_at' => $usersAppointment->updated_at->toIso8601String(),
@@ -165,6 +171,7 @@ class AppointmentsTest extends TestCase
                 'service_user_id' => $clinicsAppointment->service_user_id,
                 'start_at' => $clinicsAppointment->start_at->toIso8601String(),
                 'booked_at' => null,
+                'consented_at' => null,
                 'did_not_attend' => $clinicsAppointment->did_not_attend,
                 'created_at' => $clinicsAppointment->created_at->toIso8601String(),
                 'updated_at' => $clinicsAppointment->updated_at->toIso8601String(),
@@ -180,10 +187,12 @@ class AppointmentsTest extends TestCase
         $serviceUsersAppointment = factory(Appointment::class)->create([
             'service_user_id' => factory(ServiceUser::class)->create()->id,
             'booked_at' => now(),
+            'consented_at' => now(),
         ]);
         $otherAppointment = factory(Appointment::class)->create([
             'service_user_id' => factory(ServiceUser::class)->create()->id,
             'booked_at' => now(),
+            'consented_at' => now(),
         ]);
 
         Passport::actingAs($user);
@@ -203,6 +212,7 @@ class AppointmentsTest extends TestCase
                 'service_user_id' => $serviceUsersAppointment->service_user_id,
                 'start_at' => $serviceUsersAppointment->start_at->toIso8601String(),
                 'booked_at' => $serviceUsersAppointment->booked_at->toIso8601String(),
+                'consented_at' => $serviceUsersAppointment->consented_at->toIso8601String(),
                 'did_not_attend' => $serviceUsersAppointment->did_not_attend,
                 'created_at' => $serviceUsersAppointment->created_at->toIso8601String(),
                 'updated_at' => $serviceUsersAppointment->updated_at->toIso8601String(),
@@ -219,6 +229,7 @@ class AppointmentsTest extends TestCase
         $bookedAppointment = factory(Appointment::class)->create([
             'service_user_id' => factory(ServiceUser::class)->create()->id,
             'booked_at' => now(),
+            'consented_at' => now(),
         ]);
 
         Passport::actingAs($user);
@@ -237,6 +248,7 @@ class AppointmentsTest extends TestCase
                 'service_user_id' => $availableAppointment->service_user_id,
                 'start_at' => $availableAppointment->start_at->toIso8601String(),
                 'booked_at' => null,
+                'consented_at' => null,
                 'did_not_attend' => $availableAppointment->did_not_attend,
                 'created_at' => $availableAppointment->created_at->toIso8601String(),
                 'updated_at' => $availableAppointment->updated_at->toIso8601String(),
@@ -342,6 +354,7 @@ class AppointmentsTest extends TestCase
             'service_user_id' => null,
             'start_at' => $startAt->toIso8601String(),
             'booked_at' => null,
+            'consented_at' => null,
             'did_not_attend' => null,
         ]);
     }
@@ -368,6 +381,7 @@ class AppointmentsTest extends TestCase
             'service_user_id' => null,
             'start_at' => $startAt->toIso8601String(),
             'booked_at' => null,
+            'consented_at' => null,
             'did_not_attend' => null,
         ]);
         $this->assertDatabaseHas('appointment_schedules', [
@@ -406,6 +420,7 @@ class AppointmentsTest extends TestCase
         $appointment = factory(Appointment::class)->create([
             'service_user_id' => $serviceUser->id,
             'booked_at' => now(),
+            'consented_at' => now(),
         ]);
 
         $response = $this->json('GET', "/v1/appointments/{$appointment->id}");
@@ -429,6 +444,7 @@ class AppointmentsTest extends TestCase
                 'service_user_id' => $appointment->service_user_id,
                 'start_at' => $appointment->start_at->toIso8601String(),
                 'booked_at' => null,
+                'consented_at' => null,
                 'did_not_attend' => $appointment->did_not_attend,
                 'created_at' => $appointment->created_at->toIso8601String(),
                 'updated_at' => $appointment->updated_at->toIso8601String(),
@@ -501,6 +517,7 @@ class AppointmentsTest extends TestCase
             'clinic_id' => $clinic->id,
             'service_user_id' => factory(ServiceUser::class)->create()->id,
             'booked_at' => now(),
+            'consented_at' => now(),
         ]);
 
         Passport::actingAs($user);
@@ -520,6 +537,7 @@ class AppointmentsTest extends TestCase
                 'service_user_id' => $appointment->service_user_id,
                 'start_at' => $appointment->start_at->toIso8601String(),
                 'booked_at' => $appointment->booked_at->toIso8601String(),
+                'consented_at' => $appointment->consented_at->toIso8601String(),
                 'did_not_attend' => true,
                 'created_at' => $appointment->created_at->toIso8601String(),
                 'updated_at' => $appointment->updated_at->toIso8601String(),
@@ -538,6 +556,7 @@ class AppointmentsTest extends TestCase
             'clinic_id' => $clinic->id,
             'service_user_id' => factory(ServiceUser::class)->create()->id,
             'booked_at' => now(),
+            'consented_at' => now(),
         ]);
 
         Passport::actingAs($user);
@@ -638,6 +657,7 @@ class AppointmentsTest extends TestCase
         $appointment = factory(Appointment::class)->create([
             'service_user_id' => factory(ServiceUser::class)->create()->id,
             'booked_at' => now(),
+            'consented_at' => now(),
         ]);
 
         $response = $this->json('PUT', "/v1/appointments/{$appointment->id}/cancel", [
@@ -653,6 +673,7 @@ class AppointmentsTest extends TestCase
         $appointment = factory(Appointment::class)->create([
             'service_user_id' => $serviceUser->id,
             'booked_at' => now(),
+            'consented_at' => now(),
         ]);
 
         $response = $this->json('PUT', "/v1/appointments/{$appointment->id}/cancel", [
@@ -671,6 +692,7 @@ class AppointmentsTest extends TestCase
                 'service_user_id' => null,
                 'start_at' => $appointment->start_at->toIso8601String(),
                 'booked_at' => null,
+                'consented_at' => null,
                 'did_not_attend' => $appointment->did_not_attend,
                 'created_at' => $appointment->created_at->toIso8601String(),
                 'updated_at' => $appointment->updated_at->toIso8601String(),
@@ -702,6 +724,7 @@ class AppointmentsTest extends TestCase
             'clinic_id' => factory(Clinic::class)->create()->id,
             'service_user_id' => factory(ServiceUser::class)->create()->id,
             'booked_at' => now(),
+            'consented_at' => now(),
         ]);
 
         Passport::actingAs($user);
@@ -719,6 +742,7 @@ class AppointmentsTest extends TestCase
             'clinic_id' => $clinic->id,
             'service_user_id' => factory(ServiceUser::class)->create()->id,
             'booked_at' => now(),
+            'consented_at' => now(),
         ]);
 
         Passport::actingAs($user);
@@ -729,6 +753,7 @@ class AppointmentsTest extends TestCase
             'id' => $appointment->id,
             'service_user_id' => null,
             'booked_at' => null,
+            'consented_at' => null,
         ]);
     }
 
@@ -743,6 +768,7 @@ class AppointmentsTest extends TestCase
             'clinic_id' => $clinic->id,
             'service_user_id' => factory(ServiceUser::class)->create()->id,
             'booked_at' => now(),
+            'consented_at' => now(),
         ]);
 
         Passport::actingAs($user);
@@ -848,6 +874,7 @@ class AppointmentsTest extends TestCase
         $appointment = $appointments->first();
         $appointment->service_user_id = $serviceUser->id;
         $appointment->booked_at = now();
+        $appointment->consented_at = $appointment->booked_at;
         $appointment->save();
 
         Passport::actingAs($user);

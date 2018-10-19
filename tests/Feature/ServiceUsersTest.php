@@ -157,6 +157,7 @@ class ServiceUsersTest extends TestCase
             'service_user_id' => $serviceUser->id,
             'start_at' => $appointment->start_at->toIso8601String(),
             'booked_at' => $appointment->booked_at->toIso8601String(),
+            'consented_at' => $appointment->consented_at->toIso8601String(),
             'did_not_attend' => $appointment->did_not_attend,
             'created_at' => $appointment->created_at->toIso8601String(),
             'updated_at' => $appointment->updated_at->toIso8601String(),

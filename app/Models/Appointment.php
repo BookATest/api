@@ -23,6 +23,7 @@ class Appointment extends Model
         'did_not_attend' => 'boolean',
         'start_at' => 'datetime',
         'booked_at' => 'datetime',
+        'consented_at' => 'datetime',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
     ];
@@ -47,6 +48,7 @@ class Appointment extends Model
         $this->update([
             'service_user_id' => $serviceUser->id,
             'booked_at' => $bookedAt,
+            'consented_at' => $bookedAt,
         ]);
 
         return $this;
@@ -60,6 +62,7 @@ class Appointment extends Model
         $this->update([
             'service_user_id' => null,
             'booked_at' => null,
+            'consented_at' => null,
         ]);
 
         return $this;

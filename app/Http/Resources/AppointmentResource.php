@@ -22,6 +22,7 @@ class AppointmentResource extends JsonResource
             'service_user_id' => $this->service_user_id,
             'start_at' => $this->start_at->toIso8601String(),
             'booked_at' => optional($this->booked_at)->toIso8601String(),
+            'consented_at' => optional($this->consented_at)->toIso8601String(),
             'did_not_attend' => $this->did_not_attend,
             'created_at' => $this->created_at->toIso8601String(),
             'updated_at' => $this->updated_at->toIso8601String(),
