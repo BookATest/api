@@ -4,7 +4,7 @@ namespace App\Console\Commands\Schedule;
 
 use Illuminate\Console\Command;
 
-class RunCommand extends Command
+class LoopCommand extends Command
 {
     const ONE_MINUTE = 60;
 
