@@ -26,6 +26,8 @@ Route::prefix('v1')->namespace('V1')->group(function () {
      * Appointment Routes.
      */
     Route::apiResource('appointments', 'AppointmentController');
+    Route::get('appointments.ics', 'Appointment\\IcsController')
+        ->name('appointments.index.ics');
     Route::put('appointments/{appointment}/cancel', 'Appointment\\CancelController')
         ->name('appointments.cancel');
     Route::delete('appointments/{appointment}/schedule', 'Appointment\\ScheduleController@destroy')

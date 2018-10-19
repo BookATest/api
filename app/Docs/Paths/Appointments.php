@@ -289,9 +289,6 @@ EOT;
     {
         $description = <<<EOT
 **Permission:** `Open`
-* View all available appointments
-
-**Permission:** `Community Worker`
 * View all appointments
 EOT;
 

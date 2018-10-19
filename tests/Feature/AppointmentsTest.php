@@ -245,6 +245,33 @@ class AppointmentsTest extends TestCase
     }
 
     /*
+     * Steam ICS feed.
+     */
+
+    public function test_guest_cannot_stream_ics_feed()
+    {
+        $response = $this->json('GET', '/v1/appointments.ics');
+
+        $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
+    }
+
+    public function test_cw_can_stream_ics_feed()
+    {
+        /** @var \App\Models\Clinic $clinic */
+        $clinic = factory(Clinic::class)->create();
+
+        /** @var \App\Models\User $user */
+        $user = factory(User::class)->create()->makeCommunityWorker($clinic);
+
+        Passport::actingAs($user);
+        $query = http_build_query(['calendar_feed_token' => $user->calendar_feed_token]);
+        $response = $this->json('GET', "/v1/appointments.ics?$query");
+
+        $response->assertStatus(Response::HTTP_OK);
+        $response->assertHeader('Content-Type', 'text/calendar');
+    }
+
+    /*
      * Create one.
      */
 
