@@ -49,7 +49,9 @@ class AppointmentController extends Controller
                 Filter::exact('user_id'),
                 Filter::exact('clinic_id'),
                 Filter::exact('service_user_id'),
-                Filter::scope('available')
+                Filter::scope('available'),
+                Filter::scope('starts_after'),
+                Filter::scope('starts_before')
             )
             ->defaultSort('-created_at')
             ->allowedSorts('created_at')

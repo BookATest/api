@@ -3,6 +3,7 @@
 namespace App\Models\Scopes;
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Carbon;
 
 trait AppointmentScopes
 {
@@ -49,5 +50,33 @@ trait AppointmentScopes
             today()->startOfWeek(),
             today()->endOfWeek(),
         ]);
+    }
+
+    /**
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param $dateTime
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeStartsAfter(Builder $query, $dateTime)
+    {
+        $dateTime = $dateTime instanceof Carbon
+            ? $dateTime
+            : Carbon::createFromFormat(Carbon::ATOM, $dateTime);
+
+        return $query->where('appointments.start_at', '>=', $dateTime);
+    }
+
+    /**
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param $dateTime
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeStartsBefore(Builder $query, $dateTime)
+    {
+        $dateTime = $dateTime instanceof Carbon
+            ? $dateTime
+            : Carbon::createFromFormat(Carbon::ATOM, $dateTime);
+
+        return $query->where('appointments.start_at', '<=', $dateTime);
     }
 }

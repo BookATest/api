@@ -51,6 +51,10 @@ EOT;
                 ->description('Comma separated service user IDs'),
             Parameter::query('filter[available]', Schema::boolean())
                 ->description('If only available appointments should be returned. If the user is not authenticated, then they can only see appointments which are available'),
+            Parameter::query('filter[starts_after]', Schema::string()->format(Schema::DATE_TIME))
+                ->description('The date and time to get appointments starting after'),
+            Parameter::query('filter[starts_before]', Schema::string()->format(Schema::DATE_TIME))
+                ->description('The date and time to get appointments starting before'),
             Parameter::query('sort', Schema::string()->default('-created_at'))
                 ->description('The field to sort the results by [`created_at`]')
         ];
@@ -308,6 +312,10 @@ EOT;
                 ->description('Comma separated service user IDs'),
             Parameter::query('filter[available]', Schema::boolean())
                 ->description('If only available appointments should be returned. If the user is not authenticated, then they can only see appointments which are available'),
+            Parameter::query('filter[starts_after]', Schema::string()->format(Schema::DATE_TIME))
+                ->description('The date and time to get appointments starting after'),
+            Parameter::query('filter[starts_before]', Schema::string()->format(Schema::DATE_TIME))
+                ->description('The date and time to get appointments starting before'),
             Parameter::query('calendar_feed_token', Schema::string())
                 ->description('The user\'s calendar feed token - required if the format is set to `ics`')
                 ->required(),

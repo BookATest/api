@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Appointment;
 
+use App\Rules\DateFormat;
 use Illuminate\Foundation\Http\FormRequest;
 
 class IndexRequest extends FormRequest
@@ -24,7 +25,12 @@ class IndexRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'filter.starts_after' => [
+                DateFormat::iso8601(),
+            ],
+            'filter.starts_before' => [
+                DateFormat::iso8601(),
+            ],
         ];
     }
 }

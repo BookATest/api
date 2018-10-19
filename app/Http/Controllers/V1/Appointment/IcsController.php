@@ -39,7 +39,9 @@ class IcsController extends Controller
                 Filter::exact('user_id'),
                 Filter::exact('clinic_id'),
                 Filter::exact('service_user_id'),
-                Filter::scope('available')
+                Filter::scope('available'),
+                Filter::scope('starts_after'),
+                Filter::scope('starts_before')
             );
 
         return new ICalAppointmentsResponse($appointments);

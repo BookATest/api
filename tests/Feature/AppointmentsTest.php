@@ -257,6 +257,29 @@ class AppointmentsTest extends TestCase
         $response->assertJsonMissing(['id' => $bookedAppointment->id]);
     }
 
+    public function test_cw_can_list_them_filtering_by_start_date()
+    {
+        $clinic = factory(Clinic::class)->create();
+        $user = factory(User::class)->create()->makeCommunityWorker($clinic);
+        $withinRangeAppointment = factory(Appointment::class)->create(['start_at' => today()]);
+        $beforeRangeAppointment = factory(Appointment::class)->create(['start_at' => today()->subWeek()]);
+        $afterRangeAppointment = factory(Appointment::class)->create(['start_at' => today()->addWeeks(2)]);
+
+        Passport::actingAs($user);
+        $query = http_build_query([
+            'filter[starts_after]' => today()->toIso8601String(),
+            'filter[starts_before]' => today()->addWeek()->toIso8601String(),
+        ]);
+        $response = $this->json('GET', "/v1/appointments?$query");
+
+        $withinRangeAppointment = $withinRangeAppointment->fresh();
+
+        $response->assertStatus(Response::HTTP_OK);
+        $response->assertJsonFragment(['id' => $withinRangeAppointment->id]);
+        $response->assertJsonMissing(['id' => $beforeRangeAppointment->id]);
+        $response->assertJsonMissing(['id' => $afterRangeAppointment->id]);
+    }
+
     /*
      * Steam ICS feed.
      */
