@@ -101,6 +101,7 @@ class OpenApi
     {
         return Paths::create(
             PathItem::create('/appointments', Appointments::index(), Appointments::store()),
+            PathItem::create('/appointments.ics', Appointments::indexIcs()),
             PathItem::create('/appointments/{appointment}', Appointments::show(), Appointments::update(), Appointments::destroy()),
             PathItem::create('/appointments/{appointment}/cancel', Appointments::cancel()),
             PathItem::create('/appointments/{appointment}/schedule', Appointments::destroySchedule()),

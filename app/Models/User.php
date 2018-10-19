@@ -360,6 +360,15 @@ class User extends Authenticatable
     }
 
     /**
+     * @param string $token
+     * @return \App\Models\User|null
+     */
+    public static function findByCalendarFeedToken(string $token): ?self
+    {
+        return static::where('calendar_feed_token', '=', $token)->first();
+    }
+
+    /**
      * @param \Illuminate\Database\Eloquent\Collection $updatedRoles
      * @return \Illuminate\Database\Eloquent\Collection
      */

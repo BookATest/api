@@ -13,7 +13,7 @@ $factory->define(User::class, function (Faker $faker) {
         'display_email' => rand(0, 1),
         'display_phone' => rand(0, 1),
         'include_calendar_attachment' => rand(0, 1),
-        'calendar_feed_token' => str_random(10),
+        'calendar_feed_token' => User::generateCalendarFeedToken(),
         'remember_token' => str_random(10),
     ];
 });

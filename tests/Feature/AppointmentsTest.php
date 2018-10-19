@@ -11,6 +11,7 @@ use App\Models\ServiceUser;
 use App\Models\User;
 use Illuminate\Http\Response;
 use Laravel\Passport\Passport;
+use Tests\Support\ICal;
 use Tests\TestCase;
 
 class AppointmentsTest extends TestCase
@@ -242,6 +243,53 @@ class AppointmentsTest extends TestCase
             ],
         ]);
         $response->assertJsonMissing(['id' => $bookedAppointment->id]);
+    }
+
+    /*
+     * Steam ICS feed.
+     */
+
+    public function test_guest_cannot_stream_ics_feed()
+    {
+        $response = $this->json('GET', '/v1/appointments.ics');
+
+        $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
+    }
+
+    public function test_cw_can_stream_ics_feed()
+    {
+        /** @var \App\Models\Clinic $clinic */
+        $clinic = factory(Clinic::class)->create([
+            'appointment_duration' => 120,
+        ]);
+
+        /** @var \App\Models\User $user */
+        $user = factory(User::class)->create()->makeCommunityWorker($clinic);
+
+        /** @var \App\Models\Appointment $appointment */
+        $startAt = today()->addDay()->setTime(12, 0);
+        $appointment = factory(Appointment::class)->create([
+            'clinic_id' => $clinic->id,
+            'user_id' => $user->id,
+            'start_at' => $startAt,
+        ]);
+
+        Passport::actingAs($user);
+        $query = http_build_query(['calendar_feed_token' => $user->calendar_feed_token]);
+        $response = $this->json('GET', "/v1/appointments.ics?$query");
+
+        $response->assertStatus(Response::HTTP_OK);
+        $response->assertHeader('Content-Type', 'text/calendar; charset=UTF-8');
+
+        $iCal = new ICal($response->getContent());
+        $this->assertEquals(1, count($iCal->events()));
+
+        $event = $iCal->events()[0];
+
+        $this->assertEquals($appointment->id, $event->uid);
+        $this->assertEquals(str_replace(',', '\\,', "Appointment at {$appointment->clinic->name}"), $event->summary);
+        $this->assertEquals($startAt->toDateTimeString(), $event->dateStart);
+        $this->assertEquals($startAt->addMinutes($clinic->appointment_duration)->toDateTimeString(), $event->dateEnd);
     }
 
     /*
