@@ -4,6 +4,7 @@ namespace App\Http\Requests\User;
 
 use App\Models\Role;
 use App\Rules\Base64EncodedPng;
+use App\Rules\Base64FileSize;
 use App\Rules\CanAddRole;
 use App\Rules\Password;
 use Illuminate\Foundation\Http\FormRequest;
@@ -90,6 +91,7 @@ class StoreRequest extends FormRequest
             ],
             'profile_picture' => [
                 new Base64EncodedPng(),
+                new Base64FileSize(1),
             ],
         ];
     }

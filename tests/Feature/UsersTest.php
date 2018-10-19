@@ -226,6 +226,65 @@ class UsersTest extends TestCase
         Storage::cloud()->assertExists($file->path());
     }
 
+    public function test_ca_can_create_one_with_profile_picture_of_500KB()
+    {
+        Storage::fake('cloud');
+
+        $clinic = factory(Clinic::class)->create();
+        $user = factory(User::class)->create()->makeClinicAdmin($clinic);
+
+        Passport::actingAs($user);
+        $response = $this->json('POST', '/v1/users', [
+            'first_name' => 'John',
+            'last_name' => 'Doe',
+            'email' => 'john.doe@example.com',
+            'phone' => '07700000000',
+            'password' => 'P@55word.',
+            'display_email' => false,
+            'display_phone' => false,
+            'include_calendar_attachment' => false,
+            'roles' => [
+                [
+                    'role' => Role::COMMUNITY_WORKER,
+                    'clinic_id' => $clinic->id,
+                ]
+            ],
+            'profile_picture' => 'data:image/png;base64,' . base64_encode(Storage::disk('testing')->get('example-500KB.png')),
+        ]);
+
+        $file = File::first();
+
+        $response->assertStatus(Response::HTTP_CREATED);
+        Storage::cloud()->assertExists($file->path());
+    }
+
+    public function test_ca_cannot_create_one_with_profile_picture_of_3MB()
+    {
+        $clinic = factory(Clinic::class)->create();
+        $user = factory(User::class)->create()->makeClinicAdmin($clinic);
+
+        Passport::actingAs($user);
+        $response = $this->json('POST', '/v1/users', [
+            'first_name' => 'John',
+            'last_name' => 'Doe',
+            'email' => 'john.doe@example.com',
+            'phone' => '07700000000',
+            'password' => 'P@55word.',
+            'display_email' => false,
+            'display_phone' => false,
+            'include_calendar_attachment' => false,
+            'roles' => [
+                [
+                    'role' => Role::COMMUNITY_WORKER,
+                    'clinic_id' => $clinic->id,
+                ]
+            ],
+            'profile_picture' => 'data:image/png;base64,' . base64_encode(Storage::disk('testing')->get('example-3MB.png')),
+        ]);
+
+        $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
+    }
+
     /*
      * Read one.
      */
