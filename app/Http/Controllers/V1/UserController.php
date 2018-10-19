@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\V1;
 
 use App\Events\EndpointHit;
-use App\Exceptions\CannotRevokeRoleException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\User\{DestroyRequest, IndexRequest, ShowRequest, StoreRequest, UpdateRequest};
 use App\Http\Resources\UserResource;
@@ -13,6 +12,7 @@ use App\Models\Role;
 use App\Models\User;
 use App\Models\UserRole;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use Spatie\QueryBuilder\Filter;
 use Spatie\QueryBuilder\QueryBuilder;
@@ -123,6 +123,17 @@ class UserController extends Controller
         event(EndpointHit::onRead($request, "Viewed user [{$user->id}]"));
 
         return new UserResource($user);
+    }
+
+    /**
+     * @param \App\Http\Requests\User\ShowRequest $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function user(ShowRequest $request)
+    {
+        return $this->show($request, $request->user())
+            ->toResponse($request)
+            ->setStatusCode(Response::HTTP_OK);
     }
 
     /**

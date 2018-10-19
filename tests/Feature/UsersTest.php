@@ -347,6 +347,48 @@ class UsersTest extends TestCase
     }
 
     /*
+     * Read logged in user.
+     */
+
+    public function test_guest_cannot_read_logged_in_user()
+    {
+        $response = $this->json('GET', '/v1/users/user');
+
+        $response->assertStatus(Response::HTTP_UNAUTHORIZED);
+    }
+
+    public function test_cw_can_read_logged_in_user()
+    {
+        $clinic = factory(Clinic::class)->create();
+        $user = factory(User::class)->create()->makeCommunityWorker($clinic);
+
+        Passport::actingAs($user);
+        $response = $this->json('GET', '/v1/users/user');
+
+        $response->assertStatus(Response::HTTP_OK);
+        $response->assertJson([
+            'data' => [
+                'id' => $user->id,
+                'first_name' => $user->first_name,
+                'last_name' => $user->last_name,
+                'email' => $user->email,
+                'phone' => $user->phone,
+                'display_email' => $user->display_email,
+                'display_phone' => $user->display_phone,
+                'include_calendar_attachment' => $user->include_calendar_attachment,
+                'roles' => [
+                    [
+                        'role' => Role::communityWorker()->name,
+                        'clinic_id' => $clinic->id,
+                    ]
+                ],
+                'created_at' => $user->created_at->toIso8601String(),
+                'updated_at' => $user->updated_at->toIso8601String(),
+            ]
+        ]);
+    }
+
+    /*
      * Update one.
      */
 

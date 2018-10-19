@@ -127,6 +127,7 @@ class OpenApi
             PathItem::create('/settings', Settings::index(), Settings::update()),
             PathItem::create('/stats', Stats::index()),
             PathItem::create('/users', Users::index(), Users::store()),
+            PathItem::create('/users/user', Users::user()),
             PathItem::create('/users/{user}', Users::show(), Users::update(), Users::destroy()),
             PathItem::create('/users/{user}/profile-picture.png', Users::profilePicture()),
             PathItem::create('/users/{user}/calendar-feed-token', Users::calendarFeedToken())

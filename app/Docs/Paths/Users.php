@@ -137,6 +137,24 @@ EOT;
     /**
      * @return \GoldSpecDigital\ObjectOrientedOAS\Objects\Operation
      */
+    public static function user(): Operation
+    {
+        $responses = [
+            Responses::http200(
+                MediaType::json(UserResource::show())
+            ),
+        ];
+
+        return Operation::get(...$responses)
+            ->summary('Get the logged in user')
+            ->description('**Permission:** `Community Worker`')
+            ->operationId('users.user')
+            ->tags(Tags::users()->name);
+    }
+
+    /**
+     * @return \GoldSpecDigital\ObjectOrientedOAS\Objects\Operation
+     */
     public static function update(): Operation
     {
         $responses = [

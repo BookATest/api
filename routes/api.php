@@ -109,6 +109,8 @@ Route::prefix('v1')->namespace('V1')->group(function () {
     /*
      * User Routes.
      */
+    Route::get('users/user', 'UserController@user')
+        ->name('users.user');
     Route::apiResource('users', 'UserController');
     Route::put('users/{user}/calendar-feed-token', 'User\\CalendarFeedTokenController@update')
         ->name('users.calendar-feed-token.update');
