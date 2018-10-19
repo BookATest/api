@@ -29,9 +29,25 @@ class EligibilityRequest extends FormRequest
     {
         return [
             'postcode' => [
-                'required',
+                'required_without:location',
                 'string',
                 new Postcode(),
+            ],
+            'location' => [
+                'required_without:postcode',
+                'array',
+            ],
+            'location.lat' => [
+                'required_with:location',
+                'numeric',
+                'min:-90',
+                'max:90',
+            ],
+            'location.lon' => [
+                'required_with:location',
+                'numeric',
+                'min:-180',
+                'max:180',
             ],
             'answers' => [
                 'required',

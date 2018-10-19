@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Booking\{EligibilityRequest, StoreRequest};
 use App\Http\Resources\{AppointmentResource, ClinicResource};
 use App\Models\{Appointment, Clinic, Question, ServiceUser};
+use App\Support\Coordinate;
 use App\Support\Postcode;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Response;
@@ -95,8 +96,10 @@ class BookingController extends Controller
                 }
             });
 
-        // Get the coordinate for the postcode.
-        $coordinate = $geocoder->geocode(new Postcode($request->postcode));
+        // Get the coordinate for the location or postcode.
+        $coordinate = $request->has('location')
+            ? new Coordinate($request->input('location.lat'), $request->input('location.lon'))
+            : $geocoder->geocode(new Postcode($request->postcode));
 
         // Order the clinics by distance.
         $clinics = $clinics->sortBy(function (Clinic $clinic) use ($coordinate) {

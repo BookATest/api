@@ -417,7 +417,7 @@ class BookingsTest extends TestCase
         $response->assertJsonMissing(['id' => $noEligibleAnswersClinic->id]);
     }
 
-    public function test_eligible_clinics_are_ordered_by_distance()
+    public function test_eligible_clinics_are_ordered_by_distance_with_postcode()
     {
         $this->app->singleton(Geocoder::class, StubGeocoder::class);
 
@@ -470,9 +470,83 @@ class BookingsTest extends TestCase
         $response->assertJsonFragment(['id' => $clinic3->id]);
 
         $content = json_decode($response->getContent(), true);
-        $clinicIds = array_map(function (array $clinic) {
-            return $clinic['id'];
-        }, $content['data']);
+        $clinicIds = array_pluck($content['data'], 'id');
         $this->assertEquals([$clinic1->id, $clinic2->id, $clinic3->id], $clinicIds);
+    }
+
+    public function test_eligible_clinics_are_ordered_by_distance_with_location()
+    {
+        // Create the questions.
+        $selectQuestion = Question::createSelect('What sex are you?', 'Male', 'Female');
+
+        // Create the eligible clinics.
+        $clinic1 = factory(Clinic::class)->create();
+        $clinic1->eligibleAnswers()->create([
+            'question_id' => $selectQuestion->id,
+            'answer' => EligibleAnswer::parseSelectAnswer(['Male'], $selectQuestion),
+        ]);
+        $clinic1->lat = StubGeocoder::LATITUDE + 1;
+        $clinic1->lon = StubGeocoder::LONGITUDE + 1;
+        $clinic1->save();
+
+        $clinic2 = factory(Clinic::class)->create();
+        $clinic2->eligibleAnswers()->create([
+            'question_id' => $selectQuestion->id,
+            'answer' => EligibleAnswer::parseSelectAnswer(['Male'], $selectQuestion),
+        ]);
+        $clinic2->lat = StubGeocoder::LATITUDE + 2;
+        $clinic2->lon = StubGeocoder::LONGITUDE + 2;
+        $clinic2->save();
+
+        $clinic3 = factory(Clinic::class)->create();
+        $clinic3->eligibleAnswers()->create([
+            'question_id' => $selectQuestion->id,
+            'answer' => EligibleAnswer::parseSelectAnswer(['Male'], $selectQuestion),
+        ]);
+        $clinic3->lat = StubGeocoder::LATITUDE + 3;
+        $clinic3->lon = StubGeocoder::LONGITUDE + 3;
+        $clinic3->save();
+
+        // Make the request.
+        $response = $this->json('POST', '/v1/bookings/eligibility', [
+            'location' => [
+                'lat' => StubGeocoder::LATITUDE,
+                'lon' => StubGeocoder::LONGITUDE,
+            ],
+            'answers' => [
+                [
+                    'question_id' => $selectQuestion->id,
+                    'answer' => 'Male',
+                ],
+            ],
+        ]);
+
+        $response->assertStatus(Response::HTTP_OK);
+
+        $response->assertJsonFragment(['id' => $clinic1->id]);
+        $response->assertJsonFragment(['id' => $clinic2->id]);
+        $response->assertJsonFragment(['id' => $clinic3->id]);
+
+        $content = json_decode($response->getContent(), true);
+        $clinicIds = array_pluck($content['data'], 'id');
+        $this->assertEquals([$clinic1->id, $clinic2->id, $clinic3->id], $clinicIds);
+    }
+
+    public function test_cannot_check_eligiblity_without_postcode_or_location()
+    {
+        // Create the questions.
+        $selectQuestion = Question::createSelect('What sex are you?', 'Male', 'Female');
+
+        // Make the request.
+        $response = $this->json('POST', '/v1/bookings/eligibility', [
+            'answers' => [
+                [
+                    'question_id' => $selectQuestion->id,
+                    'answer' => 'Male',
+                ],
+            ],
+        ]);
+
+        $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
     }
 }

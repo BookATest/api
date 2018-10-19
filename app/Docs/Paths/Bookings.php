@@ -83,9 +83,15 @@ EOT;
         ];
         $requestBody = Requests::json(
             Schema::object()
-                ->required('postcode', 'answers')
+                ->required('postcode', 'location', 'answers')
                 ->properties(
                     Schema::string('postcode'),
+                    Schema::object('location')
+                        ->required('lat', 'lon')
+                        ->properties(
+                            Schema::number('lat'),
+                            Schema::number('lon')
+                        ),
                     Schema::array('answers')->items(
                         Schema::object()
                             ->required('question_id', 'answer')
@@ -104,7 +110,7 @@ EOT;
 
 This endpoint should be called at first instance to ensure the service user only attempts to book at a clinic that they are eligible for.
 
-A postcode must be provided to order the clinics by distance.
+A postcode OR a location must be provided to order the clinics by distance.
 EOT;
 
         return Operation::post(...$responses)
