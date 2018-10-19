@@ -35,8 +35,6 @@ services:
       dockerfile: Dockerfile
     volumes:
       - .:/var/www/html
-    networks:
-      - app-net
 
   mysql:
     image: mysql:5.7
