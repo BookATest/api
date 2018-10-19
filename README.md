@@ -9,49 +9,47 @@ These instructions will get you a copy of the project up and running on your loc
 
 ### Prerequisites
 
-* PHP
-* Composer
-* Vagrant
+* Docker
 
 ### Installing
 
-Start by cloning the example configuration files and configuring as needed. For more information about configuring the 
-`Homestead.yaml` file, please consult the [Laravel Docs](https://laravel.com/docs/5.6/homestead):
+Start by spinning up the docker containers using the convenience script:
 
 ```bash
-cp Homestead.yaml.example Homestead.yaml
+# Once copied, edit this file to configure as needed.
 cp .env.example .env
 
-# Installs Laravel Homestead.
-composer install --ignore-platform-reqs
+# Spin up the docker containers and detach so they run the background.
+./develop up -d
 
-# Update your hosts file (use values set in Homestead.yaml).
-sudo echo "192.168.10.11 api.bookatest.test" >> /etc/hosts
+# Install dependencies.
+./develop composer install
+./develop npm install
+
+# Compile static assets.
+./develop npm run dev
 ```
 
-You should then be able to start the VM and SSH into it:
+You should then be able to run the setup commands using the convenience script:
 
 ```bash
-vagrant up && vagrant ssh
-cd api.bookatest
-
 # Generate the application key.
-php artisan key:generate
+./develop artisan key:generate
 
 # Run the migrations and initial seeder.
-php artisan migrate --seed
+./develop artisan migrate --seed
 
 # Install the OAuth 2.0 keys.
-php artisan pasport:keys
+./develop artisan pasport:keys
 
 # Create the first Organisation Admin user (take a note of the password outputted).
-php artisan bat:create-user <first-name> <last-name> <email> <phone-number>
+./develop artisan bat:create-user <first-name> <last-name> <email> <phone-number>
 ```
 
 Ensure any API clients have been created:
 
 ```bash
-php artisan passport:client --password --name="Name of Application"
+./develop artisan passport:client --password --name="Name of Application"
 ```
 
 ## Running the tests
@@ -59,13 +57,13 @@ php artisan passport:client --password --name="Name of Application"
 To run the PHPUnit tests:
  
 ```bash
-php vendor/bin/phpunit
+./develop phpunit
 ```
 
 To run the code style tests:
 
 ```bash
-php vendor/bin/phpcs
+./develop phpcs
 ```
 
 ## Deployment

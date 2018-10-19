@@ -49,6 +49,14 @@ if [ $# -gt 0  ]; then
             -w /var/www/html \
             api \
             php vendor/bin/phpunit "$@"
+    # If "phpcs" is used, run the linter.
+    # Pass-through any arguments to code sniffer.
+    elif [ "$1" == "phpcs" ]; then
+        shift 1
+        ${COMPOSE} run --rm ${TTY} \
+            -w /var/www/html \
+            api \
+            php vendor/bin/phpcs "$@"
     # If "npm" is used, run NPM from the node container.
     elif [ "$1" == "npm"  ]; then
         shift 1
