@@ -37,8 +37,7 @@ EOT;
 
         $responses = [
             Responses::http200(
-                MediaType::json(AppointmentResource::list()),
-                MediaType::create(MediaType::TEXT_CALENDAR, Schema::string())
+                MediaType::json(AppointmentResource::list())
             ),
         ];
         $parameters = [
@@ -53,11 +52,7 @@ EOT;
             Parameter::query('filter[available]', Schema::boolean())
                 ->description('If only available appointments should be returned. If the user is not authenticated, then they can only see appointments which are available'),
             Parameter::query('sort', Schema::string()->default('-created_at'))
-                ->description('The field to sort the results by [`created_at`]'),
-            Parameter::query('format', Schema::string()->enum('json', 'ics')->default('json'))
-                ->description('The desired format for the response'),
-            Parameter::query('calendar_feed_token', Schema::string())
-                ->description('The user\'s calendar feed token - required if the format is set to `ics`'),
+                ->description('The field to sort the results by [`created_at`]')
         ];
 
         return Operation::get(...$responses)
@@ -284,6 +279,49 @@ EOT;
             ->summary('Delete a specific repeating appointment')
             ->description($description)
             ->operationId('appointments.schedule.destroy')
+            ->tags(Tags::appointments()->name);
+    }
+
+    /**
+     * @return \GoldSpecDigital\ObjectOrientedOAS\Objects\Operation
+     */
+    public static function indexIcs(): Operation
+    {
+        $description = <<<EOT
+**Permission:** `Open`
+* View all available appointments
+
+**Permission:** `Community Worker`
+* View all appointments
+EOT;
+
+        $responses = [
+            Responses::http200(
+                MediaType::create(MediaType::TEXT_CALENDAR, Schema::string())
+            ),
+        ];
+        $parameters = [
+            Parameter::query('filter[id]', Schema::string())
+                ->description('Comma separated appointment IDs'),
+            Parameter::query('filter[user_id]', Schema::string())
+                ->description('Comma separated user IDs'),
+            Parameter::query('filter[clinic_id]', Schema::string())
+                ->description('Comma separated clinic IDs'),
+            Parameter::query('filter[service_user_id]', Schema::string())
+                ->description('Comma separated service user IDs'),
+            Parameter::query('filter[available]', Schema::boolean())
+                ->description('If only available appointments should be returned. If the user is not authenticated, then they can only see appointments which are available'),
+            Parameter::query('calendar_feed_token', Schema::string())
+                ->description('The user\'s calendar feed token - required if the format is set to `ics`')
+                ->required(),
+        ];
+
+        return Operation::get(...$responses)
+            ->security([])
+            ->parameters(...$parameters)
+            ->summary('Stream all appointments as an ICS feed')
+            ->description($description)
+            ->operationId('appointments.index.ics')
             ->tags(Tags::appointments()->name);
     }
 }
