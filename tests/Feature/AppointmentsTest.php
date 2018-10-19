@@ -10,7 +10,6 @@ use App\Models\Clinic;
 use App\Models\ServiceUser;
 use App\Models\User;
 use Illuminate\Http\Response;
-use Illuminate\Support\Carbon;
 use Laravel\Passport\Passport;
 use Tests\TestCase;
 
