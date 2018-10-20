@@ -36,7 +36,7 @@ class ValidAnswer implements Rule
             return false;
         }
 
-        switch($question->type) {
+        switch ($question->type) {
             case Question::SELECT:
                 return $this->selectPasses($answer['answer'], $question);
             case Question::DATE:

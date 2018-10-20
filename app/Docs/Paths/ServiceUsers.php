@@ -167,7 +167,7 @@ EOT;
             Parameter::path('service_user', Schema::string()->format(Schema::UUID))
                 ->description('The service user ID')
                 ->required(),
-            Parameter::query('service_user_token',  Schema::string())
+            Parameter::query('service_user_token', Schema::string())
                 ->description('The short lived service user token')
                 ->required(),
             Parameter::query('filter[id]', Schema::string())

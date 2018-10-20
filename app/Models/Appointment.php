@@ -144,7 +144,8 @@ class Appointment extends Model
      * @param \Illuminate\Support\Carbon $dateTime
      * @return \App\Models\Answer
      */
-    public function createDateAnswer(Question $question, ServiceUser $serviceUser, Carbon $dateTime): Answer {
+    public function createDateAnswer(Question $question, ServiceUser $serviceUser, Carbon $dateTime): Answer
+    {
         // Validation.
         $questionType = Question::DATE;
 

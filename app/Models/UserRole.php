@@ -59,8 +59,7 @@ class UserRole extends Model
                 throw new InvalidArgumentException('The [role] key must be present');
             }
 
-            if (
-                in_array($userRole['role'], [Role::COMMUNITY_WORKER, Role::CLINIC_ADMIN]) &&
+            if (in_array($userRole['role'], [Role::COMMUNITY_WORKER, Role::CLINIC_ADMIN]) &&
                 !isset($userRole['clinic_id'])
             ) {
                 throw new InvalidArgumentException('The [clinic_id] key must be present');

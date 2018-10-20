@@ -4,7 +4,8 @@ namespace App\Http\Controllers\V1;
 
 use App\Events\EndpointHit;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\EligibleAnswer\{IndexRequest, UpdateRequest};
+use App\Http\Requests\EligibleAnswer\IndexRequest;
+use App\Http\Requests\EligibleAnswer\UpdateRequest;
 use App\Http\Resources\EligibleAnswerResource;
 use App\Models\Clinic;
 use App\Models\EligibleAnswer;

@@ -3,7 +3,8 @@
 namespace App\Http\Controllers\V1;
 
 use App\Events\EndpointHit;
-use App\Http\Requests\Audit\{IndexRequest, ShowRequest};
+use App\Http\Requests\Audit\IndexRequest;
+use App\Http\Requests\Audit\ShowRequest;
 use App\Http\Resources\AuditResource;
 use App\Models\Audit;
 use App\Http\Controllers\Controller;

@@ -3,7 +3,10 @@
 namespace App\Http\Controllers\V1;
 
 use App\Events\EndpointHit;
-use App\Http\Requests\Report\{DestroyRequest, IndexRequest, ShowRequest, StoreRequest};
+use App\Http\Requests\Report\DestroyRequest;
+use App\Http\Requests\Report\IndexRequest;
+use App\Http\Requests\Report\ShowRequest;
+use App\Http\Requests\Report\StoreRequest;
 use App\Http\Resources\ReportResource;
 use App\Http\Responses\ResourceDeletedResponse;
 use App\Models\File;
