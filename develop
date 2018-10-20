@@ -7,6 +7,7 @@ export DB_ROOT_PASS=${DB_ROOT_PASS:-secret}
 export DB_NAME=${DB_NAME:-book_a_test}
 export DB_USER=${DB_USER:-book_a_test}
 export DB_PASS=${DB_PASS:-secret}
+export CF_TEMPLATE=${CF_TEMPLATE:-cloudformation.py}
 
 # Decide which docker-compose file to use.
 COMPOSE_FILE="dev"
@@ -72,6 +73,10 @@ if [ $# -gt 0  ]; then
             -w /var/www/html \
             node \
             npm "$@"
+    # If "cf" is used, generate the cloud formation
+    # template from the troposphere container.
+    elif [ ${CI:-false} == "true" ] && [ "$1" == "cf"  ]; then
+        ${COMPOSE} run troposphere
     else
         ${COMPOSE} "$@"
     fi
