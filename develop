@@ -76,7 +76,8 @@ if [ $# -gt 0  ]; then
     # If "cf" is used, generate the cloud formation
     # template from the troposphere container.
     elif [ ${CI:-false} == "true" ] && [ "$1" == "cf"  ]; then
-        ${COMPOSE} run troposphere
+        ${COMPOSE} run troposphere > aws/cloudformation.json
+        cat aws/cloudformation.json
     else
         ${COMPOSE} "$@"
     fi
