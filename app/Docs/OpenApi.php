@@ -2,30 +2,26 @@
 
 namespace App\Docs;
 
-use App\Docs\Paths\{
-    Appointments,
-    Audits,
-    Bookings,
-    Clinics,
-    EligibleAnswers,
-    Questions,
-    Reports,
-    ReportSchedules,
-    ServiceUsers,
-    Settings,
-    Stats,
-    Users
-};
-use GoldSpecDigital\ObjectOrientedOAS\Objects\{
-    Components,
-    Contact,
-    ExternalDocs,
-    Info,
-    PathItem,
-    Paths,
-    SecurityScheme,
-    Server
-};
+use App\Docs\Paths\Appointments;
+use App\Docs\Paths\Audits;
+use App\Docs\Paths\Bookings;
+use App\Docs\Paths\Clinics;
+use App\Docs\Paths\EligibleAnswers;
+use App\Docs\Paths\Questions;
+use App\Docs\Paths\Reports;
+use App\Docs\Paths\ReportSchedules;
+use App\Docs\Paths\ServiceUsers;
+use App\Docs\Paths\Settings;
+use App\Docs\Paths\Stats;
+use App\Docs\Paths\Users;
+use GoldSpecDigital\ObjectOrientedOAS\Objects\Components;
+use GoldSpecDigital\ObjectOrientedOAS\Objects\Contact;
+use GoldSpecDigital\ObjectOrientedOAS\Objects\ExternalDocs;
+use GoldSpecDigital\ObjectOrientedOAS\Objects\Info;
+use GoldSpecDigital\ObjectOrientedOAS\Objects\PathItem;
+use GoldSpecDigital\ObjectOrientedOAS\Objects\Paths;
+use GoldSpecDigital\ObjectOrientedOAS\Objects\SecurityScheme;
+use GoldSpecDigital\ObjectOrientedOAS\Objects\Server;
 use GoldSpecDigital\ObjectOrientedOAS\OpenApi as OpenApiSpec;
 
 class OpenApi

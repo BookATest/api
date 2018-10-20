@@ -4,7 +4,11 @@ namespace App\Http\Controllers\V1;
 
 use App\Events\EndpointHit;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\User\{DestroyRequest, IndexRequest, ShowRequest, StoreRequest, UpdateRequest};
+use App\Http\Requests\User\DestroyRequest;
+use App\Http\Requests\User\IndexRequest;
+use App\Http\Requests\User\ShowRequest;
+use App\Http\Requests\User\StoreRequest;
+use App\Http\Requests\User\UpdateRequest;
 use App\Http\Resources\UserResource;
 use App\Http\Responses\ResourceDeletedResponse;
 use App\Models\File;

@@ -85,8 +85,7 @@ class Users
                         ->properties(
                             Schema::string('role'),
                             Schema::string('clinic_id')->format(Schema::UUID)
-                        )
-                    ),
+                        )),
                     Schema::string('profile_picture')
                 )
         );
@@ -192,8 +191,7 @@ EOT;
                         ->properties(
                             Schema::string('role'),
                             Schema::string('clinic_id')->format(Schema::UUID)
-                        )
-                    ),
+                        )),
                     Schema::string('profile_picture')
                 )
         );

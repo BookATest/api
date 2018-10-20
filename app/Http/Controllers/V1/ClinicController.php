@@ -4,7 +4,11 @@ namespace App\Http\Controllers\V1;
 
 use App\Contracts\Geocoder;
 use App\Events\EndpointHit;
-use App\Http\Requests\Clinic\{DestroyRequest, IndexRequest, ShowRequest, StoreRequest, UpdateRequest};
+use App\Http\Requests\Clinic\DestroyRequest;
+use App\Http\Requests\Clinic\IndexRequest;
+use App\Http\Requests\Clinic\ShowRequest;
+use App\Http\Requests\Clinic\StoreRequest;
+use App\Http\Requests\Clinic\UpdateRequest;
 use App\Http\Resources\ClinicResource;
 use App\Http\Responses\ResourceDeletedResponse;
 use App\Models\Clinic;

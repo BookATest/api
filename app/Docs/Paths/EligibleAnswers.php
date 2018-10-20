@@ -93,8 +93,7 @@ EOT;
                                 )
                         )
                 )
-            )
-        );
+            ));
 
         return Operation::put(...$responses)
             ->parameters(...$parameters)

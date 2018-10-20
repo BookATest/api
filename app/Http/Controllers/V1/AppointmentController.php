@@ -4,7 +4,11 @@ namespace App\Http\Controllers\V1;
 
 use App\Events\EndpointHit;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Appointment\{DestroyRequest, IndexRequest, ShowRequest, StoreRequest, UpdateRequest};
+use App\Http\Requests\Appointment\DestroyRequest;
+use App\Http\Requests\Appointment\IndexRequest;
+use App\Http\Requests\Appointment\ShowRequest;
+use App\Http\Requests\Appointment\StoreRequest;
+use App\Http\Requests\Appointment\UpdateRequest;
 use App\Http\Resources\AppointmentResource;
 use App\Http\Responses\ResourceDeletedResponse;
 use App\Models\Appointment;

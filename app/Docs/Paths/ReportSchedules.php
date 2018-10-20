@@ -77,8 +77,7 @@ EOT;
                 Schema::string('clinic_id')->format(Schema::UUID),
                 Schema::string('report_type')->enum('general_export'),
                 Schema::string('repeat_type')->enum('weekly', 'monthly')
-            )
-        );
+            ));
 
         return Operation::post(...$responses)
             ->requestBody($requestBody)

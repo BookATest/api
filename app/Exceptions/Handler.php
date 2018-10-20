@@ -50,8 +50,7 @@ class Handler extends ExceptionHandler
     public function render($request, Exception $exception)
     {
         // If any issues with generated file paths, then prevent a redirect.
-        if (
-            $exception instanceof ValidationException &&
+        if ($exception instanceof ValidationException &&
             Str::endsWith($request->path(), ['.ics', '.jpg', '.png'])
         ) {
             return response()->json($exception->errors(), $exception->status);

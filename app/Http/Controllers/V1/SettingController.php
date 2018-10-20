@@ -4,7 +4,8 @@ namespace App\Http\Controllers\V1;
 
 use App\Events\EndpointHit;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Setting\{IndexRequest, UpdateRequest};
+use App\Http\Requests\Setting\IndexRequest;
+use App\Http\Requests\Setting\UpdateRequest;
 use App\Models\Setting;
 use Illuminate\Support\Facades\DB;
 

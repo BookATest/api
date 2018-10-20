@@ -3,7 +3,8 @@
 namespace App\Http\Controllers\V1;
 
 use App\Events\EndpointHit;
-use App\Http\Requests\ServiceUser\{IndexRequest, ShowRequest};
+use App\Http\Requests\ServiceUser\IndexRequest;
+use App\Http\Requests\ServiceUser\ShowRequest;
 use App\Http\Resources\ServiceUserResource;
 use App\Models\ServiceUser;
 use App\Http\Controllers\Controller;

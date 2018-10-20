@@ -81,10 +81,8 @@ EOT;
                         Schema::string('question'),
                         Schema::string('type'),
                         Schema::array('options')->items(Schema::string())
-                    )
-                )
-            )
-        );
+                    ))
+            ));
 
         return Operation::post(...$responses)
             ->requestBody($requestBody)

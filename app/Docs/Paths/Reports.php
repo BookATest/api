@@ -76,8 +76,7 @@ EOT;
                 Schema::string('type')->enum('general_export'),
                 Schema::string('start_at')->format(Schema::DATE),
                 Schema::string('end_at')->format(Schema::DATE)
-            )
-        );
+            ));
 
         return Operation::post(...$responses)
             ->requestBody($requestBody)

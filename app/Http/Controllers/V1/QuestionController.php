@@ -3,7 +3,8 @@
 namespace App\Http\Controllers\V1;
 
 use App\Events\EndpointHit;
-use App\Http\Requests\Question\{IndexRequest, StoreRequest};
+use App\Http\Requests\Question\IndexRequest;
+use App\Http\Requests\Question\StoreRequest;
 use App\Http\Resources\QuestionResource;
 use App\Models\Question;
 use App\Http\Controllers\Controller;

@@ -4,7 +4,8 @@ namespace App\Http\Controllers\V1\ServiceUser;
 
 use App\Events\EndpointHit;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\ServiceUser\Token\{ShowRequest, StoreRequest};
+use App\Http\Requests\ServiceUser\Token\ShowRequest;
+use App\Http\Requests\ServiceUser\Token\StoreRequest;
 use App\Http\Resources\ServiceUserResource;
 use App\Models\ServiceUser;
 use Illuminate\Http\Response;

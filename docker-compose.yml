@@ -30,6 +30,7 @@ services:
     command: php artisan schedule:loop
 
   node:
+    image: BookATest.hiv/node
     build:
       context: ./docker/node
       dockerfile: Dockerfile

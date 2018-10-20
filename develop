@@ -57,6 +57,14 @@ if [ $# -gt 0  ]; then
             -w /var/www/html \
             api \
             php vendor/bin/phpcs "$@"
+    # If "phpcbf" is used, run the code fixer.
+    # Pass-through any arguments to code fixer.
+    elif [ "$1" == "phpcbf" ]; then
+        shift 1
+        ${COMPOSE} run --rm ${TTY} \
+            -w /var/www/html \
+            api \
+            php vendor/bin/phpcbf "$@"
     # If "npm" is used, run NPM from the node container.
     elif [ "$1" == "npm"  ]; then
         shift 1
