@@ -10,7 +10,7 @@ class ApiController extends Controller
     public function v1()
     {
         return response()->json([
-            'version' => 'v1.0.0',
+            'version' => 'v1.0.0-alpha',
             'base_path' => url('/v1'),
         ]);
     }
