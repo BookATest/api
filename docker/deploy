@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+# Push the Docker image to ECR.
+$(aws ecr get-login --no-include-email)
+docker push ${REPO_URI}:latest

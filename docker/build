@@ -14,6 +14,7 @@ cd ${TRAVIS_BUILD_DIR}/docker/api/packaged
 ./develop composer install --no-dev
 ./develop npm install
 ./develop npm run prod
+rm -rf node_modules
 
 # Get the production .env file.
 aws secretsmanager get-secret-value \
@@ -26,10 +27,6 @@ docker build \
     -t ${REPO_URI}:latest \
     -t ${REPO_URI}:${TRAVIS_COMMIT} .
 
-# Push the Docker image to ECR.
-$(aws ecr get-login --no-include-email)
-docker push ${REPO_URI}:latest
-
 # Clean up packaged directory.
 cd ${TRAVIS_BUILD_DIR}/docker/api/packaged
 PWD=$(pwd)
@@ -40,6 +37,5 @@ if [ "$PWD" == "$TRAVIS_BUILD_DIR/docker/api/packaged" ]; then
     docker run --rm \
         -w /opt \
         -v $(pwd):/opt ubuntu:16.04 bash -c "rm -rf ./* && rm -rf ./.git* && rm .env*"
-    echo "*" >> .gitignore
-    echo "!.gitignore" >> .gitignore
+    touch .gitkeep
 fi
