@@ -50,7 +50,7 @@ services:
       - app-net
 
   redis:
-    image: redis:alpine
+    image: redis:5.0-alpine
     volumes:
       - redis-data:/data
     networks:
