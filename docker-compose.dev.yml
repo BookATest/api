@@ -18,3 +18,8 @@ services:
       MYSQL_PASSWORD: "${DB_PASS}"
     networks:
       - app-net
+
+  redis:
+    image: redis:5.0-alpine
+    networks:
+      - app-net
