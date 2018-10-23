@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Routing\Middleware\ThrottleRequests;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Storage;
@@ -31,6 +32,9 @@ abstract class TestCase extends BaseTestCase
 
         // Set the log path.
         Config::set('logging.channels.single.path', storage_path('logs/testing.log'));
+
+        // Disable the API throttle middleware.
+        $this->withoutMiddleware(ThrottleRequests::class);
     }
 
     /**
