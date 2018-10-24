@@ -1,7 +1,7 @@
 # Converted from EC2InstanceSample.template located at:
 # http://aws.amazon.com/cloudformation/aws-cloudformation-templates/
 
-from troposphere import ec2, rds, Parameter, Ref, Template, GetAtt
+from troposphere import ec2, elasticache, rds, Parameter, Ref, Template, GetAtt
 
 template = Template('Create the infrastructure needed to run the Book A Test web app')
 template.add_version('2010-09-09')
@@ -61,8 +61,8 @@ database_class = template.add_parameter(
     Parameter(
         'DatabaseClass',
         Description='The database instance class',
-        Default='db.t2.micro',
         Type='String',
+        Default='db.t2.micro',
         AllowedValues=[
             "db.t2.micro",
             "db.m1.small",
@@ -85,6 +85,37 @@ database_allocated_storage = template.add_parameter(
         MinValue='5',
         MaxValue='1024',
         ConstraintDescription='Must be between 5 and 1024 GiB.'
+    )
+)
+
+redis_node_class = template.add_parameter(
+    Parameter(
+        'RedisNodeClass',
+        Description='The Redis node class',
+        Type='String',
+        Default='cache.t2.micro',
+        AllowedValues=[
+            'cache.t2.micro',
+            'cache.m1.small',
+            'cache.m1.large',
+            'cache.m1.xlarge',
+            'cache.m2.xlarge',
+            'cache.m2.2xlarge',
+            'cache.m2.4xlarge',
+            'cache.c1.xlarge'
+        ],
+        ConstraintDescription='Must select a valid Redis node type.'
+    )
+)
+
+redis_nodes_count = template.add_parameter(
+    Parameter(
+        'RedisNodesCount',
+        Description='The number of Redis nodes to have in the cluster',
+        Default='1',
+        Type='Number',
+        MinValue='1',
+        ConstraintDescription='Must be 1 or more.'
     )
 )
 
@@ -168,7 +199,7 @@ redis_security_group = template.add_resource(
 database_subnet_group = template.add_resource(
     rds.DBSubnetGroup(
         'DatabaseSubnetGroup',
-        DBSubnetGroupDescription='Subnets available for the RDS Instance',
+        DBSubnetGroupDescription='Subnets available for the RDS instance',
         SubnetIds=Ref(subnet)
     )
 )
@@ -176,6 +207,7 @@ database_subnet_group = template.add_resource(
 database = template.add_resource(
     rds.DBInstance(
         'Database',
+        DBInstanceIdentifier='database',
         DBName=Ref(database_name),
         AllocatedStorage=Ref(database_allocated_storage),
         DBInstanceClass=Ref(database_class),
@@ -183,11 +215,32 @@ database = template.add_resource(
         EngineVersion='5.7',
         MasterUsername=Ref(database_username),
         MasterUserPassword=Ref(database_password),
-        DBSubnetGroupName=Ref(database_subnet_group),
         VPCSecurityGroups=[GetAtt(database_security_group, 'GroupId')],
+        DBSubnetGroupName=Ref(database_subnet_group),
         PubliclyAccessible=False
     )
 )
 
+# Create the Redis cluster.
+redis_subnet_group = template.add_resource(
+    elasticache.SubnetGroup(
+        'RedisSubnetGroup',
+        Description='Subnets available for the Redis cluster',
+        SubnetIds=Ref(subnet)
+    )
+)
+
+redis = template.add_resource(
+    elasticache.CacheCluster(
+        'Redis',
+        ClusterName='redis',
+        Engine='redis',
+        EngineVersion='4.0',
+        CacheNodeType=Ref(redis_node_class),
+        NumCacheNodes=Ref(redis_nodes_count),
+        VpcSecurityGroupIds=[GetAtt(redis_security_group, 'GroupId')],
+        CacheSubnetGroupName=Ref(redis_subnet_group),
+    )
+)
 
 print(template.to_json())
