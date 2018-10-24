@@ -44,4 +44,34 @@ api_security_group = ec2.SecurityGroup(
 )
 template.add_resource(api_security_group)
 
+database_security_group = ec2.SecurityGroup(
+    'DatabaseSecurityGroup',
+    GroupDescription='For connecting to the MySQL instance',
+    SecurityGroupIngress=[
+        ec2.SecurityGroupRule(
+            Description='MySQL access from the API containers',
+            IpProtocol='tcp',
+            FromPort='3306',
+            ToPort='3306',
+            SourceSecurityGroupName=Ref(api_security_group)
+        )
+    ]
+)
+template.add_resource(database_security_group)
+
+redis_security_group = ec2.SecurityGroup(
+    'RedisSecurityGroup',
+    GroupDescription='For connecting to the Redis cluster',
+    SecurityGroupIngress=[
+        ec2.SecurityGroupRule(
+            Description='Redis access from the API containers',
+            IpProtocol='tcp',
+            FromPort='6379',
+            ToPort='6379',
+            SourceSecurityGroupName=Ref(api_security_group)
+        )
+    ]
+)
+template.add_resource(redis_security_group)
+
 print(template.to_json())
