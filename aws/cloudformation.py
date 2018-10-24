@@ -1,7 +1,7 @@
 # Converted from EC2InstanceSample.template located at:
 # http://aws.amazon.com/cloudformation/aws-cloudformation-templates/
 
-from troposphere import ec2, elasticache, rds, sqs, Parameter, Ref, Template, GetAtt
+from troposphere import ec2, elasticache, rds, sqs, s3, Parameter, Ref, Template, GetAtt
 
 template = Template('Create the infrastructure needed to run the Book A Test web app')
 template.add_version('2010-09-09')
@@ -147,6 +147,48 @@ sqs_notifications_queue_name = template.add_parameter(
     )
 )
 
+s3_uploads_bucket_name = template.add_parameter(
+    Parameter(
+        'S3UploadsS3BucketName',
+        Description='The uploads bucket name',
+        Default='uploads',
+        Type='String',
+        MinLength='1',
+        MaxLength='64',
+        AllowedPattern='[a-zA-Z][a-zA-Z0-9\-]*',
+        ConstraintDescription='Must begin with a letter and contain only alphanumeric characters (including '
+                              'hyphens). '
+    )
+)
+
+s3_frontend_bucket_name = template.add_parameter(
+    Parameter(
+        'S3FrontendS3BucketName',
+        Description='The frontend bucket name',
+        Default='frontend',
+        Type='String',
+        MinLength='1',
+        MaxLength='64',
+        AllowedPattern='[a-zA-Z][a-zA-Z0-9\-]*',
+        ConstraintDescription='Must begin with a letter and contain only alphanumeric characters (including '
+                              'hyphens). '
+    )
+)
+
+s3_backend_bucket_name = template.add_parameter(
+    Parameter(
+        'S3BackendS3BucketName',
+        Description='The backend bucket name',
+        Default='backend',
+        Type='String',
+        MinLength='1',
+        MaxLength='64',
+        AllowedPattern='[a-zA-Z][a-zA-Z0-9\-]*',
+        ConstraintDescription='Must begin with a letter and contain only alphanumeric characters (including '
+                              'hyphens). '
+    )
+)
+
 # ==================================================
 # Resources.
 # ==================================================
@@ -281,6 +323,31 @@ notifications_queue = template.add_resource(
     sqs.Queue(
         'NotificationsQueue',
         QueueName=Ref(sqs_notifications_queue_name)
+    )
+)
+
+# Create the S3 buckets.
+uploads_bucket = template.add_resource(
+    s3.Bucket(
+        'UploadsBucket',
+        BucketName=Ref(s3_uploads_bucket_name),
+        AccessControl='Private'
+    )
+)
+
+frontend_bucket = template.add_resource(
+    s3.Bucket(
+        'FrontendBucket',
+        BucketName=Ref(s3_frontend_bucket_name),
+        AccessControl='PublicRead'
+    )
+)
+
+backend_bucket = template.add_resource(
+    s3.Bucket(
+        'BackendBucket',
+        BucketName=Ref(s3_backend_bucket_name),
+        AccessControl='PublicRead'
     )
 )
 
