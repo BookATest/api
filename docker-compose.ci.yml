@@ -1,11 +1,1 @@
 version: "3"
-
-services:
-  troposphere:
-    image: BookATest.hiv/troposphere
-    build:
-      context: ./docker/troposphere
-      dockerfile: Dockerfile
-    volumes:
-      - ./aws:/tmp
-    command: "python ${CF_TEMPLATE}"
