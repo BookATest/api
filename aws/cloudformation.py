@@ -8,6 +8,9 @@ import troposphere.rds as rds
 import troposphere.sqs as sqs
 import troposphere.s3 as s3
 import troposphere.elasticloadbalancingv2 as elb
+import troposphere.ecs as ecs
+import troposphere.ecr as ecr
+import awacs
 
 template = Template('Create the infrastructure needed to run the Book A Test web app')
 template.add_version('2010-09-09')
@@ -364,6 +367,20 @@ load_balancer = template.add_resource(
         Scheme='internet-facing',
         SecurityGroups=[GetAtt(load_balancer_security_group, 'GroupId')],
         Subnets=Ref(subnet)
+    )
+)
+
+# Create ECS cluster.
+docker_repository = template.add_resource(
+    ecr.Repository(
+        'DockerRepository',
+        RepositoryName='api'
+    )
+)
+
+ecs_cluster = template.add_resource(
+    ecs.Cluster(
+        'ApiCluster'
     )
 )
 
