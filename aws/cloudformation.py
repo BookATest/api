@@ -1,17 +1,14 @@
 # Converted from EC2InstanceSample.template located at:
 # http://aws.amazon.com/cloudformation/aws-cloudformation-templates/
 
-from troposphere import ec2, rds, Parameter, Ref, Template
+from troposphere import ec2, rds, Parameter, Ref, Template, GetAtt
 
 template = Template('Create the infrastructure needed to run the Book A Test web app')
 template.add_version('2010-09-09')
 
+# ==================================================
 # Parameters.
-vpc_id = template.add_parameter(Parameter(
-    'VpcId',
-    Type='String',
-    Description='VPC ID of your existing Virtual Private Cloud (VPC)'
-))
+# ==================================================
 
 subnet = template.add_parameter(Parameter(
     'Subnets',
@@ -20,7 +17,7 @@ subnet = template.add_parameter(Parameter(
                 'Cloud (VPC) '
 ))
 
-db_database = template.add_parameter(
+database_name = template.add_parameter(
     Parameter(
         'DatabaseName',
         Description='The database name',
@@ -34,7 +31,7 @@ db_database = template.add_parameter(
     )
 )
 
-db_username = template.add_parameter(
+database_username = template.add_parameter(
     Parameter(
         'DatabaseUser',
         Description='The database admin username',
@@ -47,20 +44,20 @@ db_username = template.add_parameter(
     )
 )
 
-db_password = template.add_parameter(
+database_password = template.add_parameter(
     Parameter(
         'DatabasePassword',
         Description='The database admin password',
         NoEcho=True,
         Type='String',
-        MinLength='1',
+        MinLength='8',
         MaxLength='41',
         AllowedPattern='[a-zA-Z0-9]*',
         ConstraintDescription='Must only contain alphanumeric characters.'
     )
 )
 
-db_class = template.add_parameter(
+database_class = template.add_parameter(
     Parameter(
         'DatabaseClass',
         Description='The database instance class',
@@ -79,7 +76,7 @@ db_class = template.add_parameter(
     )
 )
 
-db_allocated_storage = template.add_parameter(
+database_allocated_storage = template.add_parameter(
     Parameter(
         'DatabaseAllocatedStorage',
         Description='The size of the database (GiB)',
@@ -90,6 +87,10 @@ db_allocated_storage = template.add_parameter(
         ConstraintDescription='Must be between 5 and 1024 GiB.'
     )
 )
+
+# ==================================================
+# Resources.
+# ==================================================
 
 # Create the security groups.
 load_balancer_security_group = template.add_resource(
@@ -169,6 +170,22 @@ database_subnet_group = template.add_resource(
         'DatabaseSubnetGroup',
         DBSubnetGroupDescription='Subnets available for the RDS Instance',
         SubnetIds=Ref(subnet)
+    )
+)
+
+database = template.add_resource(
+    rds.DBInstance(
+        'Database',
+        DBName=Ref(database_name),
+        AllocatedStorage=Ref(database_allocated_storage),
+        DBInstanceClass=Ref(database_class),
+        Engine='MySQL',
+        EngineVersion='5.7',
+        MasterUsername=Ref(database_username),
+        MasterUserPassword=Ref(database_password),
+        DBSubnetGroupName=Ref(database_subnet_group),
+        VPCSecurityGroups=[GetAtt(database_security_group, 'GroupId')],
+        PubliclyAccessible=False
     )
 )
 
