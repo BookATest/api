@@ -1,7 +1,13 @@
 # Converted from EC2InstanceSample.template located at:
 # http://aws.amazon.com/cloudformation/aws-cloudformation-templates/
 
-from troposphere import ec2, elasticache, rds, sqs, s3, Parameter, Ref, Template, GetAtt
+from troposphere import Parameter, Ref, Template, GetAtt
+import troposphere.ec2 as ec2
+import troposphere.elasticache as elasticache
+import troposphere.rds as rds
+import troposphere.sqs as sqs
+import troposphere.s3 as s3
+import troposphere.elasticloadbalancingv2 as elb
 
 template = Template('Create the infrastructure needed to run the Book A Test web app')
 template.add_version('2010-09-09')
@@ -307,7 +313,7 @@ redis = template.add_resource(
         CacheNodeType=Ref(redis_node_class),
         NumCacheNodes=Ref(redis_nodes_count),
         VpcSecurityGroupIds=[GetAtt(redis_security_group, 'GroupId')],
-        CacheSubnetGroupName=Ref(redis_subnet_group),
+        CacheSubnetGroupName=Ref(redis_subnet_group)
     )
 )
 
@@ -348,6 +354,16 @@ backend_bucket = template.add_resource(
         'BackendBucket',
         BucketName=Ref(s3_backend_bucket_name),
         AccessControl='PublicRead'
+    )
+)
+
+# Create the load balancer.
+load_balancer = template.add_resource(
+    elb.LoadBalancer(
+        'LoadBalancer',
+        Scheme='internet-facing',
+        SecurityGroups=[GetAtt(load_balancer_security_group, 'GroupId')],
+        Subnets=Ref(subnet)
     )
 )
 
