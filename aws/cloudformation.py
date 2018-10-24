@@ -1,7 +1,7 @@
 # Converted from EC2InstanceSample.template located at:
 # http://aws.amazon.com/cloudformation/aws-cloudformation-templates/
 
-from troposphere import ec2, elasticache, rds, Parameter, Ref, Template, GetAtt
+from troposphere import ec2, elasticache, rds, sqs, Parameter, Ref, Template, GetAtt
 
 template = Template('Create the infrastructure needed to run the Book A Test web app')
 template.add_version('2010-09-09')
@@ -13,7 +13,7 @@ template.add_version('2010-09-09')
 subnet = template.add_parameter(Parameter(
     'Subnets',
     Type='CommaDelimitedList',
-    Description='The list of SubnetIds, for at least two Availability Zones in the region in your Virtual Private '
+    Description='The list of subnet IDs, for at least two Availability Zones in the region in your Virtual Private '
                 'Cloud (VPC) '
 ))
 
@@ -119,6 +119,34 @@ redis_nodes_count = template.add_parameter(
     )
 )
 
+sqs_default_queue_name = template.add_parameter(
+    Parameter(
+        'SqsDefaultQueueName',
+        Description='The default queue name',
+        Default='default',
+        Type='String',
+        MinLength='1',
+        MaxLength='64',
+        AllowedPattern='[a-zA-Z][a-zA-Z0-9\-]*',
+        ConstraintDescription='Must begin with a letter and contain only alphanumeric characters (including '
+                              'hyphens). '
+    )
+)
+
+sqs_notifications_queue_name = template.add_parameter(
+    Parameter(
+        'SqsNotificationsQueueName',
+        Description='The notifications queue name',
+        Default='notifications',
+        Type='String',
+        MinLength='1',
+        MaxLength='64',
+        AllowedPattern='[a-zA-Z][a-zA-Z0-9\-]*',
+        ConstraintDescription='Must begin with a letter and contain only alphanumeric characters (including '
+                              'hyphens). '
+    )
+)
+
 # ==================================================
 # Resources.
 # ==================================================
@@ -207,7 +235,6 @@ database_subnet_group = template.add_resource(
 database = template.add_resource(
     rds.DBInstance(
         'Database',
-        DBInstanceIdentifier='database',
         DBName=Ref(database_name),
         AllocatedStorage=Ref(database_allocated_storage),
         DBInstanceClass=Ref(database_class),
@@ -233,13 +260,27 @@ redis_subnet_group = template.add_resource(
 redis = template.add_resource(
     elasticache.CacheCluster(
         'Redis',
-        ClusterName='redis',
         Engine='redis',
         EngineVersion='4.0',
         CacheNodeType=Ref(redis_node_class),
         NumCacheNodes=Ref(redis_nodes_count),
         VpcSecurityGroupIds=[GetAtt(redis_security_group, 'GroupId')],
         CacheSubnetGroupName=Ref(redis_subnet_group),
+    )
+)
+
+# Create the SQS queues.
+default_queue = template.add_resource(
+    sqs.Queue(
+        'DefaultQueue',
+        QueueName=Ref(sqs_default_queue_name)
+    )
+)
+
+notifications_queue = template.add_resource(
+    sqs.Queue(
+        'NotificationsQueue',
+        QueueName=Ref(sqs_notifications_queue_name)
     )
 )
 
