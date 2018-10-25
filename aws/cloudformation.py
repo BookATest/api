@@ -498,8 +498,8 @@ api_task_definition = template.add_resource(
         Family='api',
         NetworkMode='bridge',
         RequiresCompatibilities=['EC2'],
-        Cpu='256',
-        Memory='512',
+        Cpu='256',  # TODO: Parameterise this.
+        Memory='512',  # TODO: Parameterise this.
         ContainerDefinitions=[ecs.ContainerDefinition(
             Name='api',
             Image=Join('.', [
@@ -511,7 +511,7 @@ api_task_definition = template.add_resource(
                     Ref(docker_repository)
                 ])
             ]),
-            MemoryReservation='256',
+            MemoryReservation='256',  # TODO: Parameterise this.
             PortMappings=[ecs.PortMapping(
                 HostPort='0',
                 ContainerPort='80',
@@ -536,8 +536,8 @@ queue_worker_task_definition = template.add_resource(
         Family='queue-worker',
         NetworkMode='bridge',
         RequiresCompatibilities=['EC2'],
-        Cpu='256',
-        Memory='512',
+        Cpu='256',  # TODO: Parameterise this.
+        Memory='512',  # TODO: Parameterise this.
         ContainerDefinitions=[ecs.ContainerDefinition(
             Name='api',
             Image=Join('.', [
@@ -549,7 +549,7 @@ queue_worker_task_definition = template.add_resource(
                     Ref(docker_repository)
                 ])
             ]),
-            MemoryReservation='256',
+            MemoryReservation='256',  # TODO: Parameterise this.
             Essential=True,
             LogConfiguration=ecs.LogConfiguration(
                 LogDriver='awslogs',
@@ -585,8 +585,8 @@ scheduler_task_definition = template.add_resource(
         Family='scheduler',
         NetworkMode='bridge',
         RequiresCompatibilities=['EC2'],
-        Cpu='256',
-        Memory='512',
+        Cpu='256',  # TODO: Parameterise this.
+        Memory='512',  # TODO: Parameterise this.
         ContainerDefinitions=[ecs.ContainerDefinition(
             Name='api',
             Image=Join('.', [
@@ -598,7 +598,7 @@ scheduler_task_definition = template.add_resource(
                     Ref(docker_repository)
                 ])
             ]),
-            MemoryReservation='256',
+            MemoryReservation='256',  # TODO: Parameterise this.
             Essential=True,
             LogConfiguration=ecs.LogConfiguration(
                 LogDriver='awslogs',
