@@ -491,4 +491,43 @@ autoscaling_group = template.add_resource(
     )
 )
 
+# Create the ECS task definitions.
+api_task_definition = template.add_resource(
+    ecs.TaskDefinition(
+        'ApiTaskDefinition',
+        Family='api',
+        NetworkMode='bridge',
+        RequiresCompatibilities=['EC2'],
+        Cpu='256',
+        Memory='512',
+        ContainerDefinitions=[ecs.ContainerDefinition(
+            Name='api',
+            Image=Join('.', [
+                Ref('AWS::AccountId'),
+                'dkr.ecr',
+                Ref('AWS::Region'),
+                Join('/', [
+                    'amazonaws.com',
+                    Ref(docker_repository)
+                ])
+            ]),
+            MemoryReservation='256',
+            PortMappings=[ecs.PortMapping(
+                HostPort='0',
+                ContainerPort='80',
+                Protocol='tcp'
+            )],
+            Essential=True,
+            LogConfiguration=ecs.LogConfiguration(
+                LogDriver='awslogs',
+                Options={
+                    'awslogs-group': '/ecs/api',
+                    'awslogs-region': Ref('AWS::Region'),
+                    'awslogs-stream-prefix': 'ecs'
+                }
+            )
+        )]
+    )
+)
+
 print(template.to_json())
