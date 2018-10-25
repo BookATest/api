@@ -1,7 +1,7 @@
 # Converted from EC2InstanceSample.template located at:
 # http://aws.amazon.com/cloudformation/aws-cloudformation-templates/
 
-from troposphere import Parameter, Ref, Template, GetAtt
+from troposphere import Parameter, Ref, Template, GetAtt, Base64, Join
 import troposphere.ec2 as ec2
 import troposphere.elasticache as elasticache
 import troposphere.rds as rds
@@ -10,7 +10,6 @@ import troposphere.s3 as s3
 import troposphere.elasticloadbalancingv2 as elb
 import troposphere.ecs as ecs
 import troposphere.ecr as ecr
-import awacs
 
 template = Template('Create the infrastructure needed to run the Book A Test web app')
 template.add_version('2010-09-09')
@@ -198,6 +197,26 @@ s3_backend_bucket_name = template.add_parameter(
     )
 )
 
+api_instance_class = template.add_parameter(
+    Parameter(
+        'ApiInstanceClass',
+        Description='The API EC2 instance class',
+        Type='String',
+        Default='t2.micro',
+        AllowedValues=[
+            't2.micro',
+            'm1.small',
+            'm1.large',
+            'm1.xlarge',
+            'm2.xlarge',
+            'm2.2xlarge',
+            'm2.4xlarge',
+            'c1.xlarge'
+        ],
+        ConstraintDescription='Must select a valid API instance type.'
+    )
+)
+
 # ==================================================
 # Resources.
 # ==================================================
@@ -381,6 +400,38 @@ docker_repository = template.add_resource(
 ecs_cluster = template.add_resource(
     ecs.Cluster(
         'ApiCluster'
+    )
+)
+
+launch_template = template.add_resource(
+    ec2.LaunchTemplate(
+        'LaunchTemplate',
+        LaunchTemplateName='ApiLaunchTemplate',
+        LaunchTemplateData=ec2.LaunchTemplateData(
+            ImageId='ami-066826c6a40879d75',
+            InstanceType=Ref(api_instance_class),
+            InstanceInitiatedShutdownBehavior='terminate',
+            Monitoring=ec2.Monitoring(Enabled=True),
+            SecurityGroups=[Ref(api_security_group)],
+            BlockDeviceMappings=[
+                ec2.BlockDeviceMapping(
+                    DeviceName='/dev/xvdcz',
+                    Ebs=ec2.EBSBlockDevice(
+                        DeleteOnTermination=True,
+                        VolumeSize=20,
+                        VolumeType='gp2'
+                    )
+                )
+            ],
+            UserData=Base64(
+                Join('', [
+                    '#!/bin/bash\n',
+                    'echo ECS_CLUSTER=',
+                    Ref(ecs_cluster),
+                    ' >> /etc/ecs/ecs.config;echo ECS_BACKEND_HOST= >> /etc/ecs/ecs.config;'
+                ])
+            )
+        )
     )
 )
 
