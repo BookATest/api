@@ -10,6 +10,8 @@ import troposphere.s3 as s3
 import troposphere.elasticloadbalancingv2 as elb
 import troposphere.ecs as ecs
 import troposphere.ecr as ecr
+import troposphere.autoscaling as autoscaling
+import troposphere.iam as iam
 
 template = Template('Create the infrastructure needed to run the Book A Test web app')
 template.add_version('2010-09-09')
@@ -18,7 +20,7 @@ template.add_version('2010-09-09')
 # Parameters.
 # ==================================================
 
-subnet = template.add_parameter(Parameter(
+subnets = template.add_parameter(Parameter(
     'Subnets',
     Type='CommaDelimitedList',
     Description='The list of subnet IDs, for at least two Availability Zones in the region in your Virtual Private '
@@ -217,6 +219,17 @@ api_instance_class = template.add_parameter(
     )
 )
 
+api_instance_count = template.add_parameter(
+    Parameter(
+        'ApiInstanceCount',
+        Description='The number of API EC2 instances to load balance between',
+        Type='Number',
+        Default='2',
+        MinValue='1',
+        ConstraintDescription='Must be 1 or more.'
+    )
+)
+
 # ==================================================
 # Resources.
 # ==================================================
@@ -298,7 +311,7 @@ database_subnet_group = template.add_resource(
     rds.DBSubnetGroup(
         'DatabaseSubnetGroup',
         DBSubnetGroupDescription='Subnets available for the RDS instance',
-        SubnetIds=Ref(subnet)
+        SubnetIds=Ref(subnets)
     )
 )
 
@@ -323,7 +336,7 @@ redis_subnet_group = template.add_resource(
     elasticache.SubnetGroup(
         'RedisSubnetGroup',
         Description='Subnets available for the Redis cluster',
-        SubnetIds=Ref(subnet)
+        SubnetIds=Ref(subnets)
     )
 )
 
@@ -385,11 +398,37 @@ load_balancer = template.add_resource(
         'LoadBalancer',
         Scheme='internet-facing',
         SecurityGroups=[GetAtt(load_balancer_security_group, 'GroupId')],
-        Subnets=Ref(subnet)
+        Subnets=Ref(subnets)
     )
 )
 
 # Create ECS cluster.
+ecs_cluster_role = template.add_resource(
+    iam.Role(
+        'EcsClusterRole',
+        ManagedPolicyArns=['arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceforEC2Role'],
+        AssumeRolePolicyDocument={
+            'Version': '2012-10-17',
+            'Statement': [
+                {
+                    'Action': 'sts:AssumeRole',
+                    'Principal': {
+                        'Service': 'ec2.amazonaws.com'
+                    },
+                    'Effect': 'Allow'
+                }
+            ]
+        }
+    )
+)
+
+ec2_instance_profile = template.add_resource(
+    iam.InstanceProfile(
+        'EC2InstanceProfile',
+        Roles=[Ref(ecs_cluster_role)]
+    )
+)
+
 docker_repository = template.add_resource(
     ecr.Repository(
         'DockerRepository',
@@ -410,6 +449,9 @@ launch_template = template.add_resource(
         LaunchTemplateData=ec2.LaunchTemplateData(
             ImageId='ami-066826c6a40879d75',
             InstanceType=Ref(api_instance_class),
+            IamInstanceProfile=ec2.IamInstanceProfile(
+                Arn=GetAtt(ec2_instance_profile, 'Arn')
+            ),
             InstanceInitiatedShutdownBehavior='terminate',
             Monitoring=ec2.Monitoring(Enabled=True),
             SecurityGroups=[Ref(api_security_group)],
@@ -418,7 +460,7 @@ launch_template = template.add_resource(
                     DeviceName='/dev/xvdcz',
                     Ebs=ec2.EBSBlockDevice(
                         DeleteOnTermination=True,
-                        VolumeSize=20,
+                        VolumeSize=22,
                         VolumeType='gp2'
                     )
                 )
@@ -432,6 +474,20 @@ launch_template = template.add_resource(
                 ])
             )
         )
+    )
+)
+
+autoscaling_group = template.add_resource(
+    autoscaling.AutoScalingGroup(
+        'AutoScalingGroup',
+        DesiredCapacity=Ref(api_instance_count),
+        MinSize=Ref(api_instance_count),
+        MaxSize=Ref(api_instance_count),
+        LaunchTemplate=autoscaling.LaunchTemplateSpecification(
+            LaunchTemplateId=Ref(launch_template),
+            Version=GetAtt(launch_template, 'LatestVersionNumber')
+        ),
+        AvailabilityZones=['eu-west-1a', 'eu-west-1b', 'eu-west-1c']
     )
 )
 
