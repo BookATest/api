@@ -530,4 +530,101 @@ api_task_definition = template.add_resource(
     )
 )
 
+queue_worker_task_definition = template.add_resource(
+    ecs.TaskDefinition(
+        'QueueWorkerTaskDefinition',
+        Family='queue-worker',
+        NetworkMode='bridge',
+        RequiresCompatibilities=['EC2'],
+        Cpu='256',
+        Memory='512',
+        ContainerDefinitions=[ecs.ContainerDefinition(
+            Name='api',
+            Image=Join('.', [
+                Ref('AWS::AccountId'),
+                'dkr.ecr',
+                Ref('AWS::Region'),
+                Join('/', [
+                    'amazonaws.com',
+                    Ref(docker_repository)
+                ])
+            ]),
+            MemoryReservation='256',
+            Essential=True,
+            LogConfiguration=ecs.LogConfiguration(
+                LogDriver='awslogs',
+                Options={
+                    'awslogs-group': '/ecs/queue-worker',
+                    'awslogs-region': Ref('AWS::Region'),
+                    'awslogs-stream-prefix': 'ecs'
+                }
+            ),
+            Command=[
+                'php',
+                'artisan',
+                'queue:work',
+                '--tries=1'
+            ],
+            WorkingDirectory='/var/www/html',
+            HealthCheck=ecs.HealthCheck(
+                Command=[
+                    'CMD-SHELL',
+                    'php -v || exit 1'
+                ],
+                Interval=30,
+                Retries=3,
+                Timeout=5
+            )
+        )]
+    )
+)
+
+scheduler_task_definition = template.add_resource(
+    ecs.TaskDefinition(
+        'SchedulerTaskDefinition',
+        Family='scheduler',
+        NetworkMode='bridge',
+        RequiresCompatibilities=['EC2'],
+        Cpu='256',
+        Memory='512',
+        ContainerDefinitions=[ecs.ContainerDefinition(
+            Name='api',
+            Image=Join('.', [
+                Ref('AWS::AccountId'),
+                'dkr.ecr',
+                Ref('AWS::Region'),
+                Join('/', [
+                    'amazonaws.com',
+                    Ref(docker_repository)
+                ])
+            ]),
+            MemoryReservation='256',
+            Essential=True,
+            LogConfiguration=ecs.LogConfiguration(
+                LogDriver='awslogs',
+                Options={
+                    'awslogs-group': '/ecs/scheduler',
+                    'awslogs-region': Ref('AWS::Region'),
+                    'awslogs-stream-prefix': 'ecs'
+                }
+            ),
+            Command=[
+                'php',
+                'artisan',
+                'schedule:loop'
+            ],
+            WorkingDirectory='/var/www/html',
+            HealthCheck=ecs.HealthCheck(
+                Command=[
+                    'CMD-SHELL',
+                    'php -v || exit 1'
+                ],
+                Interval=30,
+                Retries=3,
+                Timeout=5
+            )
+        )]
+    )
+)
+
 print(template.to_json())
