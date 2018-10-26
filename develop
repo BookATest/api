@@ -7,7 +7,6 @@ export DB_ROOT_PASS=${DB_ROOT_PASS:-secret}
 export DB_NAME=${DB_NAME:-book_a_test}
 export DB_USER=${DB_USER:-book_a_test}
 export DB_PASS=${DB_PASS:-secret}
-export CF_TEMPLATE=${CF_TEMPLATE:-cloudformation.py}
 
 # Decide which docker-compose file to use.
 COMPOSE_FILE="dev"
@@ -75,9 +74,9 @@ if [ $# -gt 0  ]; then
             npm "$@"
     # If "cf" is used, generate the cloud formation
     # template from the troposphere container.
-    elif [ "$1" == "cf"  ]; then
-        ${COMPOSE} run --rm troposphere > aws/cloudformation.json
-        cat aws/cloudformation.json
+    elif [ "$1" == "cfn"  ]; then
+        CF_TEMPLATE=1-setup.py ${COMPOSE} run --rm troposphere > aws/1-setup.json
+        CF_TEMPLATE=2-infrastructure.py ${COMPOSE} run --rm troposphere > aws/2-infrastructure.json
     else
         ${COMPOSE} "$@"
     fi

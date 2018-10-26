@@ -1,7 +1,6 @@
-# Converted from EC2InstanceSample.template located at:
-# http://aws.amazon.com/cloudformation/aws-cloudformation-templates/
+# This stack creates the infrastructure.
 
-from troposphere import Parameter, Ref, Template, GetAtt, Base64, Join
+from troposphere import Parameter, Ref, Template, GetAtt, Base64, Join, Sub
 import troposphere.ec2 as ec2
 import troposphere.elasticache as elasticache
 import troposphere.rds as rds
@@ -9,9 +8,9 @@ import troposphere.sqs as sqs
 import troposphere.s3 as s3
 import troposphere.elasticloadbalancingv2 as elb
 import troposphere.ecs as ecs
-import troposphere.ecr as ecr
 import troposphere.autoscaling as autoscaling
 import troposphere.iam as iam
+import troposphere.logs as logs
 
 template = Template('Create the infrastructure needed to run the Book A Test web app')
 template.add_version('2010-09-09')
@@ -236,6 +235,17 @@ api_instance_count = template.add_parameter(
     )
 )
 
+docker_repository = template.add_parameter(Parameter(
+    'DockerRepository',
+    Type='String',
+    Description='The name of the Docker repository.',
+    Default='api',
+    MinLength='1',
+    MaxLength='64',
+    AllowedPattern='(?:[a-z0-9]+(?:[._-][a-z0-9]+)*/)*[a-z0-9]+(?:[._-][a-z0-9]+)*',
+    ConstraintDescription='Must be a valid repository name.'
+))
+
 # ==================================================
 # Resources.
 # ==================================================
@@ -425,13 +435,6 @@ ec2_instance_profile = template.add_resource(
     )
 )
 
-docker_repository = template.add_resource(
-    ecr.Repository(
-        'DockerRepository',
-        RepositoryName='api'
-    )
-)
-
 ecs_cluster = template.add_resource(
     ecs.Cluster(
         'ApiCluster'
@@ -473,21 +476,31 @@ launch_template = template.add_resource(
     )
 )
 
-autoscaling_group = template.add_resource(
-    autoscaling.AutoScalingGroup(
-        'AutoScalingGroup',
-        DesiredCapacity=Ref(api_instance_count),
-        MinSize=Ref(api_instance_count),
-        MaxSize=Ref(api_instance_count),
-        LaunchTemplate=autoscaling.LaunchTemplateSpecification(
-            LaunchTemplateId=Ref(launch_template),
-            Version=GetAtt(launch_template, 'LatestVersionNumber')
-        ),
-        AvailabilityZones=['eu-west-1a', 'eu-west-1b', 'eu-west-1c']
+# Create the ECS task definitions.
+api_log_group = template.add_resource(
+    logs.LogGroup(
+        'ApiLogGroup',
+        LogGroupName='/ecs/api',
+        RetentionInDays=7
     )
 )
 
-# Create the ECS task definitions.
+queue_worker_log_group = template.add_resource(
+    logs.LogGroup(
+        'QueueWorkerLogGroup',
+        LogGroupName='/ecs/queue-worker',
+        RetentionInDays=7
+    )
+)
+
+scheduler_log_group = template.add_resource(
+    logs.LogGroup(
+        'SchedulerLogGroup',
+        LogGroupName='/ecs/scheduler',
+        RetentionInDays=7
+    )
+)
+
 api_task_definition = template.add_resource(
     ecs.TaskDefinition(
         'ApiTaskDefinition',
@@ -517,7 +530,7 @@ api_task_definition = template.add_resource(
             LogConfiguration=ecs.LogConfiguration(
                 LogDriver='awslogs',
                 Options={
-                    'awslogs-group': '/ecs/api',
+                    'awslogs-group': Ref(api_log_group),
                     'awslogs-region': Ref('AWS::Region'),
                     'awslogs-stream-prefix': 'ecs'
                 }
@@ -550,7 +563,7 @@ queue_worker_task_definition = template.add_resource(
             LogConfiguration=ecs.LogConfiguration(
                 LogDriver='awslogs',
                 Options={
-                    'awslogs-group': '/ecs/queue-worker',
+                    'awslogs-group': Ref(queue_worker_log_group),
                     'awslogs-region': Ref('AWS::Region'),
                     'awslogs-stream-prefix': 'ecs'
                 }
@@ -599,7 +612,7 @@ scheduler_task_definition = template.add_resource(
             LogConfiguration=ecs.LogConfiguration(
                 LogDriver='awslogs',
                 Options={
-                    'awslogs-group': '/ecs/scheduler',
+                    'awslogs-group': Ref(scheduler_log_group),
                     'awslogs-region': Ref('AWS::Region'),
                     'awslogs-stream-prefix': 'ecs'
                 }
@@ -747,6 +760,20 @@ api_service = template.add_resource(
         )],
         Role=Ref(ecs_service_role),
         DependsOn=[load_balancer_listener]
+    )
+)
+
+autoscaling_group = template.add_resource(
+    autoscaling.AutoScalingGroup(
+        'AutoScalingGroup',
+        DesiredCapacity=Ref(api_instance_count),
+        MinSize=Ref(api_instance_count),
+        MaxSize=Ref(api_instance_count),
+        LaunchTemplate=autoscaling.LaunchTemplateSpecification(
+            LaunchTemplateId=Ref(launch_template),
+            Version=GetAtt(launch_template, 'LatestVersionNumber')
+        ),
+        AvailabilityZones=['eu-west-1a', 'eu-west-1b', 'eu-west-1c']
     )
 )
 
