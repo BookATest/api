@@ -75,8 +75,8 @@ if [ $# -gt 0  ]; then
     # If "cf" is used, generate the cloud formation
     # template from the troposphere container.
     elif [ "$1" == "cfn"  ]; then
-        CF_TEMPLATE=1-setup.py ${COMPOSE} run --rm troposphere > aws/1-setup.json
-        CF_TEMPLATE=2-infrastructure.py ${COMPOSE} run --rm troposphere > aws/2-infrastructure.json
+        CF_TEMPLATE=cloudformation.py ${COMPOSE} run --rm troposphere > aws/cloudformation.json
+        cat aws/cloudformation.json
     else
         ${COMPOSE} "$@"
     fi

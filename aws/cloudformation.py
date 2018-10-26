@@ -1,6 +1,6 @@
 # This stack creates the infrastructure.
 
-from troposphere import Parameter, Ref, Template, GetAtt, Base64, Join, Sub
+from troposphere import Parameter, Ref, Template, GetAtt, Base64, Join, Sub, Output
 import troposphere.ec2 as ec2
 import troposphere.elasticache as elasticache
 import troposphere.rds as rds
@@ -11,6 +11,10 @@ import troposphere.ecs as ecs
 import troposphere.autoscaling as autoscaling
 import troposphere.iam as iam
 import troposphere.logs as logs
+import troposphere.ecr as ecr
+import uuid
+
+suffix = str(uuid.uuid4())
 
 template = Template('Create the infrastructure needed to run the Book A Test web app')
 template.add_version('2010-09-09')
@@ -32,6 +36,28 @@ subnets = template.add_parameter(Parameter(
                 'Cloud (VPC)'
 ))
 
+api_user_name = template.add_parameter(Parameter(
+    'ApiUserName',
+    Type='String',
+    Description='The name of the API user.',
+    Default='api',
+    MinLength='1',
+    MaxLength='64',
+    AllowedPattern='[a-zA-Z][a-zA-Z0-9_+=,.@-]*',
+    ConstraintDescription='Must only use alphanumeric characters (including these special characters: _+=,.@-)'
+))
+
+ci_user_name = template.add_parameter(Parameter(
+    'CiUserName',
+    Type='String',
+    Description='The name of the CI user.',
+    Default='ci',
+    MinLength='1',
+    MaxLength='64',
+    AllowedPattern='[a-zA-Z][a-zA-Z0-9_+=,.@-]*',
+    ConstraintDescription='Must only use alphanumeric characters (including these special characters: _+=,.@-)'
+))
+
 database_name = template.add_parameter(
     Parameter(
         'DatabaseName',
@@ -42,7 +68,7 @@ database_name = template.add_parameter(
         MaxLength='64',
         AllowedPattern='[a-zA-Z][a-zA-Z0-9_]*',
         ConstraintDescription='Must begin with a letter and contain only alphanumeric characters (including '
-                              'underscores). '
+                              'underscores).'
     )
 )
 
@@ -138,7 +164,7 @@ sqs_default_queue_name = template.add_parameter(
     Parameter(
         'SqsDefaultQueueName',
         Description='The default queue name',
-        Default='default',
+        Default='default-' + suffix,
         Type='String',
         MinLength='1',
         MaxLength='64',
@@ -152,7 +178,7 @@ sqs_notifications_queue_name = template.add_parameter(
     Parameter(
         'SqsNotificationsQueueName',
         Description='The notifications queue name',
-        Default='notifications',
+        Default='notifications-' + suffix,
         Type='String',
         MinLength='1',
         MaxLength='64',
@@ -166,7 +192,7 @@ s3_uploads_bucket_name = template.add_parameter(
     Parameter(
         'S3UploadsS3BucketName',
         Description='The uploads bucket name',
-        Default='uploads',
+        Default='uploads-' + suffix,
         Type='String',
         MinLength='1',
         MaxLength='64',
@@ -180,7 +206,7 @@ s3_frontend_bucket_name = template.add_parameter(
     Parameter(
         'S3FrontendS3BucketName',
         Description='The frontend bucket name',
-        Default='frontend',
+        Default='frontend-' + suffix,
         Type='String',
         MinLength='1',
         MaxLength='64',
@@ -194,7 +220,7 @@ s3_backend_bucket_name = template.add_parameter(
     Parameter(
         'S3BackendS3BucketName',
         Description='The backend bucket name',
-        Default='backend',
+        Default='backend-' + suffix,
         Type='String',
         MinLength='1',
         MaxLength='64',
@@ -235,8 +261,8 @@ api_instance_count = template.add_parameter(
     )
 )
 
-docker_repository = template.add_parameter(Parameter(
-    'DockerRepository',
+docker_repository_name = template.add_parameter(Parameter(
+    'DockerRepositoryName',
     Type='String',
     Description='The name of the Docker repository.',
     Default='api',
@@ -473,6 +499,14 @@ launch_template = template.add_resource(
                 ])
             )
         )
+    )
+)
+
+# Create the Docker repository.
+docker_repository = template.add_resource(
+    ecr.Repository(
+        'DockerRepository',
+        RepositoryName=Ref(docker_repository_name)
     )
 )
 
@@ -774,6 +808,126 @@ autoscaling_group = template.add_resource(
             Version=GetAtt(launch_template, 'LatestVersionNumber')
         ),
         AvailabilityZones=['eu-west-1a', 'eu-west-1b', 'eu-west-1c']
+    )
+)
+
+# Create the users.
+api_user = template.add_resource(
+    iam.User(
+        'ApiUser',
+        UserName=Ref(api_user_name),
+        Policies=[
+            iam.Policy(
+                PolicyName='ApiUserPolicy',
+                PolicyDocument={
+                    'Version': '2012-10-17',
+                    'Statement': [
+                        {
+                            'Action': 's3:*',
+                            'Effect': 'Allow',
+                            'Resource': GetAtt(uploads_bucket, 'Arn')
+                        },
+                        {
+                            'Action': 'sqs:*',
+                            'Effect': 'Allow',
+                            'Resource': GetAtt(default_queue, 'Arn')
+                        },
+                        {
+                            'Action': 'sqs:*',
+                            'Effect': 'Allow',
+                            'Resource': GetAtt(notifications_queue, 'Arn')
+                        }
+                    ]
+                }
+            )
+        ]
+    )
+)
+
+ci_user = template.add_resource(
+    iam.User(
+        'CiUser',
+        UserName=Ref(ci_user_name),
+        Policies=[
+            iam.Policy(
+                PolicyName='CiUserPolicy',
+                PolicyDocument={
+                    'Version': '2012-10-17',
+                    'Statement': [
+                        {
+                            'Action': 'ecr:*',
+                            'Effect': 'Allow',
+                            'Resource': GetAtt(docker_repository, 'Arn')
+                        },
+                        {
+                            'Action': 's3:*',
+                            'Effect': 'Allow',
+                            'Resource': GetAtt(uploads_bucket, 'Arn')
+                        }
+                    ]
+                }
+            )
+        ]
+    )
+)
+
+# ==================================================
+# Outputs.
+# ==================================================
+
+template.add_output(
+    Output(
+        'LoadBalancerDNS',
+        Description='The DNS name of the load balancer',
+        Value=GetAtt(load_balancer, 'DNSName')
+    )
+)
+
+template.add_output(
+    Output(
+        'DockerRepository',
+        Description='The URI of the Docker repository',
+        Value=Join('.', [
+            Ref('AWS::AccountId'),
+            'dkr.ecr',
+            Ref('AWS::Region'),
+            Join('/', [
+                'amazonaws.com',
+                Ref(docker_repository)
+            ])
+        ])
+    )
+)
+
+template.add_output(
+    Output(
+        'DatabaseHost',
+        Description='The URI of the RDS instance',
+        Value=Join(':', [GetAtt(database, 'Endpoint.Address'), GetAtt(database, 'Endpoint.Port')])
+    )
+)
+
+template.add_output(
+    Output(
+        'RedisHost',
+        Description='The URI of the Redis instance',
+        Value=Join(':', [GetAtt(redis, 'RedisEndpoint.Address'), GetAtt(redis, 'RedisEndpoint.Port')])
+    )
+)
+
+template.add_output(
+    Output(
+        'DefaultQueue',
+        Description='The URI of the default queue',
+        Value=Ref(default_queue)
+    )
+)
+
+template.add_output(
+    Output(
+        'NotificationsQueue',
+        Description='The URI of the notifications queue',
+        Value=Ref(notifications_queue)
     )
 )
 
