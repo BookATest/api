@@ -16,7 +16,7 @@ cd ${TRAVIS_BUILD_DIR}/docker/api/packaged
 ./develop npm run prod
 rm -rf node_modules
 
-# Get the production .env file.
+# Get the .env file.
 aws secretsmanager get-secret-value \
     --secret-id ${ENV_SECRET_ID} | \
     python -c "import json,sys;obj=json.load(sys.stdin);print obj['SecretString'];" > .env

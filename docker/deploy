@@ -1,12 +1,15 @@
 #!/usr/bin/env bash
 
 usage() {
-    echo "Usage: $0 [-p <string>]" 1>&2;
+    echo "Usage: $0 [-s <string> The name of the ECS service] [-p <string> The name of the AWS profile]" 1>&2;
     exit 1;
 }
 
-while getopts ":p:" o; do
+while getopts ":s:p:" o; do
     case "${o}" in
+        s)
+            SERVICE=${OPTARG}
+            ;;
         p)
             PROFILE=${OPTARG}
             ;;
@@ -15,6 +18,11 @@ while getopts ":p:" o; do
             ;;
     esac
 done
+
+# Exit if no service is passed.
+if [ -z "$SERVICE" ]; then
+    usage
+fi
 
 # Login to the ECR.
 if [ -z "$PROFILE" ]; then
@@ -25,3 +33,7 @@ fi
 
 # Push the Docker image to ECR.
 docker push ${REPO_URI}:latest
+# docker push ${REPO_URI}:${TRAVIS_COMMIT}
+
+# Update the service.
+aws ecs update-service --service $SERVICE --force-new-deployment

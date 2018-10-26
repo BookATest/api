@@ -18,3 +18,12 @@ services:
       MYSQL_PASSWORD: "${DB_PASS}"
     networks:
       - app-net
+
+  troposphere:
+    image: BookATest.hiv/troposphere
+    build:
+      context: ./docker/troposphere
+      dockerfile: Dockerfile
+    volumes:
+    - ./aws:/tmp
+    command: "python ${CFN_TEMPLATE}.py"

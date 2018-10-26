@@ -56,15 +56,6 @@ services:
     networks:
       - app-net
 
-  troposphere:
-    image: BookATest.hiv/troposphere
-    build:
-      context: ./docker/troposphere
-      dockerfile: Dockerfile
-    volumes:
-      - ./aws:/tmp
-    command: "python ${CF_TEMPLATE}"
-
 networks:
   app-net:
     driver: bridge
