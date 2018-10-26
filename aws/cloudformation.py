@@ -20,11 +20,17 @@ template.add_version('2010-09-09')
 # Parameters.
 # ==================================================
 
+vpc = template.add_parameter(Parameter(
+    'VPC',
+    Type='AWS::EC2::VPC::Id',
+    Description='The Virtual Private Cloud (VPC) to launch the stack in.'
+))
+
 subnets = template.add_parameter(Parameter(
     'Subnets',
-    Type='CommaDelimitedList',
+    Type='List<AWS::EC2::Subnet::Id>',
     Description='The list of subnet IDs, for at least two Availability Zones in the region in your Virtual Private '
-                'Cloud (VPC) '
+                'Cloud (VPC)'
 ))
 
 database_name = template.add_parameter(
@@ -392,20 +398,10 @@ backend_bucket = template.add_resource(
     )
 )
 
-# Create the load balancer.
-load_balancer = template.add_resource(
-    elb.LoadBalancer(
-        'LoadBalancer',
-        Scheme='internet-facing',
-        SecurityGroups=[GetAtt(load_balancer_security_group, 'GroupId')],
-        Subnets=Ref(subnets)
-    )
-)
-
 # Create ECS cluster.
 ecs_cluster_role = template.add_resource(
     iam.Role(
-        'EcsClusterRole',
+        'ECSClusterRole',
         ManagedPolicyArns=['arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceforEC2Role'],
         AssumeRolePolicyDocument={
             'Version': '2012-10-17',
@@ -624,6 +620,133 @@ scheduler_task_definition = template.add_resource(
                 Timeout=5
             )
         )]
+    )
+)
+
+# Create the load balancer.
+load_balancer = template.add_resource(
+    elb.LoadBalancer(
+        'LoadBalancer',
+        Scheme='internet-facing',
+        SecurityGroups=[GetAtt(load_balancer_security_group, 'GroupId')],
+        Subnets=Ref(subnets),
+    )
+)
+
+api_target_group = template.add_resource(
+    elb.TargetGroup(
+        'ApiTargetGroup',
+        HealthCheckIntervalSeconds=30,
+        HealthCheckPath='/',
+        HealthCheckPort='traffic-port',
+        HealthCheckProtocol='HTTP',
+        HealthCheckTimeoutSeconds=5,
+        HealthyThresholdCount=5,
+        UnhealthyThresholdCount=2,
+        Port=80,
+        Protocol='HTTP',
+        TargetType='instance',
+        VpcId=Ref(vpc),
+        DependsOn=[load_balancer]
+    )
+)
+
+load_balancer_listener = template.add_resource(
+    elb.Listener(
+        'LoadBalancerListener',
+        LoadBalancerArn=Ref(load_balancer),
+        Port=80,
+        Protocol='HTTP',
+        DefaultActions=[elb.Action(
+            Type='forward',
+            TargetGroupArn=Ref(api_target_group)
+        )]
+    )
+)
+
+# Create the ECS services.
+ecs_service_role = template.add_resource(
+    iam.Role(
+        'ECSServiceRole',
+        AssumeRolePolicyDocument={
+            'Version': '2012-10-17',
+            'Statement': [
+                {
+                    'Action': 'sts:AssumeRole',
+                    'Effect': 'Allow',
+                    'Principal': {
+                        'Service': 'ecs.amazonaws.com'
+                    }
+                }
+            ]
+        },
+        Policies=[
+            iam.Policy(
+                PolicyName='ECSServiceRolePolicy',
+                PolicyDocument={
+                    'Statement': [
+                        {
+                            'Effect': 'Allow',
+                            'Action': [
+                                'ec2:AttachNetworkInterface',
+                                'ec2:CreateNetworkInterface',
+                                'ec2:CreateNetworkInterfacePermission',
+                                'ec2:DeleteNetworkInterface',
+                                'ec2:DeleteNetworkInterfacePermission',
+                                'ec2:Describe*',
+                                'ec2:DetachNetworkInterface',
+                                'elasticloadbalancing:DeregisterInstancesFromLoadBalancer',
+                                'elasticloadbalancing:DeregisterTargets',
+                                'elasticloadbalancing:Describe*',
+                                'elasticloadbalancing:RegisterInstancesWithLoadBalancer',
+                                'elasticloadbalancing:RegisterTargets',
+                                'route53:ChangeResourceRecordSets',
+                                'route53:CreateHealthCheck',
+                                'route53:DeleteHealthCheck',
+                                'route53:Get*',
+                                'route53:List*',
+                                'route53:UpdateHealthCheck',
+                                'servicediscovery:DeregisterInstance',
+                                'servicediscovery:Get*',
+                                'servicediscovery:List*',
+                                'servicediscovery:RegisterInstance',
+                                'servicediscovery:UpdateInstanceCustomHealthStatus'
+                            ],
+                            'Resource': '*'
+                        },
+                        {
+                            'Effect': 'Allow',
+                            'Action': [
+                                'ec2:CreateTags'
+                            ],
+                            'Resource': 'arn:aws:ec2:*:*:network-interface/*'
+                        }
+                    ]
+                }
+            )
+        ]
+    )
+)
+
+api_service = template.add_resource(
+    ecs.Service(
+        'ApiService',
+        ServiceName='api',
+        Cluster=Ref(ecs_cluster),
+        TaskDefinition=Ref(api_task_definition),
+        DeploymentConfiguration=ecs.DeploymentConfiguration(
+            MinimumHealthyPercent=100,
+            MaximumPercent=200
+        ),
+        DesiredCount=2,  # TODO: Parameterise this.
+        LaunchType='EC2',
+        LoadBalancers=[ecs.LoadBalancer(
+            ContainerName='api',
+            ContainerPort=80,
+            TargetGroupArn=Ref(api_target_group)
+        )],
+        Role=Ref(ecs_service_role),
+        DependsOn=[load_balancer_listener]
     )
 )
 
