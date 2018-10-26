@@ -1,5 +1,27 @@
 #!/usr/bin/env bash
 
+usage() {
+    echo "Usage: $0 [-p <string>]" 1>&2;
+    exit 1;
+}
+
+while getopts ":p:" o; do
+    case "${o}" in
+        p)
+            PROFILE=${OPTARG}
+            ;;
+        *)
+            usage
+            ;;
+    esac
+done
+
+# Login to the ECR.
+if [ -z "$PROFILE" ]; then
+    $(aws ecr get-login --no-include-email)
+else
+    $(aws ecr get-login --no-include-email --profile=${PROFILE})
+fi
+
 # Push the Docker image to ECR.
-$(aws ecr get-login --no-include-email)
 docker push ${REPO_URI}:latest
