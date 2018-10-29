@@ -98,13 +98,13 @@ class UserController extends Controller
             // Upload the profile picture.
             if ($request->has('profile_picture')) {
                 $profilePicture = File::create([
-                    'filename' => 'profile-picture.png',
-                    'mime_type' => File::MIME_PNG,
+                    'filename' => 'profile-picture.jpeg',
+                    'mime_type' => File::MIME_JPEG,
                 ]);
                 $user->profilePictureFile()->associate($profilePicture);
                 $user->save();
 
-                $profilePicture->uploadBase64EncodedPng($request->profile_picture);
+                $profilePicture->uploadBase64EncodedImage($request->profile_picture);
             }
 
             return $user;
@@ -204,13 +204,13 @@ class UserController extends Controller
             // Upload the profile picture.
             if ($request->has('profile_picture')) {
                 $profilePicture = File::create([
-                    'filename' => 'profile-picture.png',
-                    'mime_type' => File::MIME_PNG,
+                    'filename' => 'profile-picture.jpeg',
+                    'mime_type' => File::MIME_JPEG,
                 ]);
                 $user->profilePictureFile()->associate($profilePicture);
                 $user->save();
 
-                $profilePicture->uploadBase64EncodedPng($request->profile_picture);
+                $profilePicture->uploadBase64EncodedImage($request->profile_picture);
             }
 
             return $user;

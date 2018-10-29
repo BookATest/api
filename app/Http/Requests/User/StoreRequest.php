@@ -3,7 +3,7 @@
 namespace App\Http\Requests\User;
 
 use App\Models\Role;
-use App\Rules\Base64EncodedPng;
+use App\Rules\Base64EncodedJpeg;
 use App\Rules\Base64FileSize;
 use App\Rules\CanAddRole;
 use App\Rules\Password;
@@ -90,7 +90,7 @@ class StoreRequest extends FormRequest
                 'exists:clinics,id',
             ],
             'profile_picture' => [
-                new Base64EncodedPng(),
+                new Base64EncodedJpeg(),
                 new Base64FileSize(1),
             ],
         ];
