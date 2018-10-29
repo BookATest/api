@@ -263,7 +263,7 @@ EOT;
     {
         $responses = [
             Responses::http200(
-                MediaType::create('image/png', Schema::string()->format(Schema::BINARY))
+                MediaType::create('image/jpeg', Schema::string()->format(Schema::BINARY))
             ),
         ];
         $parameters = [

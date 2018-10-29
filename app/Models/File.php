@@ -14,6 +14,7 @@ class File extends Model implements Responsable
     use FileRelationships;
 
     const MIME_PNG = 'image/png';
+    const MIME_JPEG = 'image/jpeg';
     const MIME_XLSX = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
 
     /**
@@ -55,7 +56,7 @@ class File extends Model implements Responsable
      * @param string $content
      * @return \App\Models\File
      */
-    public function uploadBase64EncodedPng(string $content): self
+    public function uploadBase64EncodedImage(string $content): self
     {
         list(, $data) = explode(';', $content);
         list(, $data) = explode(',', $data);
