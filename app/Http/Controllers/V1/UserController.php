@@ -11,7 +11,6 @@ use App\Http\Requests\User\StoreRequest;
 use App\Http\Requests\User\UpdateRequest;
 use App\Http\Resources\UserResource;
 use App\Http\Responses\ResourceDeletedResponse;
-use App\Models\File;
 use App\Models\Role;
 use App\Models\User;
 use App\Models\UserRole;
@@ -97,14 +96,8 @@ class UserController extends Controller
 
             // Upload the profile picture.
             if ($request->has('profile_picture')) {
-                $profilePicture = File::create([
-                    'filename' => 'profile-picture.jpeg',
-                    'mime_type' => File::MIME_JPEG,
-                ]);
-                $user->profilePictureFile()->associate($profilePicture);
-                $user->save();
-
-                $profilePicture->uploadBase64EncodedImage($request->profile_picture);
+                $profilePictureContent = base64_decode_image($request->profile_picture);
+                $user->uploadProfilePicture($profilePictureContent);
             }
 
             return $user;
@@ -203,14 +196,8 @@ class UserController extends Controller
 
             // Upload the profile picture.
             if ($request->has('profile_picture')) {
-                $profilePicture = File::create([
-                    'filename' => 'profile-picture.jpeg',
-                    'mime_type' => File::MIME_JPEG,
-                ]);
-                $user->profilePictureFile()->associate($profilePicture);
-                $user->save();
-
-                $profilePicture->uploadBase64EncodedImage($request->profile_picture);
+                $profilePictureContent = base64_decode_image($request->profile_picture);
+                $user->uploadProfilePicture($profilePictureContent);
             }
 
             return $user;

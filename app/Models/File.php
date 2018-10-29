@@ -58,10 +58,8 @@ class File extends Model implements Responsable
      */
     public function uploadBase64EncodedImage(string $content): self
     {
-        list(, $data) = explode(';', $content);
-        list(, $data) = explode(',', $data);
-        $data = base64_decode($data);
-
-        return $this->upload($data);
+        return $this->upload(
+            base64_decode_image($content)
+        );
     }
 }
