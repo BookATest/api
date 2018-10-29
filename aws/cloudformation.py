@@ -23,6 +23,12 @@ template.add_version('2010-09-09')
 # Parameters.
 # ==================================================
 
+certificate_arn = template.add_parameter(Parameter(
+    'CertificateArn',
+    Type='String',
+    Description='The ARN for the SSL certificate for the load balancer.'
+))
+
 vpc = template.add_parameter(Parameter(
     'VPC',
     Type='AWS::EC2::VPC::Id',
@@ -33,7 +39,7 @@ subnets = template.add_parameter(Parameter(
     'Subnets',
     Type='List<AWS::EC2::Subnet::Id>',
     Description='The list of subnet IDs, for at least two Availability Zones in the region in your Virtual Private '
-                'Cloud (VPC)'
+                'Cloud (VPC).'
 ))
 
 api_user_name = template.add_parameter(Parameter(
@@ -702,12 +708,17 @@ load_balancer_listener = template.add_resource(
     elb.Listener(
         'LoadBalancerListener',
         LoadBalancerArn=Ref(load_balancer),
-        Port=80,
-        Protocol='HTTP',
+        Port=443,
+        Protocol='HTTPS',
         DefaultActions=[elb.Action(
             Type='forward',
             TargetGroupArn=Ref(api_target_group)
-        )]
+        )],
+        Certificates=[
+            elb.Certificate(
+                CertificateArn=Ref(certificate_arn)
+            )
+        ]
     )
 )
 
