@@ -35,8 +35,8 @@ class Clinics
         $parameters = [
             Parameter::query('filter[id]', Schema::string())
                 ->description('Comma separated clinic IDs'),
-            Parameter::query('sort', Schema::string()->default('-created_at'))
-                ->description('The field to sort the results by [`created_at`]'),
+            Parameter::query('sort', Schema::string()->default('name'))
+                ->description('The field to sort the results by [`name`]'),
         ];
 
         return Operation::get(...$responses)
