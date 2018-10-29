@@ -1,37 +1,13 @@
 #!/usr/bin/env bash
 
-usage() {
-    echo "Usage: $0 [-c <string> The name of the ECS cluster] [-s <string> The name of the ECS service] [-p <string> The name of the AWS profile]" 1>&2;
-    exit 1;
-}
-
-# Set the AWS CLI profile to default.
-PROFILE=default
-
-while getopts ":c:s:p:" o; do
-    case "${o}" in
-        c)
-            CLUSTER=${OPTARG}
-            ;;
-        s)
-            SERVICE=${OPTARG}
-            ;;
-        p)
-            PROFILE=${OPTARG}
-            ;;
-        *)
-            usage
-            ;;
-    esac
-done
-
-# Exit if no service is passed.
-if [ -z "$CLUSTER" ] || [ -z "$SERVICE" ]; then
-    usage
-fi
+# Requires the following environment variables:
+# $AWS_PROFILE = The AWS CLI profile to use (defaults to "default").
+# $REPO_URI = The URI of the Docker repo to push to.
+# $CLUSTER = The name of the ECS cluster.
+# $SERVICE = The name of the ECS service.
 
 # Login to the ECR.
-$(aws ecr get-login --no-include-email --profile=${PROFILE})
+$(aws ecr get-login --no-include-email --profile=${AWS_PROFILE:-default})
 
 # Push the Docker image to ECR.
 docker push ${REPO_URI}:latest
@@ -42,4 +18,4 @@ aws ecs update-service \
     --cluster $CLUSTER \
     --service $SERVICE \
     --force-new-deployment \
-    --profile $PROFILE
+    --profile ${AWS_PROFILE:-default}

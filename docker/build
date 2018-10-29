@@ -1,5 +1,12 @@
 #!/usr/bin/env bash
 
+# Requires the following environment variables:
+# $TRAVIS_BUILD_DIR = The directory of the project.
+# $TRAVIS_COMMIT = The commit hash of the build.
+# $ENV_SECRET_ID = The ID of the .env file in AWS Secrets Manager (defaults to ".env").
+# $PUBLIC_KEY_SECRET_ID = The ID of the OAuth public key file in AWS Secrets Manager (default to "oauth-public.key").
+# $PRIVATE_KEY_SECRET_ID = The ID of the OAuth private key file in AWS Secrets Manager (default to "oauth-private.key").
+
 # Bail out on first error.
 set -e
 
@@ -18,8 +25,16 @@ rm -rf node_modules
 
 # Get the .env file.
 aws secretsmanager get-secret-value \
-    --secret-id ${ENV_SECRET_ID} | \
+    --secret-id ${ENV_SECRET_ID:-.env} | \
     python -c "import json,sys;obj=json.load(sys.stdin);print obj['SecretString'];" > .env
+
+# Get the OAuth keys.
+aws secretsmanager get-secret-value \
+    --secret-id ${PUBLIC_KEY_SECRET_ID:-oauth-public.key} | \
+    python -c "import json,sys;obj=json.load(sys.stdin);print obj['SecretString'];" > storage/oauth-public.key
+aws secretsmanager get-secret-value \
+    --secret-id ${PRIVATE_KEY_SECRET_ID:-oauth-private.key} | \
+    python -c "import json,sys;obj=json.load(sys.stdin);print obj['SecretString'];" > storage/oauth-private.key
 
 # Build the Docker image with latest code.
 cd ${TRAVIS_BUILD_DIR}/docker/api
