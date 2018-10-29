@@ -118,6 +118,15 @@ class AppointmentController extends Controller
      */
     public function show(ShowRequest $request, Appointment $appointment)
     {
+        // Prepare the base query.
+        $baseQuery = Appointment::query()
+            ->where('id', '=', $appointment->id);
+
+        // Specify allowed modifications to the query via the GET parameters.
+        $appointment = QueryBuilder::for($baseQuery)
+            ->allowedAppends('service_user_name')
+            ->firstOrFail();
+
         event(EndpointHit::onRead($request, "Viewed appointment [{$appointment->id}]"));
 
         return new AppointmentResource($appointment);

@@ -122,6 +122,8 @@ EOT;
             Parameter::path('appointment', Schema::string()->format(Schema::UUID))
                 ->description('The appointment ID')
                 ->required(),
+            Parameter::query('append', Schema::string())
+                ->description('Comma separated fields to append [`service_user_name`]'),
         ];
 
         return Operation::get(...$responses)

@@ -488,6 +488,51 @@ class AppointmentsTest extends TestCase
         });
     }
 
+    public function test_service_user_name_can_be_appended()
+    {
+        $clinic = factory(Clinic::class)->create();
+        $user = factory(User::class)->create()->makeCommunityWorker($clinic);
+
+        $serviceUser = factory(ServiceUser::class)->create();
+        $appointment = factory(Appointment::class)->create([
+            'clinic_id' => $clinic->id,
+        ]);
+        $appointment->book($serviceUser);
+
+        Passport::actingAs($user);
+        $query = http_build_query(['append' => 'service_user_name']);
+        $response = $this->json('GET', "/v1/appointments/{$appointment->id}?$query");
+
+        $response->assertStatus(Response::HTTP_OK);
+        $response->assertJsonFragment([
+            [
+                'id' => $appointment->id,
+                'user_id' => $appointment->user_id,
+                'clinic_id' => $appointment->clinic_id,
+                'is_repeating' => $appointment->appointment_schedule_id !== null,
+                'service_user_id' => $appointment->service_user_id,
+                'start_at' => $appointment->start_at->toIso8601String(),
+                'booked_at' => $appointment->booked_at->toIso8601String(),
+                'consented_at' => $appointment->consented_at->toIso8601String(),
+                'did_not_attend' => $appointment->did_not_attend,
+                'service_user_name' => $serviceUser->name,
+                'created_at' => $appointment->created_at->toIso8601String(),
+                'updated_at' => $appointment->updated_at->toIso8601String(),
+            ],
+        ]);
+    }
+
+    public function test_service_user_name_is_not_appended_by_default()
+    {
+        $appointment = factory(Appointment::class)->create();
+
+        $response = $this->json('GET', "/v1/appointments/{$appointment->id}");
+
+        $response->assertStatus(Response::HTTP_OK);
+        $response->assertJsonFragment(['id' => $appointment->id]);
+        $response->assertJsonMissing(['service_user_name' => null]);
+    }
+
     /*
      * Update one.
      */
