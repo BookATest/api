@@ -23,7 +23,7 @@ if (!function_exists('crop_and_resize')) {
     function crop_and_resize(string $content, int $width, int $height): string
     {
         // Store the contents into a temporary file.
-        $sourceId = uuid() . '.jpeg';
+        $sourceId = uuid();
         \Illuminate\Support\Facades\Storage::disk('temp')->put($sourceId, $content);
         $sourcePath = storage_path("temp/$sourceId");
 
@@ -36,11 +36,11 @@ if (!function_exists('crop_and_resize')) {
 
         // Get the top left crop coordinates for the source image.
         if ($sourceWidth >= $sourceHeight) {
-            $sourceX = ($sourceWidth - $sourceHeight) / 2;
+            $sourceX = floor(($sourceWidth - $sourceHeight) / 2);
             $sourceY = 0;
         } else {
             $sourceX = 0;
-            $sourceY = ($sourceHeight - $sourceWidth) / 2;
+            $sourceY = floor(($sourceHeight - $sourceWidth) / 2);
         }
 
         // Get the cropped width and height for the source image.
@@ -61,7 +61,7 @@ if (!function_exists('crop_and_resize')) {
         );
 
         // Get the contents of the destination file.
-        $destinationId = uuid() . '.jpeg';
+        $destinationId = uuid();
         $destinationPath = storage_path("temp/$destinationId");
         imagejpeg($destination, $destinationPath, 80);
         $destinationContent = \Illuminate\Support\Facades\Storage::disk('temp')->get($destinationId);
