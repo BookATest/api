@@ -1,21 +1,22 @@
 #!/usr/bin/env bash
 
 # Requires the following environment variables:
-# $AWS_PROFILE = The AWS CLI profile to use (defaults to "default").
 # $REPO_URI = The URI of the Docker repo to push to.
 # $CLUSTER = The name of the ECS cluster.
 # $SERVICE = The name of the ECS service.
 
 # Login to the ECR.
-$(aws ecr get-login --no-include-email --profile=${AWS_PROFILE:-default})
+echo "Logging in to ECR..."
+$(aws ecr get-login --no-include-email)
 
 # Push the Docker image to ECR.
+echo "Pushing images to ECR..."
 docker push ${REPO_URI}:latest
 # docker push ${REPO_URI}:${TRAVIS_COMMIT}
 
 # Update the service.
+echo "Updating the ECS services..."
 aws ecs update-service \
     --cluster $CLUSTER \
     --service $SERVICE \
-    --force-new-deployment \
-    --profile ${AWS_PROFILE:-default}
+    --force-new-deployment
