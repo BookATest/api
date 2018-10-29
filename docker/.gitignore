@@ -1,0 +1,2 @@
+/api/packaged/*
+!/api/packaged/.gitkeep

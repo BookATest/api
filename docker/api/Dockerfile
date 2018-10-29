@@ -30,6 +30,12 @@ COPY default /etc/nginx/sites-available/default
 COPY php-fpm.conf /etc/php/7.2/fpm/php-fpm.conf
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
+COPY start-container /usr/local/bin/start-container
+RUN chmod +x /usr/local/bin/start-container
+
+COPY packaged /var/www/html
+RUN chown -R www-data: /var/www/html
+
 EXPOSE 80
 
-CMD ["/usr/bin/supervisord"]
+CMD ["start-container"]
