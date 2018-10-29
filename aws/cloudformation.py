@@ -67,7 +67,7 @@ ci_user_name = template.add_parameter(Parameter(
 database_name = template.add_parameter(
     Parameter(
         'DatabaseName',
-        Description='The database name',
+        Description='The database name.',
         Default='book_a_test',
         Type='String',
         MinLength='1',
@@ -81,7 +81,7 @@ database_name = template.add_parameter(
 database_username = template.add_parameter(
     Parameter(
         'DatabaseUser',
-        Description='The database admin username',
+        Description='The database admin username.',
         NoEcho=True,
         Type='String',
         MinLength='1',
@@ -94,7 +94,7 @@ database_username = template.add_parameter(
 database_password = template.add_parameter(
     Parameter(
         'DatabasePassword',
-        Description='The database admin password',
+        Description='The database admin password.',
         NoEcho=True,
         Type='String',
         MinLength='8',
@@ -107,17 +107,16 @@ database_password = template.add_parameter(
 database_class = template.add_parameter(
     Parameter(
         'DatabaseClass',
-        Description='The database instance class',
+        Description='The database instance class.',
         Type='String',
         Default='db.t2.micro',
         AllowedValues=[
-            "db.t2.micro",
-            "db.m1.small",
-            "db.m1.large",
-            "db.m1.xlarge",
-            "db.m2.xlarge",
-            "db.m2.2xlarge",
-            "db.m2.4xlarge"
+            'db.t2.micro',
+            'db.t2.small',
+            'db.t2.medium',
+            'db.t2.large',
+            'db.t2.xlarge',
+            'db.t2.2xlarge'
         ],
         ConstraintDescription='Must select a valid database instance type.'
     )
@@ -126,7 +125,7 @@ database_class = template.add_parameter(
 database_allocated_storage = template.add_parameter(
     Parameter(
         'DatabaseAllocatedStorage',
-        Description='The size of the database (GiB)',
+        Description='The size of the database (GiB).',
         Default='10',
         Type='Number',
         MinValue='5',
@@ -138,18 +137,13 @@ database_allocated_storage = template.add_parameter(
 redis_node_class = template.add_parameter(
     Parameter(
         'RedisNodeClass',
-        Description='The Redis node class',
+        Description='The Redis node class.',
         Type='String',
         Default='cache.t2.micro',
         AllowedValues=[
             'cache.t2.micro',
-            'cache.m1.small',
-            'cache.m1.large',
-            'cache.m1.xlarge',
-            'cache.m2.xlarge',
-            'cache.m2.2xlarge',
-            'cache.m2.4xlarge',
-            'cache.c1.xlarge'
+            'cache.t2.small',
+            'cache.t2.medium'
         ],
         ConstraintDescription='Must select a valid Redis node type.'
     )
@@ -158,7 +152,7 @@ redis_node_class = template.add_parameter(
 redis_nodes_count = template.add_parameter(
     Parameter(
         'RedisNodesCount',
-        Description='The number of Redis nodes to have in the cluster',
+        Description='The number of Redis nodes to have in the cluster.',
         Default='1',
         Type='Number',
         MinValue='1',
@@ -169,49 +163,49 @@ redis_nodes_count = template.add_parameter(
 sqs_default_queue_name = template.add_parameter(
     Parameter(
         'SqsDefaultQueueName',
-        Description='The default queue name',
+        Description='The default queue name.',
         Default='default-' + suffix,
         Type='String',
         MinLength='1',
         MaxLength='64',
         AllowedPattern='[a-zA-Z][a-zA-Z0-9\-]*',
         ConstraintDescription='Must begin with a letter and contain only alphanumeric characters (including '
-                              'hyphens). '
+                              'hyphens).'
     )
 )
 
 sqs_notifications_queue_name = template.add_parameter(
     Parameter(
         'SqsNotificationsQueueName',
-        Description='The notifications queue name',
+        Description='The notifications queue name.',
         Default='notifications-' + suffix,
         Type='String',
         MinLength='1',
         MaxLength='64',
         AllowedPattern='[a-zA-Z][a-zA-Z0-9\-]*',
         ConstraintDescription='Must begin with a letter and contain only alphanumeric characters (including '
-                              'hyphens). '
+                              'hyphens).'
     )
 )
 
 s3_uploads_bucket_name = template.add_parameter(
     Parameter(
         'S3UploadsS3BucketName',
-        Description='The uploads bucket name',
+        Description='The uploads bucket name.',
         Default='uploads-' + suffix,
         Type='String',
         MinLength='1',
         MaxLength='64',
         AllowedPattern='[a-zA-Z][a-zA-Z0-9\-]*',
         ConstraintDescription='Must begin with a letter and contain only alphanumeric characters (including '
-                              'hyphens). '
+                              'hyphens).'
     )
 )
 
 s3_frontend_bucket_name = template.add_parameter(
     Parameter(
         'S3FrontendS3BucketName',
-        Description='The frontend bucket name',
+        Description='The frontend bucket name.',
         Default='frontend-' + suffix,
         Type='String',
         MinLength='1',
@@ -225,32 +219,31 @@ s3_frontend_bucket_name = template.add_parameter(
 s3_backend_bucket_name = template.add_parameter(
     Parameter(
         'S3BackendS3BucketName',
-        Description='The backend bucket name',
+        Description='The backend bucket name.',
         Default='backend-' + suffix,
         Type='String',
         MinLength='1',
         MaxLength='64',
         AllowedPattern='[a-zA-Z][a-zA-Z0-9\-]*',
         ConstraintDescription='Must begin with a letter and contain only alphanumeric characters (including '
-                              'hyphens). '
+                              'hyphens).'
     )
 )
 
 api_instance_class = template.add_parameter(
     Parameter(
         'ApiInstanceClass',
-        Description='The API EC2 instance class',
+        Description='The API EC2 instance class.',
         Type='String',
         Default='t2.micro',
         AllowedValues=[
+            't2.nano',
             't2.micro',
-            'm1.small',
-            'm1.large',
-            'm1.xlarge',
-            'm2.xlarge',
-            'm2.2xlarge',
-            'm2.4xlarge',
-            'c1.xlarge'
+            't2.small',
+            't2.medium',
+            't2.large',
+            't2.xlarge',
+            't2.2xlarge'
         ],
         ConstraintDescription='Must select a valid API instance type.'
     )
@@ -259,7 +252,18 @@ api_instance_class = template.add_parameter(
 api_instance_count = template.add_parameter(
     Parameter(
         'ApiInstanceCount',
-        Description='The number of API EC2 instances to load balance between',
+        Description='The number of API EC2 instances to load balance between.',
+        Type='Number',
+        Default='2',
+        MinValue='1',
+        ConstraintDescription='Must be 1 or more.'
+    )
+)
+
+api_task_count = template.add_parameter(
+    Parameter(
+        'ApiTaskCount',
+        Description='The number of API containers to run.',
         Type='Number',
         Default='2',
         MinValue='1',
@@ -547,8 +551,8 @@ api_task_definition = template.add_resource(
         Family='api',
         NetworkMode='bridge',
         RequiresCompatibilities=['EC2'],
-        Cpu='256',  # TODO: Parameterise this.
-        Memory='512',  # TODO: Parameterise this.
+        Cpu='256',
+        Memory='512',
         ContainerDefinitions=[ecs.ContainerDefinition(
             Name='api',
             Image=Join('.', [
@@ -560,7 +564,7 @@ api_task_definition = template.add_resource(
                     Ref(docker_repository)
                 ])
             ]),
-            MemoryReservation='256',  # TODO: Parameterise this.
+            MemoryReservation='512',
             PortMappings=[ecs.PortMapping(
                 HostPort='0',
                 ContainerPort='80',
@@ -585,8 +589,8 @@ queue_worker_task_definition = template.add_resource(
         Family='queue-worker',
         NetworkMode='bridge',
         RequiresCompatibilities=['EC2'],
-        Cpu='256',  # TODO: Parameterise this.
-        Memory='512',  # TODO: Parameterise this.
+        Cpu='256',
+        Memory='512',
         ContainerDefinitions=[ecs.ContainerDefinition(
             Name='api',
             Image=Join('.', [
@@ -598,7 +602,7 @@ queue_worker_task_definition = template.add_resource(
                     Ref(docker_repository)
                 ])
             ]),
-            MemoryReservation='256',  # TODO: Parameterise this.
+            MemoryReservation='512',
             Essential=True,
             LogConfiguration=ecs.LogConfiguration(
                 LogDriver='awslogs',
@@ -634,8 +638,8 @@ scheduler_task_definition = template.add_resource(
         Family='scheduler',
         NetworkMode='bridge',
         RequiresCompatibilities=['EC2'],
-        Cpu='256',  # TODO: Parameterise this.
-        Memory='512',  # TODO: Parameterise this.
+        Cpu='256',
+        Memory='512',
         ContainerDefinitions=[ecs.ContainerDefinition(
             Name='api',
             Image=Join('.', [
@@ -647,7 +651,7 @@ scheduler_task_definition = template.add_resource(
                     Ref(docker_repository)
                 ])
             ]),
-            MemoryReservation='256',  # TODO: Parameterise this.
+            MemoryReservation='512',
             Essential=True,
             LogConfiguration=ecs.LogConfiguration(
                 LogDriver='awslogs',
@@ -796,7 +800,7 @@ api_service = template.add_resource(
             MinimumHealthyPercent=100,
             MaximumPercent=200
         ),
-        DesiredCount=2,  # TODO: Parameterise this.
+        DesiredCount=Ref(api_task_count),
         LaunchType='EC2',
         LoadBalancers=[ecs.LoadBalancer(
             ContainerName='api',
@@ -805,6 +809,36 @@ api_service = template.add_resource(
         )],
         Role=Ref(ecs_service_role),
         DependsOn=[load_balancer_listener]
+    )
+)
+
+queue_worker_service = template.add_resource(
+    ecs.Service(
+        'QueueWorkerService',
+        ServiceName='queue-worker',
+        Cluster=Ref(ecs_cluster),
+        TaskDefinition=Ref(queue_worker_task_definition),
+        DeploymentConfiguration=ecs.DeploymentConfiguration(
+            MinimumHealthyPercent=0,
+            MaximumPercent=100
+        ),
+        DesiredCount=1,
+        LaunchType='EC2'
+    )
+)
+
+scheduler_service = template.add_resource(
+    ecs.Service(
+        'SchedulerService',
+        ServiceName='scheduler',
+        Cluster=Ref(ecs_cluster),
+        TaskDefinition=Ref(scheduler_task_definition),
+        DeploymentConfiguration=ecs.DeploymentConfiguration(
+            MinimumHealthyPercent=0,
+            MaximumPercent=100
+        ),
+        DesiredCount=1,
+        LaunchType='EC2'
     )
 )
 
@@ -874,6 +908,11 @@ ci_user = template.add_resource(
                             'Action': 's3:*',
                             'Effect': 'Allow',
                             'Resource': GetAtt(uploads_bucket, 'Arn')
+                        },
+                        {
+                            'Action': 'secretsmanager:GetSecretValue',
+                            'Effect': 'Allow',
+                            'Resource': '*'
                         }
                     ]
                 }
