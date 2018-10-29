@@ -34,33 +34,30 @@ if (!function_exists('crop_and_resize')) {
         // Get the width and height from the source image.
         list($sourceWidth, $sourceHeight) = getimagesize($sourcePath);
 
-        // Calculate the aspect ratio of both the source, and the destination image.
-        $sourceAspectRatio = $sourceWidth / $sourceHeight;
-        $destinationAspectRatio = $width / $height;
-
-        // Set the width and height of the area to crop.
-        if ($sourceAspectRatio >= $destinationAspectRatio) {
-            // If image is wider than thumbnail (in aspect ratio sense).
-            $newHeight = $height;
-            $newWidth = $width / ($height / $height);
+        // Get the top left crop coordinates for the source image.
+        if ($sourceWidth >= $sourceHeight) {
+            $sourceX = ($sourceWidth - $sourceHeight) / 2;
+            $sourceY = 0;
         } else {
-            // If the thumbnail is wider than the image.
-            $newWidth = $width;
-            $newHeight = $height / ($width / $width);
+            $sourceX = 0;
+            $sourceY = ($sourceHeight - $sourceWidth) / 2;
         }
 
-        // Perform the image manipulation.
+        // Get the cropped width and height for the source image.
+        $croppedWidth = min($sourceWidth, $sourceHeight);
+        $croppedHeight = $croppedWidth;
+
         imagecopyresampled(
             $destination,
             $source,
-            0 - ($newWidth - $width) / 2,
-            0 - ($newHeight - $height) / 2,
             0,
             0,
-            $newWidth,
-            $newHeight,
-            $width,
-            $height
+            $sourceX,
+            $sourceY,
+            $width, 
+            $height,
+            $croppedWidth,
+            $croppedHeight
         );
 
         // Get the contents of the destination file.
