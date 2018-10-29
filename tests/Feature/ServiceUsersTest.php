@@ -66,6 +66,23 @@ class ServiceUsersTest extends TestCase
         });
     }
 
+    public function test_filter_by_name_works()
+    {
+        $clinic = factory(Clinic::class)->create();
+        $user = factory(User::class)->create()->makeCommunityWorker($clinic);
+
+        $serviceUser1 = factory(ServiceUser::class)->create(['name' => 'John Doe']);
+        $serviceUser2 = factory(ServiceUser::class)->create(['name' => 'Foo Bar']);
+
+        Passport::actingAs($user);
+        $query = http_build_query(['filter[name]' => 'John']);
+        $response = $this->json('GET', "/v1/service-users?$query");
+
+        $response->assertStatus(Response::HTTP_OK);
+        $response->assertJsonFragment(['id' => $serviceUser1->id]);
+        $response->assertJsonMissing(['id' => $serviceUser2->id]);
+    }
+
     /*
      * Read one.
      */

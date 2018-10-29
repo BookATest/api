@@ -34,7 +34,10 @@ class ServiceUserController extends Controller
 
         // Specify allowed modifications to the query via the GET parameters.
         $serviceUsers = QueryBuilder::for($baseQuery)
-            ->allowedFilters(Filter::exact('id'))
+            ->allowedFilters(
+                Filter::exact('id'),
+                'name'
+            )
             ->defaultSort('name')
             ->allowedSorts('name')
             ->paginate();
