@@ -533,6 +533,47 @@ class AppointmentsTest extends TestCase
         $response->assertJsonMissing(['service_user_name' => null]);
     }
 
+    public function test_user_details_can_be_appended()
+    {
+        $clinic = factory(Clinic::class)->create();
+        $user = factory(User::class)->create([
+            'display_email' => true,
+            'display_phone' => false,
+        ])->makeCommunityWorker($clinic);
+
+        $serviceUser = factory(ServiceUser::class)->create();
+        $appointment = factory(Appointment::class)->create([
+            'user_id' => $user->id,
+            'clinic_id' => $clinic->id,
+        ]);
+        $appointment->book($serviceUser);
+
+        Passport::actingAs($user);
+        $query = http_build_query(['append' => 'user_first_name,user_last_name,user_email,user_phone']);
+        $response = $this->json('GET', "/v1/appointments/{$appointment->id}?$query");
+
+        $response->assertStatus(Response::HTTP_OK);
+        $response->assertJsonFragment([
+            [
+                'id' => $appointment->id,
+                'user_id' => $appointment->user_id,
+                'clinic_id' => $appointment->clinic_id,
+                'is_repeating' => $appointment->appointment_schedule_id !== null,
+                'service_user_id' => $appointment->service_user_id,
+                'start_at' => $appointment->start_at->toIso8601String(),
+                'booked_at' => $appointment->booked_at->toIso8601String(),
+                'consented_at' => $appointment->consented_at->toIso8601String(),
+                'did_not_attend' => $appointment->did_not_attend,
+                'user_first_name' => $user->first_name,
+                'user_last_name' => $user->last_name,
+                'user_email' => $user->email,
+                'user_phone' => null,
+                'created_at' => $appointment->created_at->toIso8601String(),
+                'updated_at' => $appointment->updated_at->toIso8601String(),
+            ],
+        ]);
+    }
+
     /*
      * Update one.
      */

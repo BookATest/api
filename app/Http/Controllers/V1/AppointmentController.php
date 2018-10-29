@@ -124,7 +124,13 @@ class AppointmentController extends Controller
 
         // Specify allowed modifications to the query via the GET parameters.
         $appointment = QueryBuilder::for($baseQuery)
-            ->allowedAppends('service_user_name')
+            ->allowedAppends(
+                'service_user_name',
+                'user_first_name',
+                'user_last_name',
+                'user_email',
+                'user_phone'
+            )
             ->firstOrFail();
 
         event(EndpointHit::onRead($request, "Viewed appointment [{$appointment->id}]"));

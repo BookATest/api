@@ -123,7 +123,7 @@ EOT;
                 ->description('The appointment ID')
                 ->required(),
             Parameter::query('append', Schema::string())
-                ->description('Comma separated fields to append [`service_user_name`]'),
+                ->description('Comma separated fields to append [`service_user_name`, `user_first_name`, `user_last_name`, `user_email`, `user_phone`]'),
         ];
 
         return Operation::get(...$responses)

@@ -19,4 +19,36 @@ trait AppointmentMutators
     {
         return $this->serviceUser->name ?? null;
     }
+
+    /**
+     * @return string
+     */
+    public function getUserFirstNameAttribute(): string
+    {
+        return $this->user->first_name;
+    }
+
+    /**
+     * @return string
+     */
+    public function getUserLastNameAttribute(): string
+    {
+        return $this->user->last_name;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getUserEmailAttribute(): ?string
+    {
+        return $this->user->display_email ? $this->user->email : null;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getUserPhoneAttribute(): ?string
+    {
+        return $this->user->display_phone ? $this->user->phone : null;
+    }
 }
