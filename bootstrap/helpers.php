@@ -54,7 +54,7 @@ if (!function_exists('crop_and_resize')) {
             0,
             $sourceX,
             $sourceY,
-            $width, 
+            $width,
             $height,
             $croppedWidth,
             $croppedHeight
