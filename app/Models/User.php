@@ -20,6 +20,8 @@ class User extends Authenticatable
     use UserRelationships;
 
     const EXCLUSIVE = true;
+    const PROFILE_PICTURE_WIDTH = 400;
+    const PROFILE_PICTURE_HEIGHT = 400;
 
     /**
      * Indicates if the IDs are auto-incrementing.
@@ -441,11 +443,11 @@ class User extends Authenticatable
      */
     public function placeholderProfilePicture(): Response
     {
-        $content = Storage::disk('local')->get('placeholders/profile-picture.png');
+        $content = Storage::disk('local')->get('placeholders/profile-picture.jpg');
 
         return response()->make($content, Response::HTTP_OK, [
-            'Content-Type' => File::MIME_PNG,
-            'Content-Disposition' => "inline; filename=\"profile-picture.png\"",
+            'Content-Type' => File::MIME_JPEG,
+            'Content-Disposition' => "inline; filename=\"profile-picture.jpg\"",
         ]);
     }
 
@@ -533,5 +535,31 @@ class User extends Authenticatable
         }
 
         return ($appointmentsNotAttended / $this->appointmentsThisWeek($clinics)) * 100;
+    }
+
+    /**
+     * @param string $content
+     * @return \App\Models\File
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
+     */
+    public function uploadProfilePicture(string $content): File
+    {
+        // Create the file instance.
+        /** @var \App\Models\File $profilePicture */
+        $profilePicture = File::create([
+            'filename' => 'profile-picture.jpg',
+            'mime_type' => File::MIME_JPEG,
+        ]);
+
+        // Associate the file instance with the user.
+        $this->profilePictureFile()->associate($profilePicture);
+        $this->save();
+
+        // Crop and resize the image.
+        $content = crop_and_resize($content, static::PROFILE_PICTURE_WIDTH, static::PROFILE_PICTURE_HEIGHT);
+        $content = 'data:image/jpeg;base64,' . base64_encode($content);
+
+        // Upload and return the file.
+        return $profilePicture->uploadBase64EncodedImage($content);
     }
 }

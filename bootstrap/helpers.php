@@ -23,15 +23,16 @@ if (!function_exists('crop_and_resize')) {
     function crop_and_resize(string $content, int $width, int $height): string
     {
         // Store the contents into a temporary file.
-        $sourceId = uuid();
+        $sourceId = uuid() . '.jpeg';
         \Illuminate\Support\Facades\Storage::disk('temp')->put($sourceId, $content);
+        $sourcePath = storage_path("temp/$sourceId");
 
         // Create a GD instance from the temporary file and a new file.
-        $source = imagecreatefromjpeg(storage_path("temp/$sourceId"));
+        $source = imagecreatefromjpeg($sourcePath);
         $destination = imagecreatetruecolor($width, $height);
 
         // Get the width and height from the source image.
-        list($sourceWidth, $sourceHeight) = getimagesize($source);
+        list($sourceWidth, $sourceHeight) = getimagesize($sourcePath);
 
         // Calculate the aspect ratio of both the source, and the destination image.
         $sourceAspectRatio = $sourceWidth / $sourceHeight;
@@ -63,8 +64,9 @@ if (!function_exists('crop_and_resize')) {
         );
 
         // Get the contents of the destination file.
-        $destinationId = uuid();
-        imagejpeg($destination, storage("temp/$destinationId"), 80);
+        $destinationId = uuid() . '.jpeg';
+        $destinationPath = storage_path("temp/$destinationId");
+        imagejpeg($destination, $destinationPath, 80);
         $destinationContent = \Illuminate\Support\Facades\Storage::disk('temp')->get($destinationId);
 
         // Delete the temporary files.
@@ -72,5 +74,20 @@ if (!function_exists('crop_and_resize')) {
         \Illuminate\Support\Facades\Storage::disk('temp')->delete($destinationId);
 
         return $destinationContent;
+    }
+}
+
+if (!function_exists('base64_decode_image')) {
+    /**
+     * @param string $encodedImage
+     * @return string
+     */
+    function base64_decode_image(string $encodedImage): string
+    {
+        list(, $data) = explode(';', $encodedImage);
+        list(, $data) = explode(',', $data);
+        $data = base64_decode($data);
+
+        return $data;
     }
 }

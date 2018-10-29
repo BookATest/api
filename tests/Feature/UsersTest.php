@@ -250,7 +250,7 @@ class UsersTest extends TestCase
                     'clinic_id' => $clinic->id,
                 ]
             ],
-            'profile_picture' => 'data:image/jpeg;base64,' . base64_encode(Storage::disk('testing')->get('example-500KB.jpeg')),
+            'profile_picture' => 'data:image/jpeg;base64,' . base64_encode(Storage::disk('testing')->get('example-500KB.jpg')),
         ]);
 
         $file = File::first();
@@ -280,7 +280,7 @@ class UsersTest extends TestCase
                     'clinic_id' => $clinic->id,
                 ]
             ],
-            'profile_picture' => 'data:image/jpeg;base64,' . base64_encode(Storage::disk('testing')->get('example-3MB.jpeg')),
+            'profile_picture' => 'data:image/jpeg;base64,' . base64_encode(Storage::disk('testing')->get('example-3MB.jpg')),
         ]);
 
         $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
@@ -812,13 +812,20 @@ class UsersTest extends TestCase
         $data = json_decode($response->getContent(), true);
         $createdUserId = $data['data']['id'];
 
-        $response = $this->get("/v1/users/$createdUserId/profile-picture.jpeg");
+        $response = $this->get("/v1/users/$createdUserId/profile-picture.jpg");
         $response->assertStatus(Response::HTTP_OK);
         $response->assertHeader('Content-Type', 'image/jpeg');
 
+        $sourcePicture = base64_decode_image(static::BASE64_JPEG);
+        $sourcePicture = crop_and_resize(
+            $sourcePicture,
+            User::PROFILE_PICTURE_WIDTH,
+            User::PROFILE_PICTURE_HEIGHT
+        );
+        $sourcePicture = 'data:image/jpeg;base64,' . base64_encode($sourcePicture);
         $profilePictureBase64Encoded = 'data:image/jpeg;base64,' . base64_encode($response->getContent());
 
-        $this->assertEquals(static::BASE64_JPEG, $profilePictureBase64Encoded);
+        $this->assertEquals($sourcePicture, $profilePictureBase64Encoded);
     }
 
     /*
