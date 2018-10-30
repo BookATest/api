@@ -106,6 +106,8 @@ Route::prefix('v1')->namespace('V1')->group(function () {
      */
     Route::get('users/user', 'UserController@user')
         ->name('users.user');
+    Route::delete('users/user/sessions', 'User\\SessionController@destroy')
+        ->name('users.sessions.destroy');
     Route::apiResource('users', 'UserController');
     Route::put('users/{user}/calendar-feed-token', 'User\\CalendarFeedTokenController@update')
         ->name('users.calendar-feed-token.update');

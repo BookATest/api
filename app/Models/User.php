@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Http\Response;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Laravel\Passport\HasApiTokens;
 use RuntimeException;
@@ -561,5 +562,17 @@ class User extends Authenticatable
 
         // Upload and return the file.
         return $profilePicture->uploadBase64EncodedImage($content);
+    }
+
+    /**
+     * @return \App\Models\User
+     */
+    public function clearSessions(): self
+    {
+        DB::table('sessions')
+            ->where('user_id', $this->id)
+            ->delete();
+
+        return $this;
     }
 }
