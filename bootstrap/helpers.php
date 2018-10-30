@@ -88,3 +88,37 @@ if (!function_exists('base64_decode_image')) {
         return $data;
     }
 }
+
+if (!function_exists('frontend_uri')) {
+    /**
+     * @param string|null $path
+     * @return string
+     */
+    function frontend_uri(string $path = null): string
+    {
+        $uri = config('app.frontend_url');
+
+        if ($path) {
+            $uri .= '/' . ltrim($path, '/');
+        }
+
+        return $uri;
+    }
+}
+
+if (!function_exists('backend_uri')) {
+    /**
+     * @param string|null $path
+     * @return string
+     */
+    function backend_uri(string $path = null): string
+    {
+        $uri = config('app.backend_url');
+
+        if ($path) {
+            $uri .= '/' . ltrim($path, '/');
+        }
+
+        return $uri;
+    }
+}

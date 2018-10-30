@@ -18,7 +18,7 @@ class AccessCodeSms extends Sms
         parent::__construct();
 
         $this->to = $serviceUser->phone;
-        $this->message = "Your verification code is {$accessCode}";
+        $this->message = "Your access code is {$accessCode}";
         $this->notification = $serviceUser->notifications()->create([
             'channel' => Notification::SMS,
             'recipient' => $serviceUser->phone,

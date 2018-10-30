@@ -13,16 +13,23 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// Authentication Routes.
-Route::get('login', 'Auth\LoginController@showLoginForm')->name('login');
-Route::post('login', 'Auth\LoginController@login');
-Route::post('logout', 'Auth\LoginController@logout')->name('logout');
+// Home route.
+Route::get('/', 'HomeController')->name('home');
 
-// Password Reset Routes.
-Route::get('password/reset', 'Auth\ForgotPasswordController@showLinkRequestForm')->name('password.request');
-Route::post('password/email', 'Auth\ForgotPasswordController@sendResetLinkEmail')->name('password.email');
-Route::get('password/reset/{token}', 'Auth\ResetPasswordController@showResetForm')->name('password.reset');
-Route::post('password/reset', 'Auth\ResetPasswordController@reset');
+Route::namespace('Auth')->group(function () {
+// Authentication Routes.
+    Route::get('login', 'LoginController@showLoginForm')->name('login');
+    Route::post('login', 'LoginController@login');
+    Route::get('login/code', 'LoginController@showOtpForm')->name('login.code');
+    Route::post('login/code', 'LoginController@otp');
+    Route::post('logout', 'LoginController@logout')->name('logout');
+
+    // Password Reset Routes.
+    Route::get('password/reset', 'ForgotPasswordController@showLinkRequestForm')->name('password.request');
+    Route::post('password/email', 'ForgotPasswordController@sendResetLinkEmail')->name('password.email');
+    Route::get('password/reset/{token}', 'ResetPasswordController@showResetForm')->name('password.reset');
+    Route::post('password/reset', 'ResetPasswordController@reset');
+});
 
 // API Docs Routes.
 Route::resource('docs', 'DocsController')

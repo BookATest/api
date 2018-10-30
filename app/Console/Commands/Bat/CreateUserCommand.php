@@ -4,7 +4,7 @@ namespace App\Console\Commands\Bat;
 
 use App\Models\User;
 use Illuminate\Console\Command;
-use Illuminate\Database\DatabaseManager;
+use Illuminate\Support\Facades\DB;
 
 class CreateUserCommand extends Command
 {
@@ -14,10 +14,14 @@ class CreateUserCommand extends Command
      * @var string
      */
     protected $signature = 'bat:create-user 
-        {first_name : The user\'s first name} 
-        {last_name : The user\' last name} 
+        {first-name : The user\'s first name} 
+        {last-name : The user\' last name} 
         {email : The user\'s email} 
-        {phone_number : The user\'s phone number}';
+        {phone-number : The user\'s phone number}
+        {--password= : Specify a password or omit for one to be generated}
+        {--display-email : If the user\'s email should be displayed}
+        {--display-phone : If the user\'s phone should be displayed}
+        {--include-calendar-attachment : If a calendar attachment of the user\'s appointments should be sent with emails}';
 
     /**
      * The console command description.
@@ -27,23 +31,6 @@ class CreateUserCommand extends Command
     protected $description = 'Creates a new user with organisation admin privileges';
 
     /**
-     * @var \Illuminate\Database\DatabaseManager
-     */
-    protected $db;
-
-    /**
-     * CreateUserCommand constructor.
-     *
-     * @param \Illuminate\Database\DatabaseManager $db
-     */
-    public function __construct(DatabaseManager $db)
-    {
-        parent::__construct();
-
-        $this->db = $db;
-    }
-
-    /**
      * Execute the console command.
      *
      * @return mixed
@@ -51,9 +38,9 @@ class CreateUserCommand extends Command
      */
     public function handle()
     {
-        return $this->db->transaction(function () {
+        return DB::transaction(function () {
             // Cache the password to display.
-            $password = str_random();
+            $password = $this->option('password') ?? str_random();
 
             // Create the user record.
             $user = $this->createUser($password);
@@ -77,14 +64,14 @@ class CreateUserCommand extends Command
     protected function createUser(string $password): User
     {
         return User::create([
-            'first_name' => $this->argument('first_name'),
-            'last_name' => $this->argument('last_name'),
+            'first_name' => $this->argument('first-name'),
+            'last_name' => $this->argument('last-name'),
             'email' => $this->argument('email'),
-            'phone_number' => $this->argument('phone_number'),
+            'phone' => $this->argument('phone-number'),
             'password' => bcrypt($password),
-            'display_email' => true,
-            'display_phone_number' => true,
-            'include_calendar_attachment' => true,
+            'display_email' => $this->option('display-email'),
+            'display_phone' => $this->option('display-phone'),
+            'include_calendar_attachment' => $this->option('include-calendar-attachment'),
             'calendar_feed_token' => str_random(10),
         ]);
     }

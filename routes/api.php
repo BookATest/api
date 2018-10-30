@@ -14,11 +14,6 @@ use Illuminate\Support\Facades\Route;
 */
 
 /*
- * API Routes.
- */
-Route::get('/', 'ApiController@v1');
-
-/*
  * V1 Routes.
  */
 Route::prefix('v1')->namespace('V1')->group(function () {
