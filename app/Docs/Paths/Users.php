@@ -86,7 +86,7 @@ class Users
                             Schema::string('role'),
                             Schema::string('clinic_id')->format(Schema::UUID)
                         )),
-                    Schema::string('profile_picture')
+                    Schema::string('profile_picture')->description('Base64 encoded JPEG.')
                 )
         );
         $description = <<<EOT
@@ -192,7 +192,7 @@ EOT;
                             Schema::string('role'),
                             Schema::string('clinic_id')->format(Schema::UUID)
                         )),
-                    Schema::string('profile_picture')
+                    Schema::string('profile_picture')->description('Base64 encoded JPEG.')
                 )
         );
         $description = <<<EOT

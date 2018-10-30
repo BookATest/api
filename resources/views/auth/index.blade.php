@@ -1,9 +1,12 @@
 @extends('auth.layout')
 
 @section('content')
-    <ol>
+    <ul>
         <li>
             Click here to go to the <a href="{{ backend_uri()  }}">Admin Portal</a>.
+        </li>
+        <li>
+            Click here to go to the <a href="{{ route('docs.index')  }}">API Docs</a>.
         </li>
         @guest
         <li>
@@ -17,5 +20,5 @@
             </form>
         </li>
         @endguest
-    </ol>
+    </ul>
 @endsection
