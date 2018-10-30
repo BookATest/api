@@ -4,9 +4,11 @@ namespace App\Models;
 
 use App\Models\Mutators\UserMutators;
 use App\Models\Relationships\UserRelationships;
+use App\Notifications\Email\ForgottenPasswordEmail;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Http\Response;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -16,6 +18,7 @@ use RuntimeException;
 
 class User extends Authenticatable
 {
+    use DispatchesJobs;
     use HasApiTokens;
     use UserMutators;
     use UserRelationships;
@@ -78,6 +81,17 @@ class User extends Authenticatable
     protected function onDeleting()
     {
         //
+    }
+
+    /**
+     * Send the password reset notification.
+     *
+     * @param  string $token
+     * @return void
+     */
+    public function sendPasswordResetNotification($token)
+    {
+        $this->dispatch(new ForgottenPasswordEmail($this, $token));
     }
 
     /**

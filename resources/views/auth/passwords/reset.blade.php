@@ -17,7 +17,7 @@
             <strong>{{ $errors->first('password') }}</strong>
         @endif
 
-        <label for="password_confirmation">Confirm password_confirmation</label>
+        <label for="password_confirmation">Confirm password</label>
         <input id="password_confirmation" name="password_confirmation" type="password">
         @if($errors->has('password_confirmation'))
             <strong>{{ $errors->first('password_confirmation') }}</strong>
