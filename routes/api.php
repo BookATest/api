@@ -94,6 +94,8 @@ Route::prefix('v1')->namespace('V1')->group(function () {
         ->name('settings.index');
     Route::put('settings', 'SettingController@update')
         ->name('settings.update');
+    Route::get('settings/logo.png', 'Setting\\LogoController')
+        ->name('settings.logo');
 
     /*
      * Stat Routes.

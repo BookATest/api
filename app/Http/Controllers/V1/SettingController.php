@@ -6,6 +6,7 @@ use App\Events\EndpointHit;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Setting\IndexRequest;
 use App\Http\Requests\Setting\UpdateRequest;
+use App\Models\File;
 use App\Models\Setting;
 use Illuminate\Support\Facades\DB;
 
@@ -27,9 +28,12 @@ class SettingController extends Controller
      */
     public function index(IndexRequest $request)
     {
+        $settings = Setting::getAll();
+        unset($settings[Setting::LOGO_FILE_ID]);
+
         event(EndpointHit::onRead($request, "Viewed settings"));
 
-        return response()->json(['data' => Setting::getAll()]);
+        return response()->json(['data' => $settings]);
     }
 
     /**
@@ -55,9 +59,6 @@ class SettingController extends Controller
                 'booking_appointment_overview_help_text' => (string)$request->language['booking_appointment_overview_help_text'],
             ]]);
 
-            Setting::findOrFail('logo_file_id')
-                ->update(['value' => $request->logo_file_id ? (string)$request->logo_file_id : null]);
-
             Setting::findOrFail('name')
                 ->update(['value' => (string)$request->name]);
 
@@ -66,10 +67,25 @@ class SettingController extends Controller
 
             Setting::findOrFail('secondary_colour')
                 ->update(['value' => (string)$request->secondary_colour]);
+
+            if ($request->has('logo')) {
+                $file = File::create([
+                    'filename' => 'organisation-logo.png',
+                    'mime_type' => File::MIME_PNG,
+                ]);
+
+                Setting::findOrFail('logo_file_id')
+                    ->update(['value' => $file->id]);
+
+                $file->uploadBase64EncodedImage($request->logo);
+            }
         });
+
+        $settings = Setting::getAll();
+        unset($settings[Setting::LOGO_FILE_ID]);
 
         event(EndpointHit::onUpdate($request, "Updated settings"));
 
-        return response()->json(['data' => Setting::getAll()]);
+        return response()->json(['data' => $settings]);
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Setting;
 
+use App\Rules\Base64EncodedPng;
 use App\Rules\HexColour;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -65,11 +66,8 @@ class UpdateRequest extends FormRequest
                 'required',
                 'string',
             ],
-            'logo_file_id' => [
-                'present',
-                'nullable',
-                'string',
-                'exists:files,id',
+            'logo' => [
+                new Base64EncodedPng(),
             ],
             'name' => [
                 'required',

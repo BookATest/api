@@ -21,7 +21,6 @@ class SettingResource extends BaseResource
                 Schema::string('booking_find_location_help_text'),
                 Schema::string('booking_appointment_overview_help_text')
             ),
-            Schema::string('logo_file_id')->format(Schema::UUID),
             Schema::string('name'),
             Schema::string('primary_colour'),
             Schema::string('secondary_colour')
