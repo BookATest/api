@@ -18,7 +18,7 @@ class BookingCancelledByUserSms extends Sms
         parent::__construct();
 
         $this->to = $appointment->serviceUser->phone;
-        $this->message = "Your appointment has been cancelled at {$appointment->start_at->format('')} by an admin.";
+        $this->message = "Your appointment has been cancelled at {$appointment->start_at->format('H:i')} by an admin.";
         $this->notification = $appointment->serviceUser->notifications()->create([
             'channel' => Notification::SMS,
             'recipient' => $appointment->serviceUser->phone,

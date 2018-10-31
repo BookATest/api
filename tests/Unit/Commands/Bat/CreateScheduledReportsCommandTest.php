@@ -5,7 +5,9 @@ namespace Tests\Unit\Commands\Bat;
 use App\Console\Commands\Bat\CreateScheduledReportsCommand;
 use App\Models\Report;
 use App\Models\ReportSchedule;
+use App\Notifications\Email\ServiceUser\ReportGeneratedEmail;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Queue;
 use Tests\TestCase;
 
 class CreateScheduledReportsCommandTest extends TestCase
@@ -51,5 +53,20 @@ class CreateScheduledReportsCommandTest extends TestCase
         $this->artisan(CreateScheduledReportsCommand::class);
 
         $this->assertEquals(0, Report::query()->count());
+    }
+
+    public function test_notification_sent_out_when_report_generated()
+    {
+        Queue::fake();
+
+        factory(ReportSchedule::class)->create([
+            'repeat_type' => ReportSchedule::WEEKLY,
+        ]);
+        $startAt = now()->startOfWeek();
+
+        Carbon::setTestNow($startAt);
+        $this->artisan(CreateScheduledReportsCommand::class);
+
+        Queue::assertPushed(ReportGeneratedEmail::class);
     }
 }

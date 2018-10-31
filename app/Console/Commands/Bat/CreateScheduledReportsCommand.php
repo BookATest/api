@@ -4,11 +4,15 @@ namespace App\Console\Commands\Bat;
 
 use App\Models\Report;
 use App\Models\ReportSchedule;
+use App\Notifications\Email\ServiceUser\ReportGeneratedEmail;
 use Illuminate\Console\Command;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Foundation\Bus\DispatchesJobs;
 
 class CreateScheduledReportsCommand extends Command
 {
+    use DispatchesJobs;
+
     const MONDAY = 1;
 
     /**
@@ -92,13 +96,16 @@ class CreateScheduledReportsCommand extends Command
 
         try {
             // Attempt to create.
-            Report::createAndUpload(
+            $report = Report::createAndUpload(
                 $reportSchedule->user,
                 $reportSchedule->clinic,
                 $reportSchedule->reportType,
                 now()->startOfWeek(),
                 now()->endOfWeek()
             );
+
+            // Send a notification.
+            $this->dispatch(new ReportGeneratedEmail($report, $reportSchedule));
 
             // Output success message.
             $this->info("Generated report for report schedule [$reportSchedule->id]");
@@ -129,13 +136,16 @@ class CreateScheduledReportsCommand extends Command
 
         try {
             // Attempt to create.
-            Report::createAndUpload(
+            $report = Report::createAndUpload(
                 $reportSchedule->user,
                 $reportSchedule->clinic,
                 $reportSchedule->reportType,
                 now()->startOfMonth(),
                 now()->endOfMonth()
             );
+
+            // Send a notification.
+            $this->dispatch(new ReportGeneratedEmail($report, $reportSchedule));
 
             // Output success message.
             $this->info("Generated report for report schedule [$reportSchedule->id]");

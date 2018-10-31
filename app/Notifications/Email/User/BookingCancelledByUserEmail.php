@@ -19,7 +19,7 @@ class BookingCancelledByUserEmail extends Email
 
         $this->to = $appointment->user->email;
         $this->subject = 'Booking Cancellation';
-        $this->message = "An appointment has been cancelled with {$appointment->clinic->name} at {$appointment->start_at->format('')}.";
+        $this->message = "An appointment has been cancelled with {$appointment->clinic->name} at {$appointment->start_at->format('H:i')}.";
         $this->notification = $appointment->user->notifications()->create([
             'channel' => Notification::EMAIL,
             'recipient' => $appointment->user->email,

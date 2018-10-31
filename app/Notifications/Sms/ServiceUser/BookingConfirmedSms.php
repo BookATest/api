@@ -18,7 +18,7 @@ class BookingConfirmedSms extends Sms
         parent::__construct();
 
         $this->to = $appointment->serviceUser->phone;
-        $this->message = "Your appointment has been booked with {$appointment->clinic->name} at {$appointment->start_at->format('')}.";
+        $this->message = "Your appointment has been booked with {$appointment->clinic->name} at {$appointment->start_at->format('H:i')}.";
         $this->notification = $appointment->serviceUser->notifications()->create([
             'channel' => Notification::SMS,
             'recipient' => $appointment->serviceUser->phone,
