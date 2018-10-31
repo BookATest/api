@@ -52,7 +52,16 @@ class AppServiceProvider extends ServiceProvider
 
         // IoC bindings.
         $this->app->singleton(\App\Contracts\EmailSender::class, \App\EmailSenders\LaravelEmailSender::class);
-        $this->app->singleton(\App\Contracts\SmsSender::class, \App\SmsSenders\LogSender::class);
+
+        switch (config('sms.driver')) {
+            case 'log':
+                $this->app->singleton(\App\Contracts\SmsSender::class, \App\SmsSenders\LogSender::class);
+                break;
+            case 'twilio':
+                $this->app->singleton(\App\Contracts\SmsSender::class, \App\SmsSenders\TwilioSender::class);
+                break;
+        }
+
         $this->app->singleton(\App\Contracts\Geocoder::class, \App\Geocoders\MockGeocoder::class);
     }
 
