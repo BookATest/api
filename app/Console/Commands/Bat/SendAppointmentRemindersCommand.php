@@ -3,7 +3,7 @@
 namespace App\Console\Commands\Bat;
 
 use App\Models\Appointment;
-use App\Notifications\Sms\AppointmentReminderSms;
+use App\Notifications\Sms\ServiceUser\AppointmentReminderSms;
 use Illuminate\Console\Command;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Bus\DispatchesJobs;

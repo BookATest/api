@@ -4,7 +4,7 @@ namespace App\Models;
 
 use App\Models\Mutators\UserMutators;
 use App\Models\Relationships\UserRelationships;
-use App\Notifications\Email\ForgottenPasswordEmail;
+use App\Notifications\Email\User\ForgottenPasswordEmail;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Auth\User as Authenticatable;

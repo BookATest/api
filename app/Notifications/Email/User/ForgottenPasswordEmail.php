@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Notifications\Email;
+namespace App\Notifications\Email\User;
 
 use App\Models\Notification;
 use App\Models\User;
+use App\Notifications\Email\Email;
 
 class ForgottenPasswordEmail extends Email
 {

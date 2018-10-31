@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Notifications\Sms;
+namespace App\Notifications\Sms\User;
 
 use App\Models\Notification;
 use App\Models\User;
+use App\Notifications\Sms\Sms;
 
 class OtpCodeSms extends Sms
 {

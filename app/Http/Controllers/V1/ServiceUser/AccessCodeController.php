@@ -7,7 +7,7 @@ use App\Events\EndpointHit;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ServiceUser\AccessCodeRequest;
 use App\Models\ServiceUser;
-use App\Notifications\Sms\AccessCodeSms;
+use App\Notifications\Sms\ServiceUser\AccessCodeSms;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 
 class AccessCodeController extends Controller

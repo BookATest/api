@@ -5,7 +5,7 @@ namespace Tests\Unit\Commands\Bat;
 use App\Console\Commands\Bat\SendAppointmentRemindersCommand;
 use App\Models\Appointment;
 use App\Models\ServiceUser;
-use App\Notifications\Sms\AppointmentReminderSms;
+use App\Notifications\Sms\ServiceUser\AppointmentReminderSms;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Queue;
 use Tests\TestCase;

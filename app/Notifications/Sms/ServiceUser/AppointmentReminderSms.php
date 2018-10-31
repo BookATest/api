@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Notifications\Sms;
+namespace App\Notifications\Sms\ServiceUser;
 
 use App\Models\Appointment;
 use App\Models\Notification;
+use App\Notifications\Sms\Sms;
 
 class AppointmentReminderSms extends Sms
 {

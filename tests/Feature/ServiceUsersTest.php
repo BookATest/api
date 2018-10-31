@@ -8,7 +8,7 @@ use App\Models\Audit;
 use App\Models\Clinic;
 use App\Models\ServiceUser;
 use App\Models\User;
-use App\Notifications\Sms\AccessCodeSms;
+use App\Notifications\Sms\ServiceUser\AccessCodeSms;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Queue;
 use Laravel\Passport\Passport;
