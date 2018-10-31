@@ -13,6 +13,7 @@ use App\Models\Appointment;
 use App\Models\Clinic;
 use App\Models\Question;
 use App\Models\ServiceUser;
+use App\Notifications\Email\ServiceUser\BookingConfirmedEmail;
 use App\Notifications\Sms\ServiceUser\BookingConfirmedSms;
 use App\Support\Coordinate;
 use App\Support\Postcode;
@@ -70,8 +71,12 @@ class BookingController extends Controller
                 }
             }
 
-            // Dispatch the booking notification.
+            // Dispatch the booking notifications.
             $this->dispatch(new BookingConfirmedSms($appointment));
+
+            if ($serviceUser->email) {
+                $this->dispatch(new BookingConfirmedEmail($appointment));
+            }
 
             return $appointment;
         });
