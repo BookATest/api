@@ -34,8 +34,6 @@ class CancelRequest extends FormRequest
      */
     public function rules()
     {
-        $serviceUser = $this->appointment->serviceUser;
-
         // For authenticated users.
         if ($this->user()) {
             return [
@@ -47,7 +45,7 @@ class CancelRequest extends FormRequest
         return [
             'service_user_token' => [
                 'required',
-                new ServiceUserTokenIsValid($serviceUser),
+                new ServiceUserTokenIsValid($this->appointment->serviceUser),
             ],
         ];
     }
