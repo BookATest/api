@@ -10,6 +10,7 @@ use App\Models\Clinic;
 use App\Models\ServiceUser;
 use App\Models\User;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Queue;
 use Laravel\Passport\Passport;
 use Tests\Support\ICal;
 use Tests\TestCase;
@@ -886,6 +887,30 @@ class AppointmentsTest extends TestCase
         $this->assertEventDispatched(EndpointHit::class, function (EndpointHit $event) {
             $this->assertEquals(Audit::UPDATE, $event->getAction());
         });
+    }
+
+    public function test_notifications_sent_when_cancelled_by_service_user()
+    {
+        Queue::fake();
+
+        $serviceUser = factory(ServiceUser::class)->create([
+            'phone' => '00000000000',
+            'email' => $this->faker->safeEmail,
+        ]);
+        $appointment = factory(Appointment::class)->create([
+            'service_user_id' => $serviceUser->id,
+            'booked_at' => now(),
+            'consented_at' => now(),
+        ]);
+
+        $response = $this->json('PUT', "/v1/appointments/{$appointment->id}/cancel", [
+            'service_user_token' => $serviceUser->generateToken(),
+        ]);
+
+        $response->assertStatus(Response::HTTP_OK);
+        Queue::assertPushed(\App\Notifications\Email\User\BookingCancelledByServiceUserEmail::class);
+        Queue::assertPushed(\App\Notifications\Email\ServiceUser\BookingCancelledByServiceUserEmail::class);
+        Queue::assertPushed(\App\Notifications\Sms\ServiceUser\BookingCancelledByServiceUserSms::class);
     }
 
     /*

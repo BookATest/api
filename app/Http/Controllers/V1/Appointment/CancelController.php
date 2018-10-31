@@ -18,8 +18,25 @@ class CancelController extends Controller
      */
     public function __invoke(CancelRequest $request, Appointment $appointment)
     {
-        $appointment = DB::transaction(function () use ($appointment) {
-            return $appointment->cancel();
+        $appointment = DB::transaction(function () use ($request, $appointment) {
+            $serviceUser = $appointment->serviceUser;
+
+            $appointment->cancel();
+
+            $serviceUserInitiated = $request->user() === null;
+
+            if ($serviceUserInitiated) {
+                $this->dispatch(new \App\Notifications\Email\User\BookingCancelledByServiceUserEmail($appointment));
+                $this->dispatch(new \App\Notifications\Sms\ServiceUser\BookingCancelledByServiceUserSms($appointment));
+
+                if ($serviceUser->email) {
+                    $this->dispatch(new \App\Notifications\Email\ServiceUser\BookingCancelledByServiceUserEmail($appointment));
+                }
+            } else {
+                //
+            }
+
+            return $appointment;
         });
 
         event(EndpointHit::onUpdate($request, "Cancelled appointment [{$appointment->id}]"));
