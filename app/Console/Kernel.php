@@ -3,6 +3,7 @@
 namespace App\Console;
 
 use App\Console\Commands\Bat\CreateRepeatingAppointmentsCommand;
+use App\Console\Commands\Bat\CreateScheduledReportsCommand;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -27,6 +28,9 @@ class Kernel extends ConsoleKernel
     {
         $schedule->command(CreateRepeatingAppointmentsCommand::class)
             ->dailyAt('00:00');
+
+        $schedule->command(CreateScheduledReportsCommand::class)
+            ->dailyAt('09:00');
     }
 
     /**

@@ -11,7 +11,6 @@ use App\Http\Resources\ReportScheduleResource;
 use App\Http\Responses\ResourceDeletedResponse;
 use App\Models\ReportSchedule;
 use App\Models\ReportType;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 use Spatie\QueryBuilder\Filter;

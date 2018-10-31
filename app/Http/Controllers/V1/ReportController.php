@@ -9,12 +9,10 @@ use App\Http\Requests\Report\ShowRequest;
 use App\Http\Requests\Report\StoreRequest;
 use App\Http\Resources\ReportResource;
 use App\Http\Responses\ResourceDeletedResponse;
-use App\Models\File;
+use App\Models\Clinic;
 use App\Models\Report;
 use App\Models\ReportType;
-use App\ReportGenerators\ReportGeneratorFactory;
 use Carbon\Carbon;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 use Spatie\QueryBuilder\Filter;
@@ -72,28 +70,13 @@ class ReportController extends Controller
     public function store(StoreRequest $request)
     {
         $report = DB::transaction(function () use ($request) {
-            // Create the file.
-            $file = File::create([
-                'filename' => "{$request->type}_{$request->start_at}-{$request->end_at}.xlsx",
-                'mime_type' => File::MIME_XLSX,
-            ]);
-
-            // Create the report model.
-            $report = Report::create([
-                'user_id' => $request->user()->id,
-                'file_id' => $file->id,
-                'clinic_id' => $request->clinic_id,
-                'report_type_id' => ReportType::findByName($request->type)->id,
-                'start_at' => Carbon::createFromFormat('Y-m-d', $request->start_at),
-                'end_at' => Carbon::createFromFormat('Y-m-d', $request->end_at),
-            ]);
-
-            // Generate the report.
-            $file->upload(
-                ReportGeneratorFactory::for($report)->generate()
+            return Report::createAndUpload(
+                $request->user(),
+                Clinic::find($request->clinic_id),
+                ReportType::findByName($request->type),
+                Carbon::createFromFormat('Y-m-d', $request->start_at),
+                Carbon::createFromFormat('Y-m-d', $request->end_at)
             );
-
-            return $report;
         });
 
         event(EndpointHit::onCreate($request, "Created report [$report->id]"));
