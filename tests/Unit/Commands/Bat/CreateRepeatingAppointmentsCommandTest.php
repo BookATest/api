@@ -85,6 +85,35 @@ class CreateRepeatingAppointmentsCommandTest extends TestCase
 
     public function test_appointments_not_duplicated()
     {
-        $this->markTestIncomplete();
+        $startDate = now()->startOfWeek();
+        Carbon::setTestNow($startDate);
+
+        $clinic = factory(Clinic::class)->create();
+        $user = factory(User::class)->create()->makeOrganisationAdmin();
+
+        /** @var \App\Models\AppointmentSchedule $appointmentSchedule */
+        $appointmentSchedule = AppointmentSchedule::create([
+            'user_id' => $user->id,
+            'clinic_id' => $clinic->id,
+            'weekly_on' => 1,
+            'weekly_at' => '12:00:00',
+        ]);
+
+        $appointmentSchedule->appointments()->create([
+            'user_id' => $appointmentSchedule->user_id,
+            'clinic_id' => $appointmentSchedule->clinic_id,
+            'appointment_schedule_id' => $appointmentSchedule->id,
+            'start_at' => $startDate->hour(12),
+        ]);
+
+        $appointmentSchedule->createAppointments(0);
+
+        $this->assertEquals(
+            1,
+            $appointmentSchedule->appointments()
+                ->where('appointment_schedule_id', '=', $appointmentSchedule->id)
+                ->where('start_at', '=', $startDate->hour(12)->toDateTimeString())
+                ->count()
+        );
     }
 }
