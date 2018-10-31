@@ -19,12 +19,16 @@ class CancelController extends Controller
     public function __invoke(CancelRequest $request, Appointment $appointment)
     {
         $appointment = DB::transaction(function () use ($request, $appointment) {
+            // Get the service user who originally booked to the appointment.
             $serviceUser = $appointment->serviceUser;
 
+            // Cancel the appointment.
             $appointment->cancel();
 
+            // Check if it was the service user who cancelled the appointment.
             $serviceUserInitiated = $request->user() === null;
 
+            // Send notifications depending on who made the cancellation.
             if ($serviceUserInitiated) {
                 $this->dispatch(new \App\Notifications\Email\User\BookingCancelledByServiceUserEmail($appointment));
                 $this->dispatch(new \App\Notifications\Sms\ServiceUser\BookingCancelledByServiceUserSms($appointment));
@@ -33,7 +37,12 @@ class CancelController extends Controller
                     $this->dispatch(new \App\Notifications\Email\ServiceUser\BookingCancelledByServiceUserEmail($appointment));
                 }
             } else {
-                //
+                $this->dispatch(new \App\Notifications\Email\User\BookingCancelledByUserEmail($appointment));
+                $this->dispatch(new \App\Notifications\Sms\ServiceUser\BookingCancelledByUserSms($appointment));
+
+                if ($serviceUser->email) {
+                    $this->dispatch(new \App\Notifications\Email\ServiceUser\BookingCancelledByUserEmail($appointment));
+                }
             }
 
             return $appointment;

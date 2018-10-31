@@ -913,6 +913,33 @@ class AppointmentsTest extends TestCase
         Queue::assertPushed(\App\Notifications\Sms\ServiceUser\BookingCancelledByServiceUserSms::class);
     }
 
+    public function test_notifications_sent_when_cancelled_by_user()
+    {
+        Queue::fake();
+
+        $clinic = factory(Clinic::class)->create();
+        $user = factory(User::class)->create()->makeOrganisationAdmin();
+        $serviceUser = factory(ServiceUser::class)->create([
+            'phone' => '00000000000',
+            'email' => $this->faker->safeEmail,
+        ]);
+        $appointment = factory(Appointment::class)->create([
+            'user_id' => $user->id,
+            'clinic_id' => $clinic,
+            'service_user_id' => $serviceUser->id,
+            'booked_at' => now(),
+            'consented_at' => now(),
+        ]);
+
+        Passport::actingAs($user);
+        $response = $this->json('PUT', "/v1/appointments/{$appointment->id}/cancel");
+
+        $response->assertStatus(Response::HTTP_OK);
+        Queue::assertPushed(\App\Notifications\Email\User\BookingCancelledByUserEmail::class);
+        Queue::assertPushed(\App\Notifications\Email\ServiceUser\BookingCancelledByUserEmail::class);
+        Queue::assertPushed(\App\Notifications\Sms\ServiceUser\BookingCancelledByUserSms::class);
+    }
+
     /*
      * Delete schedule.
      */
