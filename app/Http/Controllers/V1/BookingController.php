@@ -13,8 +13,9 @@ use App\Models\Appointment;
 use App\Models\Clinic;
 use App\Models\Question;
 use App\Models\ServiceUser;
-use App\Notifications\Email\ServiceUser\BookingConfirmedEmail;
-use App\Notifications\Sms\ServiceUser\BookingConfirmedSms;
+use App\Notifications\Email\ServiceUser\BookingConfirmedEmail as BookingConfirmedServiceUserEmail;
+use App\Notifications\Email\User\BookingConfirmedEmail as BookingConfirmedUserEmail;
+use App\Notifications\Sms\ServiceUser\BookingConfirmedSms as BookingConfirmedServiceUserSms;
 use App\Support\Coordinate;
 use App\Support\Postcode;
 use Illuminate\Database\Eloquent\Collection;
@@ -72,10 +73,11 @@ class BookingController extends Controller
             }
 
             // Dispatch the booking notifications.
-            $this->dispatch(new BookingConfirmedSms($appointment));
+            $this->dispatch(new BookingConfirmedUserEmail($appointment));
+            $this->dispatch(new BookingConfirmedServiceUserSms($appointment));
 
             if ($serviceUser->email) {
-                $this->dispatch(new BookingConfirmedEmail($appointment));
+                $this->dispatch(new BookingConfirmedServiceUserEmail($appointment));
             }
 
             return $appointment;

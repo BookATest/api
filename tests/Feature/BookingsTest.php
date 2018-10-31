@@ -8,7 +8,8 @@ use App\Models\Appointment;
 use App\Models\Clinic;
 use App\Models\EligibleAnswer;
 use App\Models\Question;
-use App\Notifications\Email\ServiceUser\BookingConfirmedEmail;
+use App\Notifications\Email\ServiceUser\BookingConfirmedEmail as BookingConfirmedServiceUserEmail;
+use App\Notifications\Email\User\BookingConfirmedEmail as BookingConfirmedUserEmail;
 use App\Notifications\Sms\ServiceUser\BookingConfirmedSms;
 use Illuminate\Http\Response;
 use Illuminate\Support\Carbon;
@@ -378,7 +379,46 @@ class BookingsTest extends TestCase
         ]);
 
         $response->assertStatus(Response::HTTP_CREATED);
-        Queue::assertPushed(BookingConfirmedEmail::class);
+        Queue::assertPushed(BookingConfirmedServiceUserEmail::class);
+    }
+
+    public function test_booking_email_notification_sent_to_community_worker_when_booked()
+    {
+        Queue::fake();
+
+        // Create the questions.
+        $selectQuestion = Question::createSelect('What sex are you?', 'Male', 'Female');
+
+        // Create the clinic.
+        $clinic = factory(Clinic::class)->create();
+
+        // Create the eligible answers for the clinic.
+        $clinic->eligibleAnswers()->create([
+            'question_id' => $selectQuestion->id,
+            'answer' => EligibleAnswer::parseSelectAnswer(['Male'], $selectQuestion),
+        ]);
+
+        // Create an appointment at the clinic.
+        $appointment = factory(Appointment::class)->create(['clinic_id' => $clinic->id]);
+
+        $response = $this->json('POST', '/v1/bookings', [
+            'appointment_id' => $appointment->id,
+            'service_user' => [
+                'name' => 'John Doe',
+                'phone' => '00000000000',
+                'email' => $this->faker->safeEmail,
+                'preferred_contact_method' => 'phone',
+            ],
+            'answers' => [
+                [
+                    'question_id' => $selectQuestion->id,
+                    'answer' => 'Male',
+                ],
+            ],
+        ]);
+
+        $response->assertStatus(Response::HTTP_CREATED);
+        Queue::assertPushed(BookingConfirmedUserEmail::class);
     }
 
     /*
@@ -422,7 +462,7 @@ class BookingsTest extends TestCase
         $response->assertJson(['data' => []]);
     }
 
-    public function test_uneligible_clinic_does_not_show_up()
+    public function test_ineligible_clinic_does_not_show_up()
     {
         // Create the questions.
         $selectQuestion = Question::createSelect('What sex are you?', 'Male', 'Female');
