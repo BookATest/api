@@ -13,6 +13,7 @@ use App\Models\Appointment;
 use App\Models\Clinic;
 use App\Models\Question;
 use App\Models\ServiceUser;
+use App\Notifications\Sms\ServiceUser\BookingConfirmedSms;
 use App\Support\Coordinate;
 use App\Support\Postcode;
 use Illuminate\Database\Eloquent\Collection;
@@ -68,6 +69,9 @@ class BookingController extends Controller
                         break;
                 }
             }
+
+            // Dispatch the booking notification.
+            $this->dispatch(new BookingConfirmedSms($appointment));
 
             return $appointment;
         });
