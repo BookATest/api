@@ -86,9 +86,9 @@ EOT;
                         ->properties(
                             Schema::string('question_id')->format(Schema::UUID),
                             Schema::object('answer')
-                                ->required('type', 'interval')
+                                ->required('comparison', 'interval')
                                 ->properties(
-                                    Schema::string('type'),
+                                    Schema::string('comparison')->enum('>', '<'),
                                     Schema::integer('interval')
                                 )
                         )
