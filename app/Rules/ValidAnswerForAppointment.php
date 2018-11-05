@@ -110,7 +110,7 @@ class ValidAnswerForAppointment implements Rule
         }
 
         try {
-            $answer = Carbon::createFromFormat(Carbon::ATOM, $answer);
+            $answer = Carbon::createFromFormat('Y-m-d', $answer);
         } catch (InvalidArgumentException $exception) {
             return false;
         }

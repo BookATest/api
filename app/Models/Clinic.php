@@ -134,7 +134,7 @@ class Clinic extends Model
     protected function dateIsEligible(string $answer, EligibleAnswer $eligibleAnswer): bool
     {
         try {
-            $answer = Carbon::createFromFormat(Carbon::ATOM, $answer);
+            $answer = Carbon::createFromFormat('Y-m-d', $answer);
         } catch (InvalidArgumentException $exception) {
             return false;
         }

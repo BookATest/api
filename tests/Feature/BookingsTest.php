@@ -72,7 +72,7 @@ class BookingsTest extends TestCase
                 ],
                 [
                     'question_id' => $dateQuestion->id,
-                    'answer' => now()->subYears(21)->toIso8601String(),
+                    'answer' => now()->subYears(21)->toDateString(),
                 ],
                 [
                     'question_id' => $textQuestion->id,
@@ -447,7 +447,7 @@ class BookingsTest extends TestCase
                 ],
                 [
                     'question_id' => $dateQuestion->id,
-                    'answer' => now()->subYears(21)->toIso8601String(),
+                    'answer' => now()->subYears(21)->toDateString(),
                 ],
                 [
                     'question_id' => $textQuestion->id,
@@ -523,7 +523,7 @@ class BookingsTest extends TestCase
                 ],
                 [
                     'question_id' => $dateQuestion->id,
-                    'answer' => now()->subYears(21)->toIso8601String(),
+                    'answer' => now()->subYears(21)->toDateString(),
                 ],
                 [
                     'question_id' => $textQuestion->id,

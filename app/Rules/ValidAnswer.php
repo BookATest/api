@@ -81,7 +81,7 @@ class ValidAnswer implements Rule
         }
 
         try {
-            Carbon::createFromFormat(Carbon::ATOM, $answer);
+            Carbon::createFromFormat('Y-m-d', $answer);
         } catch (InvalidArgumentException $exception) {
             return false;
         }
