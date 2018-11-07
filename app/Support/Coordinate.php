@@ -91,6 +91,8 @@ class Coordinate
     }
 
     /**
+     * Gets the distance to another coordinate in meters.
+     *
      * @param \App\Support\Coordinate $from
      * @return float
      */

@@ -123,6 +123,12 @@ class BookingController extends Controller
             return optional($clinic->coordinate())->distanceFrom($coordinate) ?? PHP_INT_MAX;
         })->values();
 
+        // Append the distance to the clinics.
+        $clinics->each(function (Clinic $clinic) use ($coordinate) {
+            $clinic->distance = optional($clinic->coordinate())->distanceFrom($coordinate) ?? null;
+            $clinic->append('distance');
+        });
+
         // Return the clinics.
         return ClinicResource::collection($clinics);
     }
