@@ -122,3 +122,19 @@ if (!function_exists('backend_uri')) {
         return $uri;
     }
 }
+
+if (!function_exists('single_space')) {
+    /**
+     * Removes duplicate spaces from a string.
+     *
+     * @param string $string
+     * @return string
+     */
+    function single_space(string $string): string
+    {
+        $string = preg_replace('!\s+!', ' ', $string);
+        $string = trim($string);
+        
+        return $string;
+    }
+}

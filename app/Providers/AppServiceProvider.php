@@ -62,7 +62,7 @@ class AppServiceProvider extends ServiceProvider
                 break;
         }
 
-        $this->app->singleton(\App\Contracts\Geocoder::class, \App\Geocoders\MockGeocoder::class);
+        $this->app->singleton(\App\Contracts\Geocoder::class, \App\Geocoders\GoogleGeocoder::class);
     }
 
     /**
