@@ -57,8 +57,8 @@ class AppointmentController extends Controller
                 Filter::scope('starts_after'),
                 Filter::scope('starts_before')
             )
-            ->defaultSort('-created_at')
-            ->allowedSorts('created_at')
+            ->defaultSort('start_at')
+            ->allowedSorts('start_at')
             ->paginate();
 
         event(EndpointHit::onRead($request, 'Listed all appointments'));

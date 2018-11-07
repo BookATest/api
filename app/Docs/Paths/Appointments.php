@@ -55,8 +55,8 @@ EOT;
                 ->description('The date and time to get appointments starting after'),
             Parameter::query('filter[starts_before]', Schema::string()->format(Schema::DATE_TIME))
                 ->description('The date and time to get appointments starting before'),
-            Parameter::query('sort', Schema::string()->default('-created_at'))
-                ->description('The field to sort the results by [`created_at`]')
+            Parameter::query('sort', Schema::string()->default('start_at'))
+                ->description('The field to sort the results by [`start_at`]')
         ];
 
         return Operation::get(...$responses)
