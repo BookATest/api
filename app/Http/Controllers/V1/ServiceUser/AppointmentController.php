@@ -34,8 +34,8 @@ class AppointmentController extends Controller
                 Filter::exact('clinic_id'),
                 Filter::scope('available')
             )
-            ->defaultSort('-created_at')
-            ->allowedSorts('created_at')
+            ->defaultSort('start_at')
+            ->allowedSorts('start_at')
             ->paginate();
 
         event(EndpointHit::onRead($request, "Listed appointments for service user [$serviceUser->id]"));
