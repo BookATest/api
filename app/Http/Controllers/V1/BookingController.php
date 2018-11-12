@@ -76,7 +76,7 @@ class BookingController extends Controller
             $this->dispatch(new BookingConfirmedUserEmail($appointment));
             $this->dispatch(new BookingConfirmedServiceUserSms($appointment));
 
-            if ($serviceUser->email) {
+            if (in_array($serviceUser->preferred_contact_method, [ServiceUser::EMAIL, ServiceUser::BOTH])) {
                 $this->dispatch(new BookingConfirmedServiceUserEmail($appointment));
             }
 

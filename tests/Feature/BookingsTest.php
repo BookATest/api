@@ -8,7 +8,9 @@ use App\Models\Appointment;
 use App\Models\Clinic;
 use App\Models\EligibleAnswer;
 use App\Models\Question;
+use App\Models\ServiceUser;
 use App\Notifications\Email\ServiceUser\BookingConfirmedEmail as BookingConfirmedServiceUserEmail;
+use App\Notifications\Email\ServiceUser\BookingConfirmedEmail;
 use App\Notifications\Email\User\BookingConfirmedEmail as BookingConfirmedUserEmail;
 use App\Notifications\Sms\ServiceUser\BookingConfirmedSms;
 use Illuminate\Http\Response;
@@ -368,7 +370,7 @@ class BookingsTest extends TestCase
                 'name' => 'John Doe',
                 'phone' => '00000000000',
                 'email' => $this->faker->safeEmail,
-                'preferred_contact_method' => 'phone',
+                'preferred_contact_method' => ServiceUser::EMAIL,
             ],
             'answers' => [
                 [
@@ -419,6 +421,46 @@ class BookingsTest extends TestCase
 
         $response->assertStatus(Response::HTTP_CREATED);
         Queue::assertPushed(BookingConfirmedUserEmail::class);
+    }
+
+    public function test_booking_sms_and_email_notification_sent_when_preferred_contact_method_is_both()
+    {
+        Queue::fake();
+
+        // Create the questions.
+        $selectQuestion = Question::createSelect('What sex are you?', 'Male', 'Female');
+
+        // Create the clinic.
+        $clinic = factory(Clinic::class)->create();
+
+        // Create the eligible answers for the clinic.
+        $clinic->eligibleAnswers()->create([
+            'question_id' => $selectQuestion->id,
+            'answer' => EligibleAnswer::parseSelectAnswer(['Male'], $selectQuestion),
+        ]);
+
+        // Create an appointment at the clinic.
+        $appointment = factory(Appointment::class)->create(['clinic_id' => $clinic->id]);
+
+        $response = $this->json('POST', '/v1/bookings', [
+            'appointment_id' => $appointment->id,
+            'service_user' => [
+                'name' => 'John Doe',
+                'phone' => '00000000000',
+                'email' => $this->faker->safeEmail,
+                'preferred_contact_method' => ServiceUser::BOTH,
+            ],
+            'answers' => [
+                [
+                    'question_id' => $selectQuestion->id,
+                    'answer' => 'Male',
+                ],
+            ],
+        ]);
+
+        $response->assertStatus(Response::HTTP_CREATED);
+        Queue::assertPushed(BookingConfirmedSms::class);
+        Queue::assertPushed(BookingConfirmedEmail::class);
     }
 
     /*

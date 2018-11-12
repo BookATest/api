@@ -42,7 +42,7 @@ class Bookings
                             Schema::string('name'),
                             Schema::string('phone'),
                             Schema::string('email'),
-                            Schema::string('preferred_contact_method')->enum('email', 'phone')
+                            Schema::string('preferred_contact_method')->enum('email', 'phone', 'both')
                         ),
                     Schema::array('answers')->items(Schema::object()
                         ->required('question_id', 'answer')

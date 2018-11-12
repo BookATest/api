@@ -36,6 +36,7 @@ class StoreRequest extends FormRequest
 
         if (is_string($email)) {
             $preferredContactMethods[] = 'email';
+            $preferredContactMethods[] = 'both';
         }
 
         return [

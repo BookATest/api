@@ -13,6 +13,7 @@ class ServiceUser extends Model
 
     const PHONE = 'phone';
     const EMAIL = 'email';
+    const BOTH = 'both';
 
     const CACHE_KEY_FOR_ACCESS_CODE = 'ServiceUser::AccessCode::%s';
     const CACHE_KEY_FOR_TOKEN = 'ServiceUser::Token::%s';

@@ -16,7 +16,7 @@ class ServiceUserResource extends BaseResource
             Schema::string('name'),
             Schema::string('phone'),
             Schema::string('email'),
-            Schema::string('preferred_contact_method')->enum('phone', 'email'),
+            Schema::string('preferred_contact_method')->enum('phone', 'email', 'both'),
             Schema::string('created_at')->format('date-time'),
             Schema::string('updated_at')->format('date-time')
         );
