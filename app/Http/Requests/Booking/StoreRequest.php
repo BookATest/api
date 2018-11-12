@@ -29,6 +29,7 @@ class StoreRequest extends FormRequest
      */
     public function rules()
     {
+        // Only allow email if the user has provided an email.
         $preferredContactMethods = ['phone'];
         $serviceUser = $this->get('service_user', []);
         $email = $serviceUser['email'] ?? null;
