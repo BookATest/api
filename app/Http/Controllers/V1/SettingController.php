@@ -52,15 +52,81 @@ class SettingController extends Controller
                 ->update(['value' => (int)$request->default_appointment_duration]);
 
             Setting::findOrFail('language')->update(['value' => [
-                'booking_questions_help_text' => (string)$request->language['booking_questions_help_text'],
-                'booking_notification_help_text' => (string)$request->language['booking_notification_help_text'],
-                'booking_enter_details_help_text' => (string)$request->language['booking_enter_details_help_text'],
-                'booking_find_location_help_text' => (string)$request->language['booking_find_location_help_text'],
-                'booking_appointment_overview_help_text' => (string)$request->language['booking_appointment_overview_help_text'],
+                'home' => [
+                    'title' => (string)$request->language['home']['title'],
+                    'content' => (string)$request->language['home']['content'] ?: null,
+                ],
+                'make-booking' => [
+                    'introduction' => [
+                        'title' => (string)$request->language['make-booking']['introduction']['title'],
+                        'content' => (string)$request->language['make-booking']['introduction']['content'] ?: null,
+                    ],
+                    'questions' => [
+                        'title' => (string)$request->language['make-booking']['questions']['title'],
+                        'content' => (string)$request->language['make-booking']['questions']['content'] ?: null,
+                    ],
+                    'location' => [
+                        'title' => (string)$request->language['make-booking']['location']['title'],
+                        'content' => (string)$request->language['make-booking']['location']['content'] ?: null,
+                    ],
+                    'clinics' => [
+                        'title' => (string)$request->language['make-booking']['clinics']['title'],
+                        'content' => (string)$request->language['make-booking']['clinics']['content'] ?: null,
+                    ],
+                    'appointments' => [
+                        'title' => (string)$request->language['make-booking']['appointments']['title'],
+                        'content' => (string)$request->language['make-booking']['appointments']['content'] ?: null,
+                    ],
+                    'user-details' => [
+                        'title' => (string)$request->language['make-booking']['user-details']['title'],
+                        'content' => (string)$request->language['make-booking']['user-details']['content'] ?: null,
+                    ],
+                    'consent' => [
+                        'title' => (string)$request->language['make-booking']['consent']['title'],
+                        'content' => (string)$request->language['make-booking']['consent']['content'] ?: null,
+                    ],
+                    'overview' => [
+                        'title' => (string)$request->language['make-booking']['overview']['title'],
+                        'content' => (string)$request->language['make-booking']['overview']['content'] ?: null,
+                    ],
+                    'confirmation' => [
+                        'title' => (string)$request->language['make-booking']['confirmation']['title'],
+                        'content' => (string)$request->language['make-booking']['confirmation']['content'] ?: null,
+                    ],
+                ],
+                'list-bookings' => [
+                    'access-code' => [
+                        'title' => (string)$request->language['list-bookings']['access-code']['title'],
+                        'content' => (string)$request->language['list-bookings']['access-code']['content'] ?: null,
+                    ],
+                    'token' => [
+                        'title' => (string)$request->language['list-bookings']['token']['title'],
+                        'content' => (string)$request->language['list-bookings']['token']['content'] ?: null,
+                    ],
+                    'appointments' => [
+                        'title' => (string)$request->language['list-bookings']['appointments']['title'],
+                        'content' => (string)$request->language['list-bookings']['appointments']['content'] ?: null,
+                        'disclaimer' => (string)$request->language['list-bookings']['appointments']['disclaimer'],
+                    ],
+                    'appointments.cancel' => [
+                        'title' => (string)$request->language['list-bookings']['appointments.cancel']['title'],
+                        'content' => (string)$request->language['list-bookings']['appointments.cancel']['content'] ?: null,
+                    ],
+                    'token-expired' => [
+                        'title' => (string)$request->language['list-bookings']['token-expired']['title'],
+                        'content' => (string)$request->language['list-bookings']['token-expired']['content'] ?: null,
+                    ],
+                ],
             ]]);
 
             Setting::findOrFail('name')
                 ->update(['value' => (string)$request->name]);
+
+            Setting::findOrFail('email')
+                ->update(['value' => (string)$request->email]);
+
+            Setting::findOrFail('phone')
+                ->update(['value' => (string)$request->phone]);
 
             Setting::findOrFail('primary_colour')
                 ->update(['value' => (string)$request->primary_colour]);

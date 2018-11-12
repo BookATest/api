@@ -3,7 +3,6 @@
 namespace Tests\Feature;
 
 use App\Models\Clinic;
-use App\Models\Setting;
 use App\Models\User;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Storage;
@@ -23,15 +22,37 @@ class SettingsTest extends TestCase
         $response = $this->json('GET', '/v1/settings');
 
         $response->assertStatus(Response::HTTP_OK);
-        $response->assertJson([
+        $response->assertJsonStructure([
             'data' => [
-                'default_appointment_booking_threshold' => Setting::getValue('default_appointment_booking_threshold'),
-                'default_appointment_duration' => Setting::getValue('default_appointment_duration'),
-                'language' => Setting::getValue('language'),
-                'name' => Setting::getValue('name'),
-                'primary_colour' => Setting::getValue('primary_colour'),
-                'secondary_colour' => Setting::getValue('secondary_colour'),
-                'styles' => '',
+                'default_appointment_booking_threshold',
+                'default_appointment_duration',
+                'language' => [
+                    'home' => ['title', 'content'],
+                    'make-booking' => [
+                        'introduction' => ['title', 'content'],
+                        'questions' => ['title', 'content'],
+                        'location' => ['title', 'content'],
+                        'clinics' => ['title', 'content'],
+                        'appointments' => ['title', 'content'],
+                        'user-details' => ['title', 'content'],
+                        'consent' => ['title', 'content'],
+                        'overview' => ['title', 'content'],
+                        'confirmation' => ['title', 'content'],
+                    ],
+                    'list-bookings' => [
+                        'access-code' => ['title', 'content'],
+                        'token' => ['title', 'content'],
+                        'appointments' => ['title', 'content', 'disclaimer'],
+                        'appointments.cancel' => ['title', 'content'],
+                        'token-expired' => ['title', 'content'],
+                    ],
+                ],
+                'name',
+                'email',
+                'phone',
+                'primary_colour',
+                'secondary_colour',
+                'styles',
             ]
         ]);
     }
@@ -78,13 +99,29 @@ class SettingsTest extends TestCase
             'default_appointment_booking_threshold' => 100,
             'default_appointment_duration' => 10,
             'language' => [
-                'booking_questions_help_text' => 'Test 1',
-                'booking_notification_help_text' => 'Test 2',
-                'booking_enter_details_help_text' => 'Test 3',
-                'booking_find_location_help_text' => 'Test 4',
-                'booking_appointment_overview_help_text' => 'Test 5',
+                'home' => ['title' => 'Lorem', 'content' => 'Lorem'],
+                'make-booking' => [
+                    'introduction' => ['title' => 'Lorem', 'content' => 'Lorem'],
+                    'questions' => ['title' => 'Lorem', 'content' => 'Lorem'],
+                    'location' => ['title' => 'Lorem', 'content' => 'Lorem'],
+                    'clinics' => ['title' => 'Lorem', 'content' => 'Lorem'],
+                    'appointments' => ['title' => 'Lorem', 'content' => 'Lorem'],
+                    'user-details' => ['title' => 'Lorem', 'content' => 'Lorem'],
+                    'consent' => ['title' => 'Lorem', 'content' => 'Lorem'],
+                    'overview' => ['title' => 'Lorem', 'content' => 'Lorem'],
+                    'confirmation' => ['title' => 'Lorem', 'content' => 'Lorem'],
+                ],
+                'list-bookings' => [
+                    'access-code' => ['title' => 'Lorem', 'content' => 'Lorem'],
+                    'token' => ['title' => 'Lorem', 'content' => 'Lorem'],
+                    'appointments' => ['title' => 'Lorem', 'content' => 'Lorem', 'disclaimer' => 'Lorem'],
+                    'appointments.cancel' => ['title' => 'Lorem', 'content' => 'Lorem'],
+                    'token-expired' => ['title' => 'Lorem', 'content' => 'Lorem'],
+                ],
             ],
             'name' => 'PHPUnit Test',
+            'email' => 'info@example.com',
+            'phone' => '00000000000',
             'primary_colour' => '#ffffff',
             'secondary_colour' => '#000000',
             'styles' => '* { display: none; }',
@@ -96,13 +133,29 @@ class SettingsTest extends TestCase
                 'default_appointment_booking_threshold' => 100,
                 'default_appointment_duration' => 10,
                 'language' => [
-                    'booking_questions_help_text' => 'Test 1',
-                    'booking_notification_help_text' => 'Test 2',
-                    'booking_enter_details_help_text' => 'Test 3',
-                    'booking_find_location_help_text' => 'Test 4',
-                    'booking_appointment_overview_help_text' => 'Test 5',
+                    'home' => ['title' => 'Lorem', 'content' => 'Lorem'],
+                    'make-booking' => [
+                        'introduction' => ['title' => 'Lorem', 'content' => 'Lorem'],
+                        'questions' => ['title' => 'Lorem', 'content' => 'Lorem'],
+                        'location' => ['title' => 'Lorem', 'content' => 'Lorem'],
+                        'clinics' => ['title' => 'Lorem', 'content' => 'Lorem'],
+                        'appointments' => ['title' => 'Lorem', 'content' => 'Lorem'],
+                        'user-details' => ['title' => 'Lorem', 'content' => 'Lorem'],
+                        'consent' => ['title' => 'Lorem', 'content' => 'Lorem'],
+                        'overview' => ['title' => 'Lorem', 'content' => 'Lorem'],
+                        'confirmation' => ['title' => 'Lorem', 'content' => 'Lorem'],
+                    ],
+                    'list-bookings' => [
+                        'access-code' => ['title' => 'Lorem', 'content' => 'Lorem'],
+                        'token' => ['title' => 'Lorem', 'content' => 'Lorem'],
+                        'appointments' => ['title' => 'Lorem', 'content' => 'Lorem', 'disclaimer' => 'Lorem'],
+                        'appointments.cancel' => ['title' => 'Lorem', 'content' => 'Lorem'],
+                        'token-expired' => ['title' => 'Lorem', 'content' => 'Lorem'],
+                    ],
                 ],
                 'name' => 'PHPUnit Test',
+                'email' => 'info@example.com',
+                'phone' => '00000000000',
                 'primary_colour' => '#ffffff',
                 'secondary_colour' => '#000000',
                 'styles' => '* { display: none; }',
@@ -119,13 +172,29 @@ class SettingsTest extends TestCase
             'default_appointment_booking_threshold' => 100,
             'default_appointment_duration' => 10,
             'language' => [
-                'booking_questions_help_text' => 'Test 1',
-                'booking_notification_help_text' => 'Test 2',
-                'booking_enter_details_help_text' => 'Test 3',
-                'booking_find_location_help_text' => 'Test 4',
-                'booking_appointment_overview_help_text' => 'Test 5',
+                'home' => ['title' => 'Lorem', 'content' => 'Lorem'],
+                'make-booking' => [
+                    'introduction' => ['title' => 'Lorem', 'content' => 'Lorem'],
+                    'questions' => ['title' => 'Lorem', 'content' => 'Lorem'],
+                    'location' => ['title' => 'Lorem', 'content' => 'Lorem'],
+                    'clinics' => ['title' => 'Lorem', 'content' => 'Lorem'],
+                    'appointments' => ['title' => 'Lorem', 'content' => 'Lorem'],
+                    'user-details' => ['title' => 'Lorem', 'content' => 'Lorem'],
+                    'consent' => ['title' => 'Lorem', 'content' => 'Lorem'],
+                    'overview' => ['title' => 'Lorem', 'content' => 'Lorem'],
+                    'confirmation' => ['title' => 'Lorem', 'content' => 'Lorem'],
+                ],
+                'list-bookings' => [
+                    'access-code' => ['title' => 'Lorem', 'content' => 'Lorem'],
+                    'token' => ['title' => 'Lorem', 'content' => 'Lorem'],
+                    'appointments' => ['title' => 'Lorem', 'content' => 'Lorem', 'disclaimer' => 'Lorem'],
+                    'appointments.cancel' => ['title' => 'Lorem', 'content' => 'Lorem'],
+                    'token-expired' => ['title' => 'Lorem', 'content' => 'Lorem'],
+                ],
             ],
             'name' => 'PHPUnit Test',
+            'email' => 'info@example.com',
+            'phone' => '00000000000',
             'primary_colour' => '#ffffff',
             'secondary_colour' => '#000000',
             'logo' => static::BASE64_PNG,

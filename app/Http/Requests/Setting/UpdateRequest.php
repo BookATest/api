@@ -4,6 +4,7 @@ namespace App\Http\Requests\Setting;
 
 use App\Rules\Base64EncodedPng;
 use App\Rules\HexColour;
+use App\Rules\UkPhoneNumber;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateRequest extends FormRequest
@@ -29,7 +30,7 @@ class UpdateRequest extends FormRequest
      */
     public function rules()
     {
-        return [
+        return array_merge([
             'default_appointment_booking_threshold' => [
                 'required',
                 'integer',
@@ -42,36 +43,22 @@ class UpdateRequest extends FormRequest
                 'min:1',
                 'max:1440',
             ],
-            'language' => [
-                'required',
-                'array',
-            ],
-            'language.booking_questions_help_text' => [
-                'required',
-                'string',
-            ],
-            'language.booking_notification_help_text' => [
-                'required',
-                'string',
-            ],
-            'language.booking_enter_details_help_text' => [
-                'required',
-                'string',
-            ],
-            'language.booking_find_location_help_text' => [
-                'required',
-                'string',
-            ],
-            'language.booking_appointment_overview_help_text' => [
-                'required',
-                'string',
-            ],
             'logo' => [
                 new Base64EncodedPng(),
             ],
             'name' => [
                 'required',
                 'string',
+            ],
+            'email' => [
+                'required',
+                'string',
+                'email',
+            ],
+            'phone' => [
+                'required',
+                'string',
+                new UkPhoneNumber(),
             ],
             'primary_colour' => [
                 'required',
@@ -84,6 +71,174 @@ class UpdateRequest extends FormRequest
                 new HexColour(),
             ],
             'styles' => [
+                'present',
+                'nullable',
+                'string',
+            ],
+        ], $this->languageRules());
+    }
+
+    /**
+     * @return array
+     */
+    protected function languageRules(): array
+    {
+        return [
+            'language' => [
+                'required',
+                'array',
+            ],
+
+            'language.home.title' => [
+                'required',
+                'string',
+            ],
+            'language.home.content' => [
+                'present',
+                'nullable',
+                'string',
+            ],
+
+
+            'language.make-booking.introduction.title' => [
+                'required',
+                'string',
+            ],
+            'language.make-booking.introduction.content' => [
+                'present',
+                'nullable',
+                'string',
+            ],
+
+            'language.make-booking.questions.title' => [
+                'required',
+                'string',
+            ],
+            'language.make-booking.questions.content' => [
+                'present',
+                'nullable',
+                'string',
+            ],
+
+            'language.make-booking.location.title' => [
+                'required',
+                'string',
+            ],
+            'language.make-booking.location.content' => [
+                'present',
+                'nullable',
+                'string',
+            ],
+
+            'language.make-booking.clinics.title' => [
+                'required',
+                'string',
+            ],
+            'language.make-booking.clinics.content' => [
+                'present',
+                'nullable',
+                'string',
+            ],
+
+            'language.make-booking.appointments.title' => [
+                'required',
+                'string',
+            ],
+            'language.make-booking.appointments.content' => [
+                'present',
+                'nullable',
+                'string',
+            ],
+
+            'language.make-booking.user-details.title' => [
+                'required',
+                'string',
+            ],
+            'language.make-booking.user-details.content' => [
+                'present',
+                'nullable',
+                'string',
+            ],
+
+            'language.make-booking.consent.title' => [
+                'required',
+                'string',
+            ],
+            'language.make-booking.consent.content' => [
+                'present',
+                'nullable',
+                'string',
+            ],
+
+            'language.make-booking.overview.title' => [
+                'required',
+                'string',
+            ],
+            'language.make-booking.overview.content' => [
+                'present',
+                'nullable',
+                'string',
+            ],
+
+            'language.make-booking.confirmation.title' => [
+                'required',
+                'string',
+            ],
+            'language.make-booking.confirmation.content' => [
+                'present',
+                'nullable',
+                'string',
+            ],
+
+            'language.list-bookings.access-code.title' => [
+                'required',
+                'string',
+            ],
+            'language.list-bookings.access-code.content' => [
+                'present',
+                'nullable',
+                'string',
+            ],
+
+            'language.list-bookings.token.title' => [
+                'required',
+                'string',
+            ],
+            'language.list-bookings.token.content' => [
+                'present',
+                'nullable',
+                'string',
+            ],
+
+            'language.list-bookings.appointments.title' => [
+                'required',
+                'string',
+            ],
+            'language.list-bookings.appointments.content' => [
+                'present',
+                'nullable',
+                'string',
+            ],
+            'language.list-bookings.appointments.disclaimer' => [
+                'required',
+                'string',
+            ],
+
+            'language.list-bookings.appointments\.cancel.title' => [
+                'required',
+                'string',
+            ],
+            'language.list-bookings.appointments\.cancel.content' => [
+                'present',
+                'nullable',
+                'string',
+            ],
+
+            'language.list-bookings.token-expired.title' => [
+                'required',
+                'string',
+            ],
+            'language.list-bookings.token-expired.content' => [
                 'present',
                 'nullable',
                 'string',
