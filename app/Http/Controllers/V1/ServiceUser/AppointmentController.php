@@ -34,6 +34,12 @@ class AppointmentController extends Controller
                 Filter::exact('clinic_id'),
                 Filter::scope('available')
             )
+            ->allowedAppends(
+                'user_first_name',
+                'user_last_name',
+                'user_email',
+                'user_phone'
+            )
             ->defaultSort('start_at')
             ->allowedSorts('start_at')
             ->paginate();

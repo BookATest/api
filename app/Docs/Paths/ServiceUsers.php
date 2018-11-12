@@ -180,6 +180,8 @@ EOT;
                 ->description('Comma separated clinic IDs'),
             Parameter::query('filter[available]', Schema::boolean())
                 ->description('If only available appointments should be returned. If the user is not authenticated, then they can only see appointments which are available'),
+            Parameter::query('append', Schema::string())
+                ->description('Comma separated fields to append [`user_first_name`, `user_last_name`, `user_email`, `user_phone`]'),
             Parameter::query('sort', Schema::string()->default('start_at'))
                 ->description('The field to sort the results by [`start_at`]')
         ];
