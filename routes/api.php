@@ -96,6 +96,8 @@ Route::prefix('v1')->namespace('V1')->group(function () {
         ->name('settings.update');
     Route::get('settings/logo.png', 'Setting\\LogoController')
         ->name('settings.logo');
+    Route::get('settings/styles.css', 'Setting\\StylesController')
+        ->name('settings.styles');
 
     /*
      * Stat Routes.

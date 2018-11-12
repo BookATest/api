@@ -109,4 +109,22 @@ class Settings
             ->operationId('settings.logo')
             ->tags(Tags::settings()->name);
     }
+
+    /**
+     * @return \GoldSpecDigital\ObjectOrientedOAS\Objects\Operation
+     */
+    public static function styles(): Operation
+    {
+        $responses = [
+            Responses::http200(
+                MediaType::create('text/css', Schema::string())
+            ),
+        ];
+
+        return Operation::get(...$responses)
+            ->summary('Get the custom CSS')
+            ->description('**Permission:** `Open`')
+            ->operationId('settings.styles')
+            ->tags(Tags::settings()->name);
+    }
 }

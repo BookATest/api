@@ -68,6 +68,9 @@ class SettingController extends Controller
             Setting::findOrFail('secondary_colour')
                 ->update(['value' => (string)$request->secondary_colour]);
 
+            Setting::findOrFail('styles')
+                ->update(['value' => (string)$request->styles]);
+
             if ($request->has('logo')) {
                 $file = File::create([
                     'filename' => 'organisation-logo.png',

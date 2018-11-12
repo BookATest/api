@@ -31,6 +31,7 @@ class SettingsTest extends TestCase
                 'name' => Setting::getValue('name'),
                 'primary_colour' => Setting::getValue('primary_colour'),
                 'secondary_colour' => Setting::getValue('secondary_colour'),
+                'styles' => '',
             ]
         ]);
     }
@@ -86,6 +87,7 @@ class SettingsTest extends TestCase
             'name' => 'PHPUnit Test',
             'primary_colour' => '#ffffff',
             'secondary_colour' => '#000000',
+            'styles' => '* { display: none; }',
         ]);
 
         $response->assertStatus(Response::HTTP_OK);
@@ -103,6 +105,7 @@ class SettingsTest extends TestCase
                 'name' => 'PHPUnit Test',
                 'primary_colour' => '#ffffff',
                 'secondary_colour' => '#000000',
+                'styles' => '* { display: none; }',
             ]
         ]);
     }
@@ -126,6 +129,7 @@ class SettingsTest extends TestCase
             'primary_colour' => '#ffffff',
             'secondary_colour' => '#000000',
             'logo' => static::BASE64_PNG,
+            'styles' => '',
         ]);
 
         $response->assertStatus(Response::HTTP_OK);
@@ -154,5 +158,19 @@ class SettingsTest extends TestCase
             Storage::disk('local')->get('placeholders/organisation-logo.png'),
             $response->getContent()
         );
+    }
+
+    /*
+     * View custom CSS.
+     */
+
+    public function test_guest_can_view_styles()
+    {
+        $response = $this->get('/v1/settings/styles.css');
+
+        $response->assertStatus(Response::HTTP_OK);
+        $response->assertHeader('Content-Type', 'text/css; charset=UTF-8');
+        $content = $response->getContent();
+        $this->assertEquals('', $content);
     }
 }

@@ -122,6 +122,7 @@ class OpenApi
             PathItem::create('/service-users/token/{token}', ServiceUsers::showToken()),
             PathItem::create('/settings', Settings::index(), Settings::update()),
             PathItem::create('/settings/logo.png', Settings::logo()),
+            PathItem::create('/settings/styles.css', Settings::styles()),
             PathItem::create('/stats', Stats::index()),
             PathItem::create('/users', Users::index(), Users::store()),
             PathItem::create('/users/user', Users::user()),

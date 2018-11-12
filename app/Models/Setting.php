@@ -20,6 +20,7 @@ class Setting extends Model
     const NAME = 'name';
     const PRIMARY_COLOUR = 'primary_colour';
     const SECONDARY_COLOUR = 'secondary_colour';
+    const STYLES = 'styles';
 
     /**
      * @var string The primary key of the table.

@@ -83,6 +83,11 @@ class UpdateRequest extends FormRequest
                 'string',
                 new HexColour(),
             ],
+            'styles' => [
+                'present',
+                'nullable',
+                'string',
+            ],
         ];
     }
 }

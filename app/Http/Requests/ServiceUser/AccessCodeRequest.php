@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\ServiceUser;
 
+use App\Rules\UkPhoneNumber;
 use Illuminate\Foundation\Http\FormRequest;
 
 class AccessCodeRequest extends FormRequest
@@ -26,9 +27,7 @@ class AccessCodeRequest extends FormRequest
         return [
             'phone' => [
                 'required',
-                'string',
-                'min:1',
-                'max:255',
+                new UkPhoneNumber(),
             ],
         ];
     }
