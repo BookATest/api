@@ -1,0 +1,15 @@
+if: tag IS blank
+branches:
+  only:
+    - master
+    - develop
+
+sudo: required
+services:
+  - docker
+
+before_script:
+  - ./develop up -d
+
+script:
+  - ./develop phpunit
