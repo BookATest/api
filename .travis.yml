@@ -9,6 +9,7 @@ services:
   - docker
 
 before_script:
+  - ./develop build
   - ./develop up -d
 
 script:
