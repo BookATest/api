@@ -19,11 +19,11 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        $this->createClinics(2);
+        $this->createClinics(10);
 
-        $this->createUsers(6);
+        $this->createUsers(30);
 
-        foreach (range(0, 30) as $daysToAdd) {
+        foreach (range(0, 6) as $daysToAdd) {
             $this->createAppointments(3, today()->addDays($daysToAdd));
         }
 
