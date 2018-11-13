@@ -224,11 +224,21 @@ class UpdateRequest extends FormRequest
                 'string',
             ],
 
-            'language.list-bookings.appointments\.cancel.title' => [
+            'language.list-bookings.cancel.title' => [
                 'required',
                 'string',
             ],
-            'language.list-bookings.appointments\.cancel.content' => [
+            'language.list-bookings.cancel.content' => [
+                'present',
+                'nullable',
+                'string',
+            ],
+
+            'language.list-bookings.cancelled.title' => [
+                'required',
+                'string',
+            ],
+            'language.list-bookings.cancelled.content' => [
                 'present',
                 'nullable',
                 'string',

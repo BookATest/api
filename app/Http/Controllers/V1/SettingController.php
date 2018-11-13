@@ -108,9 +108,13 @@ class SettingController extends Controller
                         'content' => (string)$request->language['list-bookings']['appointments']['content'] ?: null,
                         'disclaimer' => (string)$request->language['list-bookings']['appointments']['disclaimer'],
                     ],
-                    'appointments.cancel' => [
-                        'title' => (string)$request->language['list-bookings']['appointments.cancel']['title'],
-                        'content' => (string)$request->language['list-bookings']['appointments.cancel']['content'] ?: null,
+                    'cancel' => [
+                        'title' => (string)$request->language['list-bookings']['cancel']['title'],
+                        'content' => (string)$request->language['list-bookings']['cancel']['content'] ?: null,
+                    ],
+                    'cancelled' => [
+                        'title' => (string)$request->language['list-bookings']['cancelled']['title'],
+                        'content' => (string)$request->language['list-bookings']['cancelled']['content'] ?: null,
                     ],
                     'token-expired' => [
                         'title' => (string)$request->language['list-bookings']['token-expired']['title'],

@@ -67,10 +67,14 @@ class UpdateLanguageObjectInSettingsTable extends MigrationSeeder
                 'appointments' => [
                     'title' => 'Booked appointments',
                     'content' => 'Lorem ipsum dolar sit amet.',
-                    'disclaimer' => '',
+                    'disclaimer' => 'Lorem ipsum dolar sit amet.',
                 ],
-                'appointments.cancel' => [
+                'cancel' => [
                     'title' => 'Cancel',
+                    'content' => 'Lorem ipsum dolar sit amet.',
+                ],
+                'cancelled' => [
+                    'title' => 'Appointment cancelled',
                     'content' => 'Lorem ipsum dolar sit amet.',
                 ],
                 'token-expired' => [
