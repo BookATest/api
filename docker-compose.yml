@@ -37,15 +37,13 @@ services:
     volumes:
       - .:/var/www/html
 
-  mysql:
+  mysql-testing:
     image: mysql:5.7
     environment:
       MYSQL_ROOT_PASSWORD: "${DB_ROOT_PASS}"
       MYSQL_DATABASE: "${DB_NAME}"
       MYSQL_USER: "${DB_USER}"
       MYSQL_PASSWORD: "${DB_PASS}"
-    volumes:
-      - mysql-data:/var/lib/mysql
     networks:
       - app-net
 
