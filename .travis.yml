@@ -11,6 +11,7 @@ services:
 before_script:
   - ./develop build
   - ./develop up -d
+  - ./develop composer install
 
 script:
   - ./develop phpunit
