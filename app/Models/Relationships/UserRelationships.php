@@ -5,6 +5,7 @@ namespace App\Models\Relationships;
 use App\Models\Appointment;
 use App\Models\AppointmentSchedule;
 use App\Models\Audit;
+use App\Models\Clinic;
 use App\Models\File;
 use App\Models\Notification;
 use App\Models\Report;
@@ -84,5 +85,13 @@ trait UserRelationships
     public function notifications()
     {
         return $this->morphMany(Notification::class, 'notifiable');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function clinics()
+    {
+        return $this->belongsToMany(Clinic::class, 'user_roles');
     }
 }

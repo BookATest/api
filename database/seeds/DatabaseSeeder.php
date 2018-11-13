@@ -1,10 +1,12 @@
 <?php
 
+use App\Models\Appointment;
 use App\Models\Clinic;
 use App\Models\User;
 use App\Support\Coordinate;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Carbon;
 
 class DatabaseSeeder extends Seeder
 {
@@ -15,8 +17,13 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        $clinics = $this->createClinics(50);
-        $users = $this->createUsers(200);
+        $this->createClinics(2);
+
+        $this->createUsers(6);
+
+        foreach (range(0, 30) as $daysToAdd) {
+            $this->createAppointments(3, today()->addDays($daysToAdd));
+        }
     }
 
     /**
@@ -99,5 +106,37 @@ class DatabaseSeeder extends Seeder
         }
 
         return $users;
+    }
+
+    /**
+     * @param int $perDay The number of appointments that should be generated
+     * for one day for a single user.
+     * @param \Illuminate\Support\Carbon $day The day to create
+     * @return \Illuminate\Database\Eloquent\Collection The day to create appointments for.
+     */
+    protected function createAppointments(int $perDay, Carbon $day): Collection
+    {
+        $appointments = new Collection();
+
+        // Loop through each user.
+        User::all()->each(function (User $user) use ($perDay, $day, $appointments) {
+            // Loop through the clinics that the user works at.
+            $user->clinics()->distinct()->get()->each(function (Clinic $clinic) use ($perDay, $day, $appointments, $user) {
+                // Loop through the count of appointments to create.
+                foreach (range(1, $perDay) as $index) {
+                    // Create the appointment.
+                    $startAtMinutesIntoDay = mt_rand(1, $clinic->slots) * $clinic->appointment_duration;
+
+                    $appointment = Appointment::query()->updateOrCreate([
+                        'user_id' => $user->id,
+                        'clinic_id' => $clinic->id,
+                        'start_at' => $day->copy()->addMinutes($startAtMinutesIntoDay),
+                    ]);
+                    $appointments->push($appointment);
+                }
+            });
+        });
+
+        return $appointments;
     }
 }
