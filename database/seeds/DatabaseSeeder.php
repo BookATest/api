@@ -2,6 +2,7 @@
 
 use App\Models\Appointment;
 use App\Models\Clinic;
+use App\Models\EligibleAnswer;
 use App\Models\Question;
 use App\Models\User;
 use App\Support\Coordinate;
@@ -27,6 +28,8 @@ class DatabaseSeeder extends Seeder
         }
 
         $this->createQuestions();
+
+        $this->createEligibleAnswers();
     }
 
     /**
@@ -156,5 +159,67 @@ class DatabaseSeeder extends Seeder
         $questions->push(Question::createText('Where did you hear about us?'));
 
         return $questions;
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    protected function createEligibleAnswers(): Collection
+    {
+        $eligibleAnswers = new Collection();
+
+        // Loop through all the clinics.
+        Clinic::all()->each(function (Clinic $clinic) use ($eligibleAnswers) {
+            // Loop through all the questions.
+            Question::query()
+                ->with('questionOptions')
+                ->get()
+                ->each(function (Question $question) use ($eligibleAnswers, $clinic) {
+                    switch ($question->type) {
+                        case Question::SELECT:
+                            /** @var \Illuminate\Database\Eloquent\Collection $questionOptions */
+                            $questionOptions = $question->questionOptions;
+                            $questionOptions = $questionOptions->random(
+                                mt_rand(1, $questionOptions->count())
+                            );
+
+                            $eligibleAnswer = $clinic->eligibleAnswers()->create([
+                                'question_id' => $question->id,
+                                'answer' => EligibleAnswer::parseSelectAnswer(
+                                    $questionOptions->pluck('option')->toArray(),
+                                    $question
+                                ),
+                            ]);
+                            break;
+                        case Question::CHECKBOX:
+                            $eligibleAnswer = $clinic->eligibleAnswers()->create([
+                                'question_id' => $question->id,
+                                'answer' => EligibleAnswer::parseCheckboxAnswer(
+                                    (bool)mt_rand(0, 1)
+                                ),
+                            ]);
+                            break;
+                        case Question::DATE:
+                            $seed = mt_rand(0, 1);
+                            $comparison = $seed === 0 ? '>' : '<';
+
+                            $eligibleAnswer = $clinic->eligibleAnswers()->create([
+                                'question_id' => $question->id,
+                                'answer' => EligibleAnswer::parseDateAnswer([
+                                    'comparison' => $comparison,
+                                    'interval' => now()->diffInSeconds(now()->addYears(18)),
+                                ]),
+                            ]);
+                            break;
+                        case Question::TEXT:
+                        default:
+                            return;
+                    }
+
+                    $eligibleAnswers->push($eligibleAnswer);
+                });
+        });
+
+        return $eligibleAnswers;
     }
 }
