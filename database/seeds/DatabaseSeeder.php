@@ -2,6 +2,7 @@
 
 use App\Models\Appointment;
 use App\Models\Clinic;
+use App\Models\Question;
 use App\Models\User;
 use App\Support\Coordinate;
 use Illuminate\Database\Eloquent\Collection;
@@ -24,6 +25,8 @@ class DatabaseSeeder extends Seeder
         foreach (range(0, 30) as $daysToAdd) {
             $this->createAppointments(3, today()->addDays($daysToAdd));
         }
+
+        $this->createQuestions();
     }
 
     /**
@@ -138,5 +141,20 @@ class DatabaseSeeder extends Seeder
         });
 
         return $appointments;
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    protected function createQuestions(): Collection
+    {
+        $questions = new Collection();
+
+        $questions->push(Question::createSelect('What sex are you?', 'Male', 'Female', 'Non-binary'));
+        $questions->push(Question::createCheckbox('Are you a smoker?'));
+        $questions->push(Question::createDate('What is your date of birth?'));
+        $questions->push(Question::createText('Where did you hear about us?'));
+
+        return $questions;
     }
 }
