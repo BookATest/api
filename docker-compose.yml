@@ -59,8 +59,5 @@ networks:
     driver: bridge
 
 volumes:
-  mysql-data:
-    driver: local
-
   redis-data:
     driver: local

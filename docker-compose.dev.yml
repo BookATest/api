@@ -27,3 +27,7 @@ services:
     volumes:
     - ./aws:/tmp
     command: "python ${CFN_TEMPLATE}.py"
+
+volumes:
+  mysql-data:
+    driver: local
