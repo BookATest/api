@@ -12,6 +12,8 @@ before_script:
   - ./develop build
   - ./develop up -d
   - ./develop composer install
+  - ./develop run --rm -T -w /var/www/html api mv .env.ci .env
+  - ./develop artisan key:generate
 
 script:
   - ./develop phpunit
