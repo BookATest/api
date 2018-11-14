@@ -8,6 +8,9 @@ sudo: required
 services:
   - docker
 
+before_install:
+  - sudo pip install awscli
+
 before_script:
   - ./develop build
   - ./develop up -d
