@@ -26,11 +26,11 @@ before_script:
 script:
   - ./develop phpunit
 
+after_success:
+  - ./docker/build
+
 after_failure:
   - cat storage/logs/testing.log
-
-before_deploy:
-  - ./docker/build
 
 deploy:
   - provider: script
@@ -44,7 +44,7 @@ deploy:
     on:
       branch: develop
   - provider: script
-    script: SERVICE=$SHCEDULER_SERVICE ./docker/deploy
+    script: SERVICE=$SCHEDULER_SERVICE ./docker/deploy
     skip_cleanup: true
     on:
       branch: develop

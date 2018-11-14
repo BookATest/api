@@ -896,7 +896,7 @@ ci_user = template.add_resource(
                         {
                             'Action': 'ecr:*',
                             'Effect': 'Allow',
-                            'Resource': GetAtt(docker_repository, 'Arn')
+                            'Resource': '*'
                         },
                         {
                             'Action': 'ecs:UpdateService',
