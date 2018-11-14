@@ -49,20 +49,6 @@ class AppServiceProvider extends ServiceProvider
             'users' => \App\Models\User::class,
             'service_users' => \App\Models\ServiceUser::class,
         ]);
-
-        // IoC bindings.
-        $this->app->singleton(\App\Contracts\EmailSender::class, \App\EmailSenders\LaravelEmailSender::class);
-
-        switch (config('sms.driver')) {
-            case 'log':
-                $this->app->singleton(\App\Contracts\SmsSender::class, \App\SmsSenders\LogSender::class);
-                break;
-            case 'twilio':
-                $this->app->singleton(\App\Contracts\SmsSender::class, \App\SmsSenders\TwilioSender::class);
-                break;
-        }
-
-        $this->app->singleton(\App\Contracts\Geocoder::class, \App\Geocoders\GoogleGeocoder::class);
     }
 
     /**

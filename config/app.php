@@ -174,8 +174,11 @@ return [
         App\Providers\AppServiceProvider::class,
         App\Providers\AuthServiceProvider::class,
         // App\Providers\BroadcastServiceProvider::class,
+        App\Providers\EmailServiceProvider::class,
         App\Providers\EventServiceProvider::class,
+        App\Providers\GeocodeServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        App\Providers\SmsServiceProvider::class,
 
     ],
 

@@ -1,0 +1,40 @@
+if: tag IS blank
+branches:
+  only:
+    - master
+    - develop
+
+sudo: required
+services:
+  - docker
+
+before_script:
+  - ./develop build
+  - ./develop up -d
+  - ./develop composer install
+  - ./develop run --rm -T -w /var/www/html api mv .env.ci .env
+  - ./develop artisan key:generate
+  - ./develop artisan passport:keys
+
+script:
+  - ./develop phpunit
+
+after_failure:
+  - cat storage/logs/testing.log
+
+before_deploy:
+  - ./docker/build
+
+deploy:
+  - provider: script
+    script: SERVICE=$API_SERVICE ./docker/deploy
+    on:
+      branch: develop
+  - provider: script
+    script: SERVICE=$QUEUE_WORKER_SERVICE ./docker/deploy
+    on:
+      branch: develop
+  - provider: script
+    script: SERVICE=$SHCEDULER_SERVICE ./docker/deploy
+    on:
+      branch: develop
