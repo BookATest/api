@@ -37,3 +37,20 @@ before_cache:
 
 after_failure:
   - cat storage/logs/testing.log
+
+before_deploy:
+  - ./docker/build
+
+deploy:
+  - provider: script
+    script: SERVICE=$API_SERVICE ./docker/deploy
+    on:
+      branch: develop
+  - provider: script
+    script: SERVICE=$QUEUE_WORKER_SERVICE ./docker/deploy
+    on:
+      branch: develop
+  - provider: script
+    script: SERVICE=$SHCEDULER_SERVICE ./docker/deploy
+    on:
+      branch: develop
