@@ -28,7 +28,9 @@ echo "Installing NPM dependencies..."
 
 echo "Compiling assets..."
 ./develop npm run prod
-rm -rf node_modules
+docker run --rm \
+    -w /opt \
+    -v $(pwd)/docker/api/packaged:/opt ubuntu:16.04 bash -c "rm -rf node_modules"
 
 # Get the .env file.
 echo "Downloading .env file..."
@@ -55,19 +57,15 @@ docker build \
     -t ${REPO_URI}:${TRAVIS_COMMIT} .
 
 # Clean up packaged directory, but only if not in CI environment.
-if [ ${CI:-false} == "false" ]; then
-    echo "Cleaning up..."
-    cd ${TRAVIS_BUILD_DIR}/docker/api/packaged
-    PWD=$(pwd)
-    if [ "$PWD" == "$TRAVIS_BUILD_DIR/docker/api/packaged" ]; then
-        # The "vendor" directory (any any built assets!) will be owned
-        # as user "root" on the Linux file system
-        # So we'll use Docker to delete them with a one-off container
-        docker run --rm \
-            -w /opt \
-            -v $(pwd):/opt ubuntu:16.04 bash -c "rm -rf ./* && rm -rf ./.git* && rm .env*"
-        touch .gitkeep
-    fi
-else
-    echo "Skipping clean up..."
+echo "Cleaning up..."
+cd ${TRAVIS_BUILD_DIR}/docker/api/packaged
+PWD=$(pwd)
+if [ "$PWD" == "$TRAVIS_BUILD_DIR/docker/api/packaged" ]; then
+    # The "vendor" directory (any any built assets!) will be owned
+    # as user "root" on the Linux file system
+    # So we'll use Docker to delete them with a one-off container
+    docker run --rm \
+        -w /opt \
+        -v $(pwd)/docker/api/packaged:/opt ubuntu:16.04 bash -c "rm -rf ./* && rm -rf ./.git* && rm .env*"
+    touch .gitkeep
 fi
