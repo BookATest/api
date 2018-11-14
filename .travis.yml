@@ -11,8 +11,7 @@ services:
   - docker
 
 before_install:
-  - pip install --user awscli
-  - export PATH=$PATH:$HOME/.local/bin
+  - sudo pip install awscli
 
 before_script:
   - ./develop build
