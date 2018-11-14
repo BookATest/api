@@ -23,7 +23,7 @@ after_failure:
   - cat storage/logs/testing.log
 
 before_deploy:
-  - ./docker/build
+  - sudo ./docker/build
 
 deploy:
   - provider: script
