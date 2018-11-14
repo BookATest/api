@@ -35,13 +35,16 @@ before_deploy:
 deploy:
   - provider: script
     script: SERVICE=$API_SERVICE ./docker/deploy
+    skip_cleanup: true
     on:
       branch: develop
   - provider: script
     script: SERVICE=$QUEUE_WORKER_SERVICE ./docker/deploy
+    skip_cleanup: true
     on:
       branch: develop
   - provider: script
     script: SERVICE=$SHCEDULER_SERVICE ./docker/deploy
+    skip_cleanup: true
     on:
       branch: develop
