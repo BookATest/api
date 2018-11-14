@@ -4,6 +4,8 @@ branches:
     - master
     - develop
 
+language: python
+
 sudo: required
 services:
   - docker
