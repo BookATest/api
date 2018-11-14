@@ -66,6 +66,6 @@ if [ "$PWD" == "$TRAVIS_BUILD_DIR/docker/api/packaged" ]; then
     # So we'll use Docker to delete them with a one-off container
     docker run --rm \
         -w /opt \
-        -v $(pwd)/docker/api/packaged:/opt ubuntu:16.04 bash -c "rm -rf ./* && rm -rf ./.git* && rm .env*"
+        -v $(pwd):/opt ubuntu:16.04 bash -c "rm -rf ./* && rm -rf ./.git* && rm .env*"
     touch .gitkeep
 fi
