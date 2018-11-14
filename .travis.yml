@@ -12,7 +12,7 @@ services:
 
 before_install:
   - pip install awscli
-  - export PATH=$PATH:$HOME/.local/bin
+  - sudo export PATH=$PATH:$HOME/.local/bin
 
 before_script:
   - ./develop build
