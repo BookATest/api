@@ -17,3 +17,6 @@ before_script:
 
 script:
   - ./develop phpunit
+
+after_failure:
+  - cat storage/logs/testing.log
