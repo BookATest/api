@@ -901,11 +901,7 @@ ci_user = template.add_resource(
                         {
                             'Action': 'ecs:UpdateService',
                             'Effect': 'Allow',
-                            'Resource': [
-                                Ref(api_service),
-                                Ref(queue_worker_service),
-                                Ref(scheduler_service)
-                            ]
+                            'Resource': '*'
                         },
                         {
                             'Action': 's3:*',
