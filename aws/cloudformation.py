@@ -899,6 +899,15 @@ ci_user = template.add_resource(
                             'Resource': GetAtt(docker_repository, 'Arn')
                         },
                         {
+                            'Action': 'ecs:UpdateService',
+                            'Effect': 'Allow',
+                            'Resource': [
+                                Ref(api_service),
+                                Ref(queue_worker_service),
+                                Ref(scheduler_service)
+                            ]
+                        },
+                        {
                             'Action': 's3:*',
                             'Effect': 'Allow',
                             'Resource': GetAtt(uploads_bucket, 'Arn')
