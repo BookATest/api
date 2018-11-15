@@ -43,8 +43,9 @@ trait CachesResults
      */
     protected function saveToCache(Postcode $postcode, ?Coordinate $coordinate): CachedGeocodeResult
     {
-        return CachedGeocodeResult::create([
+        return CachedGeocodeResult::updateOrCreate([
             'query' => $this->normaliseAddress($postcode),
+        ], [
             'lat' => optional($coordinate)->getLatitude(),
             'lon' => optional($coordinate)->getLongitude(),
         ]);
