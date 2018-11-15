@@ -1030,11 +1030,18 @@ ci_user = template.add_resource(
                             'Effect': 'Allow',
                             'Resource': [
                                 GetAtt(frontend_bucket, 'Arn'),
-                                GetAtt(backend_bucket, 'Arn')
+                                Join('/', [GetAtt(frontend_bucket, 'Arn'), '*']),
+                                GetAtt(backend_bucket, 'Arn'),
+                                Join('/', [GetAtt(backend_bucket, 'Arn'), '*']),
                             ]
                         },
                         {
                             'Action': 'secretsmanager:GetSecretValue',
+                            'Effect': 'Allow',
+                            'Resource': '*'
+                        },
+                        {
+                            'Action': 'cloudfront:CreateInvalidation',
                             'Effect': 'Allow',
                             'Resource': '*'
                         }
