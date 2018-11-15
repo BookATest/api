@@ -291,6 +291,13 @@ frontend_cname = template.add_parameter(Parameter(
     ConstraintDescription='Must be a valid domain'
 ))
 
+frontend_ssl = template.add_parameter(Parameter(
+    'FrontendSslArn',
+    Type='String',
+    Description='The ARN for the frontend SSL certificate.',
+    MinLength='1'
+))
+
 backend_cname = template.add_parameter(Parameter(
     'BackendCname',
     Type='String',
@@ -298,6 +305,13 @@ backend_cname = template.add_parameter(Parameter(
     MinLength='1',
     AllowedPattern='^(?!:\/\/)([a-zA-Z0-9-_]+\.)*[a-zA-Z0-9][a-zA-Z0-9-_]+\.[a-zA-Z]{2,11}?$',
     ConstraintDescription='Must be a valid domain'
+))
+
+backend_ssl = template.add_parameter(Parameter(
+    'BackendSslArn',
+    Type='String',
+    Description='The ARN for the backend SSL certificate.',
+    MinLength='1'
 ))
 
 # ==================================================
