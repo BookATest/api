@@ -282,6 +282,24 @@ docker_repository_name = template.add_parameter(Parameter(
     ConstraintDescription='Must be a valid repository name.'
 ))
 
+frontend_cname = template.add_parameter(Parameter(
+    'FrontendCname',
+    Type='String',
+    Description='The CNAME for the frontend site.',
+    MinLength='1',
+    AllowedPattern='^(?!:\/\/)([a-zA-Z0-9-_]+\.)*[a-zA-Z0-9][a-zA-Z0-9-_]+\.[a-zA-Z]{2,11}?$',
+    ConstraintDescription='Must be a valid domain'
+))
+
+backend_cname = template.add_parameter(Parameter(
+    'BackendCname',
+    Type='String',
+    Description='The CNAME for the backend site.',
+    MinLength='1',
+    AllowedPattern='^(?!:\/\/)([a-zA-Z0-9-_]+\.)*[a-zA-Z0-9][a-zA-Z0-9-_]+\.[a-zA-Z]{2,11}?$',
+    ConstraintDescription='Must be a valid domain'
+))
+
 # ==================================================
 # Resources.
 # ==================================================
