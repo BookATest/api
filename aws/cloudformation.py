@@ -12,6 +12,7 @@ import troposphere.autoscaling as autoscaling
 import troposphere.iam as iam
 import troposphere.logs as logs
 import troposphere.ecr as ecr
+import troposphere.cloudfront as cloudfront
 import uuid
 
 suffix = str(uuid.uuid4())
@@ -473,6 +474,95 @@ backend_bucket = template.add_resource(
         'BackendBucket',
         BucketName=Ref(s3_backend_bucket_name),
         AccessControl='PublicRead'
+    )
+)
+
+# Create the CloudFront distirbutions.
+frontend_distribution = template.add_resource(
+    cloudfront.Distribution(
+        'FrontendDistribution',
+        DistributionConfig=cloudfront.DistributionConfig(
+            Aliases=[
+                Ref(frontend_cname)
+            ],
+            CacheBehaviors=[
+                cloudfront.CacheBehavior(
+                    AllowedMethods=['HEAD', 'GET'],
+                    CachedMethods=['HEAD', 'GET'],
+                    ForwardedValues=cloudfront.ForwardedValues(
+                        QueryString=False
+                    ),
+                    PathPattern='*',
+                    TargetOriginId=Join('-', ['S3', Ref(frontend_bucket)]),
+                    ViewerProtocolPolicy='redirect-to-https'
+                )
+            ],
+            DefaultCacheBehavior=cloudfront.DefaultCacheBehavior(
+                ForwardedValues=cloudfront.ForwardedValues(
+                    QueryString=False
+                ),
+                TargetOriginId=Join('-', ['S3', Ref(frontend_bucket)]),
+                ViewerProtocolPolicy='redirect-to-https'
+            ),
+            DefaultRootObject='index.html',
+            Enabled=True,
+            IPV6Enabled=True,
+            Origins=[
+                cloudfront.Origin(
+                    DomainName=GetAtt(frontend_bucket, 'DomainName'),
+                    Id=Join('-', ['S3', Ref(frontend_bucket)]),
+                    S3OriginConfig=cloudfront.S3Origin()
+                )
+            ],
+            ViewerCertificate=cloudfront.ViewerCertificate(
+                AcmCertificateArn=Ref(frontend_ssl),
+                SslSupportMethod='vip'
+            )
+        )
+    )
+)
+
+backend_distribution = template.add_resource(
+    cloudfront.Distribution(
+        'BackendDistribution',
+        DistributionConfig=cloudfront.DistributionConfig(
+            Aliases=[
+                Ref(backend_cname)
+            ],
+            CacheBehaviors=[
+                cloudfront.CacheBehavior(
+                    AllowedMethods=['HEAD', 'GET'],
+                    CachedMethods=['HEAD', 'GET'],
+                    ForwardedValues=cloudfront.ForwardedValues(
+                        QueryString=False
+                    ),
+                    PathPattern='*',
+                    TargetOriginId=Join('-', ['S3', Ref(backend_bucket)]),
+                    ViewerProtocolPolicy='redirect-to-https'
+                )
+            ],
+            DefaultCacheBehavior=cloudfront.DefaultCacheBehavior(
+                ForwardedValues=cloudfront.ForwardedValues(
+                    QueryString=False
+                ),
+                TargetOriginId=Join('-', ['S3', Ref(backend_bucket)]),
+                ViewerProtocolPolicy='redirect-to-https'
+            ),
+            DefaultRootObject='index.html',
+            Enabled=True,
+            IPV6Enabled=True,
+            Origins=[
+                cloudfront.Origin(
+                    DomainName=GetAtt(backend_bucket, 'DomainName'),
+                    Id=Join('-', ['S3', Ref(backend_bucket)]),
+                    S3OriginConfig=cloudfront.S3Origin()
+                )
+            ],
+            ViewerCertificate=cloudfront.ViewerCertificate(
+                AcmCertificateArn=Ref(frontend_ssl),
+                SslSupportMethod='vip'
+            )
+        )
     )
 )
 
