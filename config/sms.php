@@ -7,6 +7,8 @@ return [
      */
     'driver' => env('SMS_DRIVER', 'log'),
 
+    'queue' => env('SMS_QUEUE', 'notifications'),
+
     'drivers' => [
 
         'twilio' => [

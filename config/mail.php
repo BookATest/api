@@ -18,6 +18,8 @@ return [
 
     'driver' => env('MAIL_DRIVER', 'smtp'),
 
+    'queue' => env('MAIL_QUEUE', 'notifications'),
+
     /*
     |--------------------------------------------------------------------------
     | SMTP Host Address

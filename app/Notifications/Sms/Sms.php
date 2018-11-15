@@ -38,7 +38,7 @@ abstract class Sms implements ShouldQueue
      */
     public function __construct()
     {
-        $this->queue = 'notifications';
+        $this->queue = config('sms.queue');
     }
 
     /**

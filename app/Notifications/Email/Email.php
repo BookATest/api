@@ -43,7 +43,7 @@ abstract class Email implements ShouldQueue
      */
     public function __construct()
     {
-        $this->queue = 'notifications';
+        $this->queue = config('mail.queue');
     }
 
     /**
