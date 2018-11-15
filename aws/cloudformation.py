@@ -497,6 +497,13 @@ frontend_distribution = template.add_resource(
                     ViewerProtocolPolicy='redirect-to-https'
                 )
             ],
+            CustomErrorResponses=[
+                cloudfront.CustomErrorResponse(
+                    ErrorCode=404,
+                    ResponseCode=200,
+                    ResponsePagePath='/index.html'
+                )
+            ],
             DefaultCacheBehavior=cloudfront.DefaultCacheBehavior(
                 ForwardedValues=cloudfront.ForwardedValues(
                     QueryString=False
@@ -539,6 +546,13 @@ backend_distribution = template.add_resource(
                     PathPattern='*',
                     TargetOriginId=Join('-', ['S3', Ref(backend_bucket)]),
                     ViewerProtocolPolicy='redirect-to-https'
+                )
+            ],
+            CustomErrorResponses=[
+                cloudfront.CustomErrorResponse(
+                    ErrorCode=404,
+                    ResponseCode=200,
+                    ResponsePagePath='/index.html'
                 )
             ],
             DefaultCacheBehavior=cloudfront.DefaultCacheBehavior(
