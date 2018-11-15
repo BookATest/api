@@ -734,7 +734,8 @@ queue_worker_task_definition = template.add_resource(
                 'php',
                 'artisan',
                 'queue:work',
-                '--tries=1'
+                '--tries=1',
+                Join('=', ['--queue', Join(',', [Ref(sqs_default_queue_name), Ref(sqs_notifications_queue_name)])])
             ],
             WorkingDirectory='/var/www/html',
             HealthCheck=ecs.HealthCheck(
