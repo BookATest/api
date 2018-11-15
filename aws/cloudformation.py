@@ -1028,7 +1028,10 @@ ci_user = template.add_resource(
                         {
                             'Action': 's3:*',
                             'Effect': 'Allow',
-                            'Resource': GetAtt(uploads_bucket, 'Arn')
+                            'Resource': [
+                                GetAtt(frontend_bucket, 'Arn'),
+                                GetAtt(backend_bucket, 'Arn')
+                            ]
                         },
                         {
                             'Action': 'secretsmanager:GetSecretValue',
