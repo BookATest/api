@@ -12,7 +12,7 @@ trait RoleRelationships
      */
     public function users()
     {
-        return $this->hasManyThrough(User::class, UserRole::class);
+        return $this->belongsToMany(User::class, 'user_roles');
     }
 
     /**

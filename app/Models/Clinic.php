@@ -28,6 +28,16 @@ class Clinic extends Model
     ];
 
     /**
+     * Called just after the model is created.
+     *
+     * @param \App\Models\Model $model
+     */
+    protected function onCreated(Model $model)
+    {
+        Role::organisationAdmin()->users->each->makeClinicAdmin($model);
+    }
+
+    /**
      * Called just before the model is deleted.
      */
     protected function onDeleting()
