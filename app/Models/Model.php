@@ -43,6 +43,10 @@ abstract class Model extends BaseModel
             $model->onCreating($model);
         });
 
+        static::created(function (Model $model) {
+            $model->onCreated($model);
+        });
+
         static::deleting(function (Model $model) {
             $model->onDeleting();
         });
@@ -53,7 +57,7 @@ abstract class Model extends BaseModel
     }
 
     /**
-     * Called just before the model is deleted.
+     * Called just before the model is created.
      *
      * @param \App\Models\Model $model
      */
@@ -62,6 +66,16 @@ abstract class Model extends BaseModel
         if (empty($model->{$model->getKeyName()})) {
             $model->{$model->getKeyName()} = uuid();
         }
+    }
+
+    /**
+     * Called just after the model is created.
+     *
+     * @param \App\Models\Model $model
+     */
+    protected function onCreated(Model $model)
+    {
+        //
     }
 
     /**
