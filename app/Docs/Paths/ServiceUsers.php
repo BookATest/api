@@ -113,8 +113,11 @@ class ServiceUsers
         ];
         $requestBody = Requests::json(
             Schema::object()
-                ->required('access_code')
-                ->properties(Schema::string('access_code'))
+                ->required('phone', 'access_code')
+                ->properties(
+                    Schema::string('phone'),
+                    Schema::string('access_code')
+                )
         );
 
         return Operation::post(...$responses)
