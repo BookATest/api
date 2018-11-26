@@ -35,12 +35,25 @@ class ServiceUser extends Model
 
     /**
      * @param string $accessCode
+     * @param string|null $phone
      * @return bool
      */
-    public static function validateAccessCode(string $accessCode): bool
+    public static function validateAccessCode(string $accessCode, string $phone = null): bool
     {
         $cacheKey = sprintf(static::CACHE_KEY_FOR_ACCESS_CODE, $accessCode);
-        return Cache::has($cacheKey);
+        $inCache = Cache::has($cacheKey);
+
+        if (!$inCache) {
+            return false;
+        }
+
+        // If a phone number was provided, then check that the access code belongs to the user.
+        if ($phone) {
+            return Cache::get($cacheKey) === static::findByPhone($phone)->id;
+        }
+
+        // Otherwise, return true, as in cache.
+        return true;
     }
 
     /**

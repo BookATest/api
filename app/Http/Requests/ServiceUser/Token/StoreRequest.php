@@ -3,6 +3,7 @@
 namespace App\Http\Requests\ServiceUser\Token;
 
 use App\Rules\AccessCodeValid;
+use App\Rules\UkPhoneNumber;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreRequest extends FormRequest
@@ -25,11 +26,15 @@ class StoreRequest extends FormRequest
     public function rules()
     {
         return [
+            'phone' => [
+                'required',
+                new UkPhoneNumber(),
+            ],
             'access_code' => [
                 'required',
                 'string',
                 'size:5',
-                new AccessCodeValid(),
+                new AccessCodeValid($this->phone),
             ],
         ];
     }
