@@ -47,8 +47,10 @@ class User extends Authenticatable
      * @var array
      */
     protected $casts = [
-        'display_phone' => 'boolean',
         'display_email' => 'boolean',
+        'display_phone' => 'boolean',
+        'receive_booking_confirmations' => 'boolean',
+        'receive_cancellation_confirmations' => 'boolean',
         'include_calendar_attachment' => 'boolean',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',

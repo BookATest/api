@@ -68,6 +68,8 @@ class Users
                     'password',
                     'display_email',
                     'display_phone',
+                    'receive_booking_confirmations',
+                    'receive_cancellation_confirmations',
                     'include_calendar_attachment',
                     'roles'
                 )
@@ -79,6 +81,8 @@ class Users
                     Schema::string('password')->format(Schema::PASSWORD),
                     Schema::boolean('display_email'),
                     Schema::boolean('display_phone'),
+                    Schema::boolean('receive_booking_confirmations'),
+                    Schema::boolean('receive_cancellation_confirmations'),
                     Schema::boolean('include_calendar_attachment'),
                     Schema::array('roles')->items(Schema::object()
                         ->required('role')
@@ -175,6 +179,8 @@ EOT;
                     'phone',
                     'display_email',
                     'display_phone',
+                    'receive_booking_confirmations',
+                    'receive_cancellation_confirmations',
                     'include_calendar_attachment',
                     'roles'
                 )
@@ -185,6 +191,9 @@ EOT;
                     Schema::string('phone'),
                     Schema::string('password')->format(Schema::PASSWORD),
                     Schema::boolean('display_email'),
+                    Schema::boolean('display_phone'),
+                    Schema::boolean('receive_booking_confirmations'),
+                    Schema::boolean('receive_cancellation_confirmations'),
                     Schema::boolean('include_calendar_attachment'),
                     Schema::array('roles')->items(Schema::object()
                         ->required('role')

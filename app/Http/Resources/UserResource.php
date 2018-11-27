@@ -22,6 +22,8 @@ class UserResource extends JsonResource
             'phone' => $this->phone,
             'display_email' => $this->display_email,
             'display_phone' => $this->display_phone,
+            'receive_booking_confirmations' => $this->receive_booking_confirmations,
+            'receive_cancellation_confirmations' => $this->receive_cancellation_confirmations,
             'include_calendar_attachment' => $this->include_calendar_attachment,
             'roles' => RoleResource::collection($this->userRoles->load('role')),
             'created_at' => $this->created_at->toIso8601String(),

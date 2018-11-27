@@ -19,6 +19,8 @@ class UserResource extends BaseResource
             Schema::string('phone'),
             Schema::boolean('display_email'),
             Schema::boolean('display_phone'),
+            Schema::boolean('receive_booking_confirmations'),
+            Schema::boolean('receive_cancellation_confirmations'),
             Schema::boolean('include_calendar_attachment'),
             Schema::array('roles')->items(
                 Schema::object()->properties(
