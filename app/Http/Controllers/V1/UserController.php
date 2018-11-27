@@ -74,6 +74,8 @@ class UserController extends Controller
                 'password' => bcrypt($request->password),
                 'display_email' => $request->display_email,
                 'display_phone' => $request->display_phone,
+                'receive_booking_confirmations' => $request->receive_booking_confirmations,
+                'receive_cancellation_confirmations' => $request->receive_cancellation_confirmations,
                 'include_calendar_attachment' => $request->include_calendar_attachment,
                 'calendar_feed_token' => User::generateCalendarFeedToken(),
             ]);
@@ -151,6 +153,8 @@ class UserController extends Controller
                 'phone' => $request->phone,
                 'display_email' => $request->display_email,
                 'display_phone' => $request->display_phone,
+                'receive_booking_confirmations' => $request->receive_booking_confirmations,
+                'receive_cancellation_confirmations' => $request->receive_cancellation_confirmations,
                 'include_calendar_attachment' => $request->include_calendar_attachment,
             ]);
 
