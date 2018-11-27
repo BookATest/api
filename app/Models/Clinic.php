@@ -160,14 +160,14 @@ class Clinic extends Model
     }
 
     /**
-     * @param bool|null $answer
+     * @param bool $answer
      * @param \App\Models\EligibleAnswer $eligibleAnswer
      * @return bool
      */
-    protected function checkboxIsEligible(?bool $answer, EligibleAnswer $eligibleAnswer): bool
+    protected function checkboxIsEligible(bool $answer, EligibleAnswer $eligibleAnswer): bool
     {
         // Null indicates either answer is eligible.
-        if ($answer === null) {
+        if ($eligibleAnswer->answer === null) {
             return true;
         }
 
