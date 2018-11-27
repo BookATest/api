@@ -166,6 +166,11 @@ class Clinic extends Model
      */
     protected function checkboxIsEligible(bool $answer, EligibleAnswer $eligibleAnswer): bool
     {
+        // Null indicates either answer is eligible.
+        if ($eligibleAnswer->answer === null) {
+            return true;
+        }
+
         return $answer === $eligibleAnswer->answer;
     }
 

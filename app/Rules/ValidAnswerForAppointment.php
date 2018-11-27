@@ -136,6 +136,10 @@ class ValidAnswerForAppointment implements Rule
             return false;
         }
 
+        if ($eligibleAnswer->answer === null) {
+            return true;
+        }
+
         return $answer === $eligibleAnswer->answer;
     }
 

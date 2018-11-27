@@ -185,6 +185,28 @@ class EligibleAnswersTest extends TestCase
         });
     }
 
+    public function test_ca_can_list_null_checkbox_when_created()
+    {
+        $clinic = factory(Clinic::class)->create();
+        $user = factory(User::class)->create()->makeClinicAdmin($clinic);
+
+        $question = Question::createCheckbox('Are you a smoker?');
+        EligibleAnswer::create([
+            'clinic_id' => $clinic->id,
+            'question_id' => $question->id,
+            'answer' => null,
+        ]);
+
+        Passport::actingAs($user);
+        $response = $this->json('GET', "/v1/clinics/$clinic->id/eligible-answers");
+
+        $response->assertStatus(Response::HTTP_OK);
+        $response->assertJsonFragment([
+            'question_id' => $question->id,
+            'answer' => null,
+        ]);
+    }
+
     /*
      * Update them.
      */
@@ -331,5 +353,29 @@ class EligibleAnswersTest extends TestCase
         ]);
 
         $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
+    }
+
+    public function test_ca_can_update_a_new_set_of_only_a_null_checkbox()
+    {
+        $clinic = factory(Clinic::class)->create();
+        $user = factory(User::class)->create()->makeClinicAdmin($clinic);
+
+        $checkboxQuestion = Question::createCheckbox('Are you a smoker?');
+
+        Passport::actingAs($user);
+        $response = $this->json('PUT', "/v1/clinics/$clinic->id/eligible-answers", [
+            'answers' => [
+                [
+                    'question_id' => $checkboxQuestion->id,
+                    'answer' => null,
+                ]
+            ]
+        ]);
+
+        $response->assertStatus(Response::HTTP_OK);
+        $response->assertJsonFragment([
+            'question_id' => $checkboxQuestion->id,
+            'answer' => null,
+        ]);
     }
 }

@@ -41,7 +41,7 @@ class UpdateRequest extends FormRequest
                 'exists:questions,id',
             ],
             'answers.*.answer' => [
-                'required',
+                'present',
             ],
         ];
     }

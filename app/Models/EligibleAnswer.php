@@ -42,10 +42,10 @@ class EligibleAnswer extends Model
     /**
      * Used to prepare the data to insert as the answer field JSON.
      *
-     * @param bool $answer
-     * @return bool
+     * @param bool|null $answer
+     * @return bool|null
      */
-    public static function parseCheckboxAnswer(bool $answer): bool
+    public static function parseCheckboxAnswer(?bool $answer): ?bool
     {
         return $answer;
     }
