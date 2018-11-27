@@ -16,6 +16,7 @@ class ServiceUser extends Model
     const BOTH = 'both';
 
     const CACHE_KEY_FOR_ACCESS_CODE = 'ServiceUser::AccessCode::%s';
+    const CACHE_KEY_FOR_ACCESS_CODE_ATTEMPTS = 'ServiceUser::AccessCodeAttempts::%s';
     const CACHE_KEY_FOR_TOKEN = 'ServiceUser::Token::%s';
 
     /**
@@ -26,21 +27,59 @@ class ServiceUser extends Model
         do {
             $accessCode = mt_rand(10000, 99999);
             $cacheKey = sprintf(static::CACHE_KEY_FOR_ACCESS_CODE, $accessCode);
+            $attemptsCacheKey = sprintf(static::CACHE_KEY_FOR_ACCESS_CODE_ATTEMPTS, $accessCode);
         } while (Cache::has($cacheKey));
 
-        Cache::put($cacheKey, $this->id, config('cache.lifetimes.service_user_access_code'));
+        Cache::put(
+            $cacheKey,
+            $this->id,
+            config('cache.lifetimes.service_user_access_code')
+        );
+        Cache::put(
+            $attemptsCacheKey,
+            0,
+            config('cache.lifetimes.service_user_access_code')
+        );
 
         return $accessCode;
     }
 
     /**
      * @param string $accessCode
+     * @param string|null $phone
      * @return bool
      */
-    public static function validateAccessCode(string $accessCode): bool
+    public static function validateAccessCode(string $accessCode, string $phone = null): bool
     {
         $cacheKey = sprintf(static::CACHE_KEY_FOR_ACCESS_CODE, $accessCode);
-        return Cache::has($cacheKey);
+        $attemptsCacheKey = sprintf(static::CACHE_KEY_FOR_ACCESS_CODE_ATTEMPTS, $accessCode);
+
+        // If the access code doesn't exist, then fail.
+        if (!Cache::has($cacheKey)) {
+            return false;
+        }
+
+        // If the access code has had too many attempts, then fail and remove from cache.
+        if (Cache::get($attemptsCacheKey) > config('bat.max_service_user_token_attempts')) {
+            Cache::forget($cacheKey);
+            Cache::forget($attemptsCacheKey);
+            return false;
+        }
+
+        // If a phone number was provided, then check that the access code belongs to the user.
+        if ($phone) {
+            $serviceUser = static::findByPhone($phone);
+            $accessCodeMatches = Cache::get($cacheKey) === $serviceUser->id;
+
+            // Keep track of failed attempts.
+            if (!$accessCodeMatches) {
+                Cache::increment($attemptsCacheKey);
+                return false;
+            }
+        }
+
+        // Otherwise, return true, as in cache.
+        return true;
     }
 
     /**

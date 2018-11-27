@@ -4,11 +4,13 @@ use App\Models\User;
 use Faker\Generator as Faker;
 
 $factory->define(User::class, function (Faker $faker) {
+    $faker->addProvider(new \App\Faker\BatProvider($faker));
+
     return [
         'first_name' => $faker->firstName,
         'last_name' => $faker->lastName,
         'email' => $faker->unique()->safeEmail,
-        'phone' => $faker->phoneNumber,
+        'phone' => $faker->ukMobileNumber,
         'password' => '$2y$10$TKh8H1.PfQx37YgCzwiKb.KjNyWgaHb9cbcoQgdIVFlYg7B77UdFm', // secret
         'display_email' => mt_rand(0, 1),
         'display_phone' => mt_rand(0, 1),

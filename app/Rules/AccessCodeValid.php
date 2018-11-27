@@ -8,6 +8,21 @@ use Illuminate\Contracts\Validation\Rule;
 class AccessCodeValid implements Rule
 {
     /**
+     * @var string
+     */
+    protected $phone;
+
+    /**
+     * AccessCodeValid constructor.
+     *
+     * @param string $phone
+     */
+    public function __construct($phone)
+    {
+        $this->phone = $phone;
+    }
+
+    /**
      * Determine if the validation rule passes.
      *
      * @param  string $attribute
@@ -16,7 +31,12 @@ class AccessCodeValid implements Rule
      */
     public function passes($attribute, $accessCode)
     {
-        return ServiceUser::validateAccessCode($accessCode);
+        // Fail if the phone is not a string.
+        if (!is_string($this->phone)) {
+            return false;
+        }
+
+        return ServiceUser::validateAccessCode($accessCode, $this->phone);
     }
 
     /**

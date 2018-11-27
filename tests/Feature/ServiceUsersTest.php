@@ -243,9 +243,10 @@ class ServiceUsersTest extends TestCase
 
     public function test_guest_cannot_request_token()
     {
-        factory(ServiceUser::class)->create();
+        $serviceUser = factory(ServiceUser::class)->create();
 
         $response = $this->json('POST', '/v1/service-users/token', [
+            'phone' => $serviceUser->phone,
             'access_code' => '12345',
         ]);
 
@@ -257,6 +258,7 @@ class ServiceUsersTest extends TestCase
         $serviceUser = factory(ServiceUser::class)->create();
 
         $response = $this->json('POST', '/v1/service-users/token', [
+            'phone' => $serviceUser->phone,
             'access_code' => $serviceUser->generateAccessCode(),
         ]);
 
