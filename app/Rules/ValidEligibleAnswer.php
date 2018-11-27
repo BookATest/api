@@ -20,7 +20,7 @@ class ValidEligibleAnswer implements Rule
             return false;
         }
 
-        if (!isset($answer['question_id']) || !isset($answer['answer'])) {
+        if (!isset($answer['question_id']) || !array_key_exists('answer', $answer)) {
             return false;
         }
 
@@ -120,7 +120,7 @@ class ValidEligibleAnswer implements Rule
      */
     protected function checkboxPasses($answer): bool
     {
-        return is_bool($answer);
+        return is_bool($answer) || is_null($answer);
     }
 
     /**
