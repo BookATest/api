@@ -68,6 +68,14 @@ class StoreRequest extends FormRequest
                 'required',
                 'boolean',
             ],
+            'receive_booking_confirmations' => [
+                'required',
+                'boolean',
+            ],
+            'receive_cancellation_confirmations' => [
+                'required',
+                'boolean',
+            ],
             'include_calendar_attachment' => [
                 'required',
                 'boolean',

@@ -49,6 +49,8 @@ class UsersTest extends TestCase
                     'display_email' => $user->display_email,
                     'display_phone' => $user->display_phone,
                     'include_calendar_attachment' => $user->include_calendar_attachment,
+                    'receive_booking_confirmations' => $user->receive_booking_confirmations,
+                    'receive_cancellation_confirmations' => $user->receive_cancellation_confirmations,
                     'roles' => [
                         [
                             'role' => Role::communityWorker()->name,
@@ -113,6 +115,8 @@ class UsersTest extends TestCase
             'password' => 'P@55word.',
             'display_email' => false,
             'display_phone' => false,
+            'receive_booking_confirmations' => false,
+            'receive_cancellation_confirmations' => false,
             'include_calendar_attachment' => false,
             'roles' => [
                 [
@@ -130,6 +134,8 @@ class UsersTest extends TestCase
             'phone' => '07700000000',
             'display_email' => false,
             'display_phone' => false,
+            'receive_booking_confirmations' => false,
+            'receive_cancellation_confirmations' => false,
             'include_calendar_attachment' => false,
             'roles' => [
                 [
@@ -181,6 +187,8 @@ class UsersTest extends TestCase
             'password' => 'P@55word.',
             'display_email' => false,
             'display_phone' => false,
+            'receive_booking_confirmations' => false,
+            'receive_cancellation_confirmations' => false,
             'include_calendar_attachment' => false,
             'roles' => [
                 [
@@ -211,6 +219,8 @@ class UsersTest extends TestCase
             'password' => 'P@55word.',
             'display_email' => false,
             'display_phone' => false,
+            'receive_booking_confirmations' => false,
+            'receive_cancellation_confirmations' => false,
             'include_calendar_attachment' => false,
             'roles' => [
                 [
@@ -243,6 +253,8 @@ class UsersTest extends TestCase
             'password' => 'P@55word.',
             'display_email' => false,
             'display_phone' => false,
+            'receive_booking_confirmations' => false,
+            'receive_cancellation_confirmations' => false,
             'include_calendar_attachment' => false,
             'roles' => [
                 [
@@ -273,6 +285,8 @@ class UsersTest extends TestCase
             'password' => 'P@55word.',
             'display_email' => false,
             'display_phone' => false,
+            'receive_booking_confirmations' => false,
+            'receive_cancellation_confirmations' => false,
             'include_calendar_attachment' => false,
             'roles' => [
                 [
@@ -318,6 +332,8 @@ class UsersTest extends TestCase
                 'phone' => $user->phone,
                 'display_email' => $user->display_email,
                 'display_phone' => $user->display_phone,
+                'receive_booking_confirmations' => $user->receive_booking_confirmations,
+                'receive_cancellation_confirmations' => $user->receive_cancellation_confirmations,
                 'include_calendar_attachment' => $user->include_calendar_attachment,
                 'roles' => [
                     [
@@ -376,6 +392,8 @@ class UsersTest extends TestCase
                 'phone' => $user->phone,
                 'display_email' => $user->display_email,
                 'display_phone' => $user->display_phone,
+                'receive_booking_confirmations' => $user->receive_booking_confirmations,
+                'receive_cancellation_confirmations' => $user->receive_cancellation_confirmations,
                 'include_calendar_attachment' => $user->include_calendar_attachment,
                 'roles' => [
                     [
@@ -429,6 +447,8 @@ class UsersTest extends TestCase
             'password' => 'P@55word.',
             'display_email' => false,
             'display_phone' => false,
+            'receive_booking_confirmations' => false,
+            'receive_cancellation_confirmations' => false,
             'include_calendar_attachment' => false,
             'roles' => [
                 [
@@ -446,6 +466,8 @@ class UsersTest extends TestCase
             'phone' => '07700000000',
             'display_email' => false,
             'display_phone' => false,
+            'receive_booking_confirmations' => false,
+            'receive_cancellation_confirmations' => false,
             'include_calendar_attachment' => false,
             'roles' => [
                 [
@@ -470,6 +492,8 @@ class UsersTest extends TestCase
             'phone' => $communityWorker->phone,
             'display_email' => $communityWorker->display_email,
             'display_phone' => $communityWorker->display_phone,
+            'receive_booking_confirmations' => $communityWorker->receive_booking_confirmations,
+            'receive_cancellation_confirmations' => $communityWorker->receive_cancellation_confirmations,
             'include_calendar_attachment' => $communityWorker->include_calendar_attachment,
             'roles' => [
                 [
@@ -491,6 +515,8 @@ class UsersTest extends TestCase
             'phone' => $communityWorker->phone,
             'display_email' => $communityWorker->display_email,
             'display_phone' => $communityWorker->display_phone,
+            'receive_booking_confirmations' => $communityWorker->receive_booking_confirmations,
+            'receive_cancellation_confirmations' => $communityWorker->receive_cancellation_confirmations,
             'include_calendar_attachment' => $communityWorker->include_calendar_attachment,
             'roles' => [
                 [
@@ -519,6 +545,8 @@ class UsersTest extends TestCase
             'phone' => $communityWorker->phone,
             'display_email' => $communityWorker->display_email,
             'display_phone' => $communityWorker->display_phone,
+            'receive_booking_confirmations' => $communityWorker->receive_booking_confirmations,
+            'receive_cancellation_confirmations' => $communityWorker->receive_cancellation_confirmations,
             'include_calendar_attachment' => $communityWorker->include_calendar_attachment,
             'roles' => [
                 [
@@ -552,6 +580,8 @@ class UsersTest extends TestCase
             'phone' => $communityWorker->phone,
             'display_email' => $communityWorker->display_email,
             'display_phone' => $communityWorker->display_phone,
+            'receive_booking_confirmations' => $communityWorker->receive_booking_confirmations,
+            'receive_cancellation_confirmations' => $communityWorker->receive_cancellation_confirmations,
             'include_calendar_attachment' => $communityWorker->include_calendar_attachment,
             'roles' => [],
         ]);
@@ -564,6 +594,8 @@ class UsersTest extends TestCase
             'phone' => $communityWorker->phone,
             'display_email' => $communityWorker->display_email,
             'display_phone' => $communityWorker->display_phone,
+            'receive_booking_confirmations' => $communityWorker->receive_booking_confirmations,
+            'receive_cancellation_confirmations' => $communityWorker->receive_cancellation_confirmations,
             'include_calendar_attachment' => $communityWorker->include_calendar_attachment,
             'roles' => [],
         ]);
@@ -588,6 +620,8 @@ class UsersTest extends TestCase
             'phone' => $communityWorker->phone,
             'display_email' => $communityWorker->display_email,
             'display_phone' => $communityWorker->display_phone,
+            'receive_booking_confirmations' => $communityWorker->receive_booking_confirmations,
+            'receive_cancellation_confirmations' => $communityWorker->receive_cancellation_confirmations,
             'include_calendar_attachment' => $communityWorker->include_calendar_attachment,
             'roles' => [
                 [
@@ -605,6 +639,8 @@ class UsersTest extends TestCase
             'phone' => $communityWorker->phone,
             'display_email' => $communityWorker->display_email,
             'display_phone' => $communityWorker->display_phone,
+            'receive_booking_confirmations' => $communityWorker->receive_booking_confirmations,
+            'receive_cancellation_confirmations' => $communityWorker->receive_cancellation_confirmations,
             'include_calendar_attachment' => $communityWorker->include_calendar_attachment,
             'roles' => [
                 [
@@ -634,6 +670,8 @@ class UsersTest extends TestCase
             'phone' => $communityWorker->phone,
             'display_email' => $communityWorker->display_email,
             'display_phone' => $communityWorker->display_phone,
+            'receive_booking_confirmations' => $communityWorker->receive_booking_confirmations,
+            'receive_cancellation_confirmations' => $communityWorker->receive_cancellation_confirmations,
             'include_calendar_attachment' => $communityWorker->include_calendar_attachment,
             'roles' => [],
         ]);
@@ -660,6 +698,8 @@ class UsersTest extends TestCase
             'phone' => $communityWorker->phone,
             'display_email' => $communityWorker->display_email,
             'display_phone' => $communityWorker->display_phone,
+            'receive_booking_confirmations' => $communityWorker->receive_booking_confirmations,
+            'receive_cancellation_confirmations' => $communityWorker->receive_cancellation_confirmations,
             'include_calendar_attachment' => $communityWorker->include_calendar_attachment,
             'roles' => [
                 [
@@ -688,6 +728,8 @@ class UsersTest extends TestCase
             'password' => 'P@55word.',
             'display_email' => false,
             'display_phone' => false,
+            'receive_booking_confirmations' => false,
+            'receive_cancellation_confirmations' => false,
             'include_calendar_attachment' => false,
             'roles' => [
                 [
@@ -799,6 +841,8 @@ class UsersTest extends TestCase
             'password' => 'P@55word.',
             'display_email' => false,
             'display_phone' => false,
+            'receive_booking_confirmations' => false,
+            'receive_cancellation_confirmations' => false,
             'include_calendar_attachment' => false,
             'roles' => [
                 [
