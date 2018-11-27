@@ -195,7 +195,7 @@ class DatabaseSeeder extends Seeder
                             $eligibleAnswer = $clinic->eligibleAnswers()->create([
                                 'question_id' => $question->id,
                                 'answer' => EligibleAnswer::parseCheckboxAnswer(
-                                    (bool)mt_rand(0, 1)
+                                    array_random([true, false, null])
                                 ),
                             ]);
                             break;
