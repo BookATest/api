@@ -940,6 +940,59 @@ class AppointmentsTest extends TestCase
         Queue::assertPushed(\App\Notifications\Sms\ServiceUser\BookingCancelledByUserSms::class);
     }
 
+    public function test_notification_not_sent_to_community_worker_with_notification_disabled_when_cancelled_by_service_user()
+    {
+        Queue::fake();
+
+        $serviceUser = factory(ServiceUser::class)->create([
+            'phone' => '00000000000',
+            'email' => $this->faker->safeEmail,
+        ]);
+        $user = factory(User::class)->create([
+            'receive_cancellation_confirmations' => false,
+        ])->makeOrganisationAdmin();
+        $appointment = factory(Appointment::class)->create([
+            'user_id' => $user->id,
+            'service_user_id' => $serviceUser->id,
+            'booked_at' => now(),
+            'consented_at' => now(),
+        ]);
+
+        $response = $this->json('PUT', "/v1/appointments/{$appointment->id}/cancel", [
+            'service_user_token' => $serviceUser->generateToken(),
+        ]);
+
+        $response->assertStatus(Response::HTTP_OK);
+        Queue::assertNotPushed(\App\Notifications\Email\User\BookingCancelledByServiceUserEmail::class);
+    }
+
+    public function test_notification_not_sent_to_community_worker_with_notification_disabled_when_cancelled_by_user()
+    {
+        Queue::fake();
+
+        $clinic = factory(Clinic::class)->create();
+        $user = factory(User::class)->create([
+            'receive_cancellation_confirmations' => false,
+        ])->makeOrganisationAdmin();
+        $serviceUser = factory(ServiceUser::class)->create([
+            'phone' => '00000000000',
+            'email' => $this->faker->safeEmail,
+        ]);
+        $appointment = factory(Appointment::class)->create([
+            'user_id' => $user->id,
+            'clinic_id' => $clinic,
+            'service_user_id' => $serviceUser->id,
+            'booked_at' => now(),
+            'consented_at' => now(),
+        ]);
+
+        Passport::actingAs($user);
+        $response = $this->json('PUT', "/v1/appointments/{$appointment->id}/cancel");
+
+        $response->assertStatus(Response::HTTP_OK);
+        Queue::assertNotPushed(\App\Notifications\Email\User\BookingCancelledByUserEmail::class);
+    }
+
     /*
      * Delete schedule.
      */
