@@ -318,4 +318,30 @@ EOT;
             ->operationId('users.calendar-feed-token')
             ->tags(Tags::users()->name);
     }
+
+    /**
+     * @return \GoldSpecDigital\ObjectOrientedOAS\Objects\Operation
+     */
+    public static function destroySessions(): Operation
+    {
+        $responses = [
+            Responses::http200(
+                MediaType::json(
+                    Schema::object()->properties(
+                        Schema::string('message')->example('All your sessions have been cleared.')
+                    )
+                )
+            ),
+        ];
+
+        $description = <<<EOT
+**Permission:** `Community Worker`
+EOT;
+
+        return Operation::delete(...$responses)
+            ->summary('Clear the sessions for the authenticated user')
+            ->description($description)
+            ->operationId('users.sessions.destroy')
+            ->tags(Tags::users()->name);
+    }
 }
