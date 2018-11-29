@@ -18,6 +18,18 @@ class AuthServiceProvider extends ServiceProvider
     ];
 
     /**
+     * Bootstrap any application services.
+     *
+     * @return void
+     */
+    public function register()
+    {
+        parent::register();
+
+        Passport::ignoreMigrations();
+    }
+
+    /**
      * Register any authentication / authorization services.
      *
      * @return void
@@ -29,5 +41,6 @@ class AuthServiceProvider extends ServiceProvider
         Passport::routes(function (RouteRegistrar $router) {
             $router->forAuthorization();
         });
+        Passport::enableImplicitGrant();
     }
 }
