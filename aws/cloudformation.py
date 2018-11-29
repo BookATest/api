@@ -573,7 +573,7 @@ backend_distribution = template.add_resource(
                 )
             ],
             ViewerCertificate=cloudfront.ViewerCertificate(
-                AcmCertificateArn=Ref(frontend_ssl),
+                AcmCertificateArn=Ref(backend_ssl),
                 SslSupportMethod='vip'
             )
         )
