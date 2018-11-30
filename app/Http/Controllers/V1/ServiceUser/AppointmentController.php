@@ -42,7 +42,7 @@ class AppointmentController extends Controller
             )
             ->defaultSort('start_at')
             ->allowedSorts('start_at')
-            ->paginate();
+            ->paginate(per_page($request->per_page));
 
         event(EndpointHit::onRead($request, "Listed appointments for service user [$serviceUser->id]"));
 

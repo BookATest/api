@@ -49,7 +49,7 @@ class UserController extends Controller
             )
             ->defaultSort(['first_name', 'last_name'])
             ->allowedSorts('first_name', 'last_name')
-            ->paginate();
+            ->paginate(per_page($request->per_page));
 
         event(EndpointHit::onRead($request, 'Listed all users'));
 

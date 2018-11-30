@@ -54,7 +54,7 @@ class ReportController extends Controller
             )
             ->defaultSort('-created_at')
             ->allowedSorts('created_at')
-            ->paginate();
+            ->paginate(per_page($request->per_page));
 
         event(EndpointHit::onRead($request, 'Listed all reports'));
 

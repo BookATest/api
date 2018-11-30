@@ -40,7 +40,7 @@ class ServiceUserController extends Controller
             )
             ->defaultSort('name')
             ->allowedSorts('name')
-            ->paginate();
+            ->paginate(per_page($request->per_page));
 
         event(EndpointHit::onRead($request, 'Listed all service users'));
 

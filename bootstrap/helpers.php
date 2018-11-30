@@ -138,3 +138,18 @@ if (!function_exists('single_space')) {
         return $string;
     }
 }
+
+if (!function_exists('per_page')) {
+    /**
+     * @param int|null $perPage
+     * @return int
+     */
+    function per_page(int $perPage = null): int
+    {
+        $perPage = $perPage ?? config('bat.pagination_results');
+        $perPage = min(config('bat.max_pagination_results'), $perPage);
+        $perPage = max(1, $perPage);
+
+        return $perPage;
+    }
+}
