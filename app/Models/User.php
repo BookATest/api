@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\Mutators\UserMutators;
 use App\Models\Relationships\UserRelationships;
+use App\Models\Scopes\UserScopes;
 use App\Notifications\Email\User\ForgottenPasswordEmail;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
@@ -22,6 +23,7 @@ class User extends Authenticatable
     use HasApiTokens;
     use UserMutators;
     use UserRelationships;
+    use UserScopes;
 
     const EXCLUSIVE = true;
     const PROFILE_PICTURE_WIDTH = 400;
