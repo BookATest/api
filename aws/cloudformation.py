@@ -1001,7 +1001,10 @@ api_user = template.add_resource(
                         {
                             'Action': 's3:*',
                             'Effect': 'Allow',
-                            'Resource': GetAtt(uploads_bucket, 'Arn')
+                            'Resource': [
+                                GetAtt(uploads_bucket, 'Arn'),
+                                Join('/', [GetAtt(uploads_bucket, 'Arn'), '*'])
+                            ]
                         },
                         {
                             'Action': 'sqs:*',
