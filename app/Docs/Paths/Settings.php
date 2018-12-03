@@ -80,7 +80,7 @@ class Settings
                     Schema::string('name'),
                     Schema::string('primary_colour'),
                     Schema::string('secondary_colour'),
-                    Schema::string('profile_picture')->description('Base64 encoded JPEG.')
+                    Schema::string('logo')->description('Base64 encoded PNG.')
                 )
         );
 
