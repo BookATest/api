@@ -95,6 +95,10 @@ class UpdateRequest extends FormRequest
                 'required',
                 'boolean',
             ],
+            'send_dna_follow_ups' => [
+                'required',
+                'boolean',
+            ],
         ];
     }
 }
