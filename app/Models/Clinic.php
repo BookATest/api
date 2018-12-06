@@ -23,6 +23,7 @@ class Clinic extends Model
      */
     protected $casts = [
         'send_cancellation_confirmations' => 'boolean',
+        'send_dna_follow_ups' => 'boolean',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
         'deleted_at' => 'datetime',

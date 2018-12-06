@@ -102,6 +102,7 @@ class ClinicsTest extends TestCase
                     'appointment_duration',
                     'appointment_booking_threshold',
                     'send_cancellation_confirmations',
+                    'send_dna_follow_ups',
                     'created_at',
                     'updated_at',
                 ]
@@ -122,6 +123,7 @@ class ClinicsTest extends TestCase
                 'appointment_duration' => $clinic->appointment_duration,
                 'appointment_booking_threshold' => $clinic->appointment_booking_threshold,
                 'send_cancellation_confirmations' => $clinic->send_cancellation_confirmations,
+                'send_dna_follow_ups' => $clinic->send_dna_follow_ups,
                 'created_at' => $clinic->created_at->toIso8601String(),
                 'updated_at' => $clinic->updated_at->toIso8601String(),
             ]
@@ -179,6 +181,7 @@ class ClinicsTest extends TestCase
             'appointment_duration' => 30,
             'appointment_booking_threshold' => 120,
             'send_cancellation_confirmations' => true,
+            'send_dna_follow_ups' => true,
         ]);
 
         $response->assertStatus(Response::HTTP_CREATED);
@@ -195,6 +198,7 @@ class ClinicsTest extends TestCase
             'appointment_duration' => 30,
             'appointment_booking_threshold' => 120,
             'send_cancellation_confirmations' => true,
+            'send_dna_follow_ups' => true,
         ]);
     }
 
@@ -218,6 +222,7 @@ class ClinicsTest extends TestCase
             'appointment_duration' => 30,
             'appointment_booking_threshold' => 120,
             'send_cancellation_confirmations' => true,
+            'send_dna_follow_ups' => true,
         ]);
 
         $this->assertEventDispatched(EndpointHit::class, function (EndpointHit $event) {
@@ -243,6 +248,7 @@ class ClinicsTest extends TestCase
             'appointment_duration' => 30,
             'appointment_booking_threshold' => 120,
             'send_cancellation_confirmations' => true,
+            'send_dna_follow_ups' => true,
         ]);
 
         $clinic = Clinic::firstOrFail();
@@ -333,6 +339,7 @@ class ClinicsTest extends TestCase
                 'appointment_duration',
                 'appointment_booking_threshold',
                 'send_cancellation_confirmations',
+                'send_dna_follow_ups',
                 'created_at',
                 'updated_at',
             ]
@@ -352,6 +359,7 @@ class ClinicsTest extends TestCase
                 'appointment_duration' => $clinic->appointment_duration,
                 'appointment_booking_threshold' => $clinic->appointment_booking_threshold,
                 'send_cancellation_confirmations' => $clinic->send_cancellation_confirmations,
+                'send_dna_follow_ups' => $clinic->send_dna_follow_ups,
                 'created_at' => $clinic->created_at->toIso8601String(),
                 'updated_at' => $clinic->updated_at->toIso8601String(),
             ]
@@ -430,6 +438,7 @@ class ClinicsTest extends TestCase
             // TODO: 'appointment_duration' => 30,
             'appointment_booking_threshold' => 120,
             'send_cancellation_confirmations' => true,
+            'send_dna_follow_ups' => true,
         ]);
 
         $clinic->refresh();
@@ -450,6 +459,7 @@ class ClinicsTest extends TestCase
                 'appointment_duration' => $clinic->appointment_duration,
                 'appointment_booking_threshold' => 120,
                 'send_cancellation_confirmations' => true,
+                'send_dna_follow_ups' => true,
                 'created_at' => $clinic->created_at->toIso8601String(),
                 'updated_at' => $clinic->updated_at->toIso8601String(),
             ]
@@ -478,6 +488,7 @@ class ClinicsTest extends TestCase
             // TODO: 'appointment_duration' => 30,
             'appointment_booking_threshold' => 120,
             'send_cancellation_confirmations' => true,
+            'send_dna_follow_ups' => true,
         ]);
 
         $this->assertEventDispatched(EndpointHit::class, function (EndpointHit $event) {
