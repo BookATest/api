@@ -908,7 +908,7 @@ class AppointmentsTest extends TestCase
         ]);
 
         $response->assertStatus(Response::HTTP_OK);
-        Queue::assertPushed(\App\Notifications\Email\User\BookingCancelledByServiceUserEmail::class);
+        Queue::assertPushed(\App\Notifications\Email\CommunityWorker\BookingCancelledByServiceUserEmail::class);
         Queue::assertPushed(\App\Notifications\Email\ServiceUser\BookingCancelledByServiceUserEmail::class);
         Queue::assertPushed(\App\Notifications\Sms\ServiceUser\BookingCancelledByServiceUserSms::class);
     }
@@ -935,7 +935,7 @@ class AppointmentsTest extends TestCase
         $response = $this->json('PUT', "/v1/appointments/{$appointment->id}/cancel");
 
         $response->assertStatus(Response::HTTP_OK);
-        Queue::assertPushed(\App\Notifications\Email\User\BookingCancelledByUserEmail::class);
+        Queue::assertPushed(\App\Notifications\Email\CommunityWorker\BookingCancelledByUserEmail::class);
         Queue::assertPushed(\App\Notifications\Email\ServiceUser\BookingCancelledByUserEmail::class);
         Queue::assertPushed(\App\Notifications\Sms\ServiceUser\BookingCancelledByUserSms::class);
     }
@@ -963,7 +963,7 @@ class AppointmentsTest extends TestCase
         ]);
 
         $response->assertStatus(Response::HTTP_OK);
-        Queue::assertNotPushed(\App\Notifications\Email\User\BookingCancelledByServiceUserEmail::class);
+        Queue::assertNotPushed(\App\Notifications\Email\CommunityWorker\BookingCancelledByServiceUserEmail::class);
     }
 
     public function test_notification_not_sent_to_community_worker_with_notification_disabled_when_cancelled_by_user()
@@ -990,7 +990,8 @@ class AppointmentsTest extends TestCase
         $response = $this->json('PUT', "/v1/appointments/{$appointment->id}/cancel");
 
         $response->assertStatus(Response::HTTP_OK);
-        Queue::assertNotPushed(\App\Notifications\Email\User\BookingCancelledByUserEmail::class);
+        Queue::assertNotPushed(\App\Notifications\Email\CommunityWorker\BookingCancelledByUserEmail::class);
+    }
     }
 
     /*

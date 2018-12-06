@@ -31,7 +31,7 @@ class CancelController extends Controller
             // Send notifications depending on who made the cancellation.
             if ($serviceUserInitiated) {
                 if ($appointment->user->receive_cancellation_confirmations) {
-                    $this->dispatch(new \App\Notifications\Email\User\BookingCancelledByServiceUserEmail($appointment));
+                    $this->dispatch(new \App\Notifications\Email\CommunityWorker\BookingCancelledByServiceUserEmail($appointment));
                 }
 
                 $this->dispatch(new \App\Notifications\Sms\ServiceUser\BookingCancelledByServiceUserSms($appointment));
@@ -41,7 +41,7 @@ class CancelController extends Controller
                 }
             } else {
                 if ($appointment->user->receive_cancellation_confirmations) {
-                    $this->dispatch(new \App\Notifications\Email\User\BookingCancelledByUserEmail($appointment));
+                    $this->dispatch(new \App\Notifications\Email\CommunityWorker\BookingCancelledByUserEmail($appointment));
                 }
 
                 $this->dispatch(new \App\Notifications\Sms\ServiceUser\BookingCancelledByUserSms($appointment));

@@ -14,7 +14,7 @@ use App\Models\Clinic;
 use App\Models\Question;
 use App\Models\ServiceUser;
 use App\Notifications\Email\ServiceUser\BookingConfirmedEmail as BookingConfirmedServiceUserEmail;
-use App\Notifications\Email\User\BookingConfirmedEmail as BookingConfirmedUserEmail;
+use App\Notifications\Email\CommunityWorker\BookingConfirmedEmail as BookingConfirmedUserEmail;
 use App\Notifications\Sms\ServiceUser\BookingConfirmedSms as BookingConfirmedServiceUserSms;
 use App\Support\Coordinate;
 use App\Support\Postcode;
