@@ -84,6 +84,7 @@ class ClinicController extends Controller
                 'appointment_duration' => $request->appointment_duration,
                 'appointment_booking_threshold' => $request->appointment_booking_threshold,
                 'send_cancellation_confirmations' => $request->send_cancellation_confirmations,
+                'send_dna_follow_ups' => $request->send_dna_follow_ups,
             ]);
 
             $coordinate = $this->geocoder->geocode(
@@ -136,6 +137,7 @@ class ClinicController extends Controller
                 // TODO: 'appointment_duration' => $request->appointment_duration,
                 'appointment_booking_threshold' => $request->appointment_booking_threshold,
                 'send_cancellation_confirmations' => $request->send_cancellation_confirmations,
+                'send_dna_follow_ups' => $request->send_dna_follow_ups,
             ]);
 
             $coordinate = $this->geocoder->geocode(

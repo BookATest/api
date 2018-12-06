@@ -14,6 +14,9 @@ class Appointment extends Model
     use AppointmentRelationships;
     use AppointmentScopes;
 
+    const ATTENDED = false;
+    const DID_NOT_ATTEND = true;
+
     /**
      * The attributes that should be cast to native types.
      *
@@ -49,6 +52,19 @@ class Appointment extends Model
             'service_user_id' => $serviceUser->id,
             'booked_at' => $bookedAt,
             'consented_at' => $bookedAt,
+        ]);
+
+        return $this;
+    }
+
+    /**
+     * @param bool $didNotAttend
+     * @return \App\Models\Appointment
+     */
+    public function setDnaStatus(bool $didNotAttend): self
+    {
+        $this->update([
+            'did_not_attend' => $didNotAttend,
         ]);
 
         return $this;
