@@ -22,7 +22,7 @@ class SendAppointmentRemindersCommandTest extends TestCase
         $appointment = factory(Appointment::class)->create(['start_at' => now()->hour(12)]);
         $appointment->book($serviceUser);
 
-        Carbon::setTestNow(now()->startOfWeek()->hour(10));
+        Carbon::setTestNow(now()->startOfWeek()->hour(12)->subMinutes(SendAppointmentRemindersCommand::MINUTES_IN_DAY));
 
         $this->artisan(SendAppointmentRemindersCommand::class);
 
@@ -39,7 +39,7 @@ class SendAppointmentRemindersCommandTest extends TestCase
         $appointment = factory(Appointment::class)->create(['start_at' => now()->hour(12)]);
         $appointment->book($serviceUser);
 
-        Carbon::setTestNow(now()->startOfWeek()->hour(10)->minute(1));
+        Carbon::setTestNow(now()->startOfWeek()->hour(12)->subMinutes(SendAppointmentRemindersCommand::MINUTES_IN_DAY)->subMinute());
 
         $this->artisan(SendAppointmentRemindersCommand::class);
 

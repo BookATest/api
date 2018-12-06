@@ -12,13 +12,15 @@ class SendAppointmentRemindersCommand extends Command
 {
     use DispatchesJobs;
 
+    const MINUTES_IN_DAY = 1440;
+
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
     protected $signature = 'bat:send-appointment-reminders
-                            {--minutes-before=120 : The number of minutes before the appointment to send the reminder}';
+                            {--minutes-before=' . self::MINUTES_IN_DAY . ' : The number of minutes before the appointment to send the reminder}';
 
     /**
      * The console command description.
