@@ -100,6 +100,6 @@ class SendDnaFollowUpsCommandTest extends TestCase
 
         $this->artisan(SendDnaFollowUpsCommand::class);
 
-        Queue::assertPushed(DnaFollowUpEmail::class);
+        Queue::assertNotPushed(DnaFollowUpEmail::class);
     }
 }

@@ -6,6 +6,7 @@ use App\Models\Appointment;
 use App\Models\User;
 use App\Notifications\Email\ClinicAdmin\DnaFollowUpEmail;
 use Illuminate\Console\Command;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 
@@ -41,6 +42,9 @@ class SendDnaFollowUpsCommand extends Command
 
         Appointment::query()
             ->with('clinic.clinicAdmins')
+            ->whereHas('clinic', function (Builder $query) {
+                $query->where('clinics.send_dna_follow_ups', '=', true);
+            })
             ->booked()
             ->dnaUnactioned()
             ->finishedXMinutesAgo($minutesAfter)
