@@ -88,10 +88,20 @@ trait AppointmentScopes
      */
     public function scopeFinishedXMinutesAgo(Builder $query, int $minutes)
     {
-        return $query->where(
-            DB::raw("DATE_ADD(DATE_ADD(`start_at`, INTERVAL (SELECT `appointment_duration` FROM `clinics` WHERE `clinics`.`id` = `appointments`.`clinic_id`) MINUTE), INTERVAL $minutes MINUTE)"),
-            '=',
-            now()
-        );
+        $sql = <<< EOT
+DATE_ADD(
+    DATE_ADD(
+        `start_at`, 
+        INTERVAL (
+            SELECT `appointment_duration` 
+            FROM `clinics` 
+            WHERE `clinics`.`id` = `appointments`.`clinic_id`
+        ) MINUTE
+    ), 
+    INTERVAL $minutes MINUTE
+)
+EOT;
+
+        return $query->where(DB::raw($sql), '=', now());
     }
 }
