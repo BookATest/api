@@ -91,6 +91,10 @@ class UpdateRequest extends FormRequest
                 'integer',
                 'min:0',
             ],
+            'send_cancellation_confirmations' => [
+                'required',
+                'boolean',
+            ],
         ];
     }
 }

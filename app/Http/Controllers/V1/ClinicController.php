@@ -14,7 +14,6 @@ use App\Http\Responses\ResourceDeletedResponse;
 use App\Models\Clinic;
 use App\Http\Controllers\Controller;
 use App\Support\Postcode;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
 use Spatie\QueryBuilder\Filter;
 use Spatie\QueryBuilder\QueryBuilder;
@@ -84,6 +83,7 @@ class ClinicController extends Controller
                 'directions' => $request->directions,
                 'appointment_duration' => $request->appointment_duration,
                 'appointment_booking_threshold' => $request->appointment_booking_threshold,
+                'send_cancellation_confirmations' => $request->send_cancellation_confirmations,
             ]);
 
             $coordinate = $this->geocoder->geocode(
@@ -135,6 +135,7 @@ class ClinicController extends Controller
                 'directions' => $request->directions,
                 // TODO: 'appointment_duration' => $request->appointment_duration,
                 'appointment_booking_threshold' => $request->appointment_booking_threshold,
+                'send_cancellation_confirmations' => $request->send_cancellation_confirmations,
             ]);
 
             $coordinate = $this->geocoder->geocode(

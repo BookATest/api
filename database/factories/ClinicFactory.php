@@ -16,5 +16,6 @@ $factory->define(Clinic::class, function (Faker $faker) {
         'directions' => $faker->sentence,
         'appointment_duration' => 30,
         'appointment_booking_threshold' => 120,
+        'send_cancellation_confirmations' => true,
     ];
 });
