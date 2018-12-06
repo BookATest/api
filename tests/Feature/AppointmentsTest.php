@@ -992,6 +992,62 @@ class AppointmentsTest extends TestCase
         $response->assertStatus(Response::HTTP_OK);
         Queue::assertNotPushed(\App\Notifications\Email\CommunityWorker\BookingCancelledByUserEmail::class);
     }
+
+    public function test_notifications_sent_to_clinic_admins_when_notifications_enabled()
+    {
+        Queue::fake();
+
+        $serviceUser = factory(ServiceUser::class)->create([
+            'phone' => '00000000000',
+            'email' => $this->faker->safeEmail,
+        ]);
+        $clinic = factory(Clinic::class)->create([
+            'send_cancellation_confirmations' => true,
+        ]);
+        $clinicAdmin = factory(User::class)->create()->makeClinicAdmin($clinic);
+        $appointment = factory(Appointment::class)->create([
+            'clinic_id' => $clinic->id,
+            'service_user_id' => $serviceUser->id,
+            'booked_at' => now(),
+            'consented_at' => now(),
+        ]);
+
+        $response = $this->json('PUT', "/v1/appointments/{$appointment->id}/cancel", [
+            'service_user_token' => $serviceUser->generateToken(),
+        ]);
+
+        $response->assertStatus(Response::HTTP_OK);
+        Queue::assertPushed(\App\Notifications\Email\ClinicAdmin\BookingCancelledByServiceUserEmail::class, function (\App\Notifications\Email\ClinicAdmin\BookingCancelledByServiceUserEmail $email) use ($clinicAdmin) {
+            $this->assertEquals($email->getTo(), $clinicAdmin->email);
+            return true;
+        });
+    }
+
+    public function test_notifications_not_sent_to_clinic_admins_when_notifications_disabled()
+    {
+        Queue::fake();
+
+        $serviceUser = factory(ServiceUser::class)->create([
+            'phone' => '00000000000',
+            'email' => $this->faker->safeEmail,
+        ]);
+        $clinic = factory(Clinic::class)->create([
+            'send_cancellation_confirmations' => false,
+        ]);
+        factory(User::class)->create()->makeClinicAdmin($clinic);
+        $appointment = factory(Appointment::class)->create([
+            'clinic_id' => $clinic->id,
+            'service_user_id' => $serviceUser->id,
+            'booked_at' => now(),
+            'consented_at' => now(),
+        ]);
+
+        $response = $this->json('PUT', "/v1/appointments/{$appointment->id}/cancel", [
+            'service_user_token' => $serviceUser->generateToken(),
+        ]);
+
+        $response->assertStatus(Response::HTTP_OK);
+        Queue::assertNotPushed(\App\Notifications\Email\ClinicAdmin\BookingCancelledByServiceUserEmail::class);
     }
 
     /*

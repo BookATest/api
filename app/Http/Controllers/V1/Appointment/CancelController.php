@@ -30,24 +30,66 @@ class CancelController extends Controller
 
             // Send notifications depending on who made the cancellation.
             if ($serviceUserInitiated) {
-                if ($appointment->user->receive_cancellation_confirmations) {
-                    $this->dispatch(new \App\Notifications\Email\CommunityWorker\BookingCancelledByServiceUserEmail($appointment));
+                // Clinic admin emails.
+                if ($appointment->clinic->send_cancellation_confirmations) {
+                    foreach ($appointment->clinic->clinicAdmins as $clinicAdmin) {
+                        $this->dispatch(
+                            new \App\Notifications\Email\ClinicAdmin\BookingCancelledByServiceUserEmail(
+                                $appointment,
+                                $clinicAdmin
+                            )
+                        );
+                    }
                 }
 
-                $this->dispatch(new \App\Notifications\Sms\ServiceUser\BookingCancelledByServiceUserSms($appointment));
+                // Community worker email.
+                if ($appointment->user->receive_cancellation_confirmations) {
+                    $this->dispatch(
+                        new \App\Notifications\Email\CommunityWorker\BookingCancelledByServiceUserEmail($appointment)
+                    );
+                }
 
+                // Service user SMS.
+                $this->dispatch(
+                    new \App\Notifications\Sms\ServiceUser\BookingCancelledByServiceUserSms($appointment)
+                );
+
+                // Service user email.
                 if ($serviceUser->email) {
-                    $this->dispatch(new \App\Notifications\Email\ServiceUser\BookingCancelledByServiceUserEmail($appointment));
+                    $this->dispatch(
+                        new \App\Notifications\Email\ServiceUser\BookingCancelledByServiceUserEmail($appointment)
+                    );
                 }
             } else {
-                if ($appointment->user->receive_cancellation_confirmations) {
-                    $this->dispatch(new \App\Notifications\Email\CommunityWorker\BookingCancelledByUserEmail($appointment));
+                // Clinic admin emails.
+                if ($appointment->clinic->send_cancellation_confirmations) {
+                    foreach ($appointment->clinic->clinicAdmins as $clinicAdmin) {
+                        $this->dispatch(
+                            new \App\Notifications\Email\ClinicAdmin\BookingCancelledByUserEmail(
+                                $appointment,
+                                $clinicAdmin
+                            )
+                        );
+                    }
                 }
 
-                $this->dispatch(new \App\Notifications\Sms\ServiceUser\BookingCancelledByUserSms($appointment));
+                // Community worker email.
+                if ($appointment->user->receive_cancellation_confirmations) {
+                    $this->dispatch(
+                        new \App\Notifications\Email\CommunityWorker\BookingCancelledByUserEmail($appointment)
+                    );
+                }
 
+                // Service user SMS.
+                $this->dispatch(
+                    new \App\Notifications\Sms\ServiceUser\BookingCancelledByUserSms($appointment)
+                );
+
+                // Service user email.
                 if ($serviceUser->email) {
-                    $this->dispatch(new \App\Notifications\Email\ServiceUser\BookingCancelledByUserEmail($appointment));
+                    $this->dispatch(
+                        new \App\Notifications\Email\ServiceUser\BookingCancelledByUserEmail($appointment)
+                    );
                 }
             }
 

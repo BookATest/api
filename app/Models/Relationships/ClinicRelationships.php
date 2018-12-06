@@ -8,6 +8,8 @@ use App\Models\AppointmentSchedule;
 use App\Models\EligibleAnswer;
 use App\Models\Report;
 use App\Models\ReportSchedule;
+use App\Models\Role;
+use App\Models\User;
 use App\Models\UserRole;
 
 trait ClinicRelationships
@@ -66,5 +68,14 @@ trait ClinicRelationships
     public function appointmentSchedules()
     {
         return $this->hasMany(AppointmentSchedule::class);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function clinicAdmins()
+    {
+        return $this->belongsToMany(User::class, (new UserRole())->getTable())
+            ->wherePivot('role_id', '=', Role::clinicAdmin()->id);
     }
 }
