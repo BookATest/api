@@ -27,7 +27,6 @@ Did {$appointment->serviceUser->name} attend their recent appointment with {$app
 at {$appointment->start_at->format('H:i')}?
 
 Yes: {$yesUrl}
-
 No: {$noUrl}
 EOT;
         $this->notification = $appointment->user->notifications()->create([

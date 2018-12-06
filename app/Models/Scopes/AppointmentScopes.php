@@ -91,9 +91,9 @@ trait AppointmentScopes
         $sql = <<< EOT
 DATE_ADD(
     DATE_ADD(
-        `start_at`, 
+        `appointments`.`start_at`, 
         INTERVAL (
-            SELECT `appointment_duration` 
+            SELECT `clinics`.`appointment_duration` 
             FROM `clinics` 
             WHERE `clinics`.`id` = `appointments`.`clinic_id`
         ) MINUTE
@@ -103,5 +103,14 @@ DATE_ADD(
 EOT;
 
         return $query->where(DB::raw($sql), '=', now());
+    }
+
+    /**
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeDnaUnactioned(Builder $query)
+    {
+        return $query->whereNull('appointments.did_not_attend');
     }
 }

@@ -38,6 +38,7 @@ class SendDnaRemindersCommand extends Command
 
         Appointment::query()
             ->with('user')
+            ->booked()
             ->finishedXMinutesAgo($minutesAfter)
             ->chunk(200, function (Collection $appointments) {
                 $appointments->each(function (Appointment $appointment) {
