@@ -4,6 +4,7 @@ namespace App\Models\Scopes;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\DB;
 
 trait AppointmentScopes
 {
@@ -78,5 +79,19 @@ trait AppointmentScopes
             : Carbon::createFromFormat(Carbon::ATOM, $dateTime);
 
         return $query->where('appointments.start_at', '<=', $dateTime);
+    }
+
+    /**
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param int $minutes
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeFinishedXMinutesAgo(Builder $query, int $minutes)
+    {
+        return $query->where(
+            DB::raw("DATE_ADD(DATE_ADD(`start_at`, INTERVAL (SELECT `appointment_duration` FROM `clinics` WHERE `clinics`.`id` = `appointments`.`clinic_id`) MINUTE), INTERVAL $minutes MINUTE)"),
+            '=',
+            now()
+        );
     }
 }
