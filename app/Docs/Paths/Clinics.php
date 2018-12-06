@@ -70,7 +70,8 @@ class Clinics
                     'city',
                     'postcode',
                     'directions',
-                    'send_cancellation_confirmations'
+                    'send_cancellation_confirmations',
+                    'send_dna_follow_ups'
                 )
                 ->properties(
                     Schema::string('name'),
@@ -84,7 +85,8 @@ class Clinics
                     Schema::string('directions'),
                     Schema::integer('appointment_duration'),
                     Schema::integer('appointment_booking_threshold'),
-                    Schema::boolean('send_cancellation_confirmations')
+                    Schema::boolean('send_cancellation_confirmations'),
+                    Schema::boolean('send_dna_follow_ups')
                 )
         );
 
@@ -148,7 +150,8 @@ class Clinics
                     'city',
                     'postcode',
                     'directions',
-                    'send_cancellation_confirmations'
+                    'send_cancellation_confirmations',
+                    'send_dna_follow_ups'
                 )
                 ->properties(
                     Schema::string('name'),
@@ -162,7 +165,8 @@ class Clinics
                     Schema::string('directions'),
                     Schema::integer('appointment_duration'),
                     Schema::integer('appointment_booking_threshold'),
-                    Schema::boolean('send_cancellation_confirmations')
+                    Schema::boolean('send_cancellation_confirmations'),
+                    Schema::boolean('send_dna_follow_ups')
                 )
         );
 
