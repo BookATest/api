@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Notifications\Email\User;
+namespace App\Notifications\Email\CommunityWorker;
 
 use App\Models\Appointment;
 use App\Models\Notification;
 use App\Notifications\Email\Email;
 
-class BookingCancelledByServiceUserEmail extends Email
+class BookingCancelledByUserEmail extends Email
 {
     /**
-     * BookingCancelledByServiceUserEmail constructor.
+     * BookingCancelledByUserEmail constructor.
      *
      * @param \App\Models\Appointment $appointment
      */

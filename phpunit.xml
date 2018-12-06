@@ -29,8 +29,8 @@
         <env name="CACHE_DRIVER" value="redis"/>
         <env name="DB_HOST" value="mysql-testing"/>
         <env name="QUEUE_DRIVER" value="sync"/>
-        <env name="MAIL_DRIVER" value="array"/>
         <env name="FILESYSTEM_CLOUD" value="local_cloud"/>
+        <env name="MAIL_DRIVER" value="array"/>
         <env name="SMS_DRIVER" value="log"/>
     </php>
 </phpunit>

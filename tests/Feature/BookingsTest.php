@@ -12,7 +12,7 @@ use App\Models\ServiceUser;
 use App\Models\User;
 use App\Notifications\Email\ServiceUser\BookingConfirmedEmail as BookingConfirmedServiceUserEmail;
 use App\Notifications\Email\ServiceUser\BookingConfirmedEmail;
-use App\Notifications\Email\User\BookingConfirmedEmail as BookingConfirmedUserEmail;
+use App\Notifications\Email\CommunityWorker\BookingConfirmedEmail as BookingConfirmedUserEmail;
 use App\Notifications\Sms\ServiceUser\BookingConfirmedSms;
 use Illuminate\Http\Response;
 use Illuminate\Support\Carbon;

@@ -22,6 +22,7 @@ class Clinic extends Model
      * @var array
      */
     protected $casts = [
+        'send_cancellation_confirmations' => 'boolean',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
         'deleted_at' => 'datetime',
