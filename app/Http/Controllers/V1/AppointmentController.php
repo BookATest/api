@@ -148,11 +148,7 @@ class AppointmentController extends Controller
     public function update(UpdateRequest $request, Appointment $appointment)
     {
         $appointment = DB::transaction(function () use ($request, $appointment): Appointment {
-            $appointment->update([
-                'did_not_attend' => $request->did_not_attend,
-            ]);
-
-            return $appointment;
+            return $appointment->setDnaStatus($request->did_not_attend);
         });
 
         event(EndpointHit::onUpdate($request, "Updated appointment [{$appointment->id}]"));
