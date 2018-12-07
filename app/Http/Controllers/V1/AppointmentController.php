@@ -43,7 +43,12 @@ class AppointmentController extends Controller
 
         // If a guest made the request, then limit to only available appointments.
         if (Auth::guest()) {
-            $baseQuery = $baseQuery->available();
+            $baseQuery = $baseQuery
+                ->whereBetween('appointments.start_at', [
+                    now(),
+                    today()->addDays(config('bat.days_in_advance_to_book'))->endOfDay(),
+                ])
+                ->available();
         }
 
         // Specify allowed modifications to the query via the GET parameters.

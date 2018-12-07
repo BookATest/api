@@ -27,9 +27,11 @@ class Appointments
      */
     public static function index(): Operation
     {
-        $description = <<<EOT
+        $appointmentsVisible = config('bat.days_in_advance_to_book');
+
+        $description = <<< EOT
 **Permission:** `Open`
-* View all available appointments
+* View all available appointments within the next {$appointmentsVisible} days
 
 **Permission:** `Community Worker`
 * View all appointments
