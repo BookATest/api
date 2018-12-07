@@ -10,4 +10,6 @@ return [
 
     'max_pagination_results' => env('MAX_PAGINATION_RESULTS', 100),
 
+    'days_in_advance_to_book' => env('DAYS_IN_ADVANCE_TO_BOOK', 30),
+
 ];
