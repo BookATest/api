@@ -14,6 +14,11 @@ class CancelRequest extends FormRequest
      */
     public function authorize()
     {
+        // If the appointment is in the past.
+        if ($this->appointment->start_at->lessThan(now())) {
+            return false;
+        }
+
         // If the appointment is available.
         if (!$this->appointment->is_booked) {
             return false;
