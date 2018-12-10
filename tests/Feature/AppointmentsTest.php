@@ -843,6 +843,25 @@ class AppointmentsTest extends TestCase
         $response->assertStatus(Response::HTTP_FORBIDDEN);
     }
 
+    public function test_cw_cannot_cancel_one_in_past()
+    {
+        $clinic = factory(Clinic::class)->create();
+        $user = factory(User::class)->create()->makeCommunityWorker($clinic);
+
+        $appointment = factory(Appointment::class)->create([
+            'clinic_id' => $clinic->id,
+            'service_user_id' => factory(ServiceUser::class)->create()->id,
+            'start_at' => today()->subWeek(),
+            'booked_at' => now(),
+            'consented_at' => now(),
+        ]);
+
+        Passport::actingAs($user);
+        $response = $this->json('PUT', "/v1/appointments/{$appointment->id}/cancel");
+
+        $response->assertStatus(Response::HTTP_FORBIDDEN);
+    }
+
     public function test_cw_can_cancel_one()
     {
         $clinic = factory(Clinic::class)->create();
