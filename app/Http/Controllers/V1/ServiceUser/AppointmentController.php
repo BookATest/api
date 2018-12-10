@@ -24,7 +24,8 @@ class AppointmentController extends Controller
     {
         // Prepare the base query.
         $baseQuery = Appointment::query()
-            ->where('service_user_id', $serviceUser->id);
+            ->where('service_user_id', $serviceUser->id)
+            ->where('start_at', '>', now());
 
         // Specify allowed modifications to the query via the GET parameters.
         $appointments = QueryBuilder::for($baseQuery)
