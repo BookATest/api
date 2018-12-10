@@ -196,6 +196,41 @@ class ServiceUsersTest extends TestCase
         $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
     }
 
+    public function test_su_can_only_list_their_future_appointments()
+    {
+        /** @var \App\Models\ServiceUser $serviceUser */
+        $serviceUser = factory(ServiceUser::class)->create();
+
+        /** @var \App\Models\Appointment $appointment */
+        $appointment = factory(Appointment::class)->create();
+        $appointment->book($serviceUser);
+
+        /** @var \App\Models\Appointment $anotherAppointment */
+        $anotherAppointment = factory(Appointment::class)->create([
+            'start_at' => today()->subWeek(),
+        ]);
+        $anotherAppointment->book($serviceUser);
+
+        $parameters = http_build_query(['service_user_token' => $serviceUser->generateToken()]);
+        $response = $this->json('GET', "/v1/service-users/$serviceUser->id/appointments?$parameters");
+
+        $response->assertStatus(Response::HTTP_OK);
+        $response->assertJsonFragment([
+            'id' => $appointment->id,
+            'user_id' => $appointment->user_id,
+            'clinic_id' => $appointment->clinic_id,
+            'is_repeating' => $appointment->appointment_schedule_id !== null,
+            'service_user_id' => $serviceUser->id,
+            'start_at' => $appointment->start_at->toIso8601String(),
+            'booked_at' => $appointment->booked_at->toIso8601String(),
+            'consented_at' => $appointment->consented_at->toIso8601String(),
+            'did_not_attend' => $appointment->did_not_attend,
+            'created_at' => $appointment->created_at->toIso8601String(),
+            'updated_at' => $appointment->updated_at->toIso8601String(),
+        ]);
+        $response->assertJsonMissing(['id' => $anotherAppointment->id]);
+    }
+
     /*
      * Access code.
      */
