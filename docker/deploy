@@ -5,6 +5,9 @@
 # $CLUSTER = The name of the ECS cluster.
 # $SERVICE = The name of the ECS service.
 
+# Bail out on first error.
+set -e
+
 # Login to the ECR.
 echo "Logging in to ECR..."
 $(aws ecr get-login --no-include-email)
@@ -14,9 +17,9 @@ echo "Pushing images to ECR..."
 docker push ${REPO_URI}:latest
 # docker push ${REPO_URI}:${TRAVIS_COMMIT}
 
-# Update the service.
+# Update the services.
 echo "Updating the ECS services..."
 aws ecs update-service \
-    --cluster $CLUSTER \
-    --service $SERVICE \
+    --cluster ${CLUSTER} \
+    --service ${SERVICE} \
     --force-new-deployment
