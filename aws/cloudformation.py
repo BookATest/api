@@ -698,7 +698,7 @@ api_task_definition = template.add_resource(
                     Ref(docker_repository)
                 ])
             ]),
-            MemoryReservation='512',
+            MemoryReservation='256',
             PortMappings=[ecs.PortMapping(
                 HostPort='0',
                 ContainerPort='80',
@@ -734,7 +734,7 @@ queue_worker_task_definition = template.add_resource(
                     Ref(docker_repository)
                 ])
             ]),
-            MemoryReservation='512',
+            MemoryReservation='256',
             Essential=True,
             LogConfiguration=ecs.LogConfiguration(
                 LogDriver='awslogs',
@@ -782,7 +782,7 @@ scheduler_task_definition = template.add_resource(
                     Ref(docker_repository)
                 ])
             ]),
-            MemoryReservation='512',
+            MemoryReservation='256',
             Essential=True,
             LogConfiguration=ecs.LogConfiguration(
                 LogDriver='awslogs',
