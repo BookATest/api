@@ -1,0 +1,39 @@
+#!/usr/bin/env bash
+
+# Requires the following environment variables:
+# $CONFIG_SECRET_NAME = The name of the AWS secrets manager secret containing the config.
+
+# Bail out on first error.
+set -e
+
+# Download the configuration file.
+echo "Downloading deployments configuration file..."
+aws secretsmanager get-secret-value \
+    --secret-id ${CONFIG_SECRET_NAME} \
+    python -c "import json,sys;obj=json.load(sys.stdin);print obj['SecretString'];" > docker/config.yml
+
+# Loop through each deployment.
+for DEPLOYMENT in $(docker/parse-config list-deployments -f docker/config.yml)
+do
+    # Declare the configuration variables for the deployment.
+    echo "Setting deployment configuration for ${DEPLOYMENT}..."
+    export AWS_ACCESS_KEY_ID=$(docker/parse-config get-config -d ${DEPLOYMENT} -k aws-access-key-id -f docker/config.yml)
+    export AWS_SECRET_ACCESS_KEY=$(docker/parse-config get-config -d ${DEPLOYMENT} -k aws-secret-access-key -f docker/config.yml)
+    export AWS_DEFAULT_REGION=$(docker/parse-config get-config -d ${DEPLOYMENT} -k aws-default-region -f docker/config.yml)
+    export ENV_SECRET_ID=$(docker/parse-config get-config -d ${DEPLOYMENT} -k env-secret-id -f docker/config.yml)
+    export PUBLIC_SECRET_KEY_ID=$(docker/parse-config get-config -d ${DEPLOYMENT} -k public-key-secret-id -f docker/config.yml)
+    export PRIVATE_SECRET_KEY_ID=$(docker/parse-config get-config -d ${DEPLOYMENT} -k private-key-secret-id -f docker/config.yml)
+    export REPO_URI=$(docker/parse-config get-config -d ${DEPLOYMENT} -k repo-uri -f docker/config.yml)
+    export CLUSTER=$(docker/parse-config get-config -d ${DEPLOYMENT} -k cluster -f docker/config.yml)
+    export API_SERVICE=$(docker/parse-config get-config -d ${DEPLOYMENT} -k api-service -f docker/config.yml)
+    export SCHEDULER_SERVICE=$(docker/parse-config get-config -d ${DEPLOYMENT} -k scheduler-service -f docker/config.yml)
+    export QUEUE_WORKER_SERVICE=$(docker/parse-config get-config -d ${DEPLOYMENT} -k queue-worker-service -f docker/config.yml)
+
+    # Build the image.
+    docker/build
+
+    # Deploy the update to the services.
+    SERVICE=${API_SERVICE} docker/deploy
+    SERVICE=${SCHEDULER_SERVICE} docker/deploy
+    SERVICE=${QUEUE_WORKER_SERVICE} docker/deploy
+done
