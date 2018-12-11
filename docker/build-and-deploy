@@ -9,7 +9,7 @@ set -e
 # Download the configuration file.
 echo "Downloading deployments configuration file..."
 aws secretsmanager get-secret-value \
-    --secret-id ${CONFIG_SECRET_NAME} \
+    --secret-id ${CONFIG_SECRET_NAME} | \
     python -c "import json,sys;obj=json.load(sys.stdin);print obj['SecretString'];" > docker/config.yml
 
 # Loop through each deployment.
