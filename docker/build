@@ -35,18 +35,18 @@ docker run --rm \
 # Get the .env file.
 echo "Downloading .env file..."
 aws secretsmanager get-secret-value \
-    --secret-id ${ENV_SECRET_ID:-.env} | \
+    --secret-id ${ENV_SECRET_ID} | \
     python -c "import json,sys;obj=json.load(sys.stdin);print obj['SecretString'];" > .env
 
 # Get the OAuth keys.
 echo "Downloading public OAuth key..."
 aws secretsmanager get-secret-value \
-    --secret-id ${PUBLIC_KEY_SECRET_ID:-oauth-public.key} | \
+    --secret-id ${PUBLIC_KEY_SECRET_ID} | \
     python -c "import json,sys;obj=json.load(sys.stdin);print obj['SecretString'];" > storage/oauth-public.key
 
 echo "Downloading private OAuth key..."
 aws secretsmanager get-secret-value \
-    --secret-id ${PRIVATE_KEY_SECRET_ID:-oauth-private.key} | \
+    --secret-id ${PRIVATE_KEY_SECRET_ID} | \
     python -c "import json,sys;obj=json.load(sys.stdin);print obj['SecretString'];" > storage/oauth-private.key
 
 # Build the Docker image with latest code.
@@ -60,7 +60,7 @@ docker build \
 echo "Cleaning up..."
 cd ${TRAVIS_BUILD_DIR}/docker/api/packaged
 PWD=$(pwd)
-if [ "$PWD" == "$TRAVIS_BUILD_DIR/docker/api/packaged" ]; then
+if [[ "$PWD" == "$TRAVIS_BUILD_DIR/docker/api/packaged" ]]; then
     # The "vendor" directory (any any built assets!) will be owned
     # as user "root" on the Linux file system
     # So we'll use Docker to delete them with a one-off container
