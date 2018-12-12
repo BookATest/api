@@ -40,10 +40,10 @@ do
     export QUEUE_WORKER_SERVICE=$(docker/parse-config get-config ${ENVIRONMENT} -d ${DEPLOYMENT} -k queue-worker-service -f docker/config.yml)
 
     # Build the image.
-    ./docker/build
+    (./docker/build)
 
     # Deploy the update to the services.
-    SERVICE=${API_SERVICE} ./docker/deploy
-    SERVICE=${SCHEDULER_SERVICE} ./docker/deploy
-    SERVICE=${QUEUE_WORKER_SERVICE} ./docker/deploy
+    (SERVICE=${API_SERVICE} ./docker/deploy)
+    (SERVICE=${SCHEDULER_SERVICE} ./docker/deploy)
+    (SERVICE=${QUEUE_WORKER_SERVICE} ./docker/deploy)
 done
