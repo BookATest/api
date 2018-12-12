@@ -267,8 +267,31 @@ api_task_count = template.add_parameter(
         Description='The number of API containers to run.',
         Type='Number',
         Default='2',
-        MinValue='1',
-        ConstraintDescription='Must be 1 or more.'
+        MinValue='0',
+        ConstraintDescription='Must be 0 or more.'
+    )
+)
+
+scheduler_task_count = template.add_parameter(
+    Parameter(
+        'SchedulerTaskCount',
+        Description='The number of scheduler containers to run.',
+        Type='Number',
+        Default='1',
+        MinValue='0',
+        MaxValue='1',
+        ConstraintDescription='Must be either 0 or 1.'
+    )
+)
+
+queue_worker_task_count = template.add_parameter(
+    Parameter(
+        'QueueWorkerTaskCount',
+        Description='The number of queue worker containers to run.',
+        Type='Number',
+        Default='1',
+        MinValue='0',
+        ConstraintDescription='Must be 0 or more.'
     )
 )
 
@@ -953,7 +976,7 @@ queue_worker_service = template.add_resource(
             MinimumHealthyPercent=0,
             MaximumPercent=100
         ),
-        DesiredCount=1,
+        DesiredCount=Ref(queue_worker_task_count),
         LaunchType='EC2'
     )
 )
@@ -968,7 +991,7 @@ scheduler_service = template.add_resource(
             MinimumHealthyPercent=0,
             MaximumPercent=100
         ),
-        DesiredCount=1,
+        DesiredCount=Ref(scheduler_task_count),
         LaunchType='EC2'
     )
 )
