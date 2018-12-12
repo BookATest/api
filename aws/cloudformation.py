@@ -338,6 +338,30 @@ backend_ssl = template.add_parameter(Parameter(
     MinLength='1'
 ))
 
+api_log_group_name = template.add_parameter(Parameter(
+    'ApiLogGroupName',
+    Type='String',
+    Description='The name of the CloudWatch API log group.',
+    MinLength='1',
+    Default='/ecs/api'
+))
+
+queue_worker_log_group_name = template.add_parameter(Parameter(
+    'QueueWorkerLogGroupName',
+    Type='String',
+    Description='The name of the CloudWatch queue worker log group.',
+    MinLength='1',
+    Default='/ecs/queue-worker'
+))
+
+scheduler_log_group_name = template.add_parameter(Parameter(
+    'SchedulerLogGroupName',
+    Type='String',
+    Description='The name of the CloudWatch scheduler log group.',
+    MinLength='1',
+    Default='/ecs/scheduler'
+))
+
 # ==================================================
 # Resources.
 # ==================================================
@@ -683,7 +707,7 @@ docker_repository = template.add_resource(
 api_log_group = template.add_resource(
     logs.LogGroup(
         'ApiLogGroup',
-        LogGroupName='/ecs/api',
+        LogGroupName=Ref(api_log_group_name),
         RetentionInDays=7
     )
 )
@@ -691,7 +715,7 @@ api_log_group = template.add_resource(
 queue_worker_log_group = template.add_resource(
     logs.LogGroup(
         'QueueWorkerLogGroup',
-        LogGroupName='/ecs/queue-worker',
+        LogGroupName=Ref(queue_worker_log_group_name),
         RetentionInDays=7
     )
 )
@@ -699,7 +723,7 @@ queue_worker_log_group = template.add_resource(
 scheduler_log_group = template.add_resource(
     logs.LogGroup(
         'SchedulerLogGroup',
-        LogGroupName='/ecs/scheduler',
+        LogGroupName=Ref(scheduler_log_group_name),
         RetentionInDays=7
     )
 )
