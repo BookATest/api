@@ -362,6 +362,14 @@ scheduler_log_group_name = template.add_parameter(Parameter(
     Default='/ecs/scheduler'
 ))
 
+api_launch_template_name = template.add_parameter(Parameter(
+    'ApiLaunchTemplateName',
+    Type='String',
+    Description='The name of the API EC2 launch template.',
+    MinLength='1',
+    Default='ApiLaunchTemplate'
+))
+
 # ==================================================
 # Resources.
 # ==================================================
@@ -663,7 +671,7 @@ ecs_cluster = template.add_resource(
 launch_template = template.add_resource(
     ec2.LaunchTemplate(
         'LaunchTemplate',
-        LaunchTemplateName='ApiLaunchTemplate',
+        LaunchTemplateName=Ref(api_launch_template_name),
         LaunchTemplateData=ec2.LaunchTemplateData(
             ImageId='ami-066826c6a40879d75',
             InstanceType=Ref(api_instance_class),
