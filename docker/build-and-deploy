@@ -31,8 +31,8 @@ do
     export AWS_SECRET_ACCESS_KEY=$(docker/parse-config get-config ${ENVIRONMENT} -d ${DEPLOYMENT} -k aws-secret-access-key -f docker/config.yml)
     export AWS_DEFAULT_REGION=$(docker/parse-config get-config ${ENVIRONMENT} -d ${DEPLOYMENT} -k aws-default-region -f docker/config.yml)
     export ENV_SECRET_ID=$(docker/parse-config get-config ${ENVIRONMENT} -d ${DEPLOYMENT} -k env-secret-id -f docker/config.yml)
-    export PUBLIC_SECRET_KEY_ID=$(docker/parse-config get-config ${ENVIRONMENT} -d ${DEPLOYMENT} -k public-key-secret-id -f docker/config.yml)
-    export PRIVATE_SECRET_KEY_ID=$(docker/parse-config get-config ${ENVIRONMENT} -d ${DEPLOYMENT} -k private-key-secret-id -f docker/config.yml)
+    export PUBLIC_KEY_SECRET_ID=$(docker/parse-config get-config ${ENVIRONMENT} -d ${DEPLOYMENT} -k public-key-secret-id -f docker/config.yml)
+    export PRIVATE_KEY_SECRET_ID=$(docker/parse-config get-config ${ENVIRONMENT} -d ${DEPLOYMENT} -k private-key-secret-id -f docker/config.yml)
     export REPO_URI=$(docker/parse-config get-config ${ENVIRONMENT} -d ${DEPLOYMENT} -k repo-uri -f docker/config.yml)
     export CLUSTER=$(docker/parse-config get-config ${ENVIRONMENT} -d ${DEPLOYMENT} -k cluster -f docker/config.yml)
     export API_SERVICE=$(docker/parse-config get-config ${ENVIRONMENT} -d ${DEPLOYMENT} -k api-service -f docker/config.yml)
@@ -40,10 +40,10 @@ do
     export QUEUE_WORKER_SERVICE=$(docker/parse-config get-config ${ENVIRONMENT} -d ${DEPLOYMENT} -k queue-worker-service -f docker/config.yml)
 
     # Build the image.
-    (./docker/build)
+    ./docker/build
 
     # Deploy the update to the services.
-    (SERVICE=${API_SERVICE} ./docker/deploy)
-    (SERVICE=${SCHEDULER_SERVICE} ./docker/deploy)
-    (SERVICE=${QUEUE_WORKER_SERVICE} ./docker/deploy)
+    SERVICE=${API_SERVICE} ./docker/deploy
+    SERVICE=${SCHEDULER_SERVICE} ./docker/deploy
+    SERVICE=${QUEUE_WORKER_SERVICE} ./docker/deploy
 done
