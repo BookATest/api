@@ -370,6 +370,30 @@ api_launch_template_name = template.add_parameter(Parameter(
     Default='ApiLaunchTemplate'
 ))
 
+api_task_definition_name = template.add_parameter(Parameter(
+    'ApiTaskDefinitionName',
+    Type='String',
+    Description='The name of the API ECS task definition.',
+    MinLength='1',
+    Default='api'
+))
+
+queue_worker_task_definition_name = template.add_parameter(Parameter(
+    'QueueWorkerTaskDefinitionName',
+    Type='String',
+    Description='The name of the queue worker ECS task definition.',
+    MinLength='1',
+    Default='queue-worker'
+))
+
+scheduler_task_definition_name = template.add_parameter(Parameter(
+    'SchedulerTaskDefinitionName',
+    Type='String',
+    Description='The name of the scheduler ECS task definition.',
+    MinLength='1',
+    Default='scheduler'
+))
+
 # ==================================================
 # Resources.
 # ==================================================
@@ -739,7 +763,7 @@ scheduler_log_group = template.add_resource(
 api_task_definition = template.add_resource(
     ecs.TaskDefinition(
         'ApiTaskDefinition',
-        Family='api',
+        Family=Ref(api_task_definition_name),
         NetworkMode='bridge',
         RequiresCompatibilities=['EC2'],
         ContainerDefinitions=[ecs.ContainerDefinition(
@@ -775,7 +799,7 @@ api_task_definition = template.add_resource(
 queue_worker_task_definition = template.add_resource(
     ecs.TaskDefinition(
         'QueueWorkerTaskDefinition',
-        Family='queue-worker',
+        Family=Ref(queue_worker_task_definition_name),
         NetworkMode='bridge',
         RequiresCompatibilities=['EC2'],
         ContainerDefinitions=[ecs.ContainerDefinition(
@@ -823,7 +847,7 @@ queue_worker_task_definition = template.add_resource(
 scheduler_task_definition = template.add_resource(
     ecs.TaskDefinition(
         'SchedulerTaskDefinition',
-        Family='scheduler',
+        Family=Ref(scheduler_task_definition_name),
         NetworkMode='bridge',
         RequiresCompatibilities=['EC2'],
         ContainerDefinitions=[ecs.ContainerDefinition(
