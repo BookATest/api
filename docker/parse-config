@@ -7,6 +7,7 @@ import yaml
 
 parser = argparse.ArgumentParser(description="Parse a configuration file and extract details")
 parser.add_argument("command", choices=["list-deployments", "get-config"], help="The command to run")
+parser.add_argument("environment", choices=["production", "staging"], help="The environment to pull the configuration from")
 parser.add_argument("-d", "--deployment", help="The deployment to get the config for")
 parser.add_argument("-k", "--key", help="The configuration key to get the value of within the deployment")
 parser.add_argument("-f", "--file", help="The path to the configuration file to parse (default: config.yml)", default="config.yml")
@@ -14,14 +15,15 @@ args = parser.parse_args()
 
 with open(args.file, 'r') as file:
     config = yaml.load(file)
+    environment = args.environment
 
     # For listing the deployment keys.
     if args.command == 'list-deployments':
-        for deployment in config['deployments'].keys():
+        for deployment in config['deployments'][environment].keys():
             print(deployment)
 
     # For getting a value from a deployment.
     elif args.command == 'get-config':
         deployment = args.deployment
         key = args.key
-        print(config['deployments'][deployment][key])
+        print(config['deployments'][environment][deployment][key])
