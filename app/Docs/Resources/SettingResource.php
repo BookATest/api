@@ -22,7 +22,8 @@ class SettingResource extends BaseResource
                 Schema::object('make-booking')->properties(
                     Schema::object('clinics')->properties(
                         Schema::string('title'),
-                        Schema::string('content')
+                        Schema::string('content'),
+                        Schema::string('ineligible')
                     ),
                     Schema::object('consent')->properties(
                         Schema::string('title'),

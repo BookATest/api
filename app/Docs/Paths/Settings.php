@@ -75,7 +75,7 @@ class Settings
                                 ->required('title', 'content')
                                 ->properties(
                                     Schema::string('title'),
-                                    Schema::string('content')
+                                    Schema::string('content')->nullable()
                                 ),
                             Schema::object('make-booking')
                                 ->required(
@@ -91,58 +91,59 @@ class Settings
                                 )
                                 ->properties(
                                     Schema::object('clinics')
-                                        ->required('title', 'content')
+                                        ->required('title', 'content', 'ineligible')
                                         ->properties(
                                             Schema::string('title'),
-                                            Schema::string('content')
+                                            Schema::string('content')->nullable(),
+                                            Schema::string('ineligible')
                                         ),
                                     Schema::object('consent')
                                         ->required('title', 'content')
                                         ->properties(
                                             Schema::string('title'),
-                                            Schema::string('content')
+                                            Schema::string('content')->nullable()
                                         ),
                                     Schema::object('location')
                                         ->required('title', 'content')
                                         ->properties(
                                             Schema::string('title'),
-                                            Schema::string('content')
+                                            Schema::string('content')->nullable()
                                         ),
                                     Schema::object('overview')
                                         ->required('title', 'content')
                                         ->properties(
                                             Schema::string('title'),
-                                            Schema::string('content')
+                                            Schema::string('content')->nullable()
                                         ),
                                     Schema::object('questions')
                                         ->required('title', 'content')
                                         ->properties(
                                             Schema::string('title'),
-                                            Schema::string('content')
+                                            Schema::string('content')->nullable()
                                         ),
                                     Schema::object('appointments')
                                         ->required('title', 'content')
                                         ->properties(
                                             Schema::string('title'),
-                                            Schema::string('content')
+                                            Schema::string('content')->nullable()
                                         ),
                                     Schema::object('confirmation')
                                         ->required('title', 'content')
                                         ->properties(
                                             Schema::string('title'),
-                                            Schema::string('content')
+                                            Schema::string('content')->nullable()
                                         ),
                                     Schema::object('introduction')
                                         ->required('title', 'content')
                                         ->properties(
                                             Schema::string('title'),
-                                            Schema::string('content')
+                                            Schema::string('content')->nullable()
                                         ),
                                     Schema::object('user-details')
                                         ->required('title', 'content')
                                         ->properties(
                                             Schema::string('title'),
-                                            Schema::string('content')
+                                            Schema::string('content')->nullable()
                                         )
                                 ),
                             Schema::object('list-bookings')
@@ -159,38 +160,38 @@ class Settings
                                         ->required('title', 'content')
                                         ->properties(
                                             Schema::string('title'),
-                                            Schema::string('content')
+                                            Schema::string('content')->nullable()
                                         ),
                                     Schema::object('cancel')
                                         ->required('title', 'content')
                                         ->properties(
                                             Schema::string('title'),
-                                            Schema::string('content')
+                                            Schema::string('content')->nullable()
                                         ),
                                     Schema::object('cancelled')
                                         ->required('title', 'content')
                                         ->properties(
                                             Schema::string('title'),
-                                            Schema::string('content')
+                                            Schema::string('content')->nullable()
                                         ),
                                     Schema::object('access-code')
                                         ->required('title', 'content')
                                         ->properties(
                                             Schema::string('title'),
-                                            Schema::string('content')
+                                            Schema::string('content')->nullable()
                                         ),
                                     Schema::object('appointments')
                                         ->required('title', 'content', 'disclaimer')
                                         ->properties(
                                             Schema::string('title'),
-                                            Schema::string('content'),
+                                            Schema::string('content')->nullable(),
                                             Schema::string('disclaimer')
                                         ),
                                     Schema::object('token-expired')
                                         ->required('title', 'content')
                                         ->properties(
                                             Schema::string('title'),
-                                            Schema::string('content')
+                                            Schema::string('content')->nullable()
                                         )
                                 )
                         ),

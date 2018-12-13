@@ -139,6 +139,10 @@ class UpdateRequest extends FormRequest
                 'nullable',
                 'string',
             ],
+            'language.make-booking.clinics.ineligible' => [
+                'required',
+                'string',
+            ],
 
             'language.make-booking.appointments.title' => [
                 'required',
