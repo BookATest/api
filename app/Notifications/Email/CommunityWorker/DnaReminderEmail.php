@@ -17,8 +17,14 @@ class DnaReminderEmail extends Email
     {
         parent::__construct();
 
-        $yesUrl = backend_uri("/appointments/{$appointment->id}/edit?did_not_attend=false");
-        $noUrl = backend_uri("/appointments/{$appointment->id}/edit?did_not_attend=true");
+        $yesUrl = route('appointments.did-not-attend', [
+            'appointment' => $appointment->id,
+            'payload' => encrypt(json_encode(false)),
+        ]);
+        $noUrl = route('appointments.did-not-attend', [
+            'appointment' => $appointment->id,
+            'payload' => encrypt(json_encode(true)),
+        ]);
 
         $this->to = $appointment->user->email;
         $this->subject = 'Did They Attend?';
