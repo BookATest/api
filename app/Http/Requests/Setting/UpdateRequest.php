@@ -139,6 +139,10 @@ class UpdateRequest extends FormRequest
                 'nullable',
                 'string',
             ],
+            'language.make-booking.clinics.ineligible' => [
+                'required',
+                'string',
+            ],
 
             'language.make-booking.appointments.title' => [
                 'required',
@@ -165,6 +169,16 @@ class UpdateRequest extends FormRequest
                 'string',
             ],
             'language.make-booking.consent.content' => [
+                'present',
+                'nullable',
+                'string',
+            ],
+
+            'language.make-booking.no-consent.title' => [
+                'required',
+                'string',
+            ],
+            'language.make-booking.no-consent.content' => [
                 'present',
                 'nullable',
                 'string',

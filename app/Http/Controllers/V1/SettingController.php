@@ -72,6 +72,7 @@ class SettingController extends Controller
                     'clinics' => [
                         'title' => (string)$request->language['make-booking']['clinics']['title'],
                         'content' => (string)$request->language['make-booking']['clinics']['content'] ?: null,
+                        'ineligible' => (string)$request->language['make-booking']['clinics']['ineligible'],
                     ],
                     'appointments' => [
                         'title' => (string)$request->language['make-booking']['appointments']['title'],
@@ -84,6 +85,10 @@ class SettingController extends Controller
                     'consent' => [
                         'title' => (string)$request->language['make-booking']['consent']['title'],
                         'content' => (string)$request->language['make-booking']['consent']['content'] ?: null,
+                    ],
+                    'no-consent' => [
+                        'title' => (string)$request->language['make-booking']['no-consent']['title'],
+                        'content' => (string)$request->language['make-booking']['no-consent']['content'] ?: null,
                     ],
                     'overview' => [
                         'title' => (string)$request->language['make-booking']['overview']['title'],

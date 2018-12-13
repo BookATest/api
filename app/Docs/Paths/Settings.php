@@ -56,6 +56,8 @@ class Settings
                     'default_appointment_duration',
                     'language',
                     'name',
+                    'email',
+                    'phone',
                     'primary_colour',
                     'secondary_colour'
                 )
@@ -64,20 +66,145 @@ class Settings
                     Schema::integer('default_appointment_duration'),
                     Schema::object('language')
                         ->required(
-                            'booking_questions_help_text',
-                            'booking_notification_help_text',
-                            'booking_enter_details_help_text',
-                            'booking_find_location_help_text',
-                            'booking_appointment_overview_help_text'
+                            'home',
+                            'make-booking',
+                            'list-bookings'
                         )
                         ->properties(
-                            Schema::string('booking_questions_help_text'),
-                            Schema::string('booking_notification_help_text'),
-                            Schema::string('booking_enter_details_help_text'),
-                            Schema::string('booking_find_location_help_text'),
-                            Schema::string('booking_appointment_overview_help_text')
+                            Schema::object('home')
+                                ->required('title', 'content')
+                                ->properties(
+                                    Schema::string('title'),
+                                    Schema::string('content')->nullable()
+                                ),
+                            Schema::object('make-booking')
+                                ->required(
+                                    'clinics',
+                                    'consent',
+                                    'no-consent',
+                                    'location',
+                                    'overview',
+                                    'questions',
+                                    'appointments',
+                                    'confirmation',
+                                    'introduction',
+                                    'user-details'
+                                )
+                                ->properties(
+                                    Schema::object('clinics')
+                                        ->required('title', 'content', 'ineligible')
+                                        ->properties(
+                                            Schema::string('title'),
+                                            Schema::string('content')->nullable(),
+                                            Schema::string('ineligible')
+                                        ),
+                                    Schema::object('consent')
+                                        ->required('title', 'content')
+                                        ->properties(
+                                            Schema::string('title'),
+                                            Schema::string('content')->nullable()
+                                        ),
+                                    Schema::object('no-consent')
+                                        ->required('title', 'content')
+                                        ->properties(
+                                            Schema::string('title'),
+                                            Schema::string('content')->nullable()
+                                        ),
+                                    Schema::object('location')
+                                        ->required('title', 'content')
+                                        ->properties(
+                                            Schema::string('title'),
+                                            Schema::string('content')->nullable()
+                                        ),
+                                    Schema::object('overview')
+                                        ->required('title', 'content')
+                                        ->properties(
+                                            Schema::string('title'),
+                                            Schema::string('content')->nullable()
+                                        ),
+                                    Schema::object('questions')
+                                        ->required('title', 'content')
+                                        ->properties(
+                                            Schema::string('title'),
+                                            Schema::string('content')->nullable()
+                                        ),
+                                    Schema::object('appointments')
+                                        ->required('title', 'content')
+                                        ->properties(
+                                            Schema::string('title'),
+                                            Schema::string('content')->nullable()
+                                        ),
+                                    Schema::object('confirmation')
+                                        ->required('title', 'content')
+                                        ->properties(
+                                            Schema::string('title'),
+                                            Schema::string('content')->nullable()
+                                        ),
+                                    Schema::object('introduction')
+                                        ->required('title', 'content')
+                                        ->properties(
+                                            Schema::string('title'),
+                                            Schema::string('content')->nullable()
+                                        ),
+                                    Schema::object('user-details')
+                                        ->required('title', 'content')
+                                        ->properties(
+                                            Schema::string('title'),
+                                            Schema::string('content')->nullable()
+                                        )
+                                ),
+                            Schema::object('list-bookings')
+                                ->required(
+                                    'token',
+                                    'cancel',
+                                    'cancelled',
+                                    'access-code',
+                                    'appointments',
+                                    'token-expired'
+                                )
+                                ->properties(
+                                    Schema::object('token')
+                                        ->required('title', 'content')
+                                        ->properties(
+                                            Schema::string('title'),
+                                            Schema::string('content')->nullable()
+                                        ),
+                                    Schema::object('cancel')
+                                        ->required('title', 'content')
+                                        ->properties(
+                                            Schema::string('title'),
+                                            Schema::string('content')->nullable()
+                                        ),
+                                    Schema::object('cancelled')
+                                        ->required('title', 'content')
+                                        ->properties(
+                                            Schema::string('title'),
+                                            Schema::string('content')->nullable()
+                                        ),
+                                    Schema::object('access-code')
+                                        ->required('title', 'content')
+                                        ->properties(
+                                            Schema::string('title'),
+                                            Schema::string('content')->nullable()
+                                        ),
+                                    Schema::object('appointments')
+                                        ->required('title', 'content', 'disclaimer')
+                                        ->properties(
+                                            Schema::string('title'),
+                                            Schema::string('content')->nullable(),
+                                            Schema::string('disclaimer')
+                                        ),
+                                    Schema::object('token-expired')
+                                        ->required('title', 'content')
+                                        ->properties(
+                                            Schema::string('title'),
+                                            Schema::string('content')->nullable()
+                                        )
+                                )
                         ),
                     Schema::string('name'),
+                    Schema::string('email'),
+                    Schema::string('phone'),
                     Schema::string('primary_colour'),
                     Schema::string('secondary_colour'),
                     Schema::string('logo')->description('Base64 encoded PNG.')
