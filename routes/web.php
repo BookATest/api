@@ -36,3 +36,18 @@ Route::resource('docs', 'DocsController')
     ->only('index');
 Route::get('docs/openapi.json', 'DocsController@openapi')
     ->name('docs.openapi');
+
+// Temporary DNA Routes - TODO: Remove these and replace with endpoints on the admin app.
+Route::get('appointments/{appointment}/did-not-attend/{payload}', function (\App\Models\Appointment $appointment, string $payload) {
+    try {
+        $didNotAttend = json_decode(decrypt($payload), true);
+    } catch (\Exception $exception) {
+        return response('The payload is invalid');
+    }
+
+    \Illuminate\Support\Facades\DB::transaction(function () use ($appointment, $didNotAttend): \App\Models\Appointment {
+        return $appointment->setDnaStatus($didNotAttend);
+    });
+
+    return response('Did not attend status updated!');
+})->name('appointments.did-not-attend');
