@@ -174,6 +174,16 @@ class UpdateRequest extends FormRequest
                 'string',
             ],
 
+            'language.make-booking.no-consent.title' => [
+                'required',
+                'string',
+            ],
+            'language.make-booking.no-consent.content' => [
+                'present',
+                'nullable',
+                'string',
+            ],
+
             'language.make-booking.overview.title' => [
                 'required',
                 'string',

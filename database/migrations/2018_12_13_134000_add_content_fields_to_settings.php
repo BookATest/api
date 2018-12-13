@@ -15,6 +15,9 @@ class AddContentFieldsToSettings extends Migration
         DB::table('settings')->where('key', '=', 'language')->update([
             'value' => DB::raw('JSON_SET(`value`, \'$."make-booking".clinics.ineligible\', "Lorem ipsum")'),
         ]);
+        DB::table('settings')->where('key', '=', 'language')->update([
+            'value' => DB::raw('JSON_SET(`value`, \'$."make-booking"."no-consent"\', JSON_OBJECT("title", "Lorem ipsum", "content", "Lorem ipsum"))'),
+        ]);
     }
 
     /**
@@ -26,6 +29,9 @@ class AddContentFieldsToSettings extends Migration
     {
         DB::table('settings')->where('key', '=', 'language')->update([
             'value' => DB::raw('JSON_REMOVE(`value`, \'$."make-booking".clinics.ineligible\')'),
+        ]);
+        DB::table('settings')->where('key', '=', 'language')->update([
+            'value' => DB::raw('JSON_REMOVE(`value`,\'$."make-booking"."no-consent"\')'),
         ]);
     }
 }

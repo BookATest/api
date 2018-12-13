@@ -29,6 +29,10 @@ class SettingResource extends BaseResource
                         Schema::string('title'),
                         Schema::string('content')
                     ),
+                    Schema::object('no-consent')->properties(
+                        Schema::string('title'),
+                        Schema::string('content')
+                    ),
                     Schema::object('location')->properties(
                         Schema::string('title'),
                         Schema::string('content')

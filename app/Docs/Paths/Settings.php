@@ -81,6 +81,7 @@ class Settings
                                 ->required(
                                     'clinics',
                                     'consent',
+                                    'no-consent',
                                     'location',
                                     'overview',
                                     'questions',
@@ -98,6 +99,12 @@ class Settings
                                             Schema::string('ineligible')
                                         ),
                                     Schema::object('consent')
+                                        ->required('title', 'content')
+                                        ->properties(
+                                            Schema::string('title'),
+                                            Schema::string('content')->nullable()
+                                        ),
+                                    Schema::object('no-consent')
                                         ->required('title', 'content')
                                         ->properties(
                                             Schema::string('title'),
