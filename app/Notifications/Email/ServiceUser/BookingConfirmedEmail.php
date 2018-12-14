@@ -4,6 +4,7 @@ namespace App\Notifications\Email\ServiceUser;
 
 use App\Models\Appointment;
 use App\Models\Notification;
+use App\Models\Setting;
 use App\Notifications\Email\Email;
 
 class BookingConfirmedEmail extends Email
@@ -17,9 +18,11 @@ class BookingConfirmedEmail extends Email
     {
         parent::__construct();
 
+        $organisationName = Setting::getValue(Setting::NAME);
+
         $this->to = $appointment->serviceUser->email;
         $this->subject = 'Booking Confirmation';
-        $this->message = "Your appointment has been booked with {$appointment->clinic->name} at {$appointment->start_at->format('H:i')}.";
+        $this->message = "Your appointment has been booked for {$appointment->start_at->format('d/m/Y \a\t H:i')} with {$organisationName}.";
         $this->notification = $appointment->serviceUser->notifications()->create([
             'channel' => Notification::EMAIL,
             'recipient' => $appointment->serviceUser->email,
