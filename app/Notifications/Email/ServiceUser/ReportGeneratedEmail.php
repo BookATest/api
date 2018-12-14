@@ -2,7 +2,6 @@
 
 namespace App\Notifications\Email\ServiceUser;
 
-use App\Models\Appointment;
 use App\Models\Notification;
 use App\Models\Report;
 use App\Models\ReportSchedule;
