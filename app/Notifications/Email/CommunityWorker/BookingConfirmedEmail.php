@@ -17,7 +17,7 @@ class BookingConfirmedEmail extends Email
     {
         parent::__construct();
 
-        $phone = $appointment->serviceUser->phone ?? '(not provided)';
+        $email = $appointment->serviceUser->email ?? '(not provided)';
 
         $this->to = $appointment->user->email;
         $this->subject = 'Booking Confirmation';
@@ -25,7 +25,7 @@ class BookingConfirmedEmail extends Email
 An appointment has been booked with {$appointment->clinic->name} at {$appointment->start_at->format('H:i')} 
 by {$appointment->serviceUser->name}.
 
-You can contact them by email on {$appointment->serviceUser->email} and by phone {$phone}.
+You can contact them by phone on {$appointment->serviceUser->phone} and on email on {$email}.
 EOT;
         $this->notification = $appointment->user->notifications()->create([
             'channel' => Notification::EMAIL,
