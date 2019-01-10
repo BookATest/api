@@ -22,7 +22,7 @@ class BookingCancelledByUserEmail extends Email
         $this->to = $user->email;
         $this->subject = 'Booking Cancellation';
         $this->message = <<<EOT
-An appointment has been cancelled with {$appointment->clinic->name} at {$appointment->start_at->format('H:i')}.
+An appointment has been cancelled with {$appointment->clinic->name} at {$appointment->start_at->format('l jS F H:i')}.
 
 The appointment was booked with {$appointment->user->full_nane}.
 EOT;

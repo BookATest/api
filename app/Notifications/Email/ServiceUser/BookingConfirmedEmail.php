@@ -22,7 +22,7 @@ class BookingConfirmedEmail extends Email
 
         $this->to = $appointment->serviceUser->email;
         $this->subject = 'Booking Confirmation';
-        $this->message = "Your appointment has been booked for {$appointment->start_at->format('d/m/Y \a\t H:i')} with {$organisationName}.";
+        $this->message = "Your appointment has been booked for {$appointment->start_at->format('l jS F H:i')} with {$organisationName}.";
         $this->notification = $appointment->serviceUser->notifications()->create([
             'channel' => Notification::EMAIL,
             'recipient' => $appointment->serviceUser->email,
