@@ -21,7 +21,7 @@ class AppointmentReminderSms extends Sms
         $organisationName = Setting::getValue(Setting::NAME);
 
         $this->to = $appointment->serviceUser->phone;
-        $this->message = "Reminder, you have an appointment tomorrow at {$appointment->start_at->format('H:i')} with {$organisationName}.";
+        $this->message = "Reminder, you have an appointment tomorrow at {$appointment->start_at->format('l jS F H:i')} with {$organisationName}.";
         $this->notification = $appointment->serviceUser->notifications()->create([
             'channel' => Notification::SMS,
             'recipient' => $appointment->serviceUser->phone,

@@ -30,7 +30,7 @@ class DnaReminderEmail extends Email
         $this->subject = 'Did They Attend?';
         $this->message = <<<EOT
 Did {$appointment->serviceUser->name} attend their recent appointment with {$appointment->clinic->name} 
-at {$appointment->start_at->format('H:i')}?
+at {$appointment->start_at->format('l jS F H:i')}?
 
 Yes: {$yesUrl}
 No: {$noUrl}
