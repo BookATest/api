@@ -21,7 +21,7 @@ class BookingCancelledByServiceUserSms extends Sms
         $organisationName = Setting::getValue(Setting::NAME);
 
         $this->to = $appointment->serviceUser->phone;
-        $this->message = "Your appointment for {$appointment->start_at->format('d/m/Y \a\t H:i')} with {$organisationName} has been cancelled.";
+        $this->message = "Your appointment for {$appointment->start_at->format('l jS F H:i')} with {$organisationName} has been cancelled.";
         $this->notification = $appointment->serviceUser->notifications()->create([
             'channel' => Notification::SMS,
             'recipient' => $appointment->serviceUser->phone,
