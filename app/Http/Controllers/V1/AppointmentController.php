@@ -41,6 +41,15 @@ class AppointmentController extends Controller
         // Prepare the base query.
         $baseQuery = Appointment::query();
 
+        // Eager load the users if included.
+        $userAppends = ['user_first_name', 'user_last_name', 'user_email', 'user_phone'];
+        $requestAppends = explode(',', $request->input('append', ''));
+        $hasAppendedUser = !empty(array_intersect($userAppends, $requestAppends));
+
+        if ($hasAppendedUser) {
+            $baseQuery = $baseQuery->with('user');
+        }
+
         // If a guest made the request, then limit to only available appointments.
         if (Auth::guest()) {
             $baseQuery = $baseQuery
@@ -53,6 +62,12 @@ class AppointmentController extends Controller
 
         // Specify allowed modifications to the query via the GET parameters.
         $appointments = QueryBuilder::for($baseQuery)
+            ->allowedAppends(
+                'user_first_name',
+                'user_last_name',
+                'user_email',
+                'user_phone'
+            )
             ->allowedFilters(
                 Filter::exact('id'),
                 Filter::exact('user_id'),

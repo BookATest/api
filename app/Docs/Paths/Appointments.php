@@ -43,6 +43,8 @@ EOT;
             ),
         ];
         $parameters = [
+            Parameter::query('append', Schema::string())
+                ->description('Comma separated fields to append [`user_first_name`, `user_last_name`, `user_email`, `user_phone`]'),
             Parameter::query('filter[id]', Schema::string())
                 ->description('Comma separated appointment IDs'),
             Parameter::query('filter[user_id]', Schema::string())
