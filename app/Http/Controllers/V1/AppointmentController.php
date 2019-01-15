@@ -41,13 +41,22 @@ class AppointmentController extends Controller
         // Prepare the base query.
         $baseQuery = Appointment::query();
 
+        // Get an array of the appends given with the request.
+        $requestAppends = explode(',', $request->input('append', ''));
+
         // Eager load the users if included.
         $userAppends = ['user_first_name', 'user_last_name', 'user_email', 'user_phone'];
-        $requestAppends = explode(',', $request->input('append', ''));
         $hasAppendedUser = !empty(array_intersect($userAppends, $requestAppends));
 
         if ($hasAppendedUser) {
             $baseQuery = $baseQuery->with('user');
+        }
+
+        // Eager load the service users if included.
+        $hasAppendedServiceUser = in_array('service_user_name', $requestAppends);
+
+        if ($hasAppendedServiceUser) {
+            $baseQuery = $baseQuery->with('serviceUser');
         }
 
         // If a guest made the request, then limit to only available appointments.
@@ -63,6 +72,7 @@ class AppointmentController extends Controller
         // Specify allowed modifications to the query via the GET parameters.
         $appointments = QueryBuilder::for($baseQuery)
             ->allowedAppends(
+                'service_user_name',
                 'user_first_name',
                 'user_last_name',
                 'user_email',

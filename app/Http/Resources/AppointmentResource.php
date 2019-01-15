@@ -24,7 +24,10 @@ class AppointmentResource extends JsonResource
             'booked_at' => optional($this->booked_at)->toIso8601String(),
             'consented_at' => optional($this->consented_at)->toIso8601String(),
             'did_not_attend' => $this->did_not_attend,
-            'service_user_name' => $this->when($this->hasAppend('service_user_name'), $this->service_user_name),
+            'service_user_name' => $this->when(
+                $this->hasAppend('service_user_name') && $request->user('api'),
+                $this->service_user_name
+            ),
             'user_first_name' => $this->when($this->hasAppend('user_first_name'), $this->user_first_name),
             'user_last_name' => $this->when($this->hasAppend('user_last_name'), $this->user_last_name),
             'user_email' => $this->when($this->hasAppend('user_email'), $this->user_email),
