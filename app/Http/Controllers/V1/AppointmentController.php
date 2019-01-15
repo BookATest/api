@@ -51,7 +51,7 @@ class AppointmentController extends Controller
         }
 
         // If a guest made the request, then limit to only available appointments.
-        if (Auth::guest()) {
+        if (auth('api')->guest()) {
             $baseQuery = $baseQuery
                 ->whereBetween('appointments.start_at', [
                     now(),
