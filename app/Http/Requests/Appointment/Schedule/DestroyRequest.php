@@ -14,7 +14,7 @@ class DestroyRequest extends FormRequest
     public function authorize()
     {
         // If an authenticated user is making the request for a clinic they do not belong to.
-        if ($this->user() && !$this->user()->isCommunityWorker($this->appointment->clinic)) {
+        if ($this->user('api') && !$this->user('api')->isCommunityWorker($this->appointment->clinic)) {
             return false;
         }
 

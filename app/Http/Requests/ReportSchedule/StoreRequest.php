@@ -17,7 +17,7 @@ class StoreRequest extends FormRequest
      */
     public function authorize()
     {
-        return $this->user()->isCommunityWorker();
+        return $this->user('api')->isCommunityWorker();
     }
 
     /**
@@ -32,7 +32,7 @@ class StoreRequest extends FormRequest
                 'present',
                 'nullable',
                 'exists:clinics,id',
-                new IsCommunityWorkerForClinic($this->user(), Clinic::find($this->clinic_id)),
+                new IsCommunityWorkerForClinic($this->user('api'), Clinic::find($this->clinic_id)),
             ],
             'report_type' => [
                 'required',

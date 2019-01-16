@@ -14,7 +14,7 @@ class ShowRequest extends FormRequest
     public function authorize()
     {
         // If the report belongs to the user.
-        return $this->user()->id === $this->report->user_id;
+        return $this->user('api')->id === $this->report->user_id;
     }
 
     /**

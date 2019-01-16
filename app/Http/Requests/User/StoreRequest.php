@@ -18,7 +18,7 @@ class StoreRequest extends FormRequest
      */
     public function authorize()
     {
-        if (!$this->user()->isClinicAdmin()) {
+        if (!$this->user('api')->isClinicAdmin()) {
             return false;
         }
 
@@ -86,7 +86,7 @@ class StoreRequest extends FormRequest
             ],
             'roles.*' => [
                 'array',
-                new CanAddRole($this->user()),
+                new CanAddRole($this->user('api')),
             ],
             'roles.*.role' => [
                 'required_with:roles.*',

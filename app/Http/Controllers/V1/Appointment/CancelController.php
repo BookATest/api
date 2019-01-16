@@ -26,7 +26,7 @@ class CancelController extends Controller
             $appointment->cancel();
 
             // Check if it was the service user who cancelled the appointment.
-            $serviceUserInitiated = $request->user() === null;
+            $serviceUserInitiated = $request->user('api') === null;
 
             // Send notifications depending on who made the cancellation.
             if ($serviceUserInitiated) {

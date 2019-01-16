@@ -13,7 +13,7 @@ class IndexRequest extends FormRequest
      */
     public function authorize()
     {
-        if (!$this->user()->isOrganisationAdmin()) {
+        if (!$this->user('api')->isOrganisationAdmin()) {
             return false;
         }
 

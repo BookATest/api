@@ -18,7 +18,7 @@ class UpdateRequest extends FormRequest
             return false;
         }
 
-        if (!$this->user()->isCommunityWorker($this->appointment->clinic)) {
+        if (!$this->user('api')->isCommunityWorker($this->appointment->clinic)) {
             return false;
         }
 

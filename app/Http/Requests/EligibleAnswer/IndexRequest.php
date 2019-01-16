@@ -13,7 +13,7 @@ class IndexRequest extends FormRequest
      */
     public function authorize()
     {
-        return $this->user()->isClinicAdmin($this->clinic);
+        return $this->user('api')->isClinicAdmin($this->clinic);
     }
 
     /**

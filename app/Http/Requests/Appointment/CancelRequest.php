@@ -25,7 +25,7 @@ class CancelRequest extends FormRequest
         }
 
         // If an authenticated user is making the request for a clinic they do not belong to.
-        if ($this->user() && !$this->user()->isCommunityWorker($this->appointment->clinic)) {
+        if ($this->user('api') && !$this->user('api')->isCommunityWorker($this->appointment->clinic)) {
             return false;
         }
 
@@ -40,7 +40,7 @@ class CancelRequest extends FormRequest
     public function rules()
     {
         // For authenticated users.
-        if ($this->user()) {
+        if ($this->user('api')) {
             return [
                 //
             ];

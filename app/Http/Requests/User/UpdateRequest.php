@@ -21,7 +21,7 @@ class UpdateRequest extends FormRequest
     public function authorize()
     {
         /** @var \App\Models\User $requestingUser */
-        $requestingUser = $this->user();
+        $requestingUser = $this->user('api');
 
         /** @var \App\Models\User $subjectUser */
         $subjectUser = $this->route('user');
@@ -101,11 +101,11 @@ class UpdateRequest extends FormRequest
             'roles' => [
                 'present',
                 'array',
-                new CanRemoveRoles($this->user(), $this->route('user')),
+                new CanRemoveRoles($this->user('api'), $this->route('user')),
             ],
             'roles.*' => [
                 'array',
-                new CanAddRole($this->user(), $this->route('user')),
+                new CanAddRole($this->user('api'), $this->route('user')),
             ],
             'roles.*.role' => [
                 'required_with:roles.*',

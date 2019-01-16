@@ -53,7 +53,7 @@ class EndpointHit
      */
     protected function __construct(Request $request, string $action, string $description)
     {
-        $user = $request->user();
+        $user = $request->user('api');
         $token = optional($user)->token();
 
         $this->auditable = $user;

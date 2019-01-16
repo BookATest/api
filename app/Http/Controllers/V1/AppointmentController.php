@@ -112,7 +112,7 @@ class AppointmentController extends Controller
             if ($request->is_repeating) {
                 /** @var \App\Models\AppointmentSchedule $appointmentSchedule */
                 $appointmentSchedule = AppointmentSchedule::create([
-                    'user_id' => $request->user()->id,
+                    'user_id' => $request->user('api')->id,
                     'clinic_id' => $request->clinic_id,
                     'weekly_on' => $startAt->dayOfWeek,
                     'weekly_at' => $startAt->toTimeString(),
@@ -126,7 +126,7 @@ class AppointmentController extends Controller
 
             // For a single appointments.
             return Appointment::create([
-                'user_id' => $request->user()->id,
+                'user_id' => $request->user('api')->id,
                 'clinic_id' => $request->clinic_id,
                 'start_at' => $startAt,
             ]);

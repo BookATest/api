@@ -13,7 +13,7 @@ class DestroyRequest extends FormRequest
      */
     public function authorize()
     {
-        return $this->user()->id === $this->report->user_id;
+        return $this->user('api')->id === $this->report->user_id;
     }
 
     /**

@@ -13,7 +13,7 @@ class IndexRequest extends FormRequest
      */
     public function authorize()
     {
-        return $this->user()->isCommunityWorker();
+        return $this->user('api')->isCommunityWorker();
     }
 
     /**

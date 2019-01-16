@@ -28,11 +28,11 @@ class StatController extends Controller
         $clinics = Clinic::query()->whereIn('id', $clinicIds)->get();
         $clinics = $clinics->isNotEmpty() ? $clinics : null;
 
-        $totalAppointments = $request->user()->appointmentsThisWeek($clinics);
-        $appointmentsAvailable = $request->user()->appointmentsAvailable($clinics);
-        $appointmentsBooked = $request->user()->appointmentsBooked($clinics);
-        $attendanceRate = $request->user()->attendanceRateThisWeek($clinics);
-        $didNotAttendRate = $request->user()->didNotAttendRateThisWeek($clinics);
+        $totalAppointments = $request->user('api')->appointmentsThisWeek($clinics);
+        $appointmentsAvailable = $request->user('api')->appointmentsAvailable($clinics);
+        $appointmentsBooked = $request->user('api')->appointmentsBooked($clinics);
+        $attendanceRate = $request->user('api')->attendanceRateThisWeek($clinics);
+        $didNotAttendRate = $request->user('api')->didNotAttendRateThisWeek($clinics);
         $startAt = today()->startOfWeek();
         $endAt = today()->endOfWeek();
 

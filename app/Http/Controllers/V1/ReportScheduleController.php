@@ -36,7 +36,7 @@ class ReportScheduleController extends Controller
     {
         // Prepare the base query.
         $baseQuery = ReportSchedule::query()
-            ->where('user_id', '=', $request->user()->id);
+            ->where('user_id', '=', $request->user('api')->id);
 
         // Specify allowed modifications to the query via the GET parameters.
         $reportSchedules = QueryBuilder::for($baseQuery)
@@ -63,7 +63,7 @@ class ReportScheduleController extends Controller
     {
         $reportSchedule = DB::transaction(function () use ($request) {
             return ReportSchedule::create([
-                'user_id' => $request->user()->id,
+                'user_id' => $request->user('api')->id,
                 'clinic_id' => $request->clinic_id,
                 'report_type_id' => ReportType::findByName($request->report_type)->id,
                 'repeat_type' => $request->repeat_type,

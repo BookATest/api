@@ -39,10 +39,10 @@ class ReportController extends Controller
         // Prepare the base query and limit to the only user's reports.
         $baseQuery = Report::query()
             ->with('reportType')
-            ->where('user_id', '=', $request->user()->id);
+            ->where('user_id', '=', $request->user('api')->id);
 
         // If the user is an organisation admin, then show the global reports as well.
-        if ($request->user()->isOrganisationAdmin()) {
+        if ($request->user('api')->isOrganisationAdmin()) {
             $baseQuery = $baseQuery->orWhereNull('user_id');
         }
 
@@ -71,7 +71,7 @@ class ReportController extends Controller
     {
         $report = DB::transaction(function () use ($request) {
             return Report::createAndUpload(
-                $request->user(),
+                $request->user('api'),
                 Clinic::find($request->clinic_id),
                 ReportType::findByName($request->type),
                 Carbon::createFromFormat('Y-m-d', $request->start_at),

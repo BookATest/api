@@ -18,7 +18,7 @@ class StoreRequest extends FormRequest
      */
     public function authorize()
     {
-        if (!$this->user()->isCommunityWorker()) {
+        if (!$this->user('api')->isCommunityWorker()) {
             return false;
         }
 
@@ -32,7 +32,7 @@ class StoreRequest extends FormRequest
      */
     public function rules()
     {
-        $user = $this->user();
+        $user = $this->user('api');
         $clinic = $this->clinic_id ? Clinic::find($this->clinic_id) : null;
 
         return [

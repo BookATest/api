@@ -13,7 +13,7 @@ class UpdateRequest extends FormRequest
      */
     public function authorize()
     {
-        $requestingUser = $this->user();
+        $requestingUser = $this->user('api');
         $subjectUser = $this->user;
 
         return $requestingUser->id === $subjectUser->id;
