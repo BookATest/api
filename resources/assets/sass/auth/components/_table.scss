@@ -1,0 +1,117 @@
+.table {
+  table-layout: fixed;
+
+  &--2col {
+    width:100%;
+    tr {
+
+      border-bottom: solid 1px $dustyGray18;
+
+      &:hover {
+        background-color: rgba(85,147,240, 0.1);
+      }
+
+      th {
+        color:$mineShaft;
+        text-align: center;
+
+        @include dosisSemiBold();
+        font-size:16px;
+        line-height: 20px;
+
+        vertical-align: middle;
+
+        padding:16px 0;
+
+      }
+
+      td {
+        //padding:16px 0;
+        color:$mineShaft75;
+        text-align: left;
+
+        @include dosisSemiBold();
+        font-size:12px;
+        line-height: 12px;
+
+        vertical-align: middle;
+
+        &:last-child {
+          text-align: right;
+        }
+
+        > span {
+          margin:0 24px;
+        }
+
+        button {
+          margin:8px 24px;
+
+          width: auto;
+          height: 30px;
+          padding: 0 16px;
+
+          font-size:14px;
+        }
+      }
+    }
+  }
+
+
+  &--3col, &--4col {
+    width:100%;
+    tr {
+
+      border-bottom: solid 1px $dustyGray18;
+
+      &:hover {
+        background-color: rgba(85,147,240, 0.1);
+      }
+
+      th {
+        color:$mineShaft;
+        text-align: center;
+
+        @include dosisSemiBold();
+        font-size:16px;
+        line-height: 20px;
+
+        vertical-align: middle;
+
+        padding:16px 0;
+
+      }
+
+      td {
+        //padding:16px 0;
+        color:$mineShaft75;
+        text-align: center;
+        border-right:solid 1px $dustyGray18;
+
+        @include dosisSemiBold();
+        font-size:12px;
+        line-height: 12px;
+
+        vertical-align: middle;
+
+        &:last-child {
+          border-right:0;
+        }
+
+        > span {
+          margin:0 24px;
+        }
+
+        button {
+          margin:8px 24px;
+
+          width: auto;
+          height: 30px;
+          padding: 0 16px;
+
+          font-size:14px;
+        }
+      }
+    }
+  }
+}

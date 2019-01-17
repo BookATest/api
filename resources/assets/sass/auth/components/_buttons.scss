@@ -1,0 +1,702 @@
+// 5.0 Buttons
+
+.button {
+  @include border-top-radius(8px);
+  @include border-bottom-radius(8px);
+  cursor: pointer;
+  background-color: transparent;
+  // 5.1 Primary Buttons
+  &__primary {
+    background-color: $mineShaft;
+    box-shadow: 0 0 0 2px transparent;
+    @include largeTitle();
+    color: $white;
+    // 5.1.1 Size A
+    &--a {
+      width: auto;
+      min-height: calc(45px - 16px);
+      margin: 0;
+      padding: 8px 40px;
+    }
+    // 5.1.2 Size B
+    &--b {
+      width: auto;
+      min-height: calc(40px - 16px);
+      margin: 0;
+      padding: 8px 32px;
+    }
+
+    &:focus {
+      box-shadow: 0 0 0 2px transparent;
+    }
+
+    &:hover {
+      box-shadow: 0 0 0 2px $mineShaft20;
+
+      span {
+        border-bottom: solid 1px $white;
+      }
+    }
+
+    &:disabled {
+      background-color: transparent;
+      color: $mineShaft40;
+      border: solid 1px $mineShaft40;
+      cursor: not-allowed;
+
+      &:hover {
+        box-shadow: none;
+
+        span {
+          border-bottom: none;
+        }
+      }
+    }
+  }
+  // 5.2 Secondary Button
+  &__secondary {
+    background-color: transparent;
+    border: solid 1px $mineShaft;
+    color: $mineShaft;
+    // 5.2.1 Size A
+    &--a {
+      @include innerPageTitle();
+      width: auto;
+      min-height: calc(48px - 16px);
+      margin: 0;
+      padding: 8px 40px;
+    }
+    // 5.2.2 Size B
+    &--b {
+      @include innerPageHeader();
+      width: auto;
+      min-height: calc(40px - 16px);
+      margin: 0;
+      padding: 8px 32px;
+    }
+
+    &:focus {
+      box-shadow: 0 0 0 2px transparent;
+    }
+
+    &:hover {
+      box-shadow: 0 0 0 2px $mineShaft20;
+
+      span {
+        border-bottom: solid 1px $mineShaft;
+      }
+    }
+
+    &:disabled {
+      background-color: transparent;
+      color: $mineShaft40;
+      border: solid 1px $mineShaft40;
+      cursor: not-allowed;
+
+      &:hover {
+        box-shadow: none;
+
+        span {
+          border-bottom: none;
+        }
+      }
+    }
+  }
+  // 5.3 Radio Button
+  &__radio {
+    position: relative;
+    margin: 0 24px 0 0;
+    padding: 0;
+    display: inline-block;
+
+    input[type=radio] {
+      opacity: 0;
+      width: 0;
+      height: 0;
+      position: absolute;
+
+      &:disabled + span {
+        background-color: transparent;
+        color: $mineShaft40;
+        border: solid 1px $mineShaft40;
+        cursor: not-allowed;
+
+        &:hover {
+          box-shadow: none;
+
+          span {
+            border-bottom: none;
+          }
+        }
+      }
+    }
+
+    input[type=radio] + span {
+      position: relative;
+      display: inline-block;
+      width: auto;
+      height: 40px;
+      margin: 0;
+      padding: 0 24px;
+      @include sBody();
+      line-height: 40px;
+      border: solid 1px $mineShaft;
+      background-color: transparent;
+      @include border-top-radius(8px);
+      @include border-bottom-radius(8px);
+    }
+
+    input[type=radio]:focus + span {
+      outline: rgb(59, 153, 252) auto 5px;
+    }
+
+    input[type=radio]:checked + span {
+      color: $white;
+      border: solid 1px $cornflowerBlue;
+      background-color: $cornflowerBlue;
+
+      &:hover {
+        color: $mineShaft;
+        border: solid 1px transparent;
+        background-color: $cornflowerBlue50;
+      }
+    }
+
+    input[type=radio]:checked[disabled] + span {
+      color: $white;
+      border: solid 1px transparent;
+      background-color: $cornflowerBlue50;
+    }
+
+    &:last-child {
+      margin: 0;
+    }
+  }
+  // 5.4 Inline Links
+  &__inline {
+    width: auto;
+    height: 40px;
+    // 5.4.1 Focus link
+    &--focus {
+      background-color: $blueViolet10;
+      border: solid 1px $blueViolet;
+      color: $blueViolet;
+
+      span {
+        display: inline-block;
+        margin: 1px 0 0 16px;
+        padding: 0;
+        @include dosisMedium();
+        font-size: 16px;
+        line-height: 20px;
+        border-bottom: solid 1px transparent;
+      }
+
+      i {
+        display: inline-block;
+        margin: 0;
+        padding: 0 12px;
+        font-size: 18px;
+      }
+
+      &:focus {}
+
+      &:hover {
+        span {
+          border-bottom: solid 1px $blueViolet;
+        }
+      }
+    }
+    // 5.4.2 Subtle Link
+    &--subtle {
+      span {
+        @include dosisMedium();
+        font-size: 12px;
+        line-height: 16px;
+        color: $mineShaft;
+        border-bottom: solid 1px $mineShaft;
+      }
+    }
+  }
+
+  &__other {
+    position: relative;
+    background-color: $apricot;
+    float: left;
+    width: calc( ((100% / 3) - 0.1px) - 32px);
+    height: auto;
+    margin: 16px;
+
+    &:before {
+      content: '';
+      padding-top: 80%;
+      display: block;
+    }
+
+    span {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      @include largeTitle();
+    }
+
+    &--alt {
+      background-color: $grandis;
+    }
+  }
+
+  &--upload {
+    background-color: $blueViolet10;
+    border: solid 1px $blueViolet;
+    color: $blueViolet;
+    width: 150px;
+    height: 160px;
+    text-align: center;
+
+    &--avatar {
+      img {
+        display: block;
+        margin: 0 auto 16px;
+        width: 100px;
+        height: 100px;
+      }
+    }
+
+    &--logo {
+      img {
+        display: block;
+        margin: 0 auto 8px;
+        width: 118px;
+        height: auto;
+      }
+    }
+
+    span {
+      @include innerPageHeader();
+
+      &.title {
+        @include xsBody();
+        color: $mineShaft !important;
+      }
+      display: block;
+      margin: 0 0 8px 0 !important;
+    }
+  }
+
+  &--location,
+  &--user {
+    position: relative;
+    border: solid 1px $blueViolet;
+    color: $mineShaft;
+    width: calc(50% - 10px);
+    height: 93px;
+    margin: 0 16px 8px 0;
+    padding: 24px;
+    text-align: left;
+
+    &:hover {
+      background-color: $blueViolet10;
+    }
+
+    &:nth-child(odd) {
+      margin-right: 0;
+    }
+
+    img {
+      position: absolute;
+      top: 24px;
+      left: 24px;
+      width: 47px;
+      height: 47px;
+    }
+
+    span {
+      &.name {
+        @include innerPageHeader();
+        display: block;
+        margin-left: 62px;
+      }
+
+      &.role {
+        @include dosisSemiBold();
+        font-size: 14px;
+        line-height: 17px;
+        display: block;
+        margin-left: 62px;
+      }
+
+      &.edit {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        padding: 8px 16px;
+        background-color: $blueViolet10;
+        border: solid 1px $blueViolet;
+        border-bottom: 0;
+        border-right: 0;
+        color: $mineShaft;
+
+        i {
+          color: $blueViolet;
+          font-size: 14px;
+        }
+      }
+    }
+
+    &--no-avatar {
+      span {
+        &.name,
+        &.role {
+          margin-left: 0 !important;
+        }
+      }
+    }
+
+    &--edit {
+      border: solid 1px $blueViolet;
+    }
+
+    &--add {
+      border: solid 1px $mineShaft;
+      text-align: right;
+
+      &:hover {
+        background-color: $black10;
+      }
+
+      i {
+        color: $mineShaft;
+        font-size: 14px;
+      }
+    }
+  }
+
+  &__amend {
+    width: 100%;
+    max-width: 358px;
+    min-height: 42px;
+    cursor: pointer;
+    margin: 0 0 8px;
+    padding: 0;
+
+    &--add {
+      @include border-top-radius(8px);
+      @include border-bottom-radius(8px);
+      border: 1px solid $mineShaft;
+      max-width: calc(358px - 2px);
+
+      &:hover {
+        background-color: $wildSand;
+        border-color: $blueViolet50;
+      }
+
+      &:active {
+        background-color: $wildSand;
+        border-color: $blueViolet;
+      }
+
+      .button__amend__add {
+        background: transparent;
+        float: left;
+        border: 0;
+        margin: 0;
+        padding: 0 16px;
+        width: 100%;
+        height: 42px;
+        color: $mineShaft;
+        cursor: pointer;
+        text-align: right;
+        float: right;
+
+        span {
+          margin-right: 8px;
+          @include dosisMedium();
+          font-size: 16px;
+          line-height: 20px;
+        }
+
+        i {
+          font-size: 16px;
+        }
+
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+
+      &--inactive {
+        background-color: transparent;
+        border-color: $mineShaft50 !important;
+
+        &:active,
+        &:hover {
+          background-color: transparent;
+          border-color: $mineShaft50 !important;
+        }
+
+        .button__amend__add {
+          cursor: not-allowed;
+          color: $mineShaft50;
+
+          &:hover {
+            text-decoration: none !important;
+          }
+        }
+      }
+    }
+
+    &--edit {
+      &:hover {
+        .button__amend__edit,
+        .button__amend__input,
+        .button__amend__reorder {
+          background-color: $blueViolet10 !important;
+        }
+      }
+
+      &:active {
+        .button__amend__edit,
+        .button__amend__input,
+        .button__amend__reorder {
+          border-color: $blueViolet !important;
+        }
+      }
+
+      .button__amend__reorder {
+        background: transparent;
+        float: left;
+        border: 0;
+        margin: 0;
+        padding: 0 0 0 16px;
+        height: 42px;
+        @include border-left-radius(8px);
+        border: solid 1px $mineShaft;
+        border-right: 0;
+        cursor: pointer;
+
+        &:hover {
+          color: $blueViolet;
+        }
+      }
+
+      .button__amend__input {
+        width: calc( ( ((100% - 43px) - 80px) - 18px) - 2px);
+        height: 40px;
+        background: transparent;
+        float: left;
+        border: 0;
+        margin: 0;
+        padding: 0 16px;
+        border: solid 1px $mineShaft;
+        border-left: solid 1px $mineShaft;
+        border-left-width: 0;
+        border-right: 0;
+        cursor: pointer;
+        @include dosisMedium();
+        font-size: 16px;
+        line-height: 20px;
+      }
+
+      .button__amend__edit {
+        background: $blueViolet10;
+        float: left;
+        border: 0;
+        margin: 0;
+        padding: 0;
+        width: 80px;
+        height: 42px;
+        @include border-right-radius(8px);
+        border: solid 1px $blueViolet;
+        color: $blueViolet;
+        cursor: pointer;
+
+        span {
+          margin-right: 8px;
+          @include dosisMedium();
+          font-size: 16px;
+          line-height: 20px;
+        }
+
+        i {
+          font-size: 16px;
+        }
+
+        &:active,
+        &:hover {
+          background: $blueViolet30 !important;
+        }
+      }
+    }
+  }
+
+  &__colour {
+    @include border-top-radius(33px);
+    @include border-bottom-radius(33px);
+    width: 33px;
+    height: 33px;
+    background: $white;
+    border: solid 1px $alto;
+
+    input {
+      display: block;
+      margin: 4px;
+      padding: 0;
+      width: 23px;
+      height: 23px;
+      background: $alto;
+      border: 0;
+      text-indent: -9999px;
+      cursor: pointer;
+      @include border-top-radius(23px);
+      @include border-bottom-radius(23px);
+    }
+  }
+
+  &__logout {
+    position: relative;
+    width: calc(100% - 2px);
+    max-width: 312px;
+    height: 100%;
+    border: solid 1px $blueViolet;
+    color: $mineShaft;
+    margin: 0;
+    padding: 16px 24px;
+    text-align: left;
+
+    &:hover {
+      background-color: $blueViolet10;
+    }
+
+    img {
+      position: absolute;
+      top: 16px;
+      left: 24px;
+      width: 50px;
+      height: 50px;
+      border-radius: 100%;
+    }
+
+    span {
+      &.name {
+        @include innerPageHeader();
+        display: block;
+        margin-left: calc(50px + 16px);
+        font-size: 18px;
+        line-height: 22px;
+      }
+
+      &.role {
+        @include dosisSemiBold();
+        font-size: 14px;
+        line-height: 17px;
+        display: block;
+        margin-left: calc(50px + 16px);
+        font-size: 14px;
+        line-height: 18px;
+      }
+
+      &.logout {
+        position: absolute;
+        top: 0;
+        right: 0;
+        height: calc(100% - 48px);
+        padding: 24px 16px;
+        background-color: $blueViolet10;
+        border-left: solid 1px $blueViolet;
+        color: $blueViolet;
+        text-align: center;
+
+        i {
+          color: $blueViolet;
+          font-size: 20px;
+          display: block;
+        }
+      }
+    }
+
+    &--no-avatar {
+      span {
+        &.name,
+        &.role {
+          margin-left: 0 !important;
+        }
+      }
+    }
+
+    &--edit {
+      border: solid 1px $blueViolet;
+    }
+
+    &--add {
+      border: solid 1px $mineShaft;
+      text-align: right;
+
+      &:hover {
+        background-color: $black10;
+      }
+
+      i {
+        color: $mineShaft;
+        font-size: 14px;
+      }
+    }
+  }
+
+  &__appointment {
+    position: relative;
+    color: $mineShaft;
+    background-color:$wildSand;
+    width: calc(50% - 10px);
+    height: 93px;
+    margin: 0 16px 16px 0;
+    padding: 24px;
+    text-align: left;
+
+    &--today {
+      background-color:$grandis;
+    }
+
+    &:nth-child(even) {
+      margin-right: 0;
+    }
+
+    .appointment {
+      &__date {
+        position: absolute;
+        top:24px;
+        left:24px;
+        @include dosisSemiBold();
+        font-size:14px;
+        line-height:18px;
+      }
+      &__time {
+        position: absolute;
+        top:24px;
+        right:24px;
+        @include dosisSemiBold();
+        font-size:14px;
+        line-height:18px;
+      }
+      &__name {
+        position: absolute;
+        bottom:24px;
+        left:24px;
+
+        @include dosisSemiBold();
+        font-size:12px;
+        line-height:14px;
+
+        color:$mineShaft50;
+      }
+      &__icon {
+        position: absolute;
+        bottom:24px;
+        right:24px;
+        font-size:16px;
+        line-height:18px;
+        color:$mineShaft50;
+      }
+    }
+  }
+}

@@ -1,0 +1,29 @@
+.help {
+  h2 {
+    @include dosisSemiBold();
+
+
+    span {
+      &:nth-child(1) {
+        width:140px;
+        display: inline-block;
+        font-size: 18px;
+        line-height: 22px;
+      }
+      &:nth-child(2) {
+        color:#217820; //Green
+        font-size: 16px;
+        line-height: 20px;
+      }
+    }
+
+  }
+
+  p > span {
+    width: 140px;
+    display: inline-block;
+    @include dosisSemiBold();
+    font-size: 14px;
+    line-height: 18px;
+  }
+}

@@ -1,31 +1,53 @@
 @extends('auth.layout')
 
 @section('content')
-    <form method="POST" action="{{ route('password.update') }}">
+  {{-- Login form --}}
+  <form class="form form--login" action="{{ route('password.update') }}" method="POST">
+    @csrf
 
-        @csrf
+    <input type="hidden" name="token" value="{{ $token }}">
 
-        <label for="email">Email</label>
-        <input id="email" name="email" type="email" value="{{ old('email') }}">
-        @if($errors->has('email'))
-            <strong>{{ $errors->first('email') }}</strong>
-        @endif
+    <h2>Reset password</h2>
 
-        <label for="password">Password</label>
-        <input id="password" name="password" type="password">
-        @if($errors->has('password'))
-            <strong>{{ $errors->first('password') }}</strong>
-        @endif
+    <div class="form__text">
+      <label for="email">
+        <span>Email</span>
+      </label>
+      <div>
+        <input type="email" id="email" name="email" value="{{ old('email') }}">
+      </div>
+      @if($errors->has('email'))
+        <p class="body">
+          <strong>{{ $errors->first('email') }}</strong>
+        </p>
+      @endif
+    </div>
 
-        <label for="password_confirmation">Confirm password</label>
-        <input id="password_confirmation" name="password_confirmation" type="password">
-        @if($errors->has('password_confirmation'))
-            <strong>{{ $errors->first('password_confirmation') }}</strong>
-        @endif
+    <div class="form__text">
+      <label for="password">
+        <span>Password</span>
+      </label>
+      <div>
+        <input type="password" id="password" name="password">
+      </div>
+      @if($errors->has('password'))
+        <p class="body">
+          <strong>{{ $errors->first('password') }}</strong>
+        </p>
+      @endif
+    </div>
 
-        <button type="submit">
-            Reset password
-        </button>
+    <div class="form__text">
+      <label for="password_confirmation">
+        <span>Confirm password</span>
+      </label>
+      <div>
+        <input type="password" id="password_confirmation" name="password_confirmation">
+      </div>
+    </div>
 
-    </form>
+    <button class="button button__primary button__primary--a" type="submit">
+      <span>Reset password</span>
+    </button>
+  </form>
 @endsection

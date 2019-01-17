@@ -1,0 +1,213 @@
+// 7.0 Cards
+// 7.1 Card Framing
+
+.card-frame {
+  // @include border-top-radius(6px);
+  // @include border-bottom-radius(6px);
+  // 7.1.1 Card Frame - Popout
+  &--pop-out {
+    background-color: $white;
+    box-shadow: 0 4px 6px 2px $black25;
+  }
+  // 7.1.2 Card Frame - Default
+  &--default {
+    background-color: $blueViolet10;
+    border: solid 1px $blueViolet;
+  }
+  // 7.1.3 Card Frame - Title Background 1
+  &--title-background-1 {
+    background-color: $grandis;
+  }
+  // 7.1.4 Card Frame - Title Background 2
+  &--title-background-2 {
+    background-color: $wildSand;
+  }
+  // 7.1.5 Card Frame - Title Background 3
+  &--title-background-3 {
+    background-color: $apricot;
+  }
+  // 7.1.6 Card Frame - Title Background 4
+  &--title-background-4 {
+    background-color: $cornflowerBlue80;
+  }
+  // 7.1.7 Card Frame - Title Background 5
+  &--title-background-5 {
+    background-color: $blueViolet50;
+  }
+  // 7.1.8 Card Frame - Warning Call Out
+  &--warning-call-out {
+    background-color: $apricot50;
+  }
+  // 7.1.9 Card Frame - Warning Call Out
+  &--help-call-out {
+    background-color: $mineShaft10;
+  }
+}
+
+.card {
+  &__stats {
+    &--results {
+      display: inline-block;
+      text-align: center;
+      vertical-align: top;
+
+      &:nth-child(odd) {
+        > div {
+          background-color: $cornflowerBlue80;
+        }
+      }
+
+      &:nth-child(even) {
+        > div {
+          background-color: $blueViolet50;
+        }
+      }
+
+      > div {
+        position: relative;
+        @include border-top-radius(125px);
+        @include border-bottom-radius(125px);
+        width: 100px;
+        height: 100px;
+        display: inline-block;
+        text-align: left;
+        margin: 0 0 16px;
+
+        span {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          color: $white;
+          font-size: 20px;
+          line-height: 20px;
+          margin: 0;
+          padding: 18px;
+          @include openSansRegular();
+        }
+      }
+
+      span {
+        display: block;
+        width: 100%;
+        height: auto;
+        text-align: center;
+        margin: 0 0 32px;
+        @include innerPageTitle();
+      }
+    }
+
+    &--patient {
+      position: relative;
+      @include border-top-radius(125px);
+      @include border-bottom-radius(125px);
+      width: 125px;
+      height: 125px;
+      display: inline-block;
+      background-color: $blueViolet50;
+      text-align: left;
+      margin: 0 32px 32px;
+
+      span {
+        width: calc(100% - 36px);
+        height: auto;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        color: $white;
+        font-size: 20px;
+        line-height: 20px;
+        padding: 18px;
+        @include openSansRegular();
+
+        strong {
+          display: block;
+          font-size: 24px;
+          line-height: 24px;
+          margin: 0 0 8px;
+          padding: 0;
+          @include openSansRegular();
+        }
+      }
+    }
+  }
+
+  &--warning {
+    @include border-top-radius(6px);
+    @include border-bottom-radius(6px);
+    background-color: $apricot50;
+    width: calc(100% - 48px);
+    max-width: calc(264px - 48px) !important;
+    margin: 0 0 32px;
+    padding: 24px;
+
+    .warning__action {
+      text-align: center;
+      margin: 0 0 24px;
+    }
+
+    .warning__icon {
+      width: 25px;
+      height: auto;
+      margin: 0 24px 0 0;
+      padding: 0;
+      display: inline-block;
+      font-size: 25px;
+      color: $apricot;
+      vertical-align: top;
+    }
+
+    .warning__content {
+      width: calc((100% - 25px) - 28px);
+      height: auto;
+      margin: 0;
+      padding: 0;
+      display: inline-block;
+      vertical-align: top;
+
+      p {
+        @include dosisSemiBold();
+        font-size: 12px;
+        line-height: 15px;
+        margin: 0;
+        padding: 0;
+      }
+    }
+  }
+
+  &--help {
+    @include border-top-radius(6px);
+    @include border-bottom-radius(6px);
+    background-color: $mineShaft10;
+    width: calc(100% - 48px);
+    max-width: calc(350px - 48px) !important;
+    margin: 0 0 32px;
+    padding: 24px;
+
+    .help__icon {
+      width: 25px;
+      height: auto;
+      margin: 0 24px 0 0;
+      padding: 0;
+      display: inline-block;
+      font-size: 25px;
+    }
+
+    .help__content {
+      width: calc((100% - 25px) - 28px);
+      height: auto;
+      margin: 0;
+      padding: 0;
+      display: inline-block;
+
+      p {
+        @include dosisSemiBold();
+        font-size: 12px;
+        line-height: 15px;
+        margin: 0;
+        padding: 0;
+      }
+    }
+  }
+}

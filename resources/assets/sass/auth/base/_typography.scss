@@ -1,0 +1,82 @@
+// 2.0 Typography
+@import url('https://fonts.googleapis.com/css?family=Dosis:500,600|Open+Sans:400,600'); // 2.1 Fonts
+// 2.1.1 Dosis - Semi-Bold
+@mixin dosisSemiBold() {
+  font-family: 'Dosis', sans-serif;
+  font-weight: 600;
+}
+// 2.1.2 Dosis - Medium
+@mixin dosisMedium() {
+  font-family: 'Dosis', sans-serif;
+  font-weight: 500;
+}
+// 2.1.3 Open Sans - Semi-Bold
+@mixin openSansSemiBold() {
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 600;
+}
+// 2.1.4 Open Sans - Regular
+@mixin openSansRegular() {
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 400;
+}
+// 2.2 Typography
+// 2.2.1 XS Body
+@mixin xsBody() {
+  @include openSansRegular();
+  font-size: 10px;
+  line-height: 14px;
+}
+// 2.2.2 Small Body
+@mixin sBody() {
+  @include openSansRegular();
+  font-size: 14px;
+  line-height: 20px;
+}
+// 2.2.3 Body
+@mixin body() {
+  @include openSansRegular();
+  font-size: 12px;
+  line-height: 16px;
+}
+// 2.2.4 Inner Page Text
+@mixin innerPageText() {
+  @include openSansRegular();
+  font-size: 16px;
+  line-height: 22px;
+}
+// 2.2.5 Inner Page Header
+@mixin innerPageHeader() {
+  @include dosisSemiBold();
+  font-size: 16px;
+  line-height: 20px;
+}
+// 2.2.6 Inner Page Title
+@mixin innerPageTitle() {
+  @include dosisSemiBold();
+  font-size: 18px;
+  line-height: 22px;
+}
+// 2.2.7 Large Title
+@mixin largeTitle() {
+  @include dosisSemiBold();
+  font-size: 20px;
+  line-height: 26px;
+}
+// 2.2.8 X Large Title
+@mixin xLargeTitle() {
+  @include dosisSemiBold();
+  font-size: 28px;
+  line-height: 36px;
+}
+
+@mixin xxLargeTitle() {
+  @include dosisSemiBold();
+  font-size: 22px;
+  line-height: 28px;
+}
+@mixin xxxLargeTitle() {
+  @include dosisSemiBold();
+  font-size: 32px;
+  line-height: 41px;
+}

@@ -1,0 +1,12 @@
+.body {
+  @include body;
+  margin-bottom: 1rem;
+
+  &--flush {
+    margin-bottom: o;
+  }
+}
+
+.title {
+  @include largeTitle;
+}

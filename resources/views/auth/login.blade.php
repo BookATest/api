@@ -1,30 +1,45 @@
 @extends('auth.layout')
 
 @section('content')
-    <form method="POST" action="{{ route('login') }}">
+  {{-- Login form --}}
+  <form class="form form--login" action="{{ route('login') }}" method="POST">
+    @csrf
 
-        @csrf
+    <h2>Login</h2>
 
-        <label for="email">Email</label>
-        <input id="email" name="email" type="email" value="{{ old('email') }}">
-        @if($errors->has('email'))
-            <strong>{{ $errors->first('email') }}</strong>
-        @endif
+    <div class="form__text">
+      <label for="email">
+        <span>Email</span>
+      </label>
+      <div>
+        <input type="email" id="email" name="email" value="{{ old('email') }}">
+      </div>
+      @if($errors->has('email'))
+        <p class="body">
+          <strong>{{ $errors->first('email') }}</strong>
+        </p>
+      @endif
+    </div>
 
-        <label for="password">Password</label>
-        <input id="password" name="password" type="password">
-        @if($errors->has('password'))
-            <strong>{{ $errors->first('password') }}</strong>
-        @endif
-        <a href="{{ route('password.request') }}">Forgotten password?</a>
+    <div class="form__text">
+      <label for="password">
+        <span>Password</span>
+      </label>
+      <div>
+        <input type="password" id="password" name="password">
+      </div>
+    </div>
 
-        <button type="submit">
-            @if(config('ck.otp_enabled'))
-                Send code
-            @else
-                Login
-            @endif
-        </button>
+    <p class="body">
+      <a href="{{ route('password.request') }}">Forgotten password?</a>
+    </p>
 
-    </form>
+    <button class="button button__primary button__primary--a" type="submit">
+      @if (config('bat.otp_enabled'))
+        <span>Send code</span>
+      @else
+        <span>Confirm</span>
+      @endif
+    </button>
+  </form>
 @endsection

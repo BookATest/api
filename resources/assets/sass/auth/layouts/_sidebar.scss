@@ -1,0 +1,8 @@
+/* Sidebar */
+.base-layout__sidebar {
+  height: calc(100vh - #{$headerHeight});
+  background-color: $mineShaft;
+  .sidebar {
+    height: 100%;
+  }
+}

@@ -1,0 +1,19 @@
+.my-profile {
+  background-color: $wildSand;
+  
+  &__privacy-settings {
+    h2 {
+      @include innerPageTitle();
+      margin: 0 0 24px;
+      padding: 0;
+    }
+
+    p {
+      @include dosisSemiBold();
+      font-size: 12px;
+      line-height: 15px;
+      margin: 0 0 40px;
+      padding: 0;
+    }
+  }
+}

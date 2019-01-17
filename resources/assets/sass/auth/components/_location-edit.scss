@@ -1,0 +1,17 @@
+.location-edit {
+  background-color: $wildSand;
+  &__form {
+    h2 {
+      @include innerPageTitle();
+      margin: 0 0 24px;
+      padding: 0;
+    }
+
+    .button__amend:last-child {
+      margin:16px 0 0 0 !important;
+    }
+  }
+  &__action {
+    text-align: right;
+  }
+}

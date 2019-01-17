@@ -1,0 +1,101 @@
+/* Header */
+.base-layout__header {
+  height: $headerHeight;
+  // Login
+  &--login {
+    .header {
+      position: relative;
+      background-color: $wildSand;
+      width: 100%;
+      height: 100%;
+      font-size: 0;
+      line-height: 0;
+      text-align: center;
+
+      a {
+        display: inline-block;
+        margin: 0;
+        padding: 0;
+        font-size: 0;
+        line-height: 0;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+
+        img {
+          width: 100%;
+          max-width: 250px;
+          height: auto;
+        }
+      }
+    }
+  }
+  // Default
+  &--default {
+    .header {
+      height: 100%;
+      background-color:$white;
+      border-bottom: solid 1px $wildSand;
+
+      &__sidebar {
+        position: relative;
+        @include grid-column(2, $base-layout-grid);
+        height: 100%;
+        font-size: 0;
+        line-height: 0;
+        text-align: center;
+
+        a {
+          display: inline-block;
+          margin: 0;
+          padding: 0;
+          font-size: 0;
+          line-height: 0;
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+
+          img {
+            width: 100%;
+            max-width: 118px;
+            height: auto;
+          }
+        }
+      }
+
+      &__main {
+        @include grid-column(10, $base-layout-grid);
+        height: 100%;
+
+        .main {
+          height: 100%;
+
+          &__title {
+            @include grid-column(7, $base-layout-grid);
+            height: calc(100% - 48px);
+            width: calc(58.33333% - 48px);
+            padding: 24px;
+
+            h1 {
+              @include xxxLargeTitle();
+            }
+
+            h2 {
+              @include xxLargeTitle();
+            }
+          }
+
+          &__logout {
+            text-align: right;
+            @include grid-column(5, $base-layout-grid);
+            height: calc(100% - 32px);
+            width: calc(41.66667% - 24px);
+            padding: 16px 24px 16px 0 !important;
+          }
+        }
+      }
+    }
+  }
+}

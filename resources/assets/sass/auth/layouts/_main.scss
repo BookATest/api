@@ -1,0 +1,467 @@
+/* Main */
+.base-layout__main {
+  @include grid-container;
+  min-height: calc(100vh - #{$headerHeight});
+
+
+  .help {
+    @include grid-column(12, $base-layout-grid);
+    > div {
+      padding: 32px 16px 0 16px;
+      @include grid-column(12, $base-layout-grid);
+      > div {
+        @include grid-column(6, $base-layout-grid);
+      }
+    }
+  }
+
+
+  .dashboard {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100vh;
+    overflow-y: scroll !important;
+    overflow-x: hidden !important;
+
+    &__upcoming-appointments {
+      @include grid-column(12, $base-layout-grid);
+
+      .upcoming-appointments {
+        width: calc(100% - 62px);
+        height:auto;
+        margin:0;
+        padding:32px 32px 64px 32px;
+        float:left;
+
+        > div {
+          &:nth-child(1) {
+            @include grid-column(12, $base-layout-grid);
+          }
+          &:nth-child(2) {
+            @include grid-column(8, $base-layout-grid);
+          }
+          &:nth-child(3) {
+            @include grid-column(4, $base-layout-grid);
+          }
+        }
+      }
+
+    }
+
+    &__results {
+      width: calc(100% - 62px);
+      height:auto;
+      margin:0;
+      padding:32px;
+      float:left;
+      text-align: center;
+
+      .card {
+        @include grid-column(3, $base-layout-grid);
+      }
+
+    }
+  }
+
+
+  .settings, .help {
+    margin: 0;
+    padding: 16px;
+    width: calc(100% - 32px);
+    height: calc(100vh - 32px);
+    overflow-y: scroll !important;
+    overflow-x: hidden !important;
+  }
+
+  .my-profile {
+    margin: 0;
+    padding: 32px;
+    width: calc(100% - 64px);
+    height: calc(100vh - 64px);
+    overflow-y: scroll !important;
+    overflow-x: hidden !important;
+
+    &__account-details {
+      @include grid-column(12, $base-layout-grid);
+
+      > div {
+        @include grid-column(6, $base-layout-grid);
+      }
+      border-bottom: dashed 1px rgba(0,0,0,0.1);
+      margin: 0 0 32px;
+      padding: 0 0 32px;
+    }
+
+    &__privacy-settings {
+      @include grid-column(12, $base-layout-grid);
+
+      > div {
+        @include grid-column(6, $base-layout-grid);
+      }
+    }
+  }
+
+  .settings-calendar {
+    margin: 0;
+    padding: 32px;
+    width: calc(100% - 64px);
+    height: calc(100vh - 64px);
+    overflow-y: scroll !important;
+    overflow-x: hidden !important;
+
+    &__my-calendar-feed {
+      @include grid-column(12, $base-layout-grid);
+      border-bottom: dashed 1px rgba(0,0,0,0.1);
+      margin: 0 0 32px;
+      padding: 0 0 32px;
+
+      > div {
+        @include grid-column(8, $base-layout-grid);
+      }
+    }
+
+    &__all-appointments-calendar {
+      @include grid-column(12, $base-layout-grid);
+
+      > div {
+        @include grid-column(8, $base-layout-grid);
+      }
+    }
+  }
+
+  .notifications {
+    margin: 0;
+    padding: 32px;
+    width: calc(100% - 64px);
+    height: calc(100vh - 64px);
+    overflow-y: scroll !important;
+    overflow-x: hidden !important;
+  }
+
+  .users {
+    margin: 0;
+    padding: 32px;
+    width: calc(100% - 64px);
+    height: calc(100vh - 64px);
+    overflow-y: scroll !important;
+    overflow-x: hidden !important;
+
+    &__intro {
+      @include grid-column(12, $base-layout-grid);
+      border-bottom: dashed 1px rgba(0,0,0,0.1);
+      margin: 0 0 32px;
+      padding: 0 0 32px;
+
+      > div {
+        @include grid-column(8, $base-layout-grid);
+      }
+    }
+
+    &__search {
+      @include grid-column(12, $base-layout-grid);
+
+      .form__search {
+        margin: 0 0 32px;
+      }
+    }
+  }
+
+  .edit-user {
+    margin: 0;
+    padding: 32px;
+    width: calc(100% - 64px);
+    height: calc(100vh - 64px);
+    overflow-y: scroll !important;
+    overflow-x: hidden !important;
+
+    &__intro {
+      @include grid-column(12, $base-layout-grid);
+    }
+
+    &__details {
+      @include grid-column(12, $base-layout-grid);
+
+      > div {
+        @include grid-column(6, $base-layout-grid);
+      }
+      border-bottom: dashed 1px rgba(0,0,0,0.1);
+      margin: 0 0 32px;
+      padding: 0 0 8px;
+    }
+
+    &__notification {
+      @include grid-column(12, $base-layout-grid);
+
+      > div {
+        @include grid-column(6, $base-layout-grid);
+      }
+      border-bottom: dashed 1px rgba(0,0,0,0.1);
+      margin: 0 0 32px;
+      padding: 0 0 32px;
+    }
+
+    &__action {
+      @include grid-column(12, $base-layout-grid);
+    }
+  }
+
+  .locations {
+    margin: 0;
+    padding: 32px;
+    width: calc(100% - 64px);
+    height: calc(100vh - 64px);
+    overflow-y: scroll !important;
+    overflow-x: hidden !important;
+
+    &__intro {
+      @include grid-column(12, $base-layout-grid);
+      border-bottom: dashed 1px rgba(0,0,0,0.1);
+      margin: 0 0 32px;
+      padding: 0 0 32px;
+
+      > div {
+        @include grid-column(8, $base-layout-grid);
+      }
+    }
+
+    &__search {
+      @include grid-column(12, $base-layout-grid);
+
+      .form__search {
+        margin: 0 0 32px;
+      }
+    }
+  }
+
+  .location-edit {
+    margin: 0;
+    padding: 32px;
+    width: calc(100% - 64px);
+    height: calc(100vh - 64px);
+    overflow-y: scroll !important;
+    overflow-x: hidden !important;
+
+    &__form {
+      @include grid-column(12, $base-layout-grid);
+
+      > div {
+        @include grid-column(6, $base-layout-grid);
+      }
+      border-bottom: dashed 1px rgba(0,0,0,0.1);
+      margin: 0 0 32px;
+      padding: 0 0 8px;
+    }
+
+    &__action {
+      @include grid-column(12, $base-layout-grid);
+    }
+  }
+
+  .pre-triage-questions {
+    margin: 0;
+    padding: 32px;
+    width: calc(100% - 64px);
+    height: calc(100vh - 64px);
+    overflow-y: scroll !important;
+    overflow-x: hidden !important;
+
+    &__intro {
+      @include grid-column(12, $base-layout-grid);
+    }
+
+    &__question {
+      @include grid-column(12, $base-layout-grid);
+
+      > div {
+        @include grid-column(6, $base-layout-grid);
+      }
+      border-bottom: dashed 1px rgba(0,0,0,0.1);
+      margin: 0 0 32px;
+      padding: 0 0 8px;
+    }
+
+    &__options {
+      @include grid-column(12, $base-layout-grid);
+      border-bottom: dashed 1px rgba(0,0,0,0.1);
+      margin: 0 0 32px;
+      padding: 0 0 32px;
+    }
+
+    &__action {
+      @include grid-column(12, $base-layout-grid);
+    }
+  }
+
+  .configuration {
+    margin: 0;
+    padding: 32px;
+    width: calc(100% - 64px);
+    height: calc(100vh - 64px);
+    overflow-y: scroll !important;
+    overflow-x: hidden !important;
+
+    &__intro {
+      @include grid-column(12, $base-layout-grid);
+
+      > div {
+        @include grid-column(6, $base-layout-grid);
+      }
+    }
+
+    &__options {
+      @include grid-column(12, $base-layout-grid);
+      border-bottom: dashed 1px rgba(0,0,0,0.1);
+      margin: 0 0 32px;
+      padding: 0 0 32px;
+    }
+
+    &__feedback {
+      @include grid-column(12, $base-layout-grid);
+    }
+
+    &__custom {
+      @include grid-column(12, $base-layout-grid);
+      border-bottom: dashed 1px rgba(0,0,0,0.1);
+      margin: 0 0 32px;
+      padding: 0 0 32px;
+
+      .custom {
+        &__text {
+          @include grid-column(6, $base-layout-grid);
+        }
+
+        &__variables {
+          @include grid-column(6, $base-layout-grid);
+        }
+      }
+    }
+
+    &__action {
+      @include grid-column(12, $base-layout-grid);
+    }
+  }
+
+  .branding {
+    margin: 0;
+    padding: 32px;
+    width: calc(100% - 64px);
+    height: calc(100vh - 64px);
+    overflow-y: scroll !important;
+    overflow-x: hidden !important;
+
+    > div {
+      @include grid-column(6, $base-layout-grid);
+    }
+  }
+
+  .reporting {
+    margin: 0;
+    padding: 32px;
+    width: calc(100% - 64px);
+    height: calc(100vh - 64px);
+    overflow-y: scroll !important;
+    overflow-x: hidden !important;
+
+    &__intro {
+      @include grid-column(8, $base-layout-grid);
+    }
+    &__filter {
+      @include grid-column(12, $base-layout-grid);
+    }
+    &__buttons {
+
+      @include grid-column(12, $base-layout-grid);
+      border-bottom: dashed 1px rgba(0,0,0,0.1);
+      margin: 0 0 32px;
+      padding: 0 0 32px;
+
+    }
+    &__options {
+      @include grid-column(12, $base-layout-grid);
+    }
+
+  }
+
+  .service-users, .audit-logging {
+    margin: 0;
+    padding: 32px;
+    width: calc(100% - 64px);
+    height: calc(100vh - 64px);
+    overflow-y: scroll !important;
+    overflow-x: hidden !important;
+
+    &__filter {
+      @include grid-column(12, $base-layout-grid);
+      border-bottom: dashed 1px rgba(0,0,0,0.1);
+      margin: 0;
+      padding: 0 0 32px;
+
+
+      .form > div {
+        &:nth-child(1) {
+
+          @include grid-column(12, $base-layout-grid);
+          text-align: left;
+          margin-bottom:16px;
+
+          label {
+            width:50px;
+          }
+
+          @include grid-media($base-layout-grid--1160-up) {
+            @include grid-column(3, $base-layout-grid);
+            text-align: left;
+            margin-bottom:0;
+
+            label {
+              width:auto;
+            }
+          }
+
+
+        }
+
+        &:nth-child(2) {
+          @include grid-column(12, $base-layout-grid);
+          text-align: left;
+
+          @include grid-media($base-layout-grid--1160-up) {
+            @include grid-column(9, $base-layout-grid);
+            text-align: right;
+          }
+
+        }
+      }
+    }
+
+    &__action {
+      @include grid-column(12, $base-layout-grid);
+      border-bottom: dashed 1px rgba(0,0,0,0.1);
+      margin: 0 0 32px;
+      padding: 0 0 32px;
+    }
+
+    &__data {
+      @include grid-column(12, $base-layout-grid);
+      border-bottom: dashed 1px rgba(0,0,0,0.1);
+      margin: 0;
+      padding: 0 0 32px;
+
+      > div {
+        &:nth-child(1) {
+          @include grid-column(8, $base-layout-grid);
+        }
+        &:nth-child(2) {
+          @include grid-column(4, $base-layout-grid);
+          text-align: right;
+        }
+      }
+
+    }
+
+    &__table {
+      @include grid-column(12, $base-layout-grid);
+    }
+  }
+}

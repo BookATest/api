@@ -1,0 +1,62 @@
+.audit-logging {
+  background-color: $wildSand;
+
+  &__filter {
+    .form {
+      width:100%;
+
+      label {
+        margin: 0 16px 0 0 !important;
+      }
+
+      &__search {
+        display: inline-block;
+      }
+
+      &__drop-down {
+        display: inline-block;
+        margin:0 16px 0 0;
+
+        &:last-child {
+          margin:0;
+        }
+      }
+
+    }
+  }
+
+  &__data {
+    > div {
+      &:nth-child(1) {
+        ul {
+          li {
+            @include openSansSemiBold();
+            font-size: 14px;
+            line-height: 16px;
+            margin: 0 0 32px;
+            &:last-child {
+              margin: 0;
+            }
+            span {
+              &:nth-child(1) {
+                width: 200px;
+                display: inline-block;
+              }
+
+              &:nth-child(2) {
+                display: inline-block;
+              }
+            }
+          }
+          margin: 0 0 40px;
+        }
+
+        label {
+          margin-right:32px;
+        }
+      }
+      &:nth-child(2) {
+      }
+    }
+  }
+}

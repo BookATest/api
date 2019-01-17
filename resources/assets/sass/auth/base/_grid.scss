@@ -1,0 +1,64 @@
+/* 1.0 Grids */
+// 1.1 Base 8px Grid System
+// 8px, 16px, 24px, 32px, 40px, 48px, 56px, 64px, 72px, 80px, 88px, 96px, 104px, 112px
+/* https://neat.bourbon.io/docs/latest/ */
+$base-layout-grid: (
+  columns: 12,
+  gutter: 0,
+);
+
+$base-layout-grid--tablet-up: (
+  columns: 12,
+  gutter: 0,
+  media: "(min-width: 768px)",
+);
+
+$base-layout-grid--lg-tablet-up: (
+  columns: 12,
+  gutter: 0,
+  media: "(min-width: 1025px)",
+);
+
+$base-layout-grid--1160-up: (
+  columns: 12,
+  gutter: 0,
+  media: "(min-width: 1161px)",
+);
+
+
+
+.base-layout {
+  @include grid-container;
+}
+
+.base-layout__header {
+  @include grid-column(12, $base-layout-grid);
+}
+
+.base-layout__sidebar {
+  @include grid-column(12, $base-layout-grid);
+  @include grid-media($base-layout-grid--tablet-up) {
+    @include grid-column(2);
+  }
+}
+
+.base-layout__main {
+  @include grid-column(12, $base-layout-grid);
+  @include grid-media($base-layout-grid--tablet-up) {
+    @include grid-column(10);
+  }
+
+  &--no-sidebar {
+    @include grid-column(12, $base-layout-grid);
+    @include grid-media($base-layout-grid--tablet-up) {
+      @include grid-column(12);
+    }
+  }
+}
+
+.base-layout--main-container {
+  margin: 0;
+  padding: 32px;
+  overflow-y: scroll !important;
+  overflow-x: hidden !important;
+}

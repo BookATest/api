@@ -1,23 +1,32 @@
 @extends('auth.layout')
 
 @section('content')
+  {{-- Login form --}}
+  <form class="form form--login" action="{{ route('password.email') }}" method="POST">
+    @csrf
+
     @if (session('status'))
-        {{ session('status') }}
+      <h2>{{ session('status') }}</h2>
     @endif
 
-    <form method="POST" action="{{ route('password.email') }}">
+    <h2>Reset password</h2>
 
-        @csrf
+    <div class="form__text">
+      <label for="email">
+        <span>Email</span>
+      </label>
+      <div>
+        <input type="email" id="email" name="email" value="{{ old('email') }}">
+      </div>
+      @if($errors->has('email'))
+        <p class="body">
+          <strong>{{ $errors->first('email') }}</strong>
+        </p>
+      @endif
+    </div>
 
-        <label for="email">Email</label>
-        <input id="email" name="email" type="email" value="{{ old('email') }}">
-        @if($errors->has('email'))
-            <strong>{{ $errors->first('email') }}</strong>
-        @endif
-
-        <button type="submit">
-            Send password reset link
-        </button>
-
-    </form>
+    <button class="button button__primary button__primary--a" type="submit">
+        <span>Send password reset link</span>
+    </button>
+  </form>
 @endsection

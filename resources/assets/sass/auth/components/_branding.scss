@@ -1,0 +1,58 @@
+.branding {
+  background-color: $wildSand;
+
+  h2 {
+    @include innerPageTitle();
+    margin: 0 0 40px;
+    padding: 0;
+  }
+
+  p {
+    @include body();
+    margin: 0 0 40px;
+    padding: 0;
+  }
+
+  label {
+    @include innerPageHeader();
+  }
+
+  &__logo {
+    label {
+      display: inline-block;
+      width:180px;
+      vertical-align: top;
+    }
+    margin:0 0 32px 0;
+  }
+  &__background-colour {
+    label {
+      display: inline-block;
+      width:180px;
+      vertical-align: top;
+    }
+    .button {
+      display: inline-block;
+      input {
+        margin:5px;
+        color: transparent !important;
+      }
+    }
+    margin:0 0 32px 0;
+  }
+  &__key-colour {
+    label {
+      display: inline-block;
+      width:180px;
+      vertical-align: top;
+    }
+    .button {
+      display: inline-block;
+      input {
+        margin:5px;
+        color: transparent !important;
+      }
+    }
+    margin:0 0 32px 0;
+  }
+}

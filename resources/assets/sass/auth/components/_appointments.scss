@@ -1,0 +1,770 @@
+// 10.0 Appointments
+// 10.1 Calendar Parts
+
+.calendar {
+  position: relative;
+  @include grid-container;
+
+  &--default {
+    background-color: $wildSand;
+  }
+
+  &--edit {
+    background-color: $zumthor;
+  }
+
+  &__main {
+    width: 100%;
+    height: calc(100vh - #{$headerHeight});
+    float: left;
+    overflow-y: scroll !important;
+    overflow-x: hidden !important;
+
+    & + .calendar__sidebar {
+      display: none !important;
+    }
+
+    &--w-sidebar {
+      width: calc(100% - 225px);
+
+      & + .calendar__sidebar {
+        display: block !important;
+      }
+    }
+
+    .main {
+      // Search
+      .search {
+        width: calc(100% - 32px);
+        min-height: calc(63px - 20px);
+        background-color: $grandis;
+        margin: 0;
+        padding: 10px 16px 0 16px;
+        float:left;
+
+        .form {
+          float:left;
+          &:nth-child(1) {
+            float: left;
+          }
+
+          &:nth-child(2) {
+            float: right;
+
+            &.active {
+              float:left;
+            }
+          }
+
+          &__search {
+            display: inline-block;
+            margin-right:32px;
+            margin-bottom:10px;
+
+            label {
+              margin: 0 16px 0 0 !important;
+            }
+          }
+
+          &__drop-down {
+            display: inline-block;
+            margin-bottom:10px;
+            margin-right:16px;
+
+            label {
+              margin: 0 16px 0 0 !important;
+            }
+          }
+        }
+      }
+      // Controls
+      .controls {
+        width: calc(100% - 32px);
+        height: auto;
+        margin: 0 16px 32px;
+        padding: 16px 0;
+        border-bottom: dashed 1px $black10;
+        float:left;
+
+        ul {
+          display: block;
+          text-align: center;
+
+          li {
+            display: inline-block;
+
+            span {
+              @include largeTitle();
+              text-transform: lowercase;
+            }
+
+            button {
+              margin: 0 16px;
+              padding: 0;
+              border: 0;
+              background: none;
+              font-size: 26px;
+              line-height: 22px;
+              cursor: pointer;
+
+              &:disabled {
+                cursor: not-allowed;
+              }
+            }
+          }
+        }
+      }
+      // Table
+      .table {
+        width: calc(100% - 32px);
+        height: auto;
+        margin: 0;
+        padding: 16px 16px 32px;
+
+        table {
+          margin: 0 auto;
+          padding: 0;
+
+          thead {
+            display: block;
+
+            &:after {
+              content: '';
+              display: block;
+              height: 32px;
+            }
+
+            tr {
+              display: block;
+
+              th {
+                width: 96px;
+                padding: 0 8px 0 0;
+                text-align: center;
+
+                &:first-child {
+                  width: 63px;
+                  padding: 0;
+                }
+
+                &:last-child {
+                  padding: 0;
+                }
+
+                span {
+                  @include dosisSemiBold();
+                  font-size: 14px;
+                  line-height: 18px;
+                  color: $mineShaft;
+                }
+              }
+            }
+          }
+
+          tbody {
+            display: block;
+            height: 468px;
+            overflow-y: auto;
+            overflow-x: hidden;
+
+            tr {
+              td {
+                font-size: 0 !important;
+                vertical-align: top !important;
+                padding: 0 8px 8px 0;
+
+                &:first-child {
+                  padding: 0 16px 0 0;
+                  text-align: right;
+                }
+
+                &:last-child {
+                  padding: 0 8px 8px 0;
+                }
+
+                .time {
+                  @include dosisSemiBold();
+                  font-size: 12px;
+                  line-height: 15px;
+                  color: $mineShaft;
+
+                  &--a {
+                    margin: 0 8px 0 0;
+                  }
+
+                  &--b {
+                    margin: 0;
+                    font-size: 10px;
+                    line-height: 12px;
+                  }
+                }
+              }
+            }
+          }
+
+          tfoot {
+            tr {
+              display: block;
+
+              th {
+                display: block;
+
+                ul {
+                  display: inline-block;
+                  margin: 0 0 0 63px;
+                  padding: 32px 0;
+                  float: left;
+
+                  li {
+                    display: inline-block;
+
+                    &:nth-child(1) {
+                      span {
+                        &:before {
+                          background-color: $mineShaft10;
+                        }
+                      }
+                    }
+
+                    &:nth-child(2) {
+                      span {
+                        &:before {
+                          background-color: $cornflowerBlue40;
+                        }
+                      }
+                    }
+
+                    &:nth-child(3) {
+                      span {
+                        &:before {
+                          background-color: $cornflowerBlue;
+                        }
+                      }
+                    }
+
+                    span {
+                      position: relative;
+                      @include dosisSemiBold();
+                      font-size: 12px;
+                      line-height: 12px;
+                      color: $mineShaft;
+                      padding: 0 20px;
+                      vertical-align: middle;
+
+                      &:before {
+                        position: absolute;
+                        top: 0;
+                        left: 0;
+                        content: '';
+                        @include border-top-radius(7px);
+                        @include border-bottom-radius(7px);
+                        width: 14px;
+                        height: 14px;
+                      }
+                    }
+                  }
+                }
+
+                .button {
+                  float: right;
+                  margin: 19px 8px;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  &__sidebar {
+    background-color: $white;
+    width: 225px;
+    height: calc(100vh - #{$headerHeight});
+    float: left;
+
+    .sidebar {
+      position: relative;
+      width: 225px;
+      height: 100%;
+
+      .popup {
+        &__header {
+          background-color: $dustyGray;
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 63px;
+
+          span {
+            display: block;
+            margin: 0;
+            padding: 24px;
+            @include largeTitle();
+            line-height: 15px;
+            color: $white;
+            text-transform: uppercase;
+            text-align: center;
+          }
+        }
+
+        .add-available {
+          .popup__header {
+            background-color: $dustyGray;
+          }
+        }
+
+        .available {
+          .popup__header {
+            background-color: $cornflowerBlue50;
+
+            span {
+              color: $cornflowerBlue;
+            }
+          }
+        }
+
+        .booked {
+          .popup__header {
+            background-color: $cornflowerBlue;
+          }
+        }
+
+        .cancel-booking {
+          .popup__header {
+            background-color: $mineShaft;
+          }
+        }
+
+        &__main {
+          position: absolute;
+          top: 62px;
+          left: 0;
+          width: calc(100% - 48px);
+          height: calc((100% - 124px) - 48px);
+          overflow-y: scroll !important;
+          overflow-x: hidden !important;
+          margin: 0;
+          padding: 24px;
+
+          .card {
+            padding: 16px 8px;
+            width: calc(100% - 16px);
+            float: left;
+
+            .warning__icon {
+              margin: 0 8px 0 0;
+              float: left;
+            }
+
+            .warning__content {
+              width: calc((100% - 25px) - 8px);
+              float: left;
+
+              p {
+                font-size: 10px;
+                line-height: 14px;
+              }
+            }
+          }
+
+          hr {
+            display: block;
+            width: 100%;
+            height: 0;
+            margin: 24px 0;
+            padding: 0;
+            border: 0;
+            border-bottom: dashed 1px $black10;
+          }
+
+          .booked,
+          .cancel-booking {
+            &--date {
+              display: block;
+              margin: 0 0 16px;
+
+              span {
+                @include largeTitle();
+                color: $mineShaft;
+              }
+            }
+
+            &--time {
+              display: block;
+
+              span {
+                color: $mineShaft;
+                @include innerPageTitle();
+              }
+            }
+
+            &--patient,
+            &--with {
+              margin: 0 0 16px;
+
+              span {
+                display: block;
+
+                &:nth-child(1) {
+                  @include innerPageHeader;
+                  color: $mineShaft50;
+                }
+
+                &:nth-child(2) {
+                  @include innerPageText;
+                  color: $mineShaft;
+                }
+              }
+            }
+
+            &--where {
+              margin: 0;
+
+              span {
+                display: block;
+
+                &:nth-child(1) {
+                  @include innerPageHeader;
+                  color: $mineShaft50;
+                }
+
+                &:nth-child(2) {
+                  @include innerPageText;
+                  color: $mineShaft;
+                }
+              }
+            }
+
+            &--user {
+              text-align: center;
+
+              button {
+                &:not(:nth-child(1)) {
+                  margin-top: 24px;
+                }
+              }
+            }
+          }
+
+          .add-availability,
+          .available {
+            &--date {
+              display: block;
+              margin: 0 0 16px;
+
+              span {
+                @include largeTitle();
+                color: $mineShaft;
+              }
+            }
+
+            &--time {
+              display: block;
+
+              span {
+                color: $mineShaft;
+                @include innerPageTitle();
+              }
+            }
+
+            &--form {
+              .form__checkbox {
+                label {}
+                margin: 0 0 24px;
+                padding: 0;
+              }
+
+              .form__drop-down {
+                label {
+                  display: block;
+                  margin: 0 0 16px;
+                  padding: 0;
+                }
+              }
+            }
+
+            &--user {
+              text-align: center;
+
+              button {
+                &:not(:nth-child(1)) {
+                  margin-top: 24px;
+                }
+              }
+            }
+          }
+        }
+
+        &__footer {
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          width: 100%;
+          height: 62px;
+
+          button {
+            background-color: $mineShaft10;
+            display: block;
+            width: 100%;
+            height: 62px;
+            cursor: pointer;
+
+            &:hover {
+              background-color: rgba($mineShaft10, .2);
+            }
+
+            span {
+              @include innerPageHeader();
+              color: $mineShaft;
+              margin: 0 8px 0 0;
+              padding: 0;
+            }
+
+            i {
+              font-size: 14px;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+.calendar {
+  // 10.1.1 Appointment Categories
+  .button {
+    &__calendar {
+      // Multiple Buttons
+      &--mulitple {
+        width: calc(25% - 1px);
+        display: inline-block;
+        margin: 0 1px 0 0;
+        padding: 0;
+        text-align: center;
+
+        &:last-child {
+          margin: 0;
+        }
+
+        span {
+          margin: 0 auto;
+        }
+
+        &:disabled:after {
+          content: '' !important;
+        }
+      }
+      @include border-top-radius(6px);
+      @include border-bottom-radius(6px);
+      @include dosisSemiBold();
+      font-size: 10px;
+      line-height: 12px;
+      text-align: left;
+      width: 96px;
+      height: 40px;
+      padding: 0 10px 0 20px;
+      vertical-align: middle;
+
+      &--not-available {
+        background-color: $mineShaft10;
+        box-shadow: inset 0 0 0 1px $mineShaft;
+
+        &:focus,
+        &:hover {
+          background-color: $blueViolet20;
+          box-shadow: inset 0 0 0 1px $blueViolet;
+          color: $blueViolet;
+          text-align: center;
+
+          &:not(.button__calendar--mulitple) {
+            padding: 0 20px;
+          }
+
+          &:after {
+            content: '\e812';
+            font-family: "fontello";
+            font-size: 12px;
+            line-height: 12px;
+          }
+        }
+
+        &--default {
+          background-color: $mineShaft10;
+          box-shadow: none;
+
+          &:after {
+            content: '';
+          }
+        }
+
+        &:disabled {
+          background-color: $mineShaft10;
+          box-shadow: none;
+          cursor: not-allowed;
+
+          &:after {
+            content: '';
+          }
+        }
+      }
+
+      &--available-cw-initials {
+        background-color: $cornflowerBlue40;
+        box-shadow: inset 0 0 0 1px $cornflowerBlue;
+        color: $cornflowerBlue;
+
+        &:focus,
+        &:hover {
+          background-color: $blueViolet40;
+          box-shadow: inset 0 0 0 1px $blueViolet;
+          color: $blueViolet;
+        }
+
+        &--default {
+          background-color: $cornflowerBlue40;
+          box-shadow: none;
+
+          &:hover {
+            background-color: $blueViolet40;
+            box-shadow: inset 0 0 0 1px $blueViolet;
+            color: $blueViolet;
+          }
+        }
+
+        &:disabled {
+          background-color: $cornflowerBlue40;
+          box-shadow: none;
+          cursor: not-allowed;
+
+          &:hover {
+            color: $cornflowerBlue;
+          }
+        }
+      }
+
+      &--available-cw-initials-repeat {
+        background-color: $cornflowerBlue40;
+        box-shadow: inset 0 0 0 1px $cornflowerBlue;
+        color: $cornflowerBlue;
+
+        &:focus,
+        &:hover {
+          background-color: $blueViolet40;
+          box-shadow: inset 0 0 0 1px $blueViolet;
+          color: $blueViolet;
+        }
+
+        &:after {
+          content: '\e816';
+          font-family: "fontello";
+          font-size: 12px;
+          line-height: 12px;
+          float: right;
+        }
+
+        &--default {
+          background-color: $cornflowerBlue40;
+          box-shadow: none;
+
+          &:hover {
+            background-color: $blueViolet40;
+            box-shadow: inset 0 0 0 1px $blueViolet;
+            color: $blueViolet;
+          }
+        }
+
+        &:disabled {
+          background-color: $cornflowerBlue40;
+          box-shadow: none;
+          cursor: not-allowed;
+
+          &:hover {
+            color: $cornflowerBlue;
+          }
+        }
+      }
+
+      &--booked-cw-initials {
+        background-color: $cornflowerBlue;
+        box-shadow: inset 0 0 0 1px $cornflowerBlue;
+        color: $white;
+
+        &:focus,
+        &:hover {
+          background-color: $blueViolet40;
+          box-shadow: inset 0 0 0 1px $blueViolet;
+          color: $blueViolet;
+        }
+
+        &--default {
+          background-color: $cornflowerBlue80;
+          box-shadow: none;
+
+          &:hover {
+            background-color: $blueViolet40;
+            box-shadow: inset 0 0 0 1px $blueViolet;
+            color: $blueViolet;
+          }
+        }
+
+        &:disabled {
+          background-color: $cornflowerBlue80;
+          box-shadow: none;
+          cursor: not-allowed;
+        }
+      }
+
+      &--booked-cw-initials-repeat {
+        background-color: $cornflowerBlue;
+        box-shadow: inset 0 0 0 1px $cornflowerBlue;
+        color: $white;
+
+        &:after {
+          content: '\e816';
+          font-family: "fontello";
+          font-size: 12px;
+          line-height: 12px;
+          float: right;
+        }
+
+        &:focus,
+        &:hover {
+          background-color: $blueViolet;
+          box-shadow: inset 0 0 0 1px $blueViolet;
+        }
+
+        &--default {
+          background-color: $cornflowerBlue80;
+          box-shadow: none;
+        }
+
+        &:disabled {
+          background-color: $cornflowerBlue80;
+          box-shadow: none;
+          cursor: not-allowed;
+        }
+      }
+    }
+  }
+  // 10.1.2 Calendar Design Features
+  // Parts of the day
+  .pod-title {
+    display: block;
+    width: calc(100% - 40px);
+    height: auto;
+    margin: 0;
+    padding: 8px 20px;
+    text-align: center;
+    background-color: $mineShaft10;
+    text-transform: lowercase;
+
+    span {
+      @include dosisSemiBold();
+      font-size: 14px;
+      line-height: 18px;
+      color: $mineShaft;
+    }
+  }
+}
