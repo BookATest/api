@@ -45,6 +45,10 @@
             </div>
           </div>
 
+          <p class="body">
+            <a href="{{ route('password.request') }}">Forgotten password?</a>
+          </p>
+
           <button class="button button__primary button__primary--a" type="submit">
             @if (config('bat.otp_enabled'))
               <span>Send code</span>
