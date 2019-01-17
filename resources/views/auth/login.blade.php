@@ -18,7 +18,7 @@
                 <form class="form form--login" action="{{ route('login') }}" method="POST">
                     @csrf
 
-                    <h2>Log in</h2>
+                    <h2>Login</h2>
 
                     <div class="form__text">
                         <label for="email">
