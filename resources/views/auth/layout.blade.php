@@ -13,6 +13,23 @@
   <link href="{{ asset('css/auth.css') }}" rel="stylesheet">
 </head>
 <body>
-@yield('content')
+<div class="base-layout">
+
+  {{-- Header --}}
+  <div class="base-layout__header base-layout__header--login">
+    <div class="header">
+      <a href="{{ route('home') }}">
+        <img src="{{ asset('img/logo-bookatest.png') }}" alt="{{ config('app.name') }} logo">
+      </a>
+    </div>
+  </div>
+
+  {{-- Main content --}}
+  <div class="base-layout__main base-layout__main--no-sidebar">
+    <div class="main">
+      @yield('content')
+    </div>
+  </div>
+</div>
 </body>
 </html>
