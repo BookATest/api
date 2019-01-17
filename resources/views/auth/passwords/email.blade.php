@@ -1,23 +1,74 @@
 @extends('auth.layout')
 
 @section('content')
-  @if (session('status'))
-    {{ session('status') }}
-  @endif
+  <div class="base-layout">
 
-  <form method="POST" action="{{ route('password.email') }}">
+    {{-- Header --}}
+    <div class="base-layout__header base-layout__header--login">
+      <div class="header">
+        <a href="{{ route('home') }}">
+          <img src="{{ asset('img/logo-bookatest.png') }}" alt="{{ config('app.name') }} logo">
+        </a>
+      </div>
+    </div>
 
-    @csrf
+    {{-- Main content --}}
+    <div class="base-layout__main base-layout__main--no-sidebar">
+      <div class="main">
 
-    <label for="email">Email</label>
-    <input id="email" name="email" type="email" value="{{ old('email') }}">
-    @if($errors->has('email'))
-      <strong>{{ $errors->first('email') }}</strong>
-    @endif
+        {{-- Login form --}}
+        <form class="form form--login" action="{{ route('password.email') }}" method="POST">
+          @csrf
 
-    <button type="submit">
-      Send password reset link
-    </button>
+          @if (session('status'))
+            <h2>{{ session('status') }}</h2>
+          @endif
 
-  </form>
+          <h2>Reset password</h2>
+
+          <div class="form__text">
+            <label for="email">
+              <span>Email</span>
+            </label>
+            <div>
+              <input type="email" id="email" name="email" value="{{ old('email') }}">
+            </div>
+            @if($errors->has('email'))
+              <p class="body">
+                <strong>{{ $errors->first('email') }}</strong>
+              </p>
+            @endif
+          </div>
+
+          <button class="button button__primary button__primary--a" type="submit">
+              <span>Send password reset link</span>
+          </button>
+        </form>
+
+      </div>
+    </div>
+
+  </div>
+
+
+
+  {{--@if (session('status'))--}}
+    {{--{{ session('status') }}--}}
+  {{--@endif--}}
+
+  {{--<form method="POST" action="{{ route('password.email') }}">--}}
+
+    {{--@csrf--}}
+
+    {{--<label for="email">Email</label>--}}
+    {{--<input id="email" name="email" type="email" value="{{ old('email') }}">--}}
+    {{--@if($errors->has('email'))--}}
+      {{--<strong>{{ $errors->first('email') }}</strong>--}}
+    {{--@endif--}}
+
+    {{--<button type="submit">--}}
+      {{--Send password reset link--}}
+    {{--</button>--}}
+
+  {{--</form>--}}
 @endsection
