@@ -11,6 +11,13 @@ let mix = require('laravel-mix');
  |
  */
 
+// Auth
+mix
+    .copyDirectory('resources/assets/img', 'public/img')
+    .sass('resources/assets/sass/auth.scss', 'public/css')
+    .version();
+
+// Docs
 mix
     .js('resources/assets/js/docs.js', 'public/js')
     .sass('resources/assets/sass/docs.scss', 'public/css')

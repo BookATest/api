@@ -1,0 +1,144 @@
+// 4.0 Icons
+@font-face {
+  font-family: 'fontello';
+  src: url("../../../fonts/fontello.eot?35448261");
+  src: url("../../../fonts/fontello.eot?35448261#iefix") format('embedded-opentype'),
+    url("../../../fonts/fontello.woff2?35448261") format('woff2'),
+    url("../../../fonts/fontello.woff?35448261") format('woff'),
+    url("../../../fonts/fontello.ttf?35448261") format('truetype'),
+    url("../../../fonts/fontello.svg?35448261#fontello") format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+[class^="icon--"]:before,
+[class*="icon--"]:before {
+  font-family: "fontello";
+  font-style: normal;
+  font-weight: normal;
+  speak: none;
+  display: inline-block;
+  text-decoration: inherit;
+  // width: 1em;
+  // margin-right: 0.2em;
+  text-align: center;
+  font-variant: normal;
+  text-transform: none;
+  // line-height: 1em;
+  // margin-left: 0.2em;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+// 4.1 Base Icons
+
+.icon {
+  // 4.1.1 Logo
+  &--logo:before {
+    content: '\E80F';
+  }
+  // 4.1.2 Cross
+  &--cross:before {
+    content: '\e806';
+  }
+  // 4.1.3 Plus
+  &--plus:before {
+    content: '\e812';
+  }
+  // 4.1.4 Minus
+  &--minus:before {
+    content: '\e811';
+  }
+  // 4.1.5 Arrow Right
+  &--arrowright:before {
+    content: '\e802';
+  }
+  // 4.1.6 Arrow Down
+  &--arrowdown:before {
+    content: '\e801';
+  }
+  // 4.1.7 Arrow Up
+  &--arrowup:before {
+    content: '\e804';
+  }
+  // 4.1.8 Tick
+  &--tick:before {
+    content: '\e819';
+  }
+  // 4.1.9 location
+  &--location:before {
+    content: '\e80e';
+  }
+  // 4.1.10 Repeat
+  &--repeat:before {
+    content: '\e816';
+  }
+  // 4.1.11 Solid Arrow Down
+  &--solidarrowdown:before {
+    content: '\e803';
+  }
+  // 4.1.12 Warning
+  &--warning:before {
+    content: '\e81b';
+  }
+  // 4.1.13 Cross Circle
+  &--crosscircle:before {
+    content: '\e807';
+  }
+  // 4.1.14 Plus Circle
+  &--pluscircle:before {
+    content: '\e813';
+  }
+  // 4.1.15 Large Arrow Left
+  &--lg-arrowleft:before {
+    content: '\e80b';
+  }
+  // 4.1.16 Large Arrow Right
+  &--lg-arrowright:before {
+    content: '\e80a';
+  }
+  // 4.1.17 Reorder
+  &--reorder:before {
+    content: '\e815';
+  }
+  // 4.1.18 Power
+  &--power:before {
+    content: '\e814';
+  }
+  // 4.1.19 Large Warning
+  &--lg-warning:before {
+    content: '\e80d';
+  }
+  // 4.1.20 Large Help
+  &--help:before {
+    content: '\e809';
+  }
+  // 4.1.21 Copy
+  &--copy:before {
+    content: '\e805';
+  }
+  // 4.1.22 Edit
+  &--edit:before {
+    content: '\e808';
+  }
+  // 4.2 Navigation Icons
+  // 4.2.1 Appointments
+  &--appointments:before {
+    content: '\e800';
+  }
+  // 4.2.2 Reports
+  &--reports:before {
+    content: '\e817';
+  }
+  // 4.2.3 Settings
+  &--settings:before {
+    content: '\e818';
+  }
+  // 4.2.4 Users
+  &--users:before {
+    content: '\e81a';
+  }
+  // 4.2.5 Help
+  &--help:before {
+    content: '\e809';
+  }
+}

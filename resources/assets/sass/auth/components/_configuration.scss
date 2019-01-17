@@ -1,0 +1,74 @@
+.configuration {
+  background-color: $wildSand;
+
+  h2 {
+    @include innerPageTitle();
+    margin: 0 0 40px;
+    padding: 0;
+  }
+
+  p {
+    @include body();
+    margin: 0 0 40px;
+    padding: 0;
+  }
+
+  &__intro {}
+
+  &__options {
+    .button__amend {
+      input {
+        width: calc((100% - 31px) - 82px) !important;
+        @include border-left-radius(8px);
+        border-left-width: 1px !important;
+      }
+    }
+
+    .button__amend:last-child {
+      margin: 16px 0 0 0 !important;
+    }
+  }
+
+  &__feedback {
+    button {
+      margin: 0 16px 0 0 !important;
+    }
+  }
+
+  &__custom {
+    .custom {
+      &__text {}
+
+      &__variables {
+        ul {
+          li {
+            @include openSansSemiBold();
+            font-size: 14px;
+            line-height: 16px;
+            margin: 0 0 16px;
+
+            &:last-child {
+              margin: 0;
+            }
+
+            span {
+              &:nth-child(1) {
+                width: 200px;
+                display: inline-block;
+              }
+
+              &:nth-child(2) {
+                display: inline-block;
+              }
+            }
+          }
+          margin: 0 0 32px;
+        }
+      }
+    }
+  }
+
+  &__action {
+    text-align: right;
+  }
+}

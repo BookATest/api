@@ -20,5 +20,9 @@
         "swagger-ui": "^3.19.0",
         "swagger-ui-themes": "^3.0.0",
         "vue": "^2.5.7"
+    },
+    "dependencies": {
+        "bourbon": "^5.1.0",
+        "bourbon-neat": "^3.0.1"
     }
 }

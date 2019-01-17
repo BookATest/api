@@ -1,0 +1,716 @@
+// 6.0 Forms
+// 6.1 Form Inputs
+
+.form {
+  &--login {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+
+    h2 {
+      @include dosisSemiBold();
+      font-size: 24px;
+      line-height: 24px;
+      margin: 0 0 32px;
+    }
+
+    p {
+      @include dosisSemiBold();
+      font-size: 14px;
+      line-height: 18px;
+      margin: 0 0 32px;
+    }
+
+    label {
+      width: 70px;
+      margin: 0 32px 0 0 !important;
+      text-align: left;
+    }
+
+    .form__text {
+      margin: 0 0 32px 0 !important;
+    }
+  }
+
+  &--my-profile {
+    .form__text {
+      margin: 0 0 24px 0 !important;
+
+      > div {
+        min-width: 204px;
+      }
+    }
+
+    label {
+      width: 70px;
+      margin: 0 32px 0 0 !important;
+      text-align: left;
+    }
+  }
+
+  &--edit-user {
+    .form__text {
+      margin: 0 0 24px 0 !important;
+
+      > div {
+        min-width: 204px;
+      }
+    }
+
+    label {
+      width: 70px;
+      margin: 0 32px 0 0 !important;
+      text-align: left;
+    }
+  }
+
+  &--pre-triage-questions {
+    .form__text {
+      margin: 0 0 24px 0 !important;
+
+      > div {
+        min-width: 204px;
+      }
+    }
+
+    label {
+      width: 70px;
+      margin: 0 32px 0 0 !important;
+      text-align: left;
+    }
+
+    .button__radio {
+      width: auto !important;
+      margin: 0 16px 0 0 !important;
+
+      &:last-child {
+        margin: 0 !important;
+      }
+    }
+  }
+
+  &--location-edit {
+    .form__text {
+      margin: 0 0 24px 0 !important;
+
+      > div {
+        min-width: 204px;
+      }
+    }
+
+    .form__textarea {
+      label {
+        display: inline-block !important;
+        vertical-align: top;
+      }
+
+      textarea {
+        min-width: 235px !important;
+        min-height: 85px !important;
+      }
+    }
+
+    label {
+      width: 70px;
+      margin: 0 32px 0 0 !important;
+      text-align: left;
+    }
+  }
+
+  &--privacy-policy {
+    .form__checkbox {
+      display: inline-block;
+      margin-right: 40px;
+
+      label {
+        @include dosisSemiBold();
+        font-size: 14px;
+        line-height: 14px;
+
+        &:after {
+          line-height: 18px;
+        }
+      }
+    }
+  }
+
+  &--cancel-booking {
+    .form__checkbox {
+      display: inline-block !important;
+      margin: 0 0 16px 0 !important;
+      padding: 0 !important;
+      width: calc(100% - 16px) !important;
+
+      label {
+        @include dosisSemiBold();
+        font-size: 12px;
+        line-height: 15px;
+        margin: 0 !important;
+        padding: 0 0 0 20px !important;
+        width: calc(100% - 20px) !important;
+        float:right;
+
+        &:after {
+          line-height: 18px;
+        }
+
+      }
+    }
+  }
+
+  &__code {
+    margin: 0 0 32px 0 !important;
+
+    label {
+      display: block;
+      width: 100%;
+      height: auto;
+      @include innerPageTitle();
+      text-align: center;
+      margin: 0 0 32px 0 !important;
+    }
+
+    > div {
+      position: relative;
+      display: inline-block;
+      @include border-top-radius(8px);
+      @include border-bottom-radius(8px);
+      width: 30px;
+      height: 40px;
+      margin: 0 4px;
+      padding: 0;
+      background-color: $white;
+      border: solid 1px $mineShaft50;
+      vertical-align: middle;
+
+      input {
+        background: transparent;
+        text-align: center;
+        border: none;
+        width: 30px;
+        height: 40px;
+        margin: 0;
+        padding: 0;
+      }
+    }
+  }
+  // 6.1.1 Drop Down
+  &__drop-down {
+    label {
+      @include innerPageHeader();
+      display: inline-block;
+      margin: 0 56px 0 0;
+      padding: 0;
+      vertical-align: middle;
+    }
+
+    > div {
+      position: relative;
+      display: inline-block;
+      @include border-top-radius(8px);
+      @include border-bottom-radius(8px);
+      width: auto;
+      min-width: 160px;
+      height: 40px;
+      background-color: $white;
+      border: solid 1px $mineShaft50;
+      vertical-align: middle;
+
+      &:after {
+        content: '\e803';
+        font-family: "fontello";
+        font-style: normal;
+        font-weight: normal;
+        text-align: center;
+        font-size: 10px;
+        line-height: 40px;
+        position: absolute;
+        top: 0;
+        right: 16px;
+        width: 10px;
+        height: 40px;
+        z-index: 2;
+        pointer-events: none;
+      }
+
+      select {
+        background-color: transparent;
+        border: none;
+        width: 100%;
+        height: 40px;
+        margin: 0;
+        padding: 0 16px;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        cursor: pointer;
+      }
+
+      &:hover {
+        border: solid 1px $mineShaft;
+      }
+    }
+
+    &--disabled {
+      label {
+        color: $mineShaft40;
+      }
+
+      > div {
+        color: $mineShaft40;
+        border: solid 1px $mineShaft40;
+
+        select {
+          cursor: not-allowed;
+        }
+
+        &:hover {
+          border: solid 1px $mineShaft40;
+        }
+      }
+    }
+  }
+  // 6.1.2 Text Input
+  &__text {
+    label {
+      @include innerPageHeader();
+      display: inline-block;
+      margin: 0 56px 0 0;
+      padding: 0;
+      vertical-align: middle;
+    }
+
+    > div {
+      position: relative;
+      display: inline-block;
+      @include border-top-radius(8px);
+      @include border-bottom-radius(8px);
+      width: auto;
+      min-width: 160px;
+      height: 40px;
+      background-color: $white;
+      border: solid 1px $mineShaft50;
+      vertical-align: middle;
+
+      input {
+        background-color: transparent;
+        border: none;
+        width: calc(100% - 32px);
+        height: 40px;
+        margin: 0;
+        padding: 0 16px;
+      }
+
+      &:focus {
+        border: solid 1px $blueViolet;
+      }
+
+      &:hover {
+        border: solid 1px $blueViolet50;
+      }
+    }
+
+    &--disabled {
+      > div {
+        color: $mineShaft40;
+        border: solid 1px $mineShaft40;
+
+        input {
+          cursor: not-allowed;
+        }
+
+        &:hover {
+          border: solid 1px $mineShaft40;
+        }
+      }
+    }
+  }
+
+  &__date {
+    display: inline-block;
+
+    button {
+      position: relative;
+      display: inline-block;
+      float: right;
+      border-top-left-radius: 6px;
+      border-top-right-radius: 6px;
+      border-bottom-left-radius: 6px;
+      border-bottom-right-radius: 6px;
+      width: auto;
+      min-width: 42px;
+      height: 42px;
+      background-color: $mineShaft10;
+      font-size: 16px;
+      border-left: 0;
+      vertical-align: middle;
+      margin: 0 0 0 8px;
+      cursor: pointer;
+    }
+
+    > div {
+      position: relative;
+      display: inline-block;
+      @include border-top-radius(8px);
+      @include border-bottom-radius(8px);
+      width: auto;
+      min-width: 160px;
+      height: 40px;
+      background-color: $white;
+      border: solid 1px $mineShaft50;
+      vertical-align: middle;
+
+      input {
+        background-color: transparent;
+        border: none;
+        width: calc(100% - 32px);
+        height: 40px;
+        margin: 0;
+        padding: 0 16px;
+      }
+
+      &:focus {
+        border: solid 1px $blueViolet;
+      }
+
+      &:hover {
+        border: solid 1px $blueViolet50;
+      }
+    }
+
+    &--disabled {
+      > div {
+        color: $mineShaft40;
+        border: solid 1px $mineShaft40;
+
+        input {
+          cursor: not-allowed;
+        }
+
+        &:hover {
+          border: solid 1px $mineShaft40;
+        }
+      }
+    }
+  }
+
+  &__search {
+    label {
+      @include innerPageHeader();
+      display: inline-block;
+      margin: 0 56px 0 0;
+      padding: 0;
+      vertical-align: middle;
+      min-width:50px;
+    }
+
+    > div {
+      position: relative;
+      display: inline-block;
+      border-top-left-radius: 6px;
+      border-top-right-radius: 6px;
+      border-bottom-left-radius: 6px;
+      border-bottom-right-radius: 6px;
+      width: 160px;
+      height: 40px;
+      background-color: $white;
+      border: solid 1px $mineShaft50;
+      vertical-align: middle;
+
+      input {
+        background-color: transparent;
+        border: none;
+        width: calc((100% - 32px) - 42px);
+        height: 40px;
+        margin: 0;
+        padding: 0 16px;
+        display: inline-block;
+      }
+
+      &:focus {
+        border: solid 1px $blueViolet;
+      }
+
+      &:hover {
+        border: solid 1px $blueViolet50;
+      }
+    }
+
+    button {
+      position: relative;
+      display: inline-block;
+      float: right;
+      border-top-left-radius: 0;
+      border-top-right-radius: 6px;
+      border-bottom-left-radius: 0;
+      border-bottom-right-radius: 6px;
+      width: auto;
+      min-width: 40px;
+      height: 40px;
+      background-color: $mineShaft10;
+      font-size: 16px;
+      border-left: 0;
+      vertical-align: middle;
+      cursor: pointer;
+    }
+
+    &--disabled {
+      > div {
+        color: $mineShaft40;
+        border: solid 1px $mineShaft40;
+
+        input {
+          cursor: not-allowed;
+        }
+
+        &:hover {
+          border: solid 1px $mineShaft40;
+        }
+      }
+    }
+  }
+
+  &__textarea {
+    label {
+      @include innerPageHeader();
+      display: block;
+      margin: 0 0 32px;
+      padding: 0;
+    }
+
+    > div {
+      position: relative;
+      display: inline-block;
+      @include border-top-radius(8px);
+      @include border-bottom-radius(8px);
+      width: auto;
+      min-width: 300px;
+      height: auto;
+      background-color: $white;
+      border: solid 1px $mineShaft50;
+      vertical-align: middle;
+
+      textarea {
+        background-color: transparent;
+        border: none;
+        width: calc(100% - 32px);
+        height: auto;
+        min-height: 117px;
+        margin: 0;
+        padding: 16px;
+      }
+
+      &:focus {
+        border: solid 1px $blueViolet;
+      }
+
+      &:hover {
+        border: solid 1px $blueViolet50;
+      }
+    }
+
+    &--disabled {
+      > div {
+        color: $mineShaft40;
+        border: solid 1px $mineShaft40;
+
+        input {
+          cursor: not-allowed;
+        }
+
+        &:hover {
+          border: solid 1px $mineShaft40;
+        }
+      }
+    }
+  }
+
+  &__checkbox {
+    > div {
+      label {
+        @include innerPageText();
+        cursor: pointer;
+        position: relative;
+        padding: 0 0 0 30px;
+      }
+
+      input {
+        display: none;
+      }
+
+      input + label {
+        &:before {
+          content: '';
+          position: absolute;
+          top: 4px;
+          left: 0;
+          width: 14px;
+          height: 14px;
+          background-color: $white;
+          box-shadow: inset 0 0 0 2px $mineShaft50;
+        }
+      }
+
+      input:checked + label {
+        &:after {
+          content: '\e819';
+          position: absolute;
+          top: -2px;
+          left: -2px;
+          width: 14px;
+          height: 14px;
+          font-family: "fontello";
+          font-style: normal;
+          font-weight: normal;
+          font-size: 26px;
+        }
+      }
+    }
+
+    &--disabled {
+      label {
+        color: $mineShaft40;
+      }
+
+      input + label {
+        &:before {
+          box-shadow: inset 0 0 0 2px $mineShaft40 !important;
+        }
+        cursor: not-allowed;
+      }
+
+      input:checked + label {
+        &:after {
+          color: $mineShaft40;
+        }
+        cursor: not-allowed;
+      }
+    }
+  }
+
+  &__dropdown-options {
+    position: relative;
+    margin: 0 32px 32px 0;
+    width: calc(50% - 16px);
+
+    &:nth-child(odd) {
+      margin-right: 0;
+    }
+
+    &--add {
+      position: relative;
+      float: left;
+
+      button {
+        @include border-top-radius(8px);
+        @include border-bottom-radius(8px);
+        border: 1px solid $mineShaft50;
+        background: transparent;
+        margin: 0;
+        padding: 0 16px;
+        width: 100%;
+        height: 42px;
+        color: $mineShaft;
+        cursor: pointer;
+        text-align: right;
+
+        span {
+          margin-right: 8px;
+          @include dosisMedium();
+          font-size: 16px;
+          line-height: 20px;
+        }
+
+        i {
+          font-size: 16px;
+        }
+
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+
+      &:hover {
+        background-color: $wildSand;
+        border-color: $blueViolet50;
+      }
+
+      &:active {
+        background-color: $wildSand;
+        border-color: $blueViolet;
+      }
+    }
+
+    &--edit {
+      position: relative;
+      float: left;
+
+      &--active {
+        &:after {
+          position: absolute;
+          bottom: -16px;
+          left: 0;
+          content: 'Press enter to save';
+          display: block;
+          @include dosisMedium();
+          font-size: 10px;
+          line-height: 10px;
+          color: $blueViolet;
+        }
+
+        input {
+          border: 1px solid $blueViolet !important;
+          @include border-left-radius(8px);
+          @include border-right-radius(8px);
+          width: calc(100% - 34px) !important;
+        }
+
+        button {
+          display: none;
+        }
+      }
+
+      input {
+        position: relative;
+        @include border-left-radius(8px);
+        border: 1px solid $mineShaft50;
+        border-right: 0;
+        width: calc((100% - 40px) - 34px);
+        height: 42px;
+        background-color: $white;
+        margin: 0;
+        padding: 0 16px;
+        float: left;
+        @include dosisMedium();
+        font-size: 16px;
+        line-height: 20px;
+
+        &:hover {
+          border-color: $blueViolet50;
+        }
+
+        &:hover + button {
+          border-color: $blueViolet50;
+          color: $apricot50;
+        }
+      }
+
+      button {
+        @include border-right-radius(8px);
+        border: 1px solid $mineShaft50;
+        border-left: 0;
+        width: 40px;
+        height: 44px;
+        background-color: $white;
+        margin: 0;
+        padding: 0;
+        float: left;
+        font-size: 16px;
+        line-height: 16px;
+        color: $apricot;
+        cursor: pointer;
+      }
+    }
+  }
+}

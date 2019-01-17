@@ -1,0 +1,51 @@
+.dashboard {
+  &__upcoming-appointments {
+    .upcoming-appointments {
+      > div {
+        &:nth-child(1) {
+          h2 {
+            @include largeTitle();
+            margin: 0 0 32px;
+            padding: 0;
+          }
+        }
+
+        &:nth-child(2) {
+          width: calc(66.66667% - 32px) !important;
+          padding-right:32px;
+        }
+
+        &:nth-child(3) {
+          width: calc(33.33333% - 69px) !important;
+          height: auto;
+          padding: 16px 34px;
+          border-left: solid 1px rgb(227,227,227);
+
+          h2 {
+            @include largeTitle();
+            margin: 0 0 32px;
+            padding: 0;
+          }
+
+          button {
+            margin: 0 0 16px;
+            width: calc(100% - 2px);
+            max-width: calc(210px - 2px);
+
+            &:last-child {
+              margin: 0;
+              padding-top: 12px;
+              padding-bottom: 12px;
+              text-align: left;
+              height: auto;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  &__results {
+    background-color: $wildSand;
+  }
+}
