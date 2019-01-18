@@ -12,7 +12,15 @@ use Spatie\QueryBuilder\QueryBuilder;
 
 class IcsController extends Controller
 {
-    /**]
+    /**
+     * IcsController constructor.
+     */
+    public function __construct()
+    {
+        $this->middleware('throttle:60,1');
+    }
+
+    /**
      * @param \App\Http\Requests\Appointment\IcsRequest $request
      * @return \App\Http\Responses\ICalAppointmentsResponse
      */

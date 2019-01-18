@@ -12,6 +12,14 @@ use Illuminate\Support\Facades\DB;
 class CancelController extends Controller
 {
     /**
+     * CancelController constructor.
+     */
+    public function __construct()
+    {
+        $this->middleware('throttle:60,1');
+    }
+
+    /**
      * @param \App\Http\Requests\Appointment\CancelRequest $request
      * @param \App\Models\Appointment $appointment
      * @return \App\Http\Resources\AppointmentResource

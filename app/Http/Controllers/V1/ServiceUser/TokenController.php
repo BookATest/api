@@ -13,6 +13,14 @@ use Illuminate\Http\Response;
 class TokenController extends Controller
 {
     /**
+     * TokenController constructor.
+     */
+    public function __construct()
+    {
+        $this->middleware('throttle:60,1');
+    }
+
+    /**
      * @param \App\Http\Requests\ServiceUser\Token\StoreRequest $request
      * @return \Illuminate\Http\JsonResponse
      */

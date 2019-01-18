@@ -14,6 +14,14 @@ use Spatie\QueryBuilder\QueryBuilder;
 class AppointmentController extends Controller
 {
     /**
+     * AppointmentController constructor.
+     */
+    public function __construct()
+    {
+        $this->middleware('throttle:60,1');
+    }
+
+    /**
      * Display a listing of the resource.
      *
      * @param \App\Http\Requests\ServiceUser\Appointment\IndexRequest $request

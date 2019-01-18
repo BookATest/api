@@ -32,6 +32,7 @@ class ClinicController extends Controller
      */
     public function __construct(Geocoder $geocoder)
     {
+        $this->middleware('throttle:60,1');
         $this->middleware('auth:api')->except('index', 'show');
 
         $this->geocoder = $geocoder;

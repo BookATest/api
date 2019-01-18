@@ -15,6 +15,14 @@ class AccessCodeController extends Controller
     use DispatchesJobs;
 
     /**
+     * AccessCodeController constructor.
+     */
+    public function __construct()
+    {
+        $this->middleware('throttle:60,1');
+    }
+
+    /**
      * @param \App\Http\Requests\ServiceUser\AccessCodeRequest $request
      * @param \App\Contracts\SmsSender $sender
      * @return \Illuminate\Http\JsonResponse
