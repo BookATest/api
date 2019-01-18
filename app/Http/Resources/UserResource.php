@@ -25,6 +25,10 @@ class UserResource extends JsonResource
             'receive_booking_confirmations' => $this->receive_booking_confirmations,
             'receive_cancellation_confirmations' => $this->receive_cancellation_confirmations,
             'include_calendar_attachment' => $this->include_calendar_attachment,
+            'calendar_feed_token' => $this->when(
+                $request->user('api')->id === $this->id,
+                $this->calendar_feed_token
+            ),
             'roles' => RoleResource::collection($this->userRoles->load('role')),
             'created_at' => $this->created_at->toIso8601String(),
             'updated_at' => $this->updated_at->toIso8601String(),

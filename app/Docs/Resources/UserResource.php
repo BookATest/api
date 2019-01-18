@@ -22,6 +22,8 @@ class UserResource extends BaseResource
             Schema::boolean('receive_booking_confirmations'),
             Schema::boolean('receive_cancellation_confirmations'),
             Schema::boolean('include_calendar_attachment'),
+            Schema::string('calendar_feed_token')
+                ->description('Only included for the requesting users account'),
             Schema::array('roles')->items(
                 Schema::object()->properties(
                     Schema::string('role'),
