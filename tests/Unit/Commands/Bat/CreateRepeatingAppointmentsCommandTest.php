@@ -53,11 +53,11 @@ class CreateRepeatingAppointmentsCommandTest extends TestCase
             'start_at' => $startDate->copy()->addWeeks(16)->hour(12)->toDateTimeString(),
         ]);
 
-        Carbon::setTestNow($startDate->copy()->addMonth());
+        Carbon::setTestNow($startDate->copy()->addWeeks(4));
 
         $this->artisan(CreateRepeatingAppointmentsCommand::class);
 
-        $this->assertEquals(18, $appointmentSchedule->appointments()->count());
+        $this->assertEquals(17, $appointmentSchedule->appointments()->count());
         $this->assertEquals(
             0,
             $appointmentSchedule->appointments()
