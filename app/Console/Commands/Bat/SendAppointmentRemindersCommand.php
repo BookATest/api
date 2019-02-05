@@ -37,7 +37,7 @@ class SendAppointmentRemindersCommand extends Command
     public function handle()
     {
         $minutesBefore = (int)$this->option('minutes-before');
-        $startAt = now()->addMinutes($minutesBefore);
+        $startAt = now()->second(0)->addMinutes($minutesBefore);
 
         Appointment::query()
             ->with('serviceUser')

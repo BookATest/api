@@ -102,7 +102,7 @@ DATE_ADD(
 )
 EOT;
 
-        return $query->where(DB::raw($sql), '=', now());
+        return $query->where(DB::raw($sql), '=', now()->second(0));
     }
 
     /**
