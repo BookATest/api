@@ -46,7 +46,8 @@ class UserController extends Controller
         $users = QueryBuilder::for($baseQuery)
             ->allowedFilters(
                 Filter::exact('id'),
-                Filter::scope('clinic_id')
+                Filter::scope('clinic_id'),
+                Filter::scope('disabled')
             )
             ->defaultSort(['first_name', 'last_name'])
             ->allowedSorts('first_name', 'last_name')

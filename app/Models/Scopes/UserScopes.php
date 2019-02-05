@@ -17,4 +17,16 @@ trait UserScopes
             $query->where('clinics.id', '=', $clinicId);
         });
     }
+
+    /**
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param bool $disabled
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeDisabled(Builder $query, bool $disabled): Builder
+    {
+        return $disabled
+            ? $query->whereNotNull('disabled_at')
+            : $query->whereNull('disabled_at');
+    }
 }
