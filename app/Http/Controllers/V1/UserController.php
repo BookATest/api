@@ -167,7 +167,7 @@ class UserController extends Controller
             // Update the user roles.
             $userRoles = UserRole::parseArray($request->roles);
             $newRoles = $user->getAssignedRoles($userRoles);
-            $deletedRoles = $user->getRevokedRoles($userRoles);
+            $revokedRoles = $user->getRevokedRoles($userRoles);
 
             // Assign the new roles.
             foreach ($newRoles as $newRole) {
@@ -185,16 +185,16 @@ class UserController extends Controller
             }
 
             // Revoke the deleted roles.
-            foreach ($deletedRoles as $deletedRole) {
-                switch ($deletedRole->role->name) {
-                    case Role::COMMUNITY_WORKER:
-                        $user->revokeCommunityWorker($deletedRole->clinic);
-                        break;
-                    case Role::CLINIC_ADMIN:
-                        $user->revokeClinicAdmin($deletedRole->clinic);
-                        break;
+            foreach ($revokedRoles as $revokedRole) {
+                switch ($revokedRole->role->name) {
                     case Role::ORGANISATION_ADMIN:
                         $user->revokeOrganisationAdmin();
+                        break;
+                    case Role::CLINIC_ADMIN:
+                        $user->revokeClinicAdmin($revokedRole->clinic);
+                        break;
+                    case Role::COMMUNITY_WORKER:
+                        $user->revokeCommunityWorker($revokedRole->clinic);
                         break;
                 }
             }

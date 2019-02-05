@@ -2,8 +2,6 @@
 
 namespace App\Rules;
 
-use App\Models\Clinic;
-use App\Models\Role;
 use App\Models\User;
 use App\Models\UserRole;
 use Illuminate\Contracts\Validation\Rule;

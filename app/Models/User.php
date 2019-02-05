@@ -453,6 +453,18 @@ class User extends Authenticatable
 
                 // If after looping, their are no matches, then return false.
                 return false;
+            })
+            ->sort(function (UserRole $userRole) {
+                switch ($userRole->role->name) {
+                    case Role::ORGANISATION_ADMIN:
+                        return 1;
+                    case Role::CLINIC_ADMIN:
+                        return 2;
+                    case Role::COMMUNITY_WORKER:
+                        return 3;
+                    default:
+                        return 4;
+                }
             });
     }
 
