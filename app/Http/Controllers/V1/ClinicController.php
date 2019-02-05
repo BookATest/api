@@ -54,7 +54,8 @@ class ClinicController extends Controller
             ->defaultSort('name')
             ->allowedSorts('name')
             ->allowedFilters(
-                Filter::exact('id')
+                Filter::exact('id'),
+                'name'
             )
             ->paginate(per_page($request->per_page));
 
