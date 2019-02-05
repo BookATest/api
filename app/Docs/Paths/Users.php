@@ -201,7 +201,9 @@ EOT;
                             Schema::string('role'),
                             Schema::string('clinic_id')->format(Schema::UUID)
                         )),
-                    Schema::string('profile_picture')->description('Base64 encoded JPEG.')
+                    Schema::string('profile_picture')
+                        ->nullable()
+                        ->description('Base64 encoded JPEG.')
                 )
         );
         $description = <<<EOT

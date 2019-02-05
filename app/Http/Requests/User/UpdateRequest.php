@@ -117,6 +117,7 @@ class UpdateRequest extends FormRequest
                 'exists:clinics,id',
             ],
             'profile_picture' => [
+                'nullable',
                 new Base64EncodedJpeg(),
                 new Base64FileSize(1),
             ],

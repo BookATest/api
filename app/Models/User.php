@@ -604,6 +604,23 @@ class User extends Authenticatable
     /**
      * @return \App\Models\User
      */
+    public function removeProfilePicture(): self
+    {
+        $profilePicture = $this->profilePictureFile;
+
+        if ($profilePicture) {
+            $this->profilePictureFile()->dissociate();
+            $this->save();
+
+            $profilePicture->delete();
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return \App\Models\User
+     */
     public function clearSessions(): self
     {
         DB::table('sessions')
