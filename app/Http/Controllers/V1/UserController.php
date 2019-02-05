@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\V1;
 
 use App\Events\EndpointHit;
+use App\Exceptions\CannotRevokeRoleException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\User\DestroyRequest;
 use App\Http\Requests\User\IndexRequest;
@@ -166,8 +167,27 @@ class UserController extends Controller
 
             // Update the user roles.
             $userRoles = UserRole::parseArray($request->roles);
-            $newRoles = $user->getAssignedRoles($userRoles);
             $revokedRoles = $user->getRevokedRoles($userRoles);
+            $newRoles = $user->getAssignedRoles($userRoles);
+
+            // Revoke the deleted roles.
+            foreach ($revokedRoles as $revokedRole) {
+                try {
+                    switch ($revokedRole->role->name) {
+                        case Role::ORGANISATION_ADMIN:
+                            $user->revokeOrganisationAdmin();
+                            break;
+                        case Role::CLINIC_ADMIN:
+                            $user->revokeClinicAdmin($revokedRole->clinic);
+                            break;
+                        case Role::COMMUNITY_WORKER:
+                            $user->revokeCommunityWorker($revokedRole->clinic);
+                            break;
+                    }
+                } catch (CannotRevokeRoleException $exception) {
+                    continue;
+                }
+            }
 
             // Assign the new roles.
             foreach ($newRoles as $newRole) {
@@ -180,21 +200,6 @@ class UserController extends Controller
                         break;
                     case Role::ORGANISATION_ADMIN:
                         $user->makeOrganisationAdmin();
-                        break;
-                }
-            }
-
-            // Revoke the deleted roles.
-            foreach ($revokedRoles as $revokedRole) {
-                switch ($revokedRole->role->name) {
-                    case Role::ORGANISATION_ADMIN:
-                        $user->revokeOrganisationAdmin();
-                        break;
-                    case Role::CLINIC_ADMIN:
-                        $user->revokeClinicAdmin($revokedRole->clinic);
-                        break;
-                    case Role::COMMUNITY_WORKER:
-                        $user->revokeCommunityWorker($revokedRole->clinic);
                         break;
                 }
             }
