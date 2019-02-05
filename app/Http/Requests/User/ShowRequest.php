@@ -13,10 +13,6 @@ class ShowRequest extends FormRequest
      */
     public function authorize()
     {
-        if (!$this->user('api')->isCommunityWorker()) {
-            return false;
-        }
-
         return true;
     }
 
