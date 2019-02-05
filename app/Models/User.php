@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Exceptions\CannotRevokeRoleException;
 use App\Models\Mutators\UserMutators;
 use App\Models\Relationships\UserRelationships;
 use App\Models\Scopes\UserScopes;
@@ -305,10 +306,13 @@ class User extends Authenticatable
     /**
      * @param \App\Models\Clinic $clinic
      * @return \App\Models\User
+     * @throws \App\Exceptions\CannotRevokeRoleException
      */
     public function revokeCommunityWorker(Clinic $clinic): self
     {
-        $this->revokeClinicAdmin($clinic);
+        if ($this->hasRole(Role::clinicAdmin(), $clinic)) {
+            throw new CannotRevokeRoleException('Cannot revoke community worker role when user is a clinic admin');
+        }
 
         return $this->removeRoll(Role::communityWorker(), $clinic);
     }
@@ -316,10 +320,13 @@ class User extends Authenticatable
     /**
      * @param \App\Models\Clinic $clinic
      * @return \App\Models\User
+     * @throws \App\Exceptions\CannotRevokeRoleException
      */
     public function revokeClinicAdmin(Clinic $clinic): self
     {
-        $this->revokeOrganisationAdmin();
+        if ($this->hasRole(Role::organisationAdmin())) {
+            throw new CannotRevokeRoleException('Cannot revoke clinic admin role when user is an organisation admin');
+        }
 
         return $this->removeRoll(Role::clinicAdmin(), $clinic);
     }
@@ -453,6 +460,18 @@ class User extends Authenticatable
 
                 // If after looping, their are no matches, then return false.
                 return false;
+            })
+            ->sort(function (UserRole $userRole) {
+                switch ($userRole->role->name) {
+                    case Role::ORGANISATION_ADMIN:
+                        return 1;
+                    case Role::CLINIC_ADMIN:
+                        return 2;
+                    case Role::COMMUNITY_WORKER:
+                        return 3;
+                    default:
+                        return 4;
+                }
             });
     }
 
