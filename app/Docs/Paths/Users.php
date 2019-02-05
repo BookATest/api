@@ -36,6 +36,8 @@ class Users
                 ->description('Comma separated user IDs'),
             Parameter::query('filter[clinic_id]', Schema::string()->format(Schema::UUID))
                 ->description('Comma separated clinic IDs'),
+            Parameter::query('filter[disabled]', Schema::boolean())
+                ->description('Filter users to only disabled or active, omit to show all users'),
             Parameter::query('sort', Schema::string()->default('first_name,last_name'))
                 ->description('The field to sort the results by [`first_name`, `last_name`]'),
         ];
