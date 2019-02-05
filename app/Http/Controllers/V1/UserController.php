@@ -204,10 +204,13 @@ class UserController extends Controller
                 }
             }
 
-            // Upload the profile picture.
-            if ($request->has('profile_picture')) {
+            if ($request->filled('profile_picture')) {
+                // Upload the profile picture.
                 $profilePictureContent = base64_decode_image($request->profile_picture);
                 $user->uploadProfilePicture($profilePictureContent);
+            } elseif ($request->has('profile_picture')) {
+                // Remove the profile picture.
+                $user->removeProfilePicture();
             }
 
             return $user;

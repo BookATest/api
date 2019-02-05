@@ -18,6 +18,19 @@ class File extends Model implements Responsable
     const MIME_XLSX = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
 
     /**
+     * Called just after the model has deleted.
+     *
+     * @param \App\Models\Model $model
+     */
+    protected function onDeleted(Model $model)
+    {
+        /** @var $model \App\Models\File */
+        Storage::cloud()->delete($model->path());
+
+        parent::onDeleted($model);
+    }
+
+    /**
      * Create an HTTP response that represents the object.
      *
      * @param  \Illuminate\Http\Request $request
