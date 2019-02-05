@@ -5,6 +5,8 @@ namespace App\Console;
 use App\Console\Commands\Bat\CreateRepeatingAppointmentsCommand;
 use App\Console\Commands\Bat\CreateScheduledReportsCommand;
 use App\Console\Commands\Bat\SendAppointmentRemindersCommand;
+use App\Console\Commands\Bat\SendDnaFollowUpsCommand;
+use App\Console\Commands\Bat\SendDnaRemindersCommand;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -34,6 +36,12 @@ class Kernel extends ConsoleKernel
             ->dailyAt('09:00');
 
         $schedule->command(SendAppointmentRemindersCommand::class)
+            ->everyMinute();
+
+        $schedule->command(SendDnaFollowUpsCommand::class)
+            ->everyMinute();
+
+        $schedule->command(SendDnaRemindersCommand::class)
             ->everyMinute();
     }
 
