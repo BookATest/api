@@ -75,6 +75,8 @@ class Appointment extends Model
      */
     public function cancel(): self
     {
+        $this->answers()->delete();
+
         $this->update([
             'service_user_id' => null,
             'booked_at' => null,
