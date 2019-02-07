@@ -731,7 +731,10 @@ launch_template = template.add_resource(
 docker_repository = template.add_resource(
     ecr.Repository(
         'DockerRepository',
-        RepositoryName=Ref(docker_repository_name)
+        RepositoryName=Ref(docker_repository_name),
+        LifecyclePolicy=ecr.LifecyclePolicy(
+            LifecyclePolicyText='{"rules":[{"rulePriority":1,"description":"Remove untagged images older than 1 week","selection":{"tagStatus":"untagged","countType":"sinceImagePushed","countUnit":"days","countNumber":7},"action":{"type":"expire"}}]}'
+        )
     )
 )
 
