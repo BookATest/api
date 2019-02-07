@@ -60,6 +60,10 @@ class ValidEligibleAnswer implements Rule
             return false;
         }
 
+        if (count($answer) === 0) {
+            return false;
+        }
+
         foreach ($answer as $option) {
             if (!is_string($option)) {
                 return false;
