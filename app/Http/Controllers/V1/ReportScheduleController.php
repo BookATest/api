@@ -63,7 +63,7 @@ class ReportScheduleController extends Controller
     public function store(StoreRequest $request)
     {
         $reportSchedule = DB::transaction(function () use ($request) {
-            return ReportSchedule::create([
+            return ReportSchedule::updateOrCreate([
                 'user_id' => $request->user('api')->id,
                 'clinic_id' => $request->clinic_id,
                 'report_type_id' => ReportType::findByName($request->report_type)->id,
