@@ -20,7 +20,7 @@ services:
       - "${DB_PORT}:3306"
 
   troposphere:
-    image: BookATest.hiv/troposphere
+    image: bookatest/troposphere
     build:
       context: ./docker/troposphere
       dockerfile: Dockerfile
