@@ -99,6 +99,14 @@ in other steps.
   * Admin: `admin.staging.bookatest.yourwebsite.com`
   * Frontend: `staging.bookatest.yourwebsite.com`
   
+#### AWS account
+
+If you do not already have an AWS account to use for the app, then you must 
+[create one](https://portal.aws.amazon.com/billing/signup).
+
+We recommend using a separate AWS account for this app, rather than an existing one
+used for other purposes. This is to prevent conflicts and also for added security.
+
 #### Mail service
 
 You are free to use any mail service which works out of the box with Laravel. We use 
