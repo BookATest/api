@@ -2,6 +2,8 @@ version: "3"
 
 services:
   api:
+    environment:
+      - APP_ENV=local
     ports:
       - "${APP_PORT}:80"
 
