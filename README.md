@@ -1,11 +1,12 @@
-# Book A Test
-
+# Book A Test - API
 
 A system for organisations to manage the online bookings of appointments to check for HIV.
 
 ## Getting Started
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
+These instructions will get you a copy of the project up and running on your local machine 
+for development and testing purposes. See deployment for notes on how to deploy the 
+project on a live system.
 
 ### Prerequisites
 
@@ -46,10 +47,16 @@ You should then be able to run the setup commands using the convenience script:
 ./develop artisan bat:create-user <first-name> <last-name> <email> <phone-number>
 ```
 
-Ensure any API clients have been created:
+Ensure any OAuth clients have been created to access the API (only implicit grant supported):
 
 ```bash
-./develop artisan passport:client --password --name="Name of Application"
+# Admin client must be created.
+./develop artisan bat:create-oauth-client "Book A Test Admin" "https://admin.bookatest.example.com/auth/callback"
+
+# Frontend does not need a client, as all routes used are public.
+
+# Any other clients you may want.
+./develop artisan bat:create-oauth-client <application-name> <redirect-uri>
 ```
 
 ## Running the tests
