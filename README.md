@@ -296,6 +296,18 @@ CloudFormation stack and setting the following parameters:
 The app should now be up and running! To deploy any further updates, simply repeat the build
 and deploy steps using the new commit hash you want to build from.
 
+### Running one-off commands
+
+If you need to run a command on a container, such as to create a user, or create an OAuth client,
+you may do so in the AWS console. Head over to the ECS dashboard and start a new task with the API
+task definition. You then want to specify the command override which is a JSON array:
+
+```json
+["php", "/var/www/html/artisan", "bat:create-user", "firstname", "lastname", "email", "phone"]
+```
+
+This will run the task on a new container and once completed, the container will be destroyed.
+
 ## Built with
 
 * [Laravel](https://laravel.com/docs/) - The Web Framework Used
