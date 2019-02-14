@@ -102,7 +102,9 @@ in other steps.
 #### AWS account
 
 If you do not already have an AWS account to use for the app, then you must 
-[create one](https://portal.aws.amazon.com/billing/signup).
+[create one](https://portal.aws.amazon.com/billing/signup). The CloudFormation
+template is designed to run in the `eu-west-1` (Ireland) region, so you must
+use this as your own region.
 
 We recommend using a separate AWS account for this app, rather than an existing one
 used for other purposes. This is to prevent conflicts and also for added security.
@@ -128,6 +130,27 @@ to use, then please open a feature request issue or a pull request.
 
 This is an optional integration and only used for the frontend app. If you do plan to use
 Google analytics, then be sure to create a property for the frontend domain.
+
+### Create AWS secrets (configuration files)
+
+Shared configuration files are centrally stored as secrets on 
+[AWS Secrets Manager](https://aws.amazon.com/secrets-manager). The following secrets are
+used per environment:
+
+| Secret name | Description |
+| --- | --- |
+| `.env` | Variables for the API. |
+| `oauth-private.key` | Private OAuth signing key for the API. |
+| `oauth-public.key` | Public OAuth signing key for the API. |
+| `.env.frontend` | Variables for the frontend. |
+| `.env.backend` | Variables for the backend. |
+
+Since secret names must be unique within the region, we recommend appending a suffix to each
+secret indicating the environment, for example:
+
+```
+.env -> .env-production
+```
 
 ### Generating the CloudFormation template
 
