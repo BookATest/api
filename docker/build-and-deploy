@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 # Requires the following environment variables:
+# $TRAVIS_BRANCH = The name of the git branch that the build is running on.
 # $CONFIG_SECRET_NAME = The name of the AWS secrets manager secret containing the config.
 
 # Bail out on first error.
