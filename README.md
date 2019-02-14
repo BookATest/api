@@ -109,6 +109,15 @@ use this as your own region.
 We recommend using a separate AWS account for this app, rather than an existing one
 used for other purposes. This is to prevent conflicts and also for added security.
 
+#### TLS/SSL certificates
+
+TLS/SSL certificates must be manually created in [Certificate Manager](https://aws.amazon.com/certificate-manager)
+within the specific regions listed below:
+
+* API -  `eu-west-1` (Ireland)
+* Admin - `us-east-1` (N. Virginia)
+* Frontend - `us-east-1` (N. Virginia)
+
 #### Mail service
 
 You are free to use any mail service which works out of the box with Laravel. We use 
@@ -193,14 +202,32 @@ this by running the following command from the project root:
 This will generate the template and output its contents to the terminal. It will also create 
 a file with the contents at `aws/cloudformation.json`.
 
-### TODO: Update/remove beneath
+### Launch a new CloudFormation stack
 
-When deploying on a live environment, ensure the following `.env` variables have been set:
+You must now launch a CloudFormation stack from the template generated earlier. **You must launch
+the stack in the `eu-west-1` (Ireland) region.**
 
-```dotenv
-APP_ENV=production
-APP_DEBUG=false
-```
+You are fre to configure the parameters of the stack as pleased, although the following parameters
+must be set to `0`:
+
+* `ApiTaskCount`
+* `QueueWorkerTaskCount`
+* `SchedulerTaskCount`
+
+If you plan to deploy more than one stack to your AWS account, then the following parameter values
+must have a suffix appended with the environment name, as they must be unique within the account:
+
+* `ApiLaunchTemplateName`
+* `ApiLogGroupName`
+* `ApiTaskDefinitionName`
+* `ApiUserName`
+* `CiUserName`
+* `DatabaseName`
+* `DockerRepositoryName`
+* `QueueWorkerLogGroupName`
+* `QueueWorkerTaskDefinitionName`
+* `SchedulerLogGroupName`
+* `SchedulerTaskDefinitionName`
 
 ## Built with
 
@@ -209,17 +236,20 @@ APP_DEBUG=false
 
 ## Contributing
 
-Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code of conduct, and the process for submitting pull requests to us.
+Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code of conduct, and the 
+process for submitting pull requests to us.
 
 ## Versioning
 
-We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/BookATest/api/tags). 
+We use [SemVer](http://semver.org/) for versioning. For the versions available, see the 
+[tags on this repository](https://github.com/BookATest/api/tags). 
 
 ## Authors
 
 * [Ayup Digital](https://ayup.agency/)
 
-See also the list of [contributors](https://github.com/BookATest/api/contributors) who participated in this project.
+See also the list of [contributors](https://github.com/BookATest/api/contributors) who 
+participated in this project.
 
 ## License
 
