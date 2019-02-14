@@ -10,7 +10,8 @@ deploy the project on a live system.
 
 ### Prerequisites
 
-* Docker
+* [Docker](https://www.docker.com)
+* [AWS CLI (for deploying)](https://aws.amazon.com/cli)
 
 ### Installing
 
@@ -207,12 +208,12 @@ a file with the contents at `aws/cloudformation.json`.
 You must now launch a CloudFormation stack from the template generated earlier. **You must launch
 the stack in the `eu-west-1` (Ireland) region.**
 
-You are fre to configure the parameters of the stack as pleased, although the following parameters
-must be set to `0`:
+You are free to configure the parameters of the stack as pleased, although the following parameters
+must be set:
 
-* `ApiTaskCount`
-* `QueueWorkerTaskCount`
-* `SchedulerTaskCount`
+* `ApiTaskCount: 0`
+* `QueueWorkerTaskCount: 0`
+* `SchedulerTaskCount: 0`
 
 If you plan to deploy more than one stack to your AWS account, then the following parameter values
 must have a suffix appended with the environment name, as they must be unique within the account:
@@ -228,6 +229,61 @@ must have a suffix appended with the environment name, as they must be unique wi
 * `QueueWorkerTaskDefinitionName`
 * `SchedulerLogGroupName`
 * `SchedulerTaskDefinitionName`
+
+Once launched, it may take some time to complete. So please wait for the stack to fully complete
+before moving on to subsequent steps.
+
+### Push your first Docker image
+
+Now that your stack is deployed, you must build and deploy your first Docker image. How you
+go about doing this is up to you, however assuming that you are manually doing this locally,
+these are the steps to follow:
+
+#### Build the image
+
+To build the image you must use the helper build script and pass in the variables needed:
+
+```bash
+AWS_ACCESS_KEY_ID="xxx" \ # CI user access key ID.
+    AWS_SECRET_ACCESS_KEY="xxx" \ # CI user access key secret.
+    AWS_DEFAULT_REGION="eu-west-1" \ # Default AWS region.
+    TRAVIS_BUILD_DIR="xxx" \ # Project root path.
+    TRAVIS_COMMIT="xxx" \ # Full hash of commit you want to build (most likely the latest commit on master).
+    REPO_URI="xxx" \ # The ECR repo URI you are going to push the image to.
+    ENV_SECRET_ID="xxx" \ # The name of the API .env secret.
+    PUBLIC_KEY_SECRET_ID="xxx" \ # The name of the public key secret.
+    PRIVATE_KEY_SECRET_ID="xxx" \ # The name of the private key secret.
+    ./docker/build
+```
+
+#### Push to ECR
+
+Once the image has built, you can now push it to the ECR repository using the helper deploy script.
+This script needs to be ran for each of the services listed below:
+
+* `api`
+* `queue-worker`
+* `scheduler`
+
+```bash
+AWS_ACCESS_KEY_ID="xxx" \ # CI user access key ID.
+    AWS_SECRET_ACCESS_KEY="xxx" \ # CI user access key secret.
+    AWS_DEFAULT_REGION="eu-west-1" \ # Default AWS region.
+    REPO_URI="xxx" \ # The ECR repo URI you are going to push the image to.
+    CLUSTER="xxx" \ # The name of the ECS cluster you are going to deploy to.
+    SERVICE="xxx" \ # The name of the ECS service you are going to deploy to (listed above).
+    ./docker/deploy
+```
+
+### Create the containers
+
+Once the three services listed above have been updated to use the pushed image, you can
+now update the services to start spinning up containers. This is done by updating the
+CloudFormation stack and setting the following parameters:
+
+* `ApiTaskCount: 2 (or more)`
+* `QueueWorkerTaskCount: 1 (or more)`
+* `SchedulerTaskCount: 1 (always)`
 
 ## Built with
 
