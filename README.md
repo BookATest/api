@@ -233,11 +233,17 @@ must have a suffix appended with the environment name, as they must be unique wi
 Once launched, it may take some time to complete. So please wait for the stack to fully complete
 before moving on to subsequent steps.
 
+### Setup the CI user
+
+Now that your stack is deployed, you must configure the CI user which will be used for the deployment
+process. You need to go into the AWS console and find their account in IAM. You then need to create
+an access key for the user and keep it safe. You'll use these credentials when deploying.
+
 ### Push your first Docker image
 
-Now that your stack is deployed, you must build and deploy your first Docker image. How you
-go about doing this is up to you, however assuming that you are manually doing this locally,
-these are the steps to follow:
+With the CI user configured, we can use their credentials to build and deploy your first Docker 
+image. How you go about doing this is up to you, however assuming that you are manually doing 
+this locally, these are the steps to follow:
 
 #### Build the image
 
@@ -256,7 +262,7 @@ AWS_ACCESS_KEY_ID="xxx" \ # CI user access key ID.
     ./docker/build
 ```
 
-#### Push to ECR
+#### Deploy to ECR
 
 Once the image has built, you can now push it to the ECR repository using the helper deploy script.
 This script needs to be ran for each of the services listed below:
@@ -284,6 +290,11 @@ CloudFormation stack and setting the following parameters:
 * `ApiTaskCount: 2 (or more)`
 * `QueueWorkerTaskCount: 1 (or more)`
 * `SchedulerTaskCount: 1 (always)`
+
+### Finished
+
+The app should now be up and running! To deploy any further updates, simply repeat the build
+and deploy steps using the new commit hash you want to build from.
 
 ## Built with
 
