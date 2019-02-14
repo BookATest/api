@@ -121,6 +121,18 @@ to use, then please open a feature request issue or a pull request.
 This is an optional integration and only used for the frontend app. If you do plan to use
 Google analytics, then be sure to create a property for the frontend domain.
 
+### Generating the CloudFormation template
+
+The first step is to generate the latest version of the CloudFormation template. You can do
+this by running the following command from the project root:
+
+```bash
+./develop cfn
+```
+
+This will generate the template and output its contents to the terminal. It will also create 
+a file with the contents at `aws/cloudformation.json`.
+
 ### TODO: Update/remove beneath
 
 When deploying on a live environment, ensure the following `.env` variables have been set:
