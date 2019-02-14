@@ -2,11 +2,11 @@
 
 A system for organisations to manage the online bookings of appointments to check for HIV.
 
-## Getting Started
+## Getting started
 
 These instructions will get you a copy of the project up and running on your local machine 
-for development and testing purposes. See deployment for notes on how to deploy the 
-project on a live system.
+for development and testing purposes. See [deployment](#deployment) for notes on how to 
+deploy the project on a live system.
 
 ### Prerequisites
 
@@ -75,6 +75,54 @@ To run the code style tests:
 
 ## Deployment
 
+This project is intended to be hosted on AWS infrastructure and includes a configurable 
+CloudFormation template to spin up an identical environment to the same one which we 
+have tried, tested, and use for managed deployments.
+
+### Prerequisites
+
+Before spinning up the CloudFormation stack, there are a few prerequisites which are
+listed below:
+
+#### URL structure
+
+You must first decide on a URL structure for the app. We have suggested one below, 
+however you are not required to use it, just be sure to update the domains referenced 
+in other steps.
+
+* Production
+  * API: `api.bookatest.yourwebsite.com`
+  * Admin: `admin.bookatest.yourwebsite.com`
+  * Frontend: `bookatest.yourwebsite.com`
+* Staging (optional)
+  * API: `api.staging.bookatest.yourwebsite.com`
+  * Admin: `admin.staging.bookatest.yourwebsite.com`
+  * Frontend: `staging.bookatest.yourwebsite.com`
+  
+#### Mail service
+
+You are free to use any mail service which works out of the box with Laravel. We use 
+[Mailgun](https://www.mailgun.com) for our managed deployments, but any is fine.
+
+#### SMS service
+
+Only [Twilio](https://www.twilio.com) is currently supported as an SMS service, however
+if you have another service you want to use, then please open a feature request issue
+or a pull request.
+
+#### Geocoding service
+
+Only [Google](https://developers.google.com/maps/documentation/geocoding/start) is 
+currently supported as a geocoding service, however if you have another service you want 
+to use, then please open a feature request issue or a pull request.
+
+#### Google analytics (optional)
+
+This is an optional integration and only used for the frontend app. If you do plan to use
+Google analytics, then be sure to create a property for the frontend domain.
+
+### TODO: Update/remove beneath
+
 When deploying on a live environment, ensure the following `.env` variables have been set:
 
 ```dotenv
@@ -82,7 +130,7 @@ APP_ENV=production
 APP_DEBUG=false
 ```
 
-## Built With
+## Built with
 
 * [Laravel](https://laravel.com/docs/) - The Web Framework Used
 * [Composer](https://getcomposer.org/doc/) - Dependency Management
