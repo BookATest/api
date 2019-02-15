@@ -2,6 +2,8 @@ version: "3"
 
 services:
   api:
+    environment:
+      - APP_ENV=local
     ports:
       - "${APP_PORT}:80"
 
@@ -20,7 +22,7 @@ services:
       - "${DB_PORT}:3306"
 
   troposphere:
-    image: BookATest.hiv/troposphere
+    image: bookatest/troposphere
     build:
       context: ./docker/troposphere
       dockerfile: Dockerfile

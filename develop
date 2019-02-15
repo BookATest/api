@@ -45,12 +45,6 @@ if [ $# -gt 0  ]; then
     # If "phpunit" is used, run unit tests.
     # Pass-through any arguments to PHPUnit.
     elif [ "$1" == "phpunit" ]; then
-        # First clear the cached config to prevent wiping the database.
-        ${COMPOSE} run --rm ${TTY} \
-            -w /var/www/html \
-            api \
-            php artisan config:clear
-
         shift 1
         ${COMPOSE} run --rm ${TTY} \
             -w /var/www/html \
