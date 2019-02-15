@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Notifications\Email\ServiceUser;
+namespace App\Notifications\Email\CommunityWorker;
 
 use App\Models\Notification;
 use App\Models\Report;
