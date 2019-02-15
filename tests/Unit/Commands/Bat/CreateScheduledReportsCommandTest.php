@@ -5,7 +5,7 @@ namespace Tests\Unit\Commands\Bat;
 use App\Console\Commands\Bat\CreateScheduledReportsCommand;
 use App\Models\Report;
 use App\Models\ReportSchedule;
-use App\Notifications\Email\ServiceUser\ReportGeneratedEmail;
+use App\Notifications\Email\CommunityWorker\ReportGeneratedEmail;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Queue;
 use Tests\TestCase;

@@ -4,7 +4,7 @@ namespace App\Console\Commands\Bat;
 
 use App\Models\Report;
 use App\Models\ReportSchedule;
-use App\Notifications\Email\ServiceUser\ReportGeneratedEmail;
+use App\Notifications\Email\CommunityWorker\ReportGeneratedEmail;
 use Illuminate\Console\Command;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Bus\DispatchesJobs;
