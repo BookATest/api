@@ -3,9 +3,11 @@
 # Run migrations.
 php /var/www/html/artisan migrate --force
 
-# Cache config and routes.
-php /var/www/html/artisan config:cache
-php /var/www/html/artisan route:cache
+# Cache config and routes, if not in dev environment.
+if [[ "${APP_ENV}" != "local" ]]; then
+    php /var/www/html/artisan config:cache
+    php /var/www/html/artisan route:cache
+fi
 
 # Start supervisor.
 /usr/bin/supervisord
