@@ -33,12 +33,12 @@ class ServiceUser extends Model
         Cache::put(
             $cacheKey,
             $this->id,
-            config('cache.lifetimes.service_user_access_code')
+            config('cache.lifetimes.service_user_access_code') * 60
         );
         Cache::put(
             $attemptsCacheKey,
             0,
-            config('cache.lifetimes.service_user_access_code')
+            config('cache.lifetimes.service_user_access_code') * 60
         );
 
         return $accessCode;
@@ -104,7 +104,7 @@ class ServiceUser extends Model
         Cache::put(
             sprintf(static::CACHE_KEY_FOR_TOKEN, $token),
             $this->id,
-            config('cache.lifetimes.service_user_token')
+            config('cache.lifetimes.service_user_token') * 60
         );
 
         return $token;
