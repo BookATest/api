@@ -23,7 +23,7 @@ abstract class TestCase extends BaseTestCase
      *
      * @return void
      */
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -52,7 +52,7 @@ abstract class TestCase extends BaseTestCase
      *
      * @return void
      */
-    protected function tearDown()
+    public function tearDown(): void
     {
         // Remove the files directory including any files uploaded during testing.
         Storage::cloud()->deleteDirectory('files');
