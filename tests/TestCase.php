@@ -2,6 +2,7 @@
 
 namespace Tests;
 
+use App\Console\Commands\Bat\Redis\ClearCommand;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -32,6 +33,12 @@ abstract class TestCase extends BaseTestCase
 
         // Set the log path.
         Config::set('logging.channels.single.path', storage_path('logs/testing.log'));
+
+        // Clear the cache.
+        $this->artisan(ClearCommand::class, [
+            '--host' => env('REDIS_HOST'),
+            '--port' => env('REDIS_PORT'),
+        ]);
 
         // Disable the API throttle middleware.
         $this->withoutMiddleware(ThrottleRequests::class);
