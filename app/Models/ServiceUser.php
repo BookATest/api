@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\Mutators\ServiceUserMutators;
 use App\Models\Relationships\ServiceUserRelationships;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Str;
 
 class ServiceUser extends Model
 {
@@ -99,7 +100,7 @@ class ServiceUser extends Model
      */
     public function generateToken(): string
     {
-        $token = str_random(10);
+        $token = Str::random(10);
 
         Cache::put(
             sprintf(static::CACHE_KEY_FOR_TOKEN, $token),

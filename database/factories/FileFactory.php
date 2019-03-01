@@ -1,10 +1,12 @@
 <?php
 
+use App\Models\File;
 use Faker\Generator as Faker;
+use Illuminate\Support\Str;
 
-$factory->define(App\Models\File::class, function (Faker $faker) {
+$factory->define(File::class, function (Faker $faker) {
     return [
-        'filename' => str_slug($faker->sentence(3), '_') . '.txt',
+        'filename' => Str::slug($faker->sentence(3), '_') . '.txt',
         'mime_type' => 'text/plain',
     ];
 });

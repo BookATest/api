@@ -15,6 +15,7 @@ use App\Notifications\Email\ServiceUser\BookingConfirmedEmail;
 use App\Notifications\Email\CommunityWorker\BookingConfirmedEmail as BookingConfirmedUserEmail;
 use App\Notifications\Sms\ServiceUser\BookingConfirmedSms;
 use Illuminate\Http\Response;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Queue;
 use Tests\TestCase;
@@ -682,7 +683,7 @@ class BookingsTest extends TestCase
         $response->assertJsonFragment(['id' => $clinic3->id]);
 
         $content = json_decode($response->getContent(), true);
-        $clinicIds = array_pluck($content['data'], 'id');
+        $clinicIds = Arr::pluck($content['data'], 'id');
         $this->assertEquals([$clinic1->id, $clinic2->id, $clinic3->id], $clinicIds);
     }
 
@@ -740,7 +741,7 @@ class BookingsTest extends TestCase
         $response->assertJsonFragment(['id' => $clinic3->id]);
 
         $content = json_decode($response->getContent(), true);
-        $clinicIds = array_pluck($content['data'], 'id');
+        $clinicIds = Arr::pluck($content['data'], 'id');
         $this->assertEquals([$clinic1->id, $clinic2->id, $clinic3->id], $clinicIds);
     }
 
