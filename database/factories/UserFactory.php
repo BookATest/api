@@ -2,6 +2,7 @@
 
 use App\Models\User;
 use Faker\Generator as Faker;
+use Illuminate\Support\Str;
 
 $factory->define(User::class, function (Faker $faker) {
     $faker->addProvider(new \App\Faker\BatProvider($faker));
@@ -18,6 +19,6 @@ $factory->define(User::class, function (Faker $faker) {
         'receive_cancellation_confirmations' => true,
         'include_calendar_attachment' => mt_rand(0, 1),
         'calendar_feed_token' => User::generateCalendarFeedToken(),
-        'remember_token' => str_random(10),
+        'remember_token' => Str::random(10),
     ];
 });
