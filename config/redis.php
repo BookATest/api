@@ -2,7 +2,7 @@
 
 $redis = [
 
-    'client' => 'predis',
+    'client' => env('REDIS_CLIENT', 'predis'),
     'cluster' => env('REDIS_CLUSTER', false),
 
     // For single node setup.
