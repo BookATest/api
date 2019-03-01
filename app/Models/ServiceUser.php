@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\Mutators\ServiceUserMutators;
 use App\Models\Relationships\ServiceUserRelationships;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Str;
 
 class ServiceUser extends Model
 {
@@ -33,12 +34,12 @@ class ServiceUser extends Model
         Cache::put(
             $cacheKey,
             $this->id,
-            config('cache.lifetimes.service_user_access_code')
+            config('cache.lifetimes.service_user_access_code') * 60
         );
         Cache::put(
             $attemptsCacheKey,
             0,
-            config('cache.lifetimes.service_user_access_code')
+            config('cache.lifetimes.service_user_access_code') * 60
         );
 
         return $accessCode;
@@ -99,12 +100,12 @@ class ServiceUser extends Model
      */
     public function generateToken(): string
     {
-        $token = str_random(10);
+        $token = Str::random(10);
 
         Cache::put(
             sprintf(static::CACHE_KEY_FOR_TOKEN, $token),
             $this->id,
-            config('cache.lifetimes.service_user_token')
+            config('cache.lifetimes.service_user_token') * 60
         );
 
         return $token;

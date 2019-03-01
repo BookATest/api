@@ -21,6 +21,15 @@ services:
     ports:
       - "${DB_PORT}:3306"
 
+  redis:
+    image: grokzen/redis-cluster:5.0.2
+    environment:
+      REDIS_CLUSTER_IP: 0.0.0.0
+    volumes:
+      - redis-data:/data
+    networks:
+      - app-net
+
   troposphere:
     image: bookatest/troposphere
     build:
@@ -32,4 +41,6 @@ services:
 
 volumes:
   mysql-data:
+    driver: local
+  redis-data:
     driver: local

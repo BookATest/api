@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Support\Coordinate;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Carbon;
 
 class DatabaseSeeder extends Seeder
@@ -195,7 +196,7 @@ class DatabaseSeeder extends Seeder
                             $eligibleAnswer = $clinic->eligibleAnswers()->create([
                                 'question_id' => $question->id,
                                 'answer' => EligibleAnswer::parseCheckboxAnswer(
-                                    array_random([true, false, null])
+                                    Arr::random([true, false, null])
                                 ),
                             ]);
                             break;

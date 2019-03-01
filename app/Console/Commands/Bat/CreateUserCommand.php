@@ -5,6 +5,7 @@ namespace App\Console\Commands\Bat;
 use App\Models\User;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class CreateUserCommand extends Command
 {
@@ -40,7 +41,7 @@ class CreateUserCommand extends Command
     {
         return DB::transaction(function () {
             // Cache the password to display.
-            $password = $this->option('password') ?? str_random();
+            $password = $this->option('password') ?? Str::random();
 
             // Create the user record.
             $user = $this->createUser($password);
@@ -72,7 +73,7 @@ class CreateUserCommand extends Command
             'display_email' => $this->option('display-email'),
             'display_phone' => $this->option('display-phone'),
             'include_calendar_attachment' => $this->option('include-calendar-attachment'),
-            'calendar_feed_token' => str_random(10),
+            'calendar_feed_token' => Str::random(10),
         ]);
     }
 }

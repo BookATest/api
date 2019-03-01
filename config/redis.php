@@ -2,8 +2,7 @@
 
 $redis = [
 
-    'client' => 'predis',
-    'cluster' => env('REDIS_CLUSTER', false),
+    'client' => env('REDIS_CLIENT', 'predis'),
 
     // For single node setup.
     'default' => [
@@ -25,13 +24,11 @@ $redis = [
                 'database' => env('REDIS_DB', 0),
             ]
         ],
-
-        'options' => [
-            'cluster' => 'redis',
-        ],
     ],
 
     'options' => [
+        'cluster' => env('REDIS_CLUSTER', false),
+
         'parameters' => [
             'scheme' => env('REDIS_SCHEME', 'tcp'),
             'password' => env('REDIS_PASSWORD', null),

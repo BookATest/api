@@ -7,8 +7,7 @@
          convertNoticesToExceptions="true"
          convertWarningsToExceptions="true"
          processIsolation="false"
-         stopOnFailure="false"
-         printerClass="Codedungeon\PHPUnitPrettyResultPrinter\Printer">
+         stopOnFailure="false">
     <testsuites>
         <testsuite name="Feature">
             <directory suffix="Test.php">./tests/Feature</directory>
@@ -24,13 +23,11 @@
         </whitelist>
     </filter>
     <php>
-        <env name="APP_ENV" value="testing"/>
-        <env name="BCRYPT_ROUNDS" value="4"/>
-        <env name="CACHE_DRIVER" value="redis"/>
-        <env name="DB_HOST" value="mysql-testing"/>
-        <env name="QUEUE_DRIVER" value="sync"/>
-        <env name="FILESYSTEM_CLOUD" value="testing_cloud"/>
-        <env name="MAIL_DRIVER" value="array"/>
-        <env name="SMS_DRIVER" value="log"/>
+        <server name="APP_ENV" value="testing"/>
+        <server name="BCRYPT_ROUNDS" value="4"/>
+        <server name="QUEUE_DRIVER" value="sync"/>
+        <server name="FILESYSTEM_CLOUD" value="testing_cloud"/>
+        <server name="MAIL_DRIVER" value="log"/>
+        <server name="SMS_DRIVER" value="log"/>
     </php>
 </phpunit>
