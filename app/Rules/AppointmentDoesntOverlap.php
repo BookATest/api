@@ -51,12 +51,12 @@ class AppointmentDoesntOverlap implements Rule
         }
 
         try {
+            /** @var \Illuminate\Support\Carbon $startAt */
             $startAt = Carbon::createFromFormat(Carbon::ATOM, $startAt);
+            $startAt = $startAt->second(0);
         } catch (InvalidArgumentException $exception) {
             return false;
         }
-
-        $startAt = $startAt->second(0);
 
         // TODO: Use appointment durations to ensure no overlap.
         return Appointment::query()
