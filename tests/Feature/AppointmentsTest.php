@@ -436,12 +436,34 @@ class AppointmentsTest extends TestCase
 
     public function test_cannot_create_one_during_skipped_hour_of_bst_start()
     {
-        $this->markTestIncomplete();
+        $clinic = factory(Clinic::class)->create();
+        $user = factory(User::class)->create()->makeCommunityWorker($clinic);
+
+        Passport::actingAs($user);
+
+        $response = $this->json('POST', '/v1/appointments', [
+            'clinic_id' => $clinic->id,
+            'start_at' => "2019-03-31T01:30:00+01:00",
+            'is_repeating' => false,
+        ]);
+
+        $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
     }
 
     public function test_cannot_create_one_during_first_hour_of_bst_end()
     {
-        $this->markTestIncomplete();
+        $clinic = factory(Clinic::class)->create();
+        $user = factory(User::class)->create()->makeCommunityWorker($clinic);
+
+        Passport::actingAs($user);
+
+        $response = $this->json('POST', '/v1/appointments', [
+            'clinic_id' => $clinic->id,
+            'start_at' => "2019-10-27T01:30:00+01:00",
+            'is_repeating' => false,
+        ]);
+
+        $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
     }
 
     /*
