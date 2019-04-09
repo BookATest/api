@@ -15,10 +15,6 @@ ENV LANG en_GB.UTF-8
 ENV LANGUAGE en_GB:en
 ENV LC_ALL en_GB.UTF-8
 
-# Set system timezone to Europe/London.
-RUN unlink /etc/localtime \
-    && ln -s /usr/share/zoneinfo/Europe/London /etc/localtime
-
 # Install PHP.
 RUN apt-add-repository -y ppa:ondrej/php \
     && apt-get update \
@@ -30,6 +26,10 @@ RUN apt-add-repository -y ppa:ondrej/php \
     && apt-get -y autoremove \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+# Set system timezone to Europe/London.
+RUN unlink /etc/localtime \
+    && ln -s /usr/share/zoneinfo/Europe/London /etc/localtime
 
 # Redirect NGINX output to stdout and stderr.
 RUN ln -sf /dev/stdout /var/log/nginx/access.log \
