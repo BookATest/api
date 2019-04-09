@@ -119,7 +119,7 @@ class CreateRepeatingAppointmentsCommandTest extends TestCase
 
     public function test_appointment_time_remains_the_same_during_bst()
     {
-        // 2019-03-31 is Sunday when DST begins.
+        // 2019-03-31 is Sunday when British Summer Time begins.
         Carbon::setTestNow(
             Carbon::create(2019, 3, 24)
         );
@@ -135,7 +135,7 @@ class CreateRepeatingAppointmentsCommandTest extends TestCase
             'weekly_at' => '01:30:00',
         ]);
 
-        $appointmentSchedule->createAppointments(0, 7);
+        $appointmentSchedule->createAppointments(0, 14);
         $appointments = $appointmentSchedule->appointments()->orderBy('start_at')->get();
 
         $this->assertEquals(
@@ -146,13 +146,17 @@ class CreateRepeatingAppointmentsCommandTest extends TestCase
             "2019-03-31T02:30:00+01:00",
             $appointments[1]->start_at->toIso8601String()
         );
+        $this->assertEquals(
+            "2019-04-07T01:30:00+01:00",
+            $appointments[2]->start_at->toIso8601String()
+        );
     }
 
     public function test_appointment_time_remains_the_same_after_bst()
     {
-        // 2019-10-27 is Sunday when DST ends.
+        // 2019-10-27 is Sunday when British Summer Time ends.
         Carbon::setTestNow(
-            Carbon::create(2019, 10, 27)
+            Carbon::create(2019, 10, 20)
         );
 
         $clinic = factory(Clinic::class)->create();
@@ -163,19 +167,23 @@ class CreateRepeatingAppointmentsCommandTest extends TestCase
             'user_id' => $user->id,
             'clinic_id' => $clinic->id,
             'weekly_on' => 7,
-            'weekly_at' => '00:00:00',
+            'weekly_at' => '01:30:00',
         ]);
 
-        $appointmentSchedule->createAppointments(0, 7);
+        $appointmentSchedule->createAppointments(0, 14);
         $appointments = $appointmentSchedule->appointments()->orderBy('start_at')->get();
 
         $this->assertEquals(
-            "2019-10-27T00:00:00+01:00",
+            "2019-10-20T01:30:00+01:00",
             $appointments[0]->start_at->toIso8601String()
         );
         $this->assertEquals(
-            "2019-11-03T00:00:00+00:00",
+            "2019-10-27T01:30:00+00:00",
             $appointments[1]->start_at->toIso8601String()
+        );
+        $this->assertEquals(
+            "2019-11-03T01:30:00+00:00",
+            $appointments[2]->start_at->toIso8601String()
         );
     }
 }
