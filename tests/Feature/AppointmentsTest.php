@@ -1082,7 +1082,7 @@ class AppointmentsTest extends TestCase
         $appointmentSchedule = AppointmentSchedule::create([
             'user_id' => $user->id,
             'clinic_id' => $clinic->id,
-            'weekly_on' => today()->dayOfWeek,
+            'weekly_on' => today()->dayOfWeekIso,
             'weekly_at' => today()->toTimeString(),
         ]);
 
@@ -1104,7 +1104,7 @@ class AppointmentsTest extends TestCase
         $appointmentSchedule = AppointmentSchedule::create([
             'user_id' => $user->id,
             'clinic_id' => factory(Clinic::class)->create()->id,
-            'weekly_on' => today()->dayOfWeek,
+            'weekly_on' => today()->dayOfWeekIso,
             'weekly_at' => today()->toTimeString(),
         ]);
 
@@ -1127,7 +1127,7 @@ class AppointmentsTest extends TestCase
         $appointmentSchedule = AppointmentSchedule::create([
             'user_id' => $user->id,
             'clinic_id' => $clinic->id,
-            'weekly_on' => today()->dayOfWeek,
+            'weekly_on' => today()->dayOfWeekIso,
             'weekly_at' => today()->toTimeString(),
         ]);
 
@@ -1155,7 +1155,7 @@ class AppointmentsTest extends TestCase
         $appointmentSchedule = AppointmentSchedule::create([
             'user_id' => $user->id,
             'clinic_id' => $clinic->id,
-            'weekly_on' => today()->dayOfWeek,
+            'weekly_on' => today()->dayOfWeekIso,
             'weekly_at' => today()->toTimeString(),
         ]);
 
@@ -1195,7 +1195,7 @@ class AppointmentsTest extends TestCase
         $appointmentSchedule = AppointmentSchedule::create([
             'user_id' => $user->id,
             'clinic_id' => $clinic->id,
-            'weekly_on' => today()->dayOfWeek,
+            'weekly_on' => today()->dayOfWeekIso,
             'weekly_at' => today()->toTimeString(),
         ]);
 

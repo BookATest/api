@@ -115,7 +115,7 @@ class AppointmentController extends Controller
                 $appointmentSchedule = AppointmentSchedule::create([
                     'user_id' => $request->user('api')->id,
                     'clinic_id' => $request->clinic_id,
-                    'weekly_on' => $startAt->dayOfWeek,
+                    'weekly_on' => $startAt->dayOfWeekIso,
                     'weekly_at' => $startAt->toTimeString(),
                 ]);
 

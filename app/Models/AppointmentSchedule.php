@@ -51,7 +51,7 @@ class AppointmentSchedule extends Model
                 ->setTime($weeklyAt->hour, $weeklyAt->minute);
 
             // Skip the day if it does not fall on the repeat day of week.
-            if ($dateTime->dayOfWeek !== $this->weekly_on) {
+            if ($startAt->dayOfWeekIso !== $this->weekly_on) {
                 continue;
             }
 
