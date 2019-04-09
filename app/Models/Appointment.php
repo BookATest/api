@@ -24,7 +24,6 @@ class Appointment extends Model
      */
     protected $casts = [
         'did_not_attend' => 'boolean',
-        'start_at' => 'datetime',
         'booked_at' => 'datetime',
         'consented_at' => 'datetime',
         'created_at' => 'datetime',
