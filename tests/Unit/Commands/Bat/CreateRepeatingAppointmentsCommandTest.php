@@ -116,4 +116,66 @@ class CreateRepeatingAppointmentsCommandTest extends TestCase
                 ->count()
         );
     }
+
+    public function test_appointment_time_remains_the_same_during_bst()
+    {
+        // 2019-03-31 is Sunday when DST begins.
+        Carbon::setTestNow(
+            Carbon::create(2019, 3, 24)
+        );
+
+        $clinic = factory(Clinic::class)->create();
+        $user = factory(User::class)->create()->makeOrganisationAdmin();
+
+        /** @var \App\Models\AppointmentSchedule $appointmentSchedule */
+        $appointmentSchedule = AppointmentSchedule::create([
+            'user_id' => $user->id,
+            'clinic_id' => $clinic->id,
+            'weekly_on' => 7,
+            'weekly_at' => '01:30:00',
+        ]);
+
+        $appointmentSchedule->createAppointments(0, 7);
+        $appointments = $appointmentSchedule->appointments()->orderBy('start_at')->get();
+
+        $this->assertEquals(
+            "2019-03-24T01:30:00+00:00",
+            $appointments[0]->start_at->toIso8601String()
+        );
+        $this->assertEquals(
+            "2019-03-31T02:30:00+01:00",
+            $appointments[1]->start_at->toIso8601String()
+        );
+    }
+
+    public function test_appointment_time_remains_the_same_after_bst()
+    {
+        // 2019-10-27 is Sunday when DST ends.
+        Carbon::setTestNow(
+            Carbon::create(2019, 10, 27)
+        );
+
+        $clinic = factory(Clinic::class)->create();
+        $user = factory(User::class)->create()->makeOrganisationAdmin();
+
+        /** @var \App\Models\AppointmentSchedule $appointmentSchedule */
+        $appointmentSchedule = AppointmentSchedule::create([
+            'user_id' => $user->id,
+            'clinic_id' => $clinic->id,
+            'weekly_on' => 7,
+            'weekly_at' => '00:00:00',
+        ]);
+
+        $appointmentSchedule->createAppointments(0, 7);
+        $appointments = $appointmentSchedule->appointments()->orderBy('start_at')->get();
+
+        $this->assertEquals(
+            "2019-10-27T00:00:00+01:00",
+            $appointments[0]->start_at->toIso8601String()
+        );
+        $this->assertEquals(
+            "2019-11-03T00:00:00+00:00",
+            $appointments[1]->start_at->toIso8601String()
+        );
+    }
 }

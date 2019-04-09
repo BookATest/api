@@ -45,10 +45,9 @@ class AppointmentSchedule extends Model
         // Loop through the date range.
         foreach (range($daysToSkip, $daysUpTo) as $day) {
             // Get the date of the looped day in the future.
-            $weeklyAt = Carbon::createFromFormat('H:i:s', $this->weekly_at);
-            $dateTime = today()
+            $startAt = today()
                 ->addDays($day)
-                ->setTime($weeklyAt->hour, $weeklyAt->minute);
+                ->setTimeFromTimeString($this->weekly_at);
 
             // Skip the day if it does not fall on the repeat day of week.
             if ($startAt->dayOfWeekIso !== $this->weekly_on) {
@@ -58,7 +57,7 @@ class AppointmentSchedule extends Model
             $appointmentExists = Appointment::query()
                 ->where('user_id', $this->user_id)
                 ->where('clinic_id', $this->clinic_id)
-                ->where('start_at', $dateTime)
+                ->where('start_at', $startAt)
                 ->exists();
 
             // Don't create an appointment if one already exists.
@@ -71,7 +70,7 @@ class AppointmentSchedule extends Model
                 'user_id' => $this->user_id,
                 'clinic_id' => $this->clinic_id,
                 'appointment_schedule_id' => $this->id,
-                'start_at' => $dateTime,
+                'start_at' => $startAt,
             ]));
         }
 
