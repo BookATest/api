@@ -138,17 +138,20 @@ class CreateRepeatingAppointmentsCommandTest extends TestCase
         $appointmentSchedule->createAppointments(0, 14);
         $appointments = $appointmentSchedule->appointments()->orderBy('start_at')->get();
 
+        $this->assertCount(2, $appointments);
         $this->assertEquals(
             "2019-03-24T01:30:00+00:00",
             $appointments[0]->start_at->toIso8601String()
         );
-        $this->assertEquals(
-            "2019-03-31T02:30:00+01:00",
-            $appointments[1]->start_at->toIso8601String()
-        );
+        /*
+         * Since the appointment on 2019-03-31 falls within a non-existant time,
+         * neither "2019-03-31T02:30:00+01:00" nor "2019-03-31T01:30:00+00:00"
+         * should be created, and instead the appointment creation should be
+         * skipped.
+         */
         $this->assertEquals(
             "2019-04-07T01:30:00+01:00",
-            $appointments[2]->start_at->toIso8601String()
+            $appointments[1]->start_at->toIso8601String()
         );
     }
 
@@ -173,6 +176,7 @@ class CreateRepeatingAppointmentsCommandTest extends TestCase
         $appointmentSchedule->createAppointments(0, 14);
         $appointments = $appointmentSchedule->appointments()->orderBy('start_at')->get();
 
+        $this->assertCount(3, $appointments);
         $this->assertEquals(
             "2019-10-20T01:30:00+01:00",
             $appointments[0]->start_at->toIso8601String()

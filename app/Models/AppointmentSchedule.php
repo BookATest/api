@@ -49,6 +49,15 @@ class AppointmentSchedule extends Model
                 ->addDays($day)
                 ->setTimeFromTimeString($this->weekly_at);
 
+            /*
+             * If the time is not the same, this indicates the BST has taken effect and PHP
+             * has added an hour to compensate for the hour gap. Therefore this appointment
+             * should be skipped.
+             */
+            if ($startAt->toTimeString() !== $this->weekly_at) {
+                continue;
+            }
+
             // Skip the day if it does not fall on the repeat day of week.
             if ($startAt->dayOfWeekIso !== $this->weekly_on) {
                 continue;
