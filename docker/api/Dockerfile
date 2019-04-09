@@ -11,6 +11,9 @@ ENV LANG en_GB.UTF-8
 ENV LANGUAGE en_GB:en
 ENV LC_ALL en_GB.UTF-8
 
+RUN unlink /etc/localtime \
+    && ln -s /usr/share/zoneinfo/Europe/London /etc/localtime
+
 RUN apt-add-repository -y ppa:ondrej/php \
     && apt-get update \
     && apt-get install -y php7.2-fpm php7.2-cli php7.2-gd php7.2-mysql php7.2-redis \
