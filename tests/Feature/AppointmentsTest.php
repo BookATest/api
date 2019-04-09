@@ -434,6 +434,16 @@ class AppointmentsTest extends TestCase
         });
     }
 
+    public function test_cannot_create_one_during_skipped_hour_of_bst_start()
+    {
+        $this->markTestIncomplete();
+    }
+
+    public function test_cannot_create_one_during_first_hour_of_bst_end()
+    {
+        $this->markTestIncomplete();
+    }
+
     /*
      * Read one.
      */

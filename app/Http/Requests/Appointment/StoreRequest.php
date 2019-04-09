@@ -33,7 +33,7 @@ class StoreRequest extends FormRequest
     public function rules()
     {
         $user = $this->user('api');
-        $clinic = $this->clinic_id ? Clinic::find($this->clinic_id) : null;
+        $clinic = Clinic::find($this->clinic_id);
 
         return [
             'clinic_id' => [
