@@ -50,7 +50,7 @@ class ICalAppointmentsResponse implements Responsable
                 $event = (new Event($appointment->id))
                     ->setUniqueId($appointment->id)
                     ->setDtStart($appointment->start_at)
-                    ->setDtEnd($appointment->start_at->addMinutes($appointment->clinic->appointment_duration))
+                    ->setDtEnd($appointment->start_at->copy()->addMinutes($appointment->clinic->appointment_duration))
                     ->setSummary("Appointment at {$appointment->clinic->name}")
                     ->setOrganizer(new Organizer("MAILTO:{$appointment->user->email}", [
                         'CN' => $appointment->user->full_name,
