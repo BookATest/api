@@ -41,7 +41,7 @@ class SendAppointmentRemindersCommand extends Command
 
         Appointment::query()
             ->with('serviceUser')
-            ->where('start_at', '=', $startAt)
+            ->where('start_at', '=', $startAt->timezone('UTC'))
             ->booked()
             ->chunk(200, function (Collection $appointments) {
                 $appointments->each(function (Appointment $appointment) {

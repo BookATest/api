@@ -434,6 +434,38 @@ class AppointmentsTest extends TestCase
         });
     }
 
+    public function test_cannot_create_one_during_skipped_hour_of_bst_start()
+    {
+        $clinic = factory(Clinic::class)->create();
+        $user = factory(User::class)->create()->makeCommunityWorker($clinic);
+
+        Passport::actingAs($user);
+
+        $response = $this->json('POST', '/v1/appointments', [
+            'clinic_id' => $clinic->id,
+            'start_at' => "2019-03-31T01:30:00+01:00",
+            'is_repeating' => false,
+        ]);
+
+        $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
+    }
+
+    public function test_cannot_create_one_during_first_hour_of_bst_end()
+    {
+        $clinic = factory(Clinic::class)->create();
+        $user = factory(User::class)->create()->makeCommunityWorker($clinic);
+
+        Passport::actingAs($user);
+
+        $response = $this->json('POST', '/v1/appointments', [
+            'clinic_id' => $clinic->id,
+            'start_at' => "2019-10-27T01:30:00+01:00",
+            'is_repeating' => false,
+        ]);
+
+        $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
+    }
+
     /*
      * Read one.
      */
@@ -1082,7 +1114,7 @@ class AppointmentsTest extends TestCase
         $appointmentSchedule = AppointmentSchedule::create([
             'user_id' => $user->id,
             'clinic_id' => $clinic->id,
-            'weekly_on' => today()->dayOfWeek,
+            'weekly_on' => today()->dayOfWeekIso,
             'weekly_at' => today()->toTimeString(),
         ]);
 
@@ -1104,7 +1136,7 @@ class AppointmentsTest extends TestCase
         $appointmentSchedule = AppointmentSchedule::create([
             'user_id' => $user->id,
             'clinic_id' => factory(Clinic::class)->create()->id,
-            'weekly_on' => today()->dayOfWeek,
+            'weekly_on' => today()->dayOfWeekIso,
             'weekly_at' => today()->toTimeString(),
         ]);
 
@@ -1127,7 +1159,7 @@ class AppointmentsTest extends TestCase
         $appointmentSchedule = AppointmentSchedule::create([
             'user_id' => $user->id,
             'clinic_id' => $clinic->id,
-            'weekly_on' => today()->dayOfWeek,
+            'weekly_on' => today()->dayOfWeekIso,
             'weekly_at' => today()->toTimeString(),
         ]);
 
@@ -1155,7 +1187,7 @@ class AppointmentsTest extends TestCase
         $appointmentSchedule = AppointmentSchedule::create([
             'user_id' => $user->id,
             'clinic_id' => $clinic->id,
-            'weekly_on' => today()->dayOfWeek,
+            'weekly_on' => today()->dayOfWeekIso,
             'weekly_at' => today()->toTimeString(),
         ]);
 
@@ -1195,7 +1227,7 @@ class AppointmentsTest extends TestCase
         $appointmentSchedule = AppointmentSchedule::create([
             'user_id' => $user->id,
             'clinic_id' => $clinic->id,
-            'weekly_on' => today()->dayOfWeek,
+            'weekly_on' => today()->dayOfWeekIso,
             'weekly_at' => today()->toTimeString(),
         ]);
 

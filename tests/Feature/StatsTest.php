@@ -6,8 +6,8 @@ use App\Models\Appointment;
 use App\Models\Clinic;
 use App\Models\ServiceUser;
 use App\Models\User;
+use Carbon\CarbonImmutable;
 use Illuminate\Http\Response;
-use Illuminate\Support\Carbon;
 use Laravel\Passport\Passport;
 use Tests\TestCase;
 
@@ -48,7 +48,7 @@ class StatsTest extends TestCase
 
     public function test_global_stats_are_correct()
     {
-        Carbon::setTestNow(now()->startOfWeek());
+        CarbonImmutable::setTestNow(now()->startOfWeek());
 
         $clinic = factory(Clinic::class)->create(['appointment_duration' => 60]);
         $user = factory(User::class)->create()->makeCommunityWorker($clinic);
@@ -121,7 +121,7 @@ class StatsTest extends TestCase
 
     public function test_clinic_stats_are_correct()
     {
-        Carbon::setTestNow(now()->startOfWeek());
+        CarbonImmutable::setTestNow(now()->startOfWeek());
 
         $clinic = factory(Clinic::class)->create(['appointment_duration' => 60]);
         $user = factory(User::class)->create()->makeCommunityWorker($clinic);

@@ -2,8 +2,8 @@
 
 namespace App\Models\Scopes;
 
+use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 
 trait AppointmentScopes
@@ -38,7 +38,7 @@ trait AppointmentScopes
      */
     public function scopeFuture(Builder $query): Builder
     {
-        return $query->where('appointments.start_at', '>', now());
+        return $query->where('appointments.start_at', '>', now()->timezone('UTC'));
     }
 
     /**
@@ -48,8 +48,8 @@ trait AppointmentScopes
     public function scopeThisWeek(Builder $query): Builder
     {
         return $query->whereBetween('appointments.start_at', [
-            today()->startOfWeek(),
-            today()->endOfWeek(),
+            today()->startOfWeek()->timezone('UTC'),
+            today()->endOfWeek()->timezone('UTC'),
         ]);
     }
 
@@ -60,11 +60,11 @@ trait AppointmentScopes
      */
     public function scopeStartsAfter(Builder $query, $dateTime)
     {
-        $dateTime = $dateTime instanceof Carbon
+        $dateTime = $dateTime instanceof CarbonImmutable
             ? $dateTime
-            : Carbon::createFromFormat(Carbon::ATOM, $dateTime);
+            : CarbonImmutable::createFromFormat(CarbonImmutable::ATOM, $dateTime);
 
-        return $query->where('appointments.start_at', '>=', $dateTime);
+        return $query->where('appointments.start_at', '>=', $dateTime->timezone('UTC'));
     }
 
     /**
@@ -74,11 +74,11 @@ trait AppointmentScopes
      */
     public function scopeStartsBefore(Builder $query, $dateTime)
     {
-        $dateTime = $dateTime instanceof Carbon
+        $dateTime = $dateTime instanceof CarbonImmutable
             ? $dateTime
-            : Carbon::createFromFormat(Carbon::ATOM, $dateTime);
+            : CarbonImmutable::createFromFormat(CarbonImmutable::ATOM, $dateTime);
 
-        return $query->where('appointments.start_at', '<=', $dateTime);
+        return $query->where('appointments.start_at', '<=', $dateTime->timezone('UTC'));
     }
 
     /**
@@ -102,7 +102,7 @@ DATE_ADD(
 )
 EOT;
 
-        return $query->where(DB::raw($sql), '=', now()->second(0));
+        return $query->where(DB::raw($sql), '=', now()->second(0)->timezone('UTC'));
     }
 
     /**

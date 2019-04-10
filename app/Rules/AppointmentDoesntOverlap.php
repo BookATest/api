@@ -5,8 +5,8 @@ namespace App\Rules;
 use App\Models\Appointment;
 use App\Models\Clinic;
 use App\Models\User;
+use Carbon\CarbonImmutable;
 use Illuminate\Contracts\Validation\Rule;
-use Illuminate\Support\Carbon;
 use InvalidArgumentException;
 
 class AppointmentDoesntOverlap implements Rule
@@ -51,18 +51,18 @@ class AppointmentDoesntOverlap implements Rule
         }
 
         try {
-            $startAt = Carbon::createFromFormat(Carbon::ATOM, $startAt);
+            /** @var \Carbon\CarbonImmutable $startAt */
+            $startAt = CarbonImmutable::createFromFormat(CarbonImmutable::ATOM, $startAt);
+            $startAt = $startAt->second(0);
         } catch (InvalidArgumentException $exception) {
             return false;
         }
-
-        $startAt = $startAt->second(0);
 
         // TODO: Use appointment durations to ensure no overlap.
         return Appointment::query()
             ->where('user_id', $this->user->id)
             ->where('clinic_id', $this->clinic->id)
-            ->where('start_at', $startAt)
+            ->where('start_at', $startAt->timezone('UTC'))
             ->doesntExist();
     }
 

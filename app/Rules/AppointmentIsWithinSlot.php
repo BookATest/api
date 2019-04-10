@@ -4,8 +4,8 @@ namespace App\Rules;
 
 use App\Models\Clinic;
 use App\Models\User;
+use Carbon\CarbonImmutable;
 use Illuminate\Contracts\Validation\Rule;
-use Illuminate\Support\Carbon;
 use InvalidArgumentException;
 
 class AppointmentIsWithinSlot implements Rule
@@ -50,13 +50,13 @@ class AppointmentIsWithinSlot implements Rule
         }
 
         try {
-            $startAt = Carbon::createFromFormat(Carbon::ATOM, $startAt);
+            $startAt = CarbonImmutable::createFromFormat(CarbonImmutable::ATOM, $startAt);
         } catch (InvalidArgumentException $exception) {
             return false;
         }
 
         $startAt = $startAt->second(0);
-        $totalMinutes = $startAt->copy()->startOfDay()->diffInMinutes($startAt);
+        $totalMinutes = $startAt->startOfDay()->diffInMinutes($startAt);
         $isInSlot = ($totalMinutes % $this->clinic->appointment_duration) === 0;
 
         return $isInSlot;

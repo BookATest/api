@@ -29,5 +29,6 @@
         <server name="FILESYSTEM_CLOUD" value="testing_cloud"/>
         <server name="MAIL_DRIVER" value="log"/>
         <server name="SMS_DRIVER" value="log"/>
+        <server name="GEOCODE_DRIVER" value="mock"/>
     </php>
 </phpunit>

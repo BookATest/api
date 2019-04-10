@@ -4,9 +4,9 @@ namespace App\Models;
 
 use App\Models\Mutators\AppointmentScheduleMutators;
 use App\Models\Relationships\AppointmentScheduleRelationships;
+use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Support\Carbon;
 
 class AppointmentSchedule extends Model
 {
@@ -45,20 +45,28 @@ class AppointmentSchedule extends Model
         // Loop through the date range.
         foreach (range($daysToSkip, $daysUpTo) as $day) {
             // Get the date of the looped day in the future.
-            $weeklyAt = Carbon::createFromFormat('H:i:s', $this->weekly_at);
-            $dateTime = today()
+            $startAt = today()
                 ->addDays($day)
-                ->setTime($weeklyAt->hour, $weeklyAt->minute);
+                ->setTimeFromTimeString($this->weekly_at);
+
+            /*
+             * If the time is not the same, this indicates the BST has taken effect and PHP
+             * has added an hour to compensate for the hour gap. Therefore this appointment
+             * should be skipped.
+             */
+            if ($startAt->toTimeString() !== $this->weekly_at) {
+                continue;
+            }
 
             // Skip the day if it does not fall on the repeat day of week.
-            if ($dateTime->dayOfWeek !== $this->weekly_on) {
+            if ($startAt->dayOfWeekIso !== $this->weekly_on) {
                 continue;
             }
 
             $appointmentExists = Appointment::query()
                 ->where('user_id', $this->user_id)
                 ->where('clinic_id', $this->clinic_id)
-                ->where('start_at', $dateTime)
+                ->where('start_at', $startAt->timezone('UTC'))
                 ->exists();
 
             // Don't create an appointment if one already exists.
@@ -71,7 +79,7 @@ class AppointmentSchedule extends Model
                 'user_id' => $this->user_id,
                 'clinic_id' => $this->clinic_id,
                 'appointment_schedule_id' => $this->id,
-                'start_at' => $dateTime,
+                'start_at' => $startAt,
             ]));
         }
 
@@ -79,13 +87,14 @@ class AppointmentSchedule extends Model
     }
 
     /**
-     * @param \Illuminate\Support\Carbon $date
+     * @param \Carbon\CarbonImmutable $date
+     * @throws \Exception
      */
-    public function deleteFrom(Carbon $date)
+    public function deleteFrom(CarbonImmutable $date)
     {
         $this->appointments()
             ->available()
-            ->where('appointments.start_at', '>=', $date)
+            ->where('appointments.start_at', '>=', $date->timezone('UTC'))
             ->get()
             ->each
             ->delete();

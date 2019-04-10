@@ -5,6 +5,7 @@ namespace App\Http\Requests\Appointment;
 use App\Models\Clinic;
 use App\Rules\AppointmentDoesntOverlap;
 use App\Rules\AppointmentIsWithinSlot;
+use App\Rules\AppointmentOutsideDstTransition;
 use App\Rules\DateFormat;
 use App\Rules\IsCommunityWorkerForClinic;
 use Illuminate\Foundation\Http\FormRequest;
@@ -33,7 +34,7 @@ class StoreRequest extends FormRequest
     public function rules()
     {
         $user = $this->user('api');
-        $clinic = $this->clinic_id ? Clinic::find($this->clinic_id) : null;
+        $clinic = Clinic::find($this->clinic_id);
 
         return [
             'clinic_id' => [
@@ -44,6 +45,7 @@ class StoreRequest extends FormRequest
             'start_at' => [
                 'required',
                 DateFormat::iso8601(),
+                new AppointmentOutsideDstTransition(),
                 new AppointmentDoesntOverlap($user, $clinic),
                 new AppointmentIsWithinSlot($user, $clinic),
             ],

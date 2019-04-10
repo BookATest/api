@@ -2,32 +2,46 @@
 
 namespace App\Rules;
 
-use Illuminate\Support\Carbon;
+use Carbon\CarbonImmutable;
 
 class DateFormat
 {
     /**
+     * @var string
+     */
+    protected $format;
+
+    /**
+     * DateFormat constructor.
+     *
      * @param string $format
-     * @return string
      */
-    public static function format(string $format): string
+    public function __construct(string $format)
     {
-        return 'date_format:' . $format;
+        $this->format = $format;
+    }
+
+    /**
+     * @return \App\Rules\DateFormat
+     */
+    public static function iso8601(): self
+    {
+        return new static(CarbonImmutable::ATOM);
+    }
+
+    /**
+     * @return \App\Rules\DateFormat
+     */
+    public static function date(): self
+    {
+        return new static('Y-m-d');
     }
 
     /**
      * @return string
      */
-    public static function iso8601(): string
+    public function __toString(): string
     {
-        return static::format(Carbon::ATOM);
-    }
-
-    /**
-     * @return string
-     */
-    public static function date(): string
-    {
-        return static::format('Y-m-d');
+        return "date_format:{$this->format}";
     }
 }

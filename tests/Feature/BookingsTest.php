@@ -14,9 +14,9 @@ use App\Notifications\Email\ServiceUser\BookingConfirmedEmail as BookingConfirme
 use App\Notifications\Email\ServiceUser\BookingConfirmedEmail;
 use App\Notifications\Email\CommunityWorker\BookingConfirmedEmail as BookingConfirmedUserEmail;
 use App\Notifications\Sms\ServiceUser\BookingConfirmedSms;
+use Carbon\CarbonImmutable;
 use Illuminate\Http\Response;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Queue;
 use Tests\TestCase;
 
@@ -205,7 +205,7 @@ class BookingsTest extends TestCase
     public function test_guest_cannot_booked_appointment_outside_booking_threshold()
     {
         // Fake the current time.
-        Carbon::setTestNow(today()->hour(20));
+        CarbonImmutable::setTestNow(today()->hour(20));
 
         // Create the question.
         $textQuestion = Question::createText('Where did you hear about us?');

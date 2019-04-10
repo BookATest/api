@@ -153,3 +153,22 @@ if (!function_exists('per_page')) {
         return $perPage;
     }
 }
+
+if (!function_exists('dump_query')) {
+    /**
+     * Outputs the query with bindings inserted.
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     */
+    function dump_query(\Illuminate\Database\Eloquent\Builder $query)
+    {
+        dump(
+            vsprintf(
+                str_replace('?', '%s', $query->toSql()),
+                collect($query->getBindings())->map(function ($binding) {
+                    return is_numeric($binding) ? $binding : "'{$binding}'";
+                })->toArray()
+            )
+        );
+    }
+}

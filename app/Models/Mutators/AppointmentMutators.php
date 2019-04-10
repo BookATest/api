@@ -2,6 +2,8 @@
 
 namespace App\Models\Mutators;
 
+use Carbon\CarbonImmutable;
+
 trait AppointmentMutators
 {
     /**
@@ -50,5 +52,25 @@ trait AppointmentMutators
     public function getUserPhoneAttribute(): ?string
     {
         return $this->user->display_phone ? $this->user->phone : null;
+    }
+
+    /**
+     * @param string $startAt
+     * @return \Carbon\CarbonImmutable
+     * @throws \Exception
+     */
+    public function getStartAtAttribute(string $startAt): CarbonImmutable
+    {
+        // Convert UTC time stored in database to application timezone.
+        return (new CarbonImmutable($startAt, 'UTC'))->timezone(config('app.timezone'));
+    }
+
+    /**
+     * @param \Carbon\CarbonImmutable $startAt
+     */
+    public function setStartAtAttribute(CarbonImmutable $startAt)
+    {
+        // Convert from application timezone to UTC before storing in database.
+        $this->attributes['start_at'] = $startAt->timezone('UTC')->toDateTimeString();
     }
 }
