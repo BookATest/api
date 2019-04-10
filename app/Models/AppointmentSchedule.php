@@ -4,9 +4,9 @@ namespace App\Models;
 
 use App\Models\Mutators\AppointmentScheduleMutators;
 use App\Models\Relationships\AppointmentScheduleRelationships;
+use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Support\Carbon;
 
 class AppointmentSchedule extends Model
 {
@@ -66,7 +66,7 @@ class AppointmentSchedule extends Model
             $appointmentExists = Appointment::query()
                 ->where('user_id', $this->user_id)
                 ->where('clinic_id', $this->clinic_id)
-                ->where('start_at', $startAt)
+                ->where('start_at', $startAt->timezone('UTC'))
                 ->exists();
 
             // Don't create an appointment if one already exists.
@@ -87,13 +87,14 @@ class AppointmentSchedule extends Model
     }
 
     /**
-     * @param \Illuminate\Support\Carbon $date
+     * @param \Carbon\CarbonImmutable $date
+     * @throws \Exception
      */
-    public function deleteFrom(Carbon $date)
+    public function deleteFrom(CarbonImmutable $date)
     {
         $this->appointments()
             ->available()
-            ->where('appointments.start_at', '>=', $date)
+            ->where('appointments.start_at', '>=', $date->timezone('UTC'))
             ->get()
             ->each
             ->delete();

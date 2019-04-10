@@ -31,7 +31,10 @@ class IcsController extends Controller
         // Prepare the base query.
         $baseQuery = Appointment::query()
             ->with('clinic')
-            ->whereBetween('start_at', [today(), today()->addMonths(3)])
+            ->whereBetween('start_at', [
+                today()->timezone('UTC'),
+                today()->addMonths(3)->timezone('UTC'),
+            ])
             ->orderBy('start_at');
 
         // If the user is not an organisation admin, then limit the results to the user's clinics.

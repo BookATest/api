@@ -18,9 +18,9 @@ use App\Notifications\Email\CommunityWorker\BookingConfirmedEmail as BookingConf
 use App\Notifications\Sms\ServiceUser\BookingConfirmedSms as BookingConfirmedServiceUserSms;
 use App\Support\Coordinate;
 use App\Support\Postcode;
+use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Response;
-use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 
 class BookingController extends Controller
@@ -68,7 +68,7 @@ class BookingController extends Controller
                         $appointment->createDateAnswer(
                             $question,
                             $serviceUser,
-                            Carbon::createFromFormat('Y-m-d', $answer['answer'])
+                            CarbonImmutable::createFromFormat('Y-m-d', $answer['answer'])
                         );
                         break;
                     case Question::CHECKBOX:

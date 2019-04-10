@@ -49,8 +49,8 @@ class ICalAppointmentsResponse implements Responsable
                 // Parse the appointment into an event.
                 $event = (new Event($appointment->id))
                     ->setUniqueId($appointment->id)
-                    ->setDtStart($appointment->start_at)
-                    ->setDtEnd($appointment->start_at->copy()->addMinutes($appointment->clinic->appointment_duration))
+                    ->setDtStart($appointment->start_at->timezone('UTC'))
+                    ->setDtEnd($appointment->start_at->addMinutes($appointment->clinic->appointment_duration)->timezone('UTC'))
                     ->setSummary("Appointment at {$appointment->clinic->name}")
                     ->setOrganizer(new Organizer("MAILTO:{$appointment->user->email}", [
                         'CN' => $appointment->user->full_name,

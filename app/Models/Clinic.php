@@ -5,9 +5,9 @@ namespace App\Models;
 use App\Models\Mutators\ClinicMutators;
 use App\Models\Relationships\ClinicRelationships;
 use App\Support\Coordinate;
+use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Support\Carbon;
 use InvalidArgumentException;
 
 class Clinic extends Model
@@ -47,7 +47,7 @@ class Clinic extends Model
         // Cancel all booked appointments in the future.
         $this->appointments()
             ->booked()
-            ->where('start_at', '>', now())
+            ->where('start_at', '>', now()->timezone('UTC'))
             ->chunk(200, function (Collection $appointments) {
                 $appointments->each->cancel();
             });
@@ -146,7 +146,7 @@ class Clinic extends Model
     protected function dateIsEligible(string $answer, EligibleAnswer $eligibleAnswer): bool
     {
         try {
-            $answer = Carbon::createFromFormat('Y-m-d', $answer);
+            $answer = CarbonImmutable::createFromFormat('Y-m-d', $answer);
         } catch (InvalidArgumentException $exception) {
             return false;
         }

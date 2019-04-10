@@ -7,7 +7,7 @@ use App\Models\Appointment;
 use App\Models\Clinic;
 use App\Models\ServiceUser;
 use App\Notifications\Email\CommunityWorker\DnaReminderEmail;
-use Illuminate\Support\Carbon;
+use Carbon\CarbonImmutable;
 use Illuminate\Support\Facades\Queue;
 use Tests\TestCase;
 
@@ -17,7 +17,7 @@ class SendDnaRemindersCommandTest extends TestCase
     {
         Queue::fake();
 
-        Carbon::setTestNow(now()->startOfWeek());
+        CarbonImmutable::setTestNow(now()->startOfWeek());
 
         $clinic = factory(Clinic::class)->create([
             'appointment_duration' => 60, // 1 hour
@@ -38,7 +38,7 @@ class SendDnaRemindersCommandTest extends TestCase
     {
         Queue::fake();
 
-        Carbon::setTestNow(now()->startOfWeek());
+        CarbonImmutable::setTestNow(now()->startOfWeek());
 
         $clinic = factory(Clinic::class)->create([
             'appointment_duration' => 60, // 1 hour

@@ -2,8 +2,8 @@
 
 namespace App\Rules;
 
+use Carbon\CarbonImmutable;
 use Illuminate\Contracts\Validation\Rule;
-use Illuminate\Support\Carbon;
 use InvalidArgumentException;
 
 class AppointmentOutsideDstTransition implements Rule
@@ -22,15 +22,15 @@ class AppointmentOutsideDstTransition implements Rule
         }
 
         try {
-            /** @var \Illuminate\Support\Carbon $startAt */
-            $startAt = Carbon::createFromFormat(Carbon::ATOM, $startAt);
+            /** @var \Carbon\CarbonImmutable $startAt */
+            $startAt = CarbonImmutable::createFromFormat(CarbonImmutable::ATOM, $startAt);
             $startAt = $startAt->second(0);
         } catch (InvalidArgumentException $exception) {
             return false;
         }
 
         // Convert the posted start date to the correct timezone.
-        $timezonedStartAt = $startAt->copy()->timezone(config('app.timezone'));
+        $timezonedStartAt = $startAt->timezone(config('app.timezone'));
 
         // Check if the time remains the same, the conversion won't allow the skipped hours.
         return $startAt->toIso8601String() === $timezonedStartAt->toIso8601String();

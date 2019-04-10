@@ -6,7 +6,7 @@ use App\Console\Commands\Bat\CreateScheduledReportsCommand;
 use App\Models\Report;
 use App\Models\ReportSchedule;
 use App\Notifications\Email\CommunityWorker\ReportGeneratedEmail;
-use Carbon\Carbon;
+use Carbon\CarbonImmutable;
 use Illuminate\Support\Facades\Queue;
 use Tests\TestCase;
 
@@ -19,7 +19,7 @@ class CreateScheduledReportsCommandTest extends TestCase
         ]);
         $startAt = now()->startOfWeek();
 
-        Carbon::setTestNow($startAt);
+        CarbonImmutable::setTestNow($startAt);
         $this->artisan(CreateScheduledReportsCommand::class);
 
         $this->assertDatabaseHas('reports', [
@@ -34,7 +34,7 @@ class CreateScheduledReportsCommandTest extends TestCase
         ]);
         $startAt = now()->startOfMonth();
 
-        Carbon::setTestNow($startAt);
+        CarbonImmutable::setTestNow($startAt);
         $this->artisan(CreateScheduledReportsCommand::class);
 
         $this->assertDatabaseHas('reports', [
@@ -49,7 +49,7 @@ class CreateScheduledReportsCommandTest extends TestCase
         ]);
         $startAt = now()->startOfWeek()->addDay();
 
-        Carbon::setTestNow($startAt);
+        CarbonImmutable::setTestNow($startAt);
         $this->artisan(CreateScheduledReportsCommand::class);
 
         $this->assertEquals(0, Report::query()->count());
@@ -64,7 +64,7 @@ class CreateScheduledReportsCommandTest extends TestCase
         ]);
         $startAt = now()->startOfWeek();
 
-        Carbon::setTestNow($startAt);
+        CarbonImmutable::setTestNow($startAt);
         $this->artisan(CreateScheduledReportsCommand::class);
 
         Queue::assertPushed(ReportGeneratedEmail::class);

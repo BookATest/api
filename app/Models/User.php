@@ -7,12 +7,12 @@ use App\Models\Mutators\UserMutators;
 use App\Models\Relationships\UserRelationships;
 use App\Models\Scopes\UserScopes;
 use App\Notifications\Email\User\ForgottenPasswordEmail;
+use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Http\Response;
-use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Laravel\Passport\HasApiTokens;
@@ -100,10 +100,10 @@ class User extends Authenticatable
     }
 
     /**
-     * @param \Illuminate\Support\Carbon|null $dateTime
+     * @param \Carbon\CarbonImmutable|null $dateTime
      * @return \App\Models\User
      */
-    public function disable(Carbon $dateTime = null): self
+    public function disable(CarbonImmutable $dateTime = null): self
     {
         $dateTime = $dateTime ?? now();
         $this->update(['disabled_at' => $dateTime]);

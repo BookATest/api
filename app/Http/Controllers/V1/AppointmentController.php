@@ -13,8 +13,8 @@ use App\Http\Resources\AppointmentResource;
 use App\Http\Responses\ResourceDeletedResponse;
 use App\Models\Appointment;
 use App\Models\AppointmentSchedule;
+use Carbon\CarbonImmutable;
 use Illuminate\Http\Response;
-use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Spatie\QueryBuilder\Filter;
@@ -64,8 +64,8 @@ class AppointmentController extends Controller
         if (Auth::guard('api')->guest()) {
             $baseQuery = $baseQuery
                 ->whereBetween('appointments.start_at', [
-                    now(),
-                    today()->addDays(config('bat.days_in_advance_to_book'))->endOfDay(),
+                    now()->timezone('UTC'),
+                    today()->addDays(config('bat.days_in_advance_to_book'))->endOfDay()->timezone('UTC'),
                 ])
                 ->available();
         }
@@ -106,7 +106,7 @@ class AppointmentController extends Controller
     public function store(StoreRequest $request)
     {
         $appointment = DB::transaction(function () use ($request): Appointment {
-            $startAt = Carbon::createFromFormat(Carbon::ATOM, $request->start_at)
+            $startAt = CarbonImmutable::createFromFormat(CarbonImmutable::ATOM, $request->start_at)
                 ->second(0);
 
             // For repeating appointments.
