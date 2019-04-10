@@ -19,17 +19,18 @@ class ReportSchedule extends Model
      */
     public function createReport(): Report
     {
+        $report = new Report([
+            'user_id' => $this->user_id,
+            'clinic_id' => $this->clinic_id,
+            'report_type_id' => $this->report_type_id,
+        ]);
+
         $file = File::create([
             'filename' => "{$this->repeat_type}_{$report->start_at->toDateString()}-{$report->end_at->toDateString()}.xlsx",
             'mime_type' => File::MIME_XLSX,
         ]);
 
-        $report = new Report([
-            'file_id' => $file->id,
-            'user_id' => $this->user_id,
-            'clinic_id' => $this->clinic_id,
-            'report_type_id' => $this->report_type_id,
-        ]);
+        $report->file_id = $file->id;
 
         switch ($this->repeat_type) {
             case static::WEEKLY:
