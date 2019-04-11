@@ -71,6 +71,9 @@ trait AppointmentMutators
     public function setStartAtAttribute(CarbonImmutable $startAt)
     {
         // Convert from application timezone to UTC before storing in database.
-        $this->attributes['start_at'] = $startAt->timezone('UTC')->toDateTimeString();
+        $this->attributes['start_at'] = $startAt
+            ->timezone(config('app.timezone')) // Done to prevent invalid dates.
+            ->timezone('UTC')
+            ->toDateTimeString();
     }
 }
