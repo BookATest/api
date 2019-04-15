@@ -43,7 +43,7 @@
 
         <server name="REDIS_CLUSTER" value="redis"/>
         <server name="REDIS_SCHEME" value="tcp"/>
-        <server name="REDIS_HOST" value="redis"/>
+        <server name="REDIS_HOST" value="redis-testing"/>
         <server name="REDIS_PASSWORD" value="null"/>
         <server name="REDIS_PORT" value="7000"/>
 
