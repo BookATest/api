@@ -23,12 +23,38 @@
         </whitelist>
     </filter>
     <php>
-        <server name="APP_ENV" value="testing"/>
         <server name="BCRYPT_ROUNDS" value="4"/>
+
+        <server name="APP_ENV" value="testing"/>
+
+        <server name="LOG_CHANNEL" value="testing"/>
+
+        <server name="DB_HOST" value="mysql-testing"/>
+        <server name="DB_PORT" value="3306"/>
+        <server name="DB_DATABASE" value="book_a_test"/>
+        <server name="DB_USERNAME" value="book_a_test"/>
+        <server name="DB_PASSWORD" value="secret"/>
+
+        <server name="CACHE_DRIVER" value="redis"/>
+
+        <server name="SESSION_LIFETIME" value="120"/>
+
         <server name="QUEUE_DRIVER" value="sync"/>
+
+        <server name="REDIS_CLUSTER" value="redis"/>
+        <server name="REDIS_SCHEME" value="tcp"/>
+        <server name="REDIS_HOST" value="redis-testing"/>
+        <server name="REDIS_PASSWORD" value="null"/>
+        <server name="REDIS_PORT" value="7000"/>
+
         <server name="FILESYSTEM_CLOUD" value="testing_cloud"/>
+
         <server name="MAIL_DRIVER" value="log"/>
+
         <server name="SMS_DRIVER" value="log"/>
+
         <server name="GEOCODE_DRIVER" value="mock"/>
+
+        <server name="OTP_ENABLED" value="true"/>
     </php>
 </phpunit>
