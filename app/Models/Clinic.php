@@ -107,19 +107,19 @@ class Clinic extends Model
                     if (!$this->selectIsEligible($answer['answer'], $eligibleAnswer)) {
                         return false;
                     }
-                    continue;
+                    continue 2;
                 case Question::DATE:
                     if (!$this->dateIsEligible($answer['answer'], $eligibleAnswer)) {
                         return false;
                     }
-                    continue;
+                    continue 2;
                 case Question::CHECKBOX:
                     if (!$this->checkboxIsEligible($answer['answer'], $eligibleAnswer)) {
                         return false;
                     }
-                    continue;
+                    continue 2;
                 case Question::TEXT:
-                    continue;
+                    continue 2;
                 default:
                     return false;
             }
