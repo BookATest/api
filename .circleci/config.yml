@@ -9,7 +9,7 @@ jobs:
           name: Skip commits that aren't for master, develop or a pull request
           command: |
             if [[ "$CICIRCLE_BRANCH" != "master" ]] && [[ "$CICIRCLE_BRANCH" != "develop" ]] && [[ -z "$CI_PULL_REQUEST" ]]; then
-              return 0;
+              exit 0;
             fi
 
       - checkout
