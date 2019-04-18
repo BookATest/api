@@ -9,7 +9,7 @@ jobs:
           name: Skip commits that aren't for master, develop or a pull request
           command: |
             if [[ "$CICIRCLE_BRANCH" != "master" ]] && [[ "$CICIRCLE_BRANCH" != "develop" ]] && [[ -z "$CI_PULL_REQUEST" ]]; then
-              exit 0;
+              circleci step halt
             fi
 
       - checkout
@@ -21,6 +21,10 @@ jobs:
       - run:
           name: Start the containers
           command: ./develop up -d
+
+      - run:
+          name: Create environment file
+          command: ./develop exec api cp .env.example .env
 
       - run:
           name: Install Composer dependencies
