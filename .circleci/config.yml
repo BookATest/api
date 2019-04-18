@@ -8,7 +8,7 @@ jobs:
       - run:
           name: Skip commits that aren't for master, develop or a pull request
           command: |
-            if [[ "$CICIRCLE_BRANCH" != "master" ]] && [[ "$CICIRCLE_BRANCH" != "develop" ]] && [[ -z "$CI_PULL_REQUEST" ]]; then
+            if [[ "$CIRCLE_BRANCH" != "master" ]] && [[ "$CIRCLE_BRANCH" != "develop" ]] && [[ -z "$CI_PULL_REQUEST" ]]; then
               circleci step halt
             fi
 
