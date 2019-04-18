@@ -1,0 +1,80 @@
+version: 2.1
+
+jobs:
+  test:
+    machine:
+      enabled: true
+    steps:
+      - run:
+          name: Skip commits that aren't for master, develop or a pull request
+          command: |
+            if [[ "$CICIRCLE_BRANCH" != "master" ]] && [[ "$CICIRCLE_BRANCH" != "develop" ]] && [[ -z "$CI_PULL_REQUEST" ]]; then
+              return 0;
+            fi
+
+      - checkout
+
+      - run:
+          name: Build images
+          command: ./develop build
+
+      - run:
+          name: Start the containers
+          command: ./develop up -d
+
+      - run:
+          name: Install Composer dependencies
+          command: ./develop composer install -n --prefer-dist
+
+      - run:
+          name: Set the application key
+          command: ./develop artisan key:generate
+
+      - run:
+          name: Create OAuth keys
+          command: ./develop artisan passport:keys
+
+      - run:
+          name: Unit and feature tests
+          command: ./develop phpunit
+
+      - run:
+          name: Copy logs
+          command: ./develop logs api > /var/logs/laravel.log
+          when: on_fail
+
+      - store_artifacts:
+          path: /var/logs/laravel.log
+
+  deploy:
+    machine:
+      enabled: true
+    steps:
+      - run:
+          name: Install AWS CLI
+          command: sudo pip install awscli
+
+      - run:
+          name: Install Python dependencies
+          command: sudo pip install pyyaml
+
+      - checkout
+
+      - run:
+          name: Deploy
+          command: ./.circleci/build-and-deploy
+
+workflows:
+  version: 2
+  test-and-deploy:
+    jobs:
+      - test
+
+      - deploy:
+          requires:
+            - test
+          filters:
+            branches:
+              only:
+                - master
+                - develop

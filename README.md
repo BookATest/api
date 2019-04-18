@@ -1,5 +1,7 @@
 # Book A Test - API
 
+[![CircleCI](https://circleci.com/gh/BookATest/api.svg?style=svg&circle-token=9542c8afb2b07322efafc937654de87ceaadbdc5)](https://circleci.com/gh/BookATest/api)
+
 A system for organisations to manage the online bookings of appointments to check for HIV.
 
 ## Getting started
@@ -253,8 +255,8 @@ To build the image you must use the helper build script and pass in the variable
 AWS_ACCESS_KEY_ID="xxx" \ # CI user access key ID.
     AWS_SECRET_ACCESS_KEY="xxx" \ # CI user access key secret.
     AWS_DEFAULT_REGION="eu-west-1" \ # Default AWS region.
-    TRAVIS_BUILD_DIR="xxx" \ # Project root path.
-    TRAVIS_COMMIT="xxx" \ # Full hash of commit you want to build (most likely the latest commit on master).
+    CIRCLE_WORKING_DIRECTORY="xxx" \ # Project root path.
+    CIRCLE_SHA1="xxx" \ # Full hash of commit you want to build (most likely the latest commit on master).
     REPO_URI="xxx" \ # The ECR repo URI you are going to push the image to.
     ENV_SECRET_ID="xxx" \ # The name of the API .env secret.
     PUBLIC_KEY_SECRET_ID="xxx" \ # The name of the public key secret.

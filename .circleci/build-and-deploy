@@ -1,14 +1,14 @@
 #!/usr/bin/env bash
 
 # Requires the following environment variables:
-# $TRAVIS_BRANCH = The name of the git branch that the build is running on.
+# $CIRCLE_BRANCH = The name of the git branch that the build is running on.
 # $CONFIG_SECRET_NAME = The name of the AWS secrets manager secret containing the config.
 
 # Bail out on first error.
 set -e
 
 # Get the environment from the branch.
-case ${TRAVIS_BRANCH} in
+case ${CIRCLE_BRANCH} in
     master )
         ENVIRONMENT=production
         ;;
@@ -41,10 +41,10 @@ do
     export QUEUE_WORKER_SERVICE=$(docker/parse-config get-config ${ENVIRONMENT} -d ${DEPLOYMENT} -k queue-worker-service -f docker/config.yml)
 
     # Build the image.
-    ./docker/build
+    ./circleci/build
 
     # Deploy the update to the services.
-    SERVICE=${API_SERVICE} ./docker/deploy
-    SERVICE=${SCHEDULER_SERVICE} ./docker/deploy
-    SERVICE=${QUEUE_WORKER_SERVICE} ./docker/deploy
+    SERVICE=${API_SERVICE} ./circleci/deploy
+    SERVICE=${SCHEDULER_SERVICE} ./circleci/deploy
+    SERVICE=${QUEUE_WORKER_SERVICE} ./circleci/deploy
 done

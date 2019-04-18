@@ -12,11 +12,11 @@ export CFN_TEMPLATE=${CFN_TEMPLATE:-cloudformation}
 # Decide which docker-compose file to use.
 COMPOSE_FILE="dev"
 
-# Disable pseudo-TTY allocation for CI (Travis).
+# Disable pseudo-TTY allocation for CI (CircleCI).
 # The -T flag removes interaction.
 TTY=""
 
-# Travis CI provides a CI flag which can be used to check
+# CircleCI provides a CI flag which can be used to check
 # if this is running in a CI environment.
 if [ ${CI:-false} == "true" ]; then
     COMPOSE_FILE="ci"

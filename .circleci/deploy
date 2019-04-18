@@ -15,7 +15,7 @@ $(aws ecr get-login --no-include-email)
 # Push the Docker image to ECR.
 echo "Pushing images to ECR..."
 docker push ${REPO_URI}:latest
-# docker push ${REPO_URI}:${TRAVIS_COMMIT}
+# docker push ${REPO_URI}:${CIRCLE_SHA1}
 
 # Update the service.
 echo "Updating the ECS service..."
