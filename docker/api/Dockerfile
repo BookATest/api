@@ -54,5 +54,8 @@ RUN chown -R www-data: /var/www/html
 # Expose port 80 for HTTP access.
 EXPOSE 80
 
+# Set the working directory to the project root.
+WORKDIR /var/www/html
+
 # Set default command to the bootstrap script.
 CMD ["start-container"]

@@ -2,14 +2,12 @@
 
 namespace Tests;
 
-use App\Console\Commands\Bat\Redis\ClearCommand;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Routing\Middleware\ThrottleRequests;
-use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Storage;
 
@@ -28,14 +26,8 @@ abstract class TestCase extends BaseTestCase
     {
         parent::setUp();
 
-        // Set cache prefix.
-        Config::set('cache.prefix', 'testing');
-
         // Clear the cache.
-        $this->artisan(ClearCommand::class, [
-            '--host' => env('REDIS_HOST'),
-            '--port' => env('REDIS_PORT'),
-        ]);
+        $this->artisan('cache:clear');
 
         // Disable the API throttle middleware.
         $this->withoutMiddleware(ThrottleRequests::class);

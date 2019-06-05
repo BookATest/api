@@ -32,7 +32,6 @@ if [ $# -gt 0  ]; then
         art|artisan )
             shift 1
             ${COMPOSE} run --rm ${TTY} \
-                -w /var/www/html \
                 api \
                 php artisan "$@"
             ;;
@@ -40,7 +39,6 @@ if [ $# -gt 0  ]; then
         composer )
             shift 1
             ${COMPOSE} run --rm ${TTY} \
-                -w /var/www/html \
                 api \
                 composer "$@"
             ;;
@@ -48,11 +46,6 @@ if [ $# -gt 0  ]; then
         phpunit )
             shift 1
             ${COMPOSE} run --rm ${TTY} \
-                -w /var/www/html \
-                -e DB_HOST=mysql-testing \
-                -e REDIS_CLUSTER=redis \
-                -e REDIS_HOST=redis-testing \
-                -e REDIS_PORT=7000 \
                 api \
                 php vendor/bin/phpunit "$@"
             ;;
@@ -60,7 +53,6 @@ if [ $# -gt 0  ]; then
         phpcs )
             shift 1
             ${COMPOSE} run --rm ${TTY} \
-                -w /var/www/html \
                 api \
                 php vendor/bin/phpcs "$@"
             ;;
@@ -68,7 +60,6 @@ if [ $# -gt 0  ]; then
         phpcbf )
             shift 1
             ${COMPOSE} run --rm ${TTY} \
-                -w /var/www/html \
                 api \
                 php vendor/bin/phpcbf "$@"
             ;;
@@ -76,7 +67,6 @@ if [ $# -gt 0  ]; then
         npm )
             shift 1
             ${COMPOSE} run --rm ${TTY} \
-                -w /var/www/html \
                 node \
                 npm "$@"
             ;;
