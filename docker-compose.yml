@@ -48,9 +48,7 @@ services:
       - app-net
 
   redis-testing:
-    image: grokzen/redis-cluster:5.0.2
-    environment:
-      REDIS_CLUSTER_IP: 0.0.0.0
+    image: redis:5.0-alpine
     networks:
       - app-net
 
