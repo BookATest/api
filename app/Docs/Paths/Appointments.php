@@ -61,7 +61,7 @@ EOT;
             Parameter::query('filter[starts_before]', Schema::string()->format(Schema::DATE_TIME))
                 ->description('The date and time to get appointments starting before'),
             Parameter::query('sort', Schema::string()->default('start_at'))
-                ->description('The field to sort the results by [`start_at`]')
+                ->description('The field to sort the results by [`start_at`]'),
         ];
 
         return Operation::get(...$responses)
@@ -93,7 +93,7 @@ EOT;
                 )
         );
 
-        $description = <<<EOT
+        $description = <<<'EOT'
 **Permission:** `Community Worker`
 - Create an appointment at a clinic that they are a `Community Worker` for
 EOT;
@@ -111,7 +111,7 @@ EOT;
      */
     public static function show(): Operation
     {
-        $description = <<<EOT
+        $description = <<<'EOT'
 **Permission:** `Open`
 * View appointment if available
 
@@ -163,7 +163,7 @@ EOT;
                 )
         );
 
-        $description = <<<EOT
+        $description = <<<'EOT'
 **Permission:** `Community Worker`
 - Can update any appointment from any user at a clinic they are a `Community Worker` for
 EOT;
@@ -193,7 +193,7 @@ EOT;
                 ->required(),
         ];
 
-        $description = <<<EOT
+        $description = <<<'EOT'
 **Permission:** `Community Worker`
 - Can delete any appointment from any user at a clinic they are a `Community Worker` for
 
@@ -234,7 +234,7 @@ EOT;
                 )
         );
 
-        $description = <<<EOT
+        $description = <<<'EOT'
 **Permission:** `Open`
 - Service user can cancel their own appointments
 
@@ -274,7 +274,7 @@ EOT;
                 ->required(),
         ];
 
-        $description = <<<EOT
+        $description = <<<'EOT'
 **Permission:** `Community Worker`
 - Can delete any appointment schedule for any user at a clinic they are a `Community Worker` for
 
@@ -298,7 +298,7 @@ EOT;
      */
     public static function indexIcs(): Operation
     {
-        $description = <<<EOT
+        $description = <<<'EOT'
 **Permission:** `Open`
 * View all appointments
 EOT;

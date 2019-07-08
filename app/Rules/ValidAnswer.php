@@ -12,8 +12,8 @@ class ValidAnswer implements Rule
     /**
      * Determine if the validation rule passes.
      *
-     * @param  string $attribute
-     * @param  mixed $answer
+     * @param string $attribute
+     * @param mixed $answer
      * @return bool
      */
     public function passes($attribute, $answer)

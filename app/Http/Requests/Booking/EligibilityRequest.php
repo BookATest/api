@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests\Booking;
 
-use App\Models\Appointment;
 use App\Rules\AllAnswersPresent;
 use App\Rules\Postcode;
 use App\Rules\ValidAnswer;

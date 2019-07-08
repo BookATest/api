@@ -36,8 +36,8 @@ class AppointmentDoesntOverlap implements Rule
     /**
      * Determine if the validation rule passes.
      *
-     * @param  string $attribute
-     * @param  mixed $startAt
+     * @param string $attribute
+     * @param mixed $startAt
      * @return bool
      */
     public function passes($attribute, $startAt)

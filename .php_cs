@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 use PhpCsFixer\Config;
 use PhpCsFixer\Finder;
 
@@ -45,7 +43,6 @@ $rules = [
         'spacing' => 'one',
     ],
     'declare_equal_normalize' => true,
-    'declare_strict_types' => true,
     'ereg_to_preg' => true,
     'fully_qualified_strict_types' => true,
     'function_to_constant' => true,

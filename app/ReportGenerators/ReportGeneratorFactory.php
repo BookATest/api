@@ -17,8 +17,8 @@ class ReportGeneratorFactory
 
     /**
      * @param \App\Models\Report $report
-     * @return \App\ReportGenerators\ReportGenerator
      * @throws \App\Exceptions\InvalidReportTypeException
+     * @return \App\ReportGenerators\ReportGenerator
      */
     public static function for(Report $report): ReportGenerator
     {

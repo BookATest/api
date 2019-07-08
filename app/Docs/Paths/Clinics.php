@@ -172,7 +172,7 @@ class Clinics
                 )
         );
 
-        $description = <<<EOT
+        $description = <<<'EOT'
 **Permission:** `Clinic Admin`
 * Update a clinic they are a `Clinic Admin` for
 EOT;
@@ -202,7 +202,7 @@ EOT;
                 ->required(),
         ];
 
-        $description = <<<EOT
+        $description = <<<'EOT'
 **Permission:** `Organisation Admin`
 
 ***

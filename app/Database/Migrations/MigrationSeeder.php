@@ -31,8 +31,6 @@ abstract class MigrationSeeder extends Migration
 
     /**
      * @param array $args
-     *
-     * @return void
      */
     abstract protected function addRecord(...$args);
 }

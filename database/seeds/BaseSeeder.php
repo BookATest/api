@@ -33,8 +33,6 @@ abstract class BaseSeeder extends Seeder
 
     /**
      * @param array $args
-     *
-     * @return void
      */
     abstract protected function addRecord(...$args);
 }

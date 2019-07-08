@@ -27,9 +27,9 @@ class GeneralExportGenerator extends ReportGenerator
     /**
      * Generate the report and return the contents.
      *
-     * @return string
      * @throws \PhpOffice\PhpSpreadsheet\Exception
      * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
+     * @return string
      */
     public function generate(): string
     {

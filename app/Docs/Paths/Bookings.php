@@ -53,7 +53,7 @@ class Bookings
                 )
         );
 
-        $description = <<<EOT
+        $description = <<<'EOT'
 **Permission:** `Open`
 
 ***
@@ -102,7 +102,7 @@ EOT;
                 )
         );
 
-        $description = <<<EOT
+        $description = <<<'EOT'
 **Permission:** `Open`
 
 ***

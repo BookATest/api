@@ -32,8 +32,6 @@ abstract class Model extends BaseModel
 
     /**
      * The "booting" method of the model.
-     *
-     * @return void
      */
     protected static function boot()
     {
