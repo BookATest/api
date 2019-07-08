@@ -40,8 +40,8 @@ class Report extends Model
      * @param \App\Models\ReportType $reportType
      * @param \Carbon\CarbonImmutable $startAt
      * @param \Carbon\CarbonImmutable $endAt
-     * @return \App\Models\Report
      * @throws \App\Exceptions\InvalidReportTypeException
+     * @return \App\Models\Report
      */
     public static function createAndUpload(
         User $user,

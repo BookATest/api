@@ -9,8 +9,8 @@ class UkPhoneNumber implements Rule
     /**
      * Determine if the validation rule passes.
      *
-     * @param  string $attribute
-     * @param  mixed $phoneNumber
+     * @param string $attribute
+     * @param mixed $phoneNumber
      * @return bool
      */
     public function passes($attribute, $phoneNumber)

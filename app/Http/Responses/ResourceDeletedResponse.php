@@ -24,7 +24,7 @@ class ResourceDeletedResponse implements Responsable
     /**
      * Create an HTTP response that represents the object.
      *
-     * @param  \Illuminate\Http\Request $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function toResponse($request)
@@ -37,6 +37,6 @@ class ResourceDeletedResponse implements Responsable
      */
     protected function getResourceName(): string
     {
-        return (substr($this->model, strrpos($this->model, '\\') + 1));
+        return (mb_substr($this->model, mb_strrpos($this->model, '\\') + 1));
     }
 }

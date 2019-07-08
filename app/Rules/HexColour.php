@@ -9,8 +9,8 @@ class HexColour implements Rule
     /**
      * Determine if the validation rule passes.
      *
-     * @param  string $attribute
-     * @param  mixed $hex
+     * @param string $attribute
+     * @param mixed $hex
      * @return bool
      */
     public function passes($attribute, $hex)

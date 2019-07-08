@@ -95,22 +95,23 @@ class Users
                     Schema::string('profile_picture')->description('Base64 encoded JPEG.')
                 )
         );
-        $description = <<<EOT
-**Permission:** `Clinic Admin`
-- Can create a user with the `Community Worker` role for a clinic that they are associated to
-
-**Permission:** `Organisation Admin`
-- Can create a user with any role for any clinic
-
-***
-
-Create a new users along with their roles
-EOT;
 
         return Operation::post(...$responses)
             ->requestBody($requestBody)
             ->summary('Create a new user')
-            ->description($description)
+            ->description(
+                <<<'EOT'
+                **Permission:** `Clinic Admin`
+                - Can create a user with the `Community Worker` role for a clinic that they are associated to
+                
+                **Permission:** `Organisation Admin`
+                - Can create a user with any role for any clinic
+                
+                ***
+                
+                Create a new users along with their roles
+                EOT
+            )
             ->operationId('users.store')
             ->tags(Tags::users()->name);
     }
@@ -208,30 +209,31 @@ EOT;
                         ->description('Base64 encoded JPEG.')
                 )
         );
-        $description = <<<EOT
-**Permission:** `Community Worker`
-- Edit their own profile
-
-**Permission:** `Clinic Admin`
-- Edit their own profile
-- Assign `Community Worker` role to other users at a clinic they are a `Clinic Admin` at
-- Remove `Community Worker` from other users at a clinic they are a `Clinic Admin` at
-
-**Permission:** `Organisation Admin`
-- Edit all user profiles
-- Assign any role to any user
-- Remove any role from any user
-
-***
-
-Update a specific users along with their roles
-EOT;
 
         return Operation::put(...$responses)
             ->parameters(...$parameters)
             ->requestBody($requestBody)
             ->summary('Update a specified user')
-            ->description($description)
+            ->description(
+                <<<'EOT'
+                **Permission:** `Community Worker`
+                - Edit their own profile
+                
+                **Permission:** `Clinic Admin`
+                - Edit their own profile
+                - Assign `Community Worker` role to other users at a clinic they are a `Clinic Admin` at
+                - Remove `Community Worker` from other users at a clinic they are a `Clinic Admin` at
+                
+                **Permission:** `Organisation Admin`
+                - Edit all user profiles
+                - Assign any role to any user
+                - Remove any role from any user
+                
+                ***
+                
+                Update a specific users along with their roles
+                EOT
+            )
             ->operationId('users.update')
             ->tags(Tags::users()->name);
     }
@@ -252,19 +254,19 @@ EOT;
                 ->required(),
         ];
 
-        $description = <<<EOT
-**Permission:** `Organisation Admin`
-
-***
-
-This will only disable the user so they can no longer access the backend. All of this user's future appointments
-will also be cancelled and deleted.
-EOT;
-
         return Operation::delete(...$responses)
             ->parameters(...$parameters)
             ->summary('Delete a specific user')
-            ->description($description)
+            ->description(
+                <<<'EOT'
+                **Permission:** `Organisation Admin`
+                
+                ***
+                
+                This will only disable the user so they can no longer access the backend. All of this user's future appointments
+                will also be cancelled and deleted.
+                EOT
+            )
             ->operationId('users.destroy')
             ->tags(Tags::users()->name);
     }
@@ -310,15 +312,16 @@ EOT;
                 ->description('The user ID')
                 ->required(),
         ];
-        $description = <<<EOT
-**Permission:** `Community Worker`
-- Can refresh their own calendar feed token
-EOT;
 
         return Operation::put(...$responses)
             ->parameters(...$parameters)
             ->summary('Refresh the calendar feed token')
-            ->description($description)
+            ->description(
+                <<<'EOT'
+                **Permission:** `Community Worker`
+                - Can refresh their own calendar feed token
+                EOT
+            )
             ->operationId('users.calendar-feed-token')
             ->tags(Tags::users()->name);
     }
@@ -338,13 +341,13 @@ EOT;
             ),
         ];
 
-        $description = <<<EOT
-**Permission:** `Community Worker`
-EOT;
-
         return Operation::delete(...$responses)
             ->summary('Clear the sessions for the authenticated user')
-            ->description($description)
+            ->description(
+                <<<'EOT'
+                **Permission:** `Community Worker`
+                EOT
+            )
             ->operationId('users.sessions.destroy')
             ->tags(Tags::users()->name);
     }

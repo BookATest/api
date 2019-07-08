@@ -26,18 +26,6 @@ class EligibleAnswers
      */
     public static function index(): Operation
     {
-        $description = <<<EOT
-**Permission:** `Clinic Admin`
-- Can view all eligible answers at a clinic they are a `Clinic Admin` for
-
-***
-
-This endpoint will only return a list of all the eligibility answers for the current questions.
-
-It's important to realise that answers for previous questions cannot be accessed through the API, even though they
-remain in the database.
-EOT;
-
         $responses = [
             Responses::http200(
                 MediaType::json(EligibleAnswerResource::all())
@@ -52,7 +40,19 @@ EOT;
         return Operation::get(...$responses)
             ->parameters(...$parameters)
             ->summary('List all the eligible answers set by the clinic')
-            ->description($description)
+            ->description(
+                <<<'EOT'
+                **Permission:** `Clinic Admin`
+                - Can view all eligible answers at a clinic they are a `Clinic Admin` for
+                
+                ***
+                
+                This endpoint will only return a list of all the eligibility answers for the current questions.
+                
+                It's important to realise that answers for previous questions cannot be accessed through the API, even though they
+                remain in the database.
+                EOT
+            )
             ->operationId('clinics.eligible-answers.show')
             ->tags(Tags::eligibleAnswers()->name);
     }
@@ -62,11 +62,6 @@ EOT;
      */
     public static function update(): Operation
     {
-        $description = <<<EOT
-**Permission:** `Clinic Admin`
-- Can update the set of eligible answers for a clinic they are a `Clinic Admin` for
-EOT;
-
         $responses = [
             Responses::http200(
                 MediaType::json(EligibleAnswerResource::all())
@@ -99,7 +94,12 @@ EOT;
             ->parameters(...$parameters)
             ->requestBody($requestBody)
             ->summary('Update the eligibility answers')
-            ->description($description)
+            ->description(
+                <<<'EOT'
+                **Permission:** `Clinic Admin`
+                - Can update the set of eligible answers for a clinic they are a `Clinic Admin` for
+                EOT
+            )
             ->operationId('clinics.eligible-answers.update')
             ->tags(Tags::eligibleAnswers()->name);
     }

@@ -29,15 +29,6 @@ class Appointments
     {
         $appointmentsVisible = config('bat.days_in_advance_to_book');
 
-        $description = <<< EOT
-**Permission:** `Open`
-* View all available appointments within the next {$appointmentsVisible} days
-* Cannot append `service_user_name`
-
-**Permission:** `Community Worker`
-* View all appointments
-EOT;
-
         $responses = [
             Responses::http200(
                 MediaType::json(AppointmentResource::list())
@@ -61,14 +52,23 @@ EOT;
             Parameter::query('filter[starts_before]', Schema::string()->format(Schema::DATE_TIME))
                 ->description('The date and time to get appointments starting before'),
             Parameter::query('sort', Schema::string()->default('start_at'))
-                ->description('The field to sort the results by [`start_at`]')
+                ->description('The field to sort the results by [`start_at`]'),
         ];
 
         return Operation::get(...$responses)
             ->security([])
             ->parameters(...$parameters)
             ->summary('List all appointments')
-            ->description($description)
+            ->description(
+                <<<EOT
+                **Permission:** `Open`
+                * View all available appointments within the next {$appointmentsVisible} days
+                * Cannot append `service_user_name`
+                
+                **Permission:** `Community Worker`
+                * View all appointments
+                EOT
+            )
             ->operationId('appointments.index')
             ->tags(Tags::appointments()->name);
     }
@@ -93,15 +93,15 @@ EOT;
                 )
         );
 
-        $description = <<<EOT
-**Permission:** `Community Worker`
-- Create an appointment at a clinic that they are a `Community Worker` for
-EOT;
-
         return Operation::post(...$responses)
             ->requestBody($requestBody)
             ->summary('Create a new appointment')
-            ->description($description)
+            ->description(
+                <<<'EOT'
+                **Permission:** `Community Worker`
+                - Create an appointment at a clinic that they are a `Community Worker` for
+                EOT
+            )
             ->operationId('appointments.store')
             ->tags(Tags::appointments()->name);
     }
@@ -111,13 +111,6 @@ EOT;
      */
     public static function show(): Operation
     {
-        $description = <<<EOT
-**Permission:** `Open`
-* View appointment if available
-
-**Permission:** `Community Worker`
-* View all appointments
-EOT;
         $responses = [
             Responses::http200(
                 MediaType::json(AppointmentResource::show())
@@ -135,7 +128,15 @@ EOT;
             ->security([])
             ->parameters(...$parameters)
             ->summary('Get a specific appointment')
-            ->description($description)
+            ->description(
+                <<<'EOT'
+                **Permission:** `Open`
+                * View appointment if available
+                
+                **Permission:** `Community Worker`
+                * View all appointments
+                EOT
+            )
             ->operationId('appointments.show')
             ->tags(Tags::appointments()->name);
     }
@@ -163,16 +164,16 @@ EOT;
                 )
         );
 
-        $description = <<<EOT
-**Permission:** `Community Worker`
-- Can update any appointment from any user at a clinic they are a `Community Worker` for
-EOT;
-
         return Operation::put(...$responses)
             ->parameters(...$parameters)
             ->requestBody($requestBody)
             ->summary('Update a specific appointment')
-            ->description($description)
+            ->description(
+                <<<'EOT'
+                **Permission:** `Community Worker`
+                - Can update any appointment from any user at a clinic they are a `Community Worker` for
+                EOT
+            )
             ->operationId('appointments.update')
             ->tags(Tags::appointments()->name);
     }
@@ -193,20 +194,20 @@ EOT;
                 ->required(),
         ];
 
-        $description = <<<EOT
-**Permission:** `Community Worker`
-- Can delete any appointment from any user at a clinic they are a `Community Worker` for
-
-***
-
-An appointment can only be deleted if it has not been booked by a service user. If an appointment has been booked,
-it must first be cancelled before you can delete it.
-EOT;
-
         return Operation::delete(...$responses)
             ->parameters(...$parameters)
             ->summary('Delete a specific appointment')
-            ->description($description)
+            ->description(
+                <<<'EOT'
+                **Permission:** `Community Worker`
+                - Can delete any appointment from any user at a clinic they are a `Community Worker` for
+                
+                ***
+                
+                An appointment can only be deleted if it has not been booked by a service user. If an appointment has been booked,
+                it must first be cancelled before you can delete it.
+                EOT
+            )
             ->operationId('appointments.destroy')
             ->tags(Tags::appointments()->name);
     }
@@ -234,26 +235,26 @@ EOT;
                 )
         );
 
-        $description = <<<EOT
-**Permission:** `Open`
-- Service user can cancel their own appointments
-
-**Permission:** `Community Worker`
-- Can cancel any appointment from any user at a clinic they are a `Community Worker` for
-
-***
-
-Removes the booking against the specified appointment.
-
-If the service user is cancelling their own appointment then the `service_user_token` parameter must be provided.
-EOT;
-
         return Operation::put(...$responses)
             ->security([])
             ->parameters(...$parameters)
             ->requestBody($requestBody)
             ->summary('Cancel a specific appointment')
-            ->description($description)
+            ->description(
+                <<<'EOT'
+                **Permission:** `Open`
+                - Service user can cancel their own appointments
+                
+                **Permission:** `Community Worker`
+                - Can cancel any appointment from any user at a clinic they are a `Community Worker` for
+                
+                ***
+                
+                Removes the booking against the specified appointment.
+                
+                If the service user is cancelling their own appointment then the `service_user_token` parameter must be provided.
+                EOT
+            )
             ->operationId('appointments.cancel')
             ->tags(Tags::appointments()->name);
     }
@@ -274,21 +275,21 @@ EOT;
                 ->required(),
         ];
 
-        $description = <<<EOT
-**Permission:** `Community Worker`
-- Can delete any appointment schedule for any user at a clinic they are a `Community Worker` for
-
-***
-
-Deleting the appointment schedule will attempt to delete all future appointments from the appointment specified.
-If any of the future appointments have been booked, they will be skipped and not deleted. If you want them to be
-deleted, you must manually cancel them and delete them individually after.
-EOT;
-
         return Operation::delete(...$responses)
             ->parameters(...$parameters)
             ->summary('Delete a specific repeating appointment')
-            ->description($description)
+            ->description(
+                <<<'EOT'
+                **Permission:** `Community Worker`
+                - Can delete any appointment schedule for any user at a clinic they are a `Community Worker` for
+                
+                ***
+                
+                Deleting the appointment schedule will attempt to delete all future appointments from the appointment specified.
+                If any of the future appointments have been booked, they will be skipped and not deleted. If you want them to be
+                deleted, you must manually cancel them and delete them individually after.
+                EOT
+            )
             ->operationId('appointments.schedule.destroy')
             ->tags(Tags::appointments()->name);
     }
@@ -298,11 +299,6 @@ EOT;
      */
     public static function indexIcs(): Operation
     {
-        $description = <<<EOT
-**Permission:** `Open`
-* View all appointments
-EOT;
-
         $responses = [
             Responses::http200(
                 MediaType::create(MediaType::TEXT_CALENDAR, Schema::string())
@@ -332,7 +328,12 @@ EOT;
             ->security([])
             ->parameters(...$parameters)
             ->summary('Stream all appointments as an ICS feed')
-            ->description($description)
+            ->description(
+                <<<'EOT'
+                **Permission:** `Open`
+                * View all appointments
+                EOT
+            )
             ->operationId('appointments.index.ics')
             ->tags(Tags::appointments()->name);
     }

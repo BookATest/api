@@ -99,7 +99,6 @@ class UpdateRequest extends FormRequest
                 'string',
             ],
 
-
             'language.make-booking.introduction.title' => [
                 'required',
                 'string',

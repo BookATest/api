@@ -15,7 +15,7 @@ trait AppointmentMutators
     }
 
     /**
-     * @return null|string
+     * @return string|null
      */
     public function getServiceUserNameAttribute(): ?string
     {
@@ -39,7 +39,7 @@ trait AppointmentMutators
     }
 
     /**
-     * @return null|string
+     * @return string|null
      */
     public function getUserEmailAttribute(): ?string
     {
@@ -47,7 +47,7 @@ trait AppointmentMutators
     }
 
     /**
-     * @return null|string
+     * @return string|null
      */
     public function getUserPhoneAttribute(): ?string
     {
@@ -56,8 +56,8 @@ trait AppointmentMutators
 
     /**
      * @param string $startAt
-     * @return \Carbon\CarbonImmutable
      * @throws \Exception
+     * @return \Carbon\CarbonImmutable
      */
     public function getStartAtAttribute(string $startAt): CarbonImmutable
     {

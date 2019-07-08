@@ -43,27 +43,6 @@ if [ $# -gt 0  ]; then
                 composer "$@"
             ;;
 
-        phpunit )
-            shift 1
-            ${COMPOSE} run --rm ${TTY} \
-                api \
-                php vendor/bin/phpunit "$@"
-            ;;
-
-        phpcs )
-            shift 1
-            ${COMPOSE} run --rm ${TTY} \
-                api \
-                php vendor/bin/phpcs "$@"
-            ;;
-
-        phpcbf )
-            shift 1
-            ${COMPOSE} run --rm ${TTY} \
-                api \
-                php vendor/bin/phpcbf "$@"
-            ;;
-
         npm )
             shift 1
             ${COMPOSE} run --rm ${TTY} \

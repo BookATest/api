@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\V1;
 
 use App\Events\EndpointHit;
+use App\Http\Controllers\Controller;
 use App\Http\Requests\ReportSchedule\DestroyRequest;
 use App\Http\Requests\ReportSchedule\IndexRequest;
 use App\Http\Requests\ReportSchedule\ShowRequest;
@@ -11,7 +12,6 @@ use App\Http\Resources\ReportScheduleResource;
 use App\Http\Responses\ResourceDeletedResponse;
 use App\Models\ReportSchedule;
 use App\Models\ReportType;
-use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 use Spatie\QueryBuilder\Filter;
 use Spatie\QueryBuilder\QueryBuilder;
@@ -49,7 +49,7 @@ class ReportScheduleController extends Controller
             ->allowedSorts('created_at')
             ->paginate(per_page($request->per_page));
 
-        event(EndpointHit::onRead($request, "Listed all report schedules"));
+        event(EndpointHit::onRead($request, 'Listed all report schedules'));
 
         return ReportScheduleResource::collection($reportSchedules);
     }
@@ -80,7 +80,7 @@ class ReportScheduleController extends Controller
      * Display the specified resource.
      *
      * @param \App\Http\Requests\ReportSchedule\ShowRequest $request
-     * @param  \App\Models\ReportSchedule $reportSchedule
+     * @param \App\Models\ReportSchedule $reportSchedule
      * @return \App\Http\Resources\ReportScheduleResource
      */
     public function show(ShowRequest $request, ReportSchedule $reportSchedule)
@@ -94,7 +94,7 @@ class ReportScheduleController extends Controller
      * Remove the specified resource from storage.
      *
      * @param \App\Http\Requests\ReportSchedule\DestroyRequest $request
-     * @param  \App\Models\ReportSchedule $reportSchedule
+     * @param \App\Models\ReportSchedule $reportSchedule
      * @return \App\Http\Responses\ResourceDeletedResponse
      */
     public function destroy(DestroyRequest $request, ReportSchedule $reportSchedule)

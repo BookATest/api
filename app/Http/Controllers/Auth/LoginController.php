@@ -35,8 +35,6 @@ class LoginController extends Controller
 
     /**
      * Create a new controller instance.
-     *
-     * @return void
      */
     public function __construct()
     {
@@ -47,15 +45,15 @@ class LoginController extends Controller
     /**
      * The user has been authenticated.
      *
-     * @param  \Illuminate\Http\Request $request
-     * @param  \App\Models\User $user
+     * @param \Illuminate\Http\Request $request
+     * @param \App\Models\User $user
      * @return mixed
      */
     protected function authenticated(Request $request, User $user)
     {
         // If OTP is disabled then skip this method.
         if (!config('bat.otp_enabled')) {
-            return null;
+            return;
         }
 
         // Log user out.
@@ -85,9 +83,8 @@ class LoginController extends Controller
 
     /**
      * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\Response|\Illuminate\Http\JsonResponse
-     *
      * @throws \Illuminate\Validation\ValidationException
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\Response|\Illuminate\Http\JsonResponse
      */
     public function otp(Request $request)
     {
@@ -125,8 +122,7 @@ class LoginController extends Controller
     /**
      * Redirect the user after determining they are locked out.
      *
-     * @param  \Illuminate\Http\Request $request
-     * @return void
+     * @param \Illuminate\Http\Request $request
      * @throws \Illuminate\Validation\ValidationException
      */
     protected function sendOtpLockoutResponse(Request $request)
@@ -143,10 +139,9 @@ class LoginController extends Controller
     /**
      * Get the failed login response instance.
      *
-     * @param  \Illuminate\Http\Request $request
-     * @return \Symfony\Component\HttpFoundation\Response
-     *
+     * @param \Illuminate\Http\Request $request
      * @throws \Illuminate\Validation\ValidationException
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     protected function sendFailedOtpResponse(Request $request)
     {
@@ -158,7 +153,7 @@ class LoginController extends Controller
     /**
      * Get the throttle key for the given request.
      *
-     * @param  \Illuminate\Http\Request $request
+     * @param \Illuminate\Http\Request $request
      * @return string
      */
     protected function throttleKey(Request $request)

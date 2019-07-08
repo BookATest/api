@@ -69,7 +69,6 @@ abstract class Sms implements ShouldQueue
      * Execute the job.
      *
      * @param \App\Contracts\SmsSender $smsSender
-     * @return void
      */
     public function handle(SmsSender $smsSender)
     {

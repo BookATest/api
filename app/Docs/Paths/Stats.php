@@ -25,16 +25,6 @@ class Stats
      */
     public static function index(): Operation
     {
-        $description = <<<EOT
-**Permission:** `Community Worker`
-
-***
-
-The stats returned will vary depending on the calling user's role (i.e. more stats will be available for users
-with greater roles).
-EOT;
-
-
         $responses = [
             Responses::http200(
                 MediaType::json(StatResource::show())
@@ -48,7 +38,16 @@ EOT;
         return Operation::get(...$responses)
             ->parameters(...$parameters)
             ->summary('The dashboard stats for the user')
-            ->description($description)
+            ->description(
+                <<<'EOT'
+                **Permission:** `Community Worker`
+                
+                ***
+                
+                The stats returned will vary depending on the calling user's role (i.e. more stats will be available for users
+                with greater roles).
+                EOT
+            )
             ->operationId('stats.index')
             ->tags(Tags::stats()->name);
     }

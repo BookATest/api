@@ -8,8 +8,6 @@ class CreateAppointmentSchedulesTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
     public function up()
     {
@@ -26,8 +24,6 @@ class CreateAppointmentSchedulesTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
     public function down()
     {

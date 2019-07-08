@@ -53,19 +53,19 @@ class Bookings
                 )
         );
 
-        $description = <<<EOT
-**Permission:** `Open`
-
-***
-
-Validation is in place to ensure only eligible service users can make a booking for this appointment. You should always first check which clinics the user is eligible at.
-EOT;
-
         return Operation::post(...$responses)
             ->security([])
             ->requestBody($requestBody)
             ->summary('Make a booking for the service user')
-            ->description($description)
+            ->description(
+                <<<'EOT'
+                **Permission:** `Open`
+                
+                ***
+                
+                Validation is in place to ensure only eligible service users can make a booking for this appointment. You should always first check which clinics the user is eligible at.
+                EOT
+            )
             ->operationId('bookings.store')
             ->tags(Tags::bookings()->name);
     }
@@ -102,21 +102,21 @@ EOT;
                 )
         );
 
-        $description = <<<EOT
-**Permission:** `Open`
-
-***
-
-This endpoint should be called at first instance to ensure the service user only attempts to book at a clinic that they are eligible for.
-
-A postcode OR a location must be provided to order the clinics by distance.
-EOT;
-
         return Operation::post(...$responses)
             ->security([])
             ->requestBody($requestBody)
             ->summary('Check which clinics the service user is eligible for')
-            ->description($description)
+            ->description(
+                <<<'EOT'
+                **Permission:** `Open`
+                
+                ***
+                
+                This endpoint should be called at first instance to ensure the service user only attempts to book at a clinic that they are eligible for.
+                
+                A postcode OR a location must be provided to order the clinics by distance.
+                EOT
+            )
             ->operationId('bookings.eligible-clinics')
             ->tags(Tags::bookings()->name);
     }

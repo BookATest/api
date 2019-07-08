@@ -10,9 +10,9 @@ trait ExportsXlsx
 {
     /**
      * @param \PhpOffice\PhpSpreadsheet\Spreadsheet $spreadsheet
-     * @return string
      * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      * @throws \PhpOffice\PhpSpreadsheet\Writer\Exception
+     * @return string
      */
     protected function save(Spreadsheet $spreadsheet): string
     {
