@@ -29,7 +29,8 @@ before_script:
   - ./develop artisan passport:keys
 
 script:
-  - ./develop phpunit
+  - ./develop composer test:style
+  - ./develop composer test:unit
 
 after_failure:
   - cat storage/logs/testing.log
