@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
 use App\Models\Mutators\SettingMutators;
@@ -23,7 +25,7 @@ class Setting extends Model
     const STYLES = 'styles';
 
     /**
-     * @var string The primary key of the table.
+     * @var string the primary key of the table
      */
     protected $primaryKey = 'key';
 
@@ -49,8 +51,8 @@ class Setting extends Model
     }
 
     /**
-     * @return \Illuminate\Http\Response
      * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
+     * @return \Illuminate\Http\Response
      */
     public static function placeholderLogoPicture(): Response
     {
@@ -58,7 +60,7 @@ class Setting extends Model
 
         return response()->make($content, Response::HTTP_OK, [
             'Content-Type' => File::MIME_PNG,
-            'Content-Disposition' => "inline; filename=\"organisation-logo.png\"",
+            'Content-Disposition' => 'inline; filename="organisation-logo.png"',
         ]);
     }
 

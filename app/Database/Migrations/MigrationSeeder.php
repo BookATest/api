@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Database\Migrations;
 
 use Illuminate\Database\Migrations\Migration;
@@ -31,8 +33,6 @@ abstract class MigrationSeeder extends Migration
 
     /**
      * @param array $args
-     *
-     * @return void
      */
     abstract protected function addRecord(...$args);
 }

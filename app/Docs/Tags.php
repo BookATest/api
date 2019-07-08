@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Docs;
 
 use GoldSpecDigital\ObjectOrientedOAS\Objects\Tag;

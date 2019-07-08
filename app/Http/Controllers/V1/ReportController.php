@@ -1,8 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\V1;
 
 use App\Events\EndpointHit;
+use App\Http\Controllers\Controller;
 use App\Http\Requests\Report\DestroyRequest;
 use App\Http\Requests\Report\IndexRequest;
 use App\Http\Requests\Report\ShowRequest;
@@ -12,7 +15,6 @@ use App\Http\Responses\ResourceDeletedResponse;
 use App\Models\Clinic;
 use App\Models\Report;
 use App\Models\ReportType;
-use App\Http\Controllers\Controller;
 use Carbon\CarbonImmutable;
 use Illuminate\Support\Facades\DB;
 use Spatie\QueryBuilder\Filter;
@@ -89,7 +91,7 @@ class ReportController extends Controller
      * Display the specified resource.
      *
      * @param \App\Http\Requests\Report\ShowRequest $request
-     * @param  \App\Models\Report $report
+     * @param \App\Models\Report $report
      * @return \App\Http\Resources\ReportResource
      */
     public function show(ShowRequest $request, Report $report)
@@ -103,7 +105,7 @@ class ReportController extends Controller
      * Remove the specified resource from storage.
      *
      * @param \App\Http\Requests\Report\DestroyRequest $request
-     * @param  \App\Models\Report $report
+     * @param \App\Models\Report $report
      * @return \App\Http\Responses\ResourceDeletedResponse
      */
     public function destroy(DestroyRequest $request, Report $report)

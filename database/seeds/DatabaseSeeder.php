@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Models\Appointment;
 use App\Models\Clinic;
 use App\Models\EligibleAnswer;
@@ -15,8 +17,6 @@ class DatabaseSeeder extends Seeder
 {
     /**
      * Seed the application's database.
-     *
-     * @return void
      */
     public function run()
     {
@@ -116,10 +116,10 @@ class DatabaseSeeder extends Seeder
     }
 
     /**
-     * @param int $perDay The number of appointments that should be generated
-     * for one day for a single user.
+     * @param int $perDay the number of appointments that should be generated
+     *                    for one day for a single user
      * @param \Carbon\CarbonImmutable $day The day to create
-     * @return \Illuminate\Database\Eloquent\Collection The day to create appointments for.
+     * @return \Illuminate\Database\Eloquent\Collection the day to create appointments for
      */
     protected function createAppointments(int $perDay, CarbonImmutable $day): Collection
     {

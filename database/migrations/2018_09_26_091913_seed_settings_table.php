@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Database\Migrations\MigrationSeeder;
 use Illuminate\Support\Facades\DB;
 
@@ -7,8 +9,6 @@ class SeedSettingsTable extends MigrationSeeder
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
     public function up()
     {
@@ -31,8 +31,6 @@ class SeedSettingsTable extends MigrationSeeder
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
     public function down()
     {
@@ -41,8 +39,6 @@ class SeedSettingsTable extends MigrationSeeder
 
     /**
      * @param array $args
-     *
-     * @return void
      */
     protected function addRecord(...$args)
     {

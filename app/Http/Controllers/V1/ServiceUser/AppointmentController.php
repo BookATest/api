@@ -1,13 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\V1\ServiceUser;
 
 use App\Events\EndpointHit;
+use App\Http\Controllers\Controller;
 use App\Http\Requests\ServiceUser\Appointment\IndexRequest;
 use App\Http\Resources\AppointmentResource;
 use App\Models\Appointment;
 use App\Models\ServiceUser;
-use App\Http\Controllers\Controller;
 use Spatie\QueryBuilder\Filter;
 use Spatie\QueryBuilder\QueryBuilder;
 
@@ -25,7 +27,7 @@ class AppointmentController extends Controller
      * Display a listing of the resource.
      *
      * @param \App\Http\Requests\ServiceUser\Appointment\IndexRequest $request
-     * @param  \App\Models\ServiceUser $serviceUser
+     * @param \App\Models\ServiceUser $serviceUser
      * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
     public function index(IndexRequest $request, ServiceUser $serviceUser)

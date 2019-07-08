@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Events;
 
 use App\Models\Audit;
@@ -15,12 +17,12 @@ class EndpointHit
     use SerializesModels;
 
     /**
-     * @var null|\Illuminate\Database\Eloquent\Model
+     * @var \Illuminate\Database\Eloquent\Model|null
      */
     protected $auditable;
 
     /**
-     * @var null|\Laravel\Passport\Client
+     * @var \Laravel\Passport\Client|null
      */
     protected $client;
 
@@ -30,7 +32,7 @@ class EndpointHit
     protected $action;
 
     /**
-     * @var null|string
+     * @var string|null
      */
     protected $description;
 
@@ -136,7 +138,7 @@ class EndpointHit
     }
 
     /**
-     * @return null|\Illuminate\Database\Eloquent\Model
+     * @return \Illuminate\Database\Eloquent\Model|null
      */
     public function getAuditable(): ?Model
     {
@@ -144,7 +146,7 @@ class EndpointHit
     }
 
     /**
-     * @return null|\Laravel\Passport\Client
+     * @return \Laravel\Passport\Client|null
      */
     public function getClient(): ?Client
     {
@@ -160,7 +162,7 @@ class EndpointHit
     }
 
     /**
-     * @return null|string
+     * @return string|null
      */
     public function getDescription(): ?string
     {

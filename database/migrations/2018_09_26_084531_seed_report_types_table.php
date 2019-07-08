@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Database\Migrations\MigrationSeeder;
 use App\Models\ReportType;
 use Illuminate\Support\Facades\DB;
@@ -8,8 +10,6 @@ class SeedReportTypesTable extends MigrationSeeder
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
     public function up()
     {
@@ -18,8 +18,6 @@ class SeedReportTypesTable extends MigrationSeeder
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
     public function down()
     {

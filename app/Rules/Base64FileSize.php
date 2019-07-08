@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Rules;
 
 use Illuminate\Contracts\Validation\Rule;
@@ -25,8 +27,8 @@ class Base64FileSize implements Rule
      * Determine if the validation rule passes.
      *
      * @link https://stackoverflow.com/a/48416269
-     * @param  string $attribute
-     * @param  mixed $base64EncodedImage
+     * @param string $attribute
+     * @param mixed $base64EncodedImage
      * @return bool
      */
     public function passes($attribute, $base64EncodedImage)
@@ -38,7 +40,7 @@ class Base64FileSize implements Rule
         list(, $data) = explode(';', $base64EncodedImage);
         list(, $data) = explode(',', $data);
         $data = rtrim($data, '=');
-        $sizeInBytes = (int)(strlen($data) * 3 / 4);
+        $sizeInBytes = (int)(mb_strlen($data) * 3 / 4);
         $sizeInKiloBytes = $sizeInBytes / 1024;
         $sizeInMegaBytes = $sizeInKiloBytes / 1024;
 

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Database\Migrations\MigrationSeeder;
 use App\Models\Role;
 use Illuminate\Support\Facades\DB;
@@ -8,8 +10,6 @@ class SeedRolesTable extends MigrationSeeder
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
     public function up()
     {
@@ -20,8 +20,6 @@ class SeedRolesTable extends MigrationSeeder
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
     public function down()
     {
@@ -30,8 +28,6 @@ class SeedRolesTable extends MigrationSeeder
 
     /**
      * @param array $args
-     *
-     * @return void
      */
     protected function addRecord(...$args)
     {

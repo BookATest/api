@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Docs\Paths;
 
 use App\Docs\Requests;
@@ -26,7 +28,7 @@ class EligibleAnswers
      */
     public static function index(): Operation
     {
-        $description = <<<EOT
+        $description = <<<'EOT'
 **Permission:** `Clinic Admin`
 - Can view all eligible answers at a clinic they are a `Clinic Admin` for
 
@@ -62,7 +64,7 @@ EOT;
      */
     public static function update(): Operation
     {
-        $description = <<<EOT
+        $description = <<<'EOT'
 **Permission:** `Clinic Admin`
 - Can update the set of eligible answers for a clinic they are a `Clinic Admin` for
 EOT;

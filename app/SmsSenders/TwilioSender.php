@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\SmsSenders;
 
 use App\Contracts\SmsSender;
@@ -30,7 +32,7 @@ class TwilioSender implements SmsSender
      */
     public function send(Sms $sms)
     {
-        $to = substr($sms->getTo(), 1);
+        $to = mb_substr($sms->getTo(), 1);
         $to = '+44' . $to;
 
         $this->client->messages->create($to, [

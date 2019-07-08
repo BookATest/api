@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Rules;
 
 use Illuminate\Contracts\Validation\Rule;
@@ -9,8 +11,8 @@ class UkPhoneNumber implements Rule
     /**
      * Determine if the validation rule passes.
      *
-     * @param  string $attribute
-     * @param  mixed $phoneNumber
+     * @param string $attribute
+     * @param mixed $phoneNumber
      * @return bool
      */
     public function passes($attribute, $phoneNumber)

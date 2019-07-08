@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Docs\Paths;
 
 use App\Docs\Requests;
@@ -95,7 +97,7 @@ class Users
                     Schema::string('profile_picture')->description('Base64 encoded JPEG.')
                 )
         );
-        $description = <<<EOT
+        $description = <<<'EOT'
 **Permission:** `Clinic Admin`
 - Can create a user with the `Community Worker` role for a clinic that they are associated to
 
@@ -208,7 +210,7 @@ EOT;
                         ->description('Base64 encoded JPEG.')
                 )
         );
-        $description = <<<EOT
+        $description = <<<'EOT'
 **Permission:** `Community Worker`
 - Edit their own profile
 
@@ -252,7 +254,7 @@ EOT;
                 ->required(),
         ];
 
-        $description = <<<EOT
+        $description = <<<'EOT'
 **Permission:** `Organisation Admin`
 
 ***
@@ -310,7 +312,7 @@ EOT;
                 ->description('The user ID')
                 ->required(),
         ];
-        $description = <<<EOT
+        $description = <<<'EOT'
 **Permission:** `Community Worker`
 - Can refresh their own calendar feed token
 EOT;
@@ -338,7 +340,7 @@ EOT;
             ),
         ];
 
-        $description = <<<EOT
+        $description = <<<'EOT'
 **Permission:** `Community Worker`
 EOT;
 

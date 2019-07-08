@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Docs\Paths;
 
 use App\Docs\Requests;
@@ -158,7 +160,7 @@ class ServiceUsers
      */
     public static function appointments(): Operation
     {
-        $description = <<<EOT
+        $description = <<<'EOT'
 **Permission:** `Service User`
 * View all their appointments
 EOT;
@@ -186,7 +188,7 @@ EOT;
             Parameter::query('append', Schema::string())
                 ->description('Comma separated fields to append [`user_first_name`, `user_last_name`, `user_email`, `user_phone`]'),
             Parameter::query('sort', Schema::string()->default('start_at'))
-                ->description('The field to sort the results by [`start_at`]')
+                ->description('The field to sort the results by [`start_at`]'),
         ];
 
         return Operation::get(...$responses)

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Geocoders;
 
 use App\Contracts\Geocoder;

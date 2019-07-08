@@ -1,14 +1,14 @@
 <?php
 
-use Illuminate\Support\Facades\DB;
+declare(strict_types=1);
+
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Support\Facades\DB;
 
 class RemoveNotificationCustomisationSettings extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
     public function up()
     {
@@ -19,8 +19,6 @@ class RemoveNotificationCustomisationSettings extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
     public function down()
     {
@@ -30,8 +28,6 @@ class RemoveNotificationCustomisationSettings extends Migration
 
     /**
      * @param array $args
-     *
-     * @return void
      */
     protected function addRecord(...$args)
     {

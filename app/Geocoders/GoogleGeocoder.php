@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Geocoders;
 
 use App\Contracts\Geocoder;
@@ -33,8 +35,8 @@ class GoogleGeocoder implements Geocoder
 
     /**
      * @param \App\Support\Postcode $postcode
-     * @return \App\Support\Coordinate
      * @throws \App\Exceptions\AddressNotFoundException
+     * @return \App\Support\Coordinate
      */
     public function geocode(Postcode $postcode): Coordinate
     {
@@ -51,8 +53,8 @@ class GoogleGeocoder implements Geocoder
 
     /**
      * @param \App\Support\Postcode $postcode
-     * @return \App\Support\Coordinate
      * @throws \App\Exceptions\AddressNotFoundException
+     * @return \App\Support\Coordinate
      */
     protected function fetchFromGoogle(Postcode $postcode): Coordinate
     {
@@ -61,7 +63,7 @@ class GoogleGeocoder implements Geocoder
             'query' => [
                 'address' => $this->normaliseAddress($postcode),
                 'key' => $this->apiKey,
-            ]
+            ],
         ]);
 
         // Parse the results.

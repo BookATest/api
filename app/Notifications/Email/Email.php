@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Notifications\Email;
 
 use App\Contracts\EmailSender;
@@ -82,7 +84,6 @@ abstract class Email implements ShouldQueue
      * Execute the job.
      *
      * @param \App\Contracts\EmailSender $emailSender
-     * @return void
      */
     public function handle(EmailSender $emailSender)
     {

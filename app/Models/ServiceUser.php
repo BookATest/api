@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
 use App\Models\Mutators\ServiceUserMutators;
@@ -64,6 +66,7 @@ class ServiceUser extends Model
         if (Cache::get($attemptsCacheKey) > config('bat.max_service_user_token_attempts')) {
             Cache::forget($cacheKey);
             Cache::forget($attemptsCacheKey);
+
             return false;
         }
 
@@ -75,6 +78,7 @@ class ServiceUser extends Model
             // Keep track of failed attempts.
             if (!$accessCodeMatches) {
                 Cache::increment($attemptsCacheKey);
+
                 return false;
             }
         }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Requests\Setting;
 
 use App\Rules\Base64EncodedPng;
@@ -98,7 +100,6 @@ class UpdateRequest extends FormRequest
                 'nullable',
                 'string',
             ],
-
 
             'language.make-booking.introduction.title' => [
                 'required',

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\ReportGenerators;
 
 use App\Exceptions\InvalidReportTypeException;
@@ -17,8 +19,8 @@ class ReportGeneratorFactory
 
     /**
      * @param \App\Models\Report $report
-     * @return \App\ReportGenerators\ReportGenerator
      * @throws \App\Exceptions\InvalidReportTypeException
+     * @return \App\ReportGenerators\ReportGenerator
      */
     public static function for(Report $report): ReportGenerator
     {

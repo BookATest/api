@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Console\Commands\Bat;
 
 use App\Models\User;
@@ -34,8 +36,8 @@ class CreateUserCommand extends Command
     /**
      * Execute the console command.
      *
-     * @return mixed
      * @throws \Throwable
+     * @return mixed
      */
     public function handle()
     {

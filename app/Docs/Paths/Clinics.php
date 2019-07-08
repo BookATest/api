@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Docs\Paths;
 
 use App\Docs\Requests;
@@ -172,7 +174,7 @@ class Clinics
                 )
         );
 
-        $description = <<<EOT
+        $description = <<<'EOT'
 **Permission:** `Clinic Admin`
 * Update a clinic they are a `Clinic Admin` for
 EOT;
@@ -202,7 +204,7 @@ EOT;
                 ->required(),
         ];
 
-        $description = <<<EOT
+        $description = <<<'EOT'
 **Permission:** `Organisation Admin`
 
 ***

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Database\Migrations\MigrationSeeder;
 use Illuminate\Support\Facades\DB;
 
@@ -7,8 +9,6 @@ class AddStylesRowToSettingsTable extends MigrationSeeder
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
     public function up()
     {
@@ -17,8 +17,6 @@ class AddStylesRowToSettingsTable extends MigrationSeeder
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
     public function down()
     {
@@ -27,8 +25,6 @@ class AddStylesRowToSettingsTable extends MigrationSeeder
 
     /**
      * @param array $args
-     *
-     * @return void
      */
     protected function addRecord(...$args)
     {

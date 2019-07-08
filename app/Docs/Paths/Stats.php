@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Docs\Paths;
 
 use App\Docs\Resources\StatResource;
@@ -25,7 +27,7 @@ class Stats
      */
     public static function index(): Operation
     {
-        $description = <<<EOT
+        $description = <<<'EOT'
 **Permission:** `Community Worker`
 
 ***
@@ -33,7 +35,6 @@ class Stats
 The stats returned will vary depending on the calling user's role (i.e. more stats will be available for users
 with greater roles).
 EOT;
-
 
         $responses = [
             Responses::http200(

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Database\Migrations\MigrationSeeder;
 use Illuminate\Support\Facades\DB;
 
@@ -7,8 +9,6 @@ class UpdateLanguageObjectInSettingsTable extends MigrationSeeder
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
     public function up()
     {
@@ -94,8 +94,6 @@ class UpdateLanguageObjectInSettingsTable extends MigrationSeeder
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
     public function down()
     {
@@ -117,8 +115,6 @@ class UpdateLanguageObjectInSettingsTable extends MigrationSeeder
 
     /**
      * @param array $args
-     *
-     * @return void
      */
     protected function addRecord(...$args)
     {

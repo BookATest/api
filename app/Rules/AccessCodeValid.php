@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Rules;
 
 use App\Models\ServiceUser;
@@ -25,8 +27,8 @@ class AccessCodeValid implements Rule
     /**
      * Determine if the validation rule passes.
      *
-     * @param  string $attribute
-     * @param  mixed $accessCode
+     * @param string $attribute
+     * @param mixed $accessCode
      * @return bool
      */
     public function passes($attribute, $accessCode)
