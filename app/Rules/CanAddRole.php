@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace App\Rules;
 
 use App\Models\Clinic;
@@ -37,8 +35,8 @@ class CanAddRole implements Rule
     /**
      * Determine if the validation rule passes.
      *
-     * @param string $attribute
-     * @param mixed $role
+     * @param  string $attribute
+     * @param  mixed $role
      * @return bool
      */
     public function passes($attribute, $role)
@@ -88,15 +86,12 @@ class CanAddRole implements Rule
         switch ($roleName) {
             case Role::COMMUNITY_WORKER:
                 $isAlreadyCommunityWorker = $this->subjectUser->isCommunityWorker($clinic);
-
                 return $isAlreadyCommunityWorker ?: $this->user->canMakeCommunityWorker($clinic);
             case Role::CLINIC_ADMIN:
                 $isAlreadyClinicAdmin = $this->subjectUser->isClinicAdmin($clinic);
-
                 return $isAlreadyClinicAdmin ?: $this->user->canMakeClinicAdmin($clinic);
             case Role::ORGANISATION_ADMIN:
                 $isAlreadyOrganisationAdmin = $this->subjectUser->isOrganisationAdmin();
-
                 return $isAlreadyOrganisationAdmin ?: $this->user->canMakeOrganisationAdmin();
         }
     }

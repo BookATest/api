@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace App\Rules;
 
 use App\Models\ServiceUser;
@@ -27,8 +25,8 @@ class ServiceUserTokenIsValid implements Rule
     /**
      * Determine if the validation rule passes.
      *
-     * @param string $attribute
-     * @param mixed $serviceUserToken
+     * @param  string $attribute
+     * @param  mixed $serviceUserToken
      * @return bool
      */
     public function passes($attribute, $serviceUserToken)

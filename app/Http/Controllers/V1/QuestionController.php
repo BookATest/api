@@ -1,15 +1,13 @@
 <?php
 
-declare(strict_types=1);
-
 namespace App\Http\Controllers\V1;
 
 use App\Events\EndpointHit;
-use App\Http\Controllers\Controller;
 use App\Http\Requests\Question\IndexRequest;
 use App\Http\Requests\Question\StoreRequest;
 use App\Http\Resources\QuestionResource;
 use App\Models\Question;
+use App\Http\Controllers\Controller;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
@@ -73,7 +71,7 @@ class QuestionController extends Controller
             return $questions;
         });
 
-        event(EndpointHit::onCreate($request, 'Created questions'));
+        event(EndpointHit::onCreate($request, "Created questions"));
 
         return QuestionResource::collection($questions)
             ->toResponse($request)

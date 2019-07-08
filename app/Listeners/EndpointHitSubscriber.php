@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace App\Listeners;
 
 use App\Events\EndpointHit;
@@ -27,7 +25,6 @@ class EndpointHitSubscriber
         // When an authenticated user makes the request.
         if ($event->getAuditable()) {
             $event->getAuditable()->audits()->create($attributes);
-
             return;
         }
 

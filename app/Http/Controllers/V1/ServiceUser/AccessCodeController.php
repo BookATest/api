@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace App\Http\Controllers\V1\ServiceUser;
 
 use App\Contracts\SmsSender;

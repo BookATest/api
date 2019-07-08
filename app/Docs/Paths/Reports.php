@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace App\Docs\Paths;
 
 use App\Docs\Requests;
@@ -29,7 +27,7 @@ class Reports
      */
     public static function index(): Operation
     {
-        $description = <<<'EOT'
+        $description = <<<EOT
 **Permission:** `Community Worker`
 - List their own reports
 EOT;
@@ -60,7 +58,7 @@ EOT;
      */
     public static function store(): Operation
     {
-        $description = <<<'EOT'
+        $description = <<<EOT
 **Permission:** `Community Worker`
 - Create reports for them self
 EOT;
@@ -93,7 +91,7 @@ EOT;
      */
     public static function show(): Operation
     {
-        $description = <<<'EOT'
+        $description = <<<EOT
 **Permission:** `Community Worker`
 - Show their own reports
 EOT;
@@ -123,7 +121,7 @@ EOT;
      */
     public static function destroy(): Operation
     {
-        $description = <<<'EOT'
+        $description = <<<EOT
 **Permission:** `Community Worker`
 - Delete their own reports
 EOT;
@@ -153,7 +151,7 @@ EOT;
      */
     public static function download(): Operation
     {
-        $description = <<<'EOT'
+        $description = <<<EOT
 **Permission:** `Community Worker`
 - Download their own reports
 EOT;

@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace App\Notifications\Sms;
 
 use App\Contracts\SmsSender;
@@ -71,6 +69,7 @@ abstract class Sms implements ShouldQueue
      * Execute the job.
      *
      * @param \App\Contracts\SmsSender $smsSender
+     * @return void
      */
     public function handle(SmsSender $smsSender)
     {

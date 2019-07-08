@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace App\Models\Mutators;
 
 use Carbon\CarbonImmutable;
@@ -17,7 +15,7 @@ trait AppointmentMutators
     }
 
     /**
-     * @return string|null
+     * @return null|string
      */
     public function getServiceUserNameAttribute(): ?string
     {
@@ -41,7 +39,7 @@ trait AppointmentMutators
     }
 
     /**
-     * @return string|null
+     * @return null|string
      */
     public function getUserEmailAttribute(): ?string
     {
@@ -49,7 +47,7 @@ trait AppointmentMutators
     }
 
     /**
-     * @return string|null
+     * @return null|string
      */
     public function getUserPhoneAttribute(): ?string
     {
@@ -58,8 +56,8 @@ trait AppointmentMutators
 
     /**
      * @param string $startAt
-     * @throws \Exception
      * @return \Carbon\CarbonImmutable
+     * @throws \Exception
      */
     public function getStartAtAttribute(string $startAt): CarbonImmutable
     {

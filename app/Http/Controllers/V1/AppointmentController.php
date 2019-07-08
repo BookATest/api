@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace App\Http\Controllers\V1;
 
 use App\Events\EndpointHit;
@@ -146,7 +144,7 @@ class AppointmentController extends Controller
      * Display the specified resource.
      *
      * @param \App\Http\Requests\Appointment\ShowRequest $request
-     * @param \App\Models\Appointment $appointment
+     * @param  \App\Models\Appointment $appointment
      * @return \App\Http\Resources\AppointmentResource
      */
     public function show(ShowRequest $request, Appointment $appointment)
@@ -175,7 +173,7 @@ class AppointmentController extends Controller
      * Update the specified resource in storage.
      *
      * @param \App\Http\Requests\Appointment\UpdateRequest $request
-     * @param \App\Models\Appointment $appointment
+     * @param  \App\Models\Appointment $appointment
      * @return \App\Http\Resources\AppointmentResource
      */
     public function update(UpdateRequest $request, Appointment $appointment)
@@ -193,7 +191,7 @@ class AppointmentController extends Controller
      * Remove the specified resource from storage.
      *
      * @param \App\Http\Requests\Appointment\DestroyRequest $request
-     * @param \App\Models\Appointment $appointment
+     * @param  \App\Models\Appointment $appointment
      * @return \App\Http\Responses\ResourceDeletedResponse
      */
     public function destroy(DestroyRequest $request, Appointment $appointment)

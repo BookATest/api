@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace App\Rules;
 
 use Illuminate\Contracts\Validation\Rule;
@@ -11,8 +9,8 @@ class Base64EncodedPng implements Rule
     /**
      * Determine if the validation rule passes.
      *
-     * @param string $attribute
-     * @param mixed $image
+     * @param  string $attribute
+     * @param  mixed $image
      * @return bool
      */
     public function passes($attribute, $image)

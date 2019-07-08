@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace App\Models;
 
 use App\Exceptions\CannotRevokeRoleException;
@@ -64,6 +62,8 @@ class User extends Authenticatable
 
     /**
      * The "booting" method of the model.
+     *
+     * @return void
      */
     protected static function boot()
     {
@@ -91,7 +91,8 @@ class User extends Authenticatable
     /**
      * Send the password reset notification.
      *
-     * @param string $token
+     * @param  string $token
+     * @return void
      */
     public function sendPasswordResetNotification($token)
     {
@@ -222,7 +223,6 @@ class User extends Authenticatable
             case Role::COMMUNITY_WORKER:
                 $requesterIsClinicAdmin = $this->isClinicAdmin($userRole->clinic);
                 $subjectIsClinicAdmin = $subjectUser->isClinicAdmin($userRole->clinic);
-
                 return $requesterIsClinicAdmin && !$subjectIsClinicAdmin;
         }
 
@@ -305,8 +305,8 @@ class User extends Authenticatable
 
     /**
      * @param \App\Models\Clinic $clinic
-     * @throws \App\Exceptions\CannotRevokeRoleException
      * @return \App\Models\User
+     * @throws \App\Exceptions\CannotRevokeRoleException
      */
     public function revokeCommunityWorker(Clinic $clinic): self
     {
@@ -319,8 +319,8 @@ class User extends Authenticatable
 
     /**
      * @param \App\Models\Clinic $clinic
-     * @throws \App\Exceptions\CannotRevokeRoleException
      * @return \App\Models\User
+     * @throws \App\Exceptions\CannotRevokeRoleException
      */
     public function revokeClinicAdmin(Clinic $clinic): self
     {
@@ -377,7 +377,7 @@ class User extends Authenticatable
         }
 
         // Generate the token.
-        $token = mb_strtoupper(str_random(10));
+        $token = strtoupper(str_random(10));
 
         // Use recursion if the token has already been used.
         if (static::where('calendar_feed_token', $token)->exists()) {
@@ -476,8 +476,8 @@ class User extends Authenticatable
     }
 
     /**
-     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      * @return \Illuminate\Http\Response
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
     public function placeholderProfilePicture(): Response
     {
@@ -485,7 +485,7 @@ class User extends Authenticatable
 
         return response()->make($content, Response::HTTP_OK, [
             'Content-Type' => File::MIME_JPEG,
-            'Content-Disposition' => 'inline; filename="profile-picture.jpg"',
+            'Content-Disposition' => "inline; filename=\"profile-picture.jpg\"",
         ]);
     }
 
@@ -577,8 +577,8 @@ class User extends Authenticatable
 
     /**
      * @param string $content
-     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      * @return \App\Models\File
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
     public function uploadProfilePicture(string $content): File
     {

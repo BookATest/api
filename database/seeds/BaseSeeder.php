@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 use Illuminate\Database\DatabaseManager;
 use Illuminate\Database\Seeder;
 
@@ -35,6 +33,8 @@ abstract class BaseSeeder extends Seeder
 
     /**
      * @param array $args
+     *
+     * @return void
      */
     abstract protected function addRecord(...$args);
 }

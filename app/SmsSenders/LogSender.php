@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace App\SmsSenders;
 
 use App\Contracts\SmsSender;
@@ -14,7 +12,7 @@ class LogSender implements SmsSender
      */
     public function send(Sms $sms)
     {
-        $text = 'Notification sent' . PHP_EOL;
+        $text = "Notification sent" . PHP_EOL;
         $text .= "To: [{$sms->getTo()}]" . PHP_EOL;
         $text .= "Message: [{$sms->getMessage()}]" . PHP_EOL;
         $text .= "Notification: [{$sms->getNotification()->id}]";

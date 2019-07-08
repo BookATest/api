@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace App\Http\Controllers\V1;
 
 use App\Events\EndpointHit;
@@ -119,7 +117,7 @@ class UserController extends Controller
      * Display the specified resource.
      *
      * @param \App\Http\Requests\User\ShowRequest $request
-     * @param \App\Models\User $user
+     * @param  \App\Models\User $user
      * @return \App\Http\Resources\UserResource
      */
     public function show(ShowRequest $request, User $user)
@@ -144,7 +142,7 @@ class UserController extends Controller
      * Update the specified resource in storage.
      *
      * @param \App\Http\Requests\User\UpdateRequest $request
-     * @param \App\Models\User $user
+     * @param  \App\Models\User $user
      * @return \App\Http\Resources\UserResource
      */
     public function update(UpdateRequest $request, User $user)
@@ -228,7 +226,7 @@ class UserController extends Controller
      * Remove the specified resource from storage.
      *
      * @param \App\Http\Requests\User\DestroyRequest $request
-     * @param \App\Models\User $user
+     * @param  \App\Models\User $user
      * @return \App\Http\Responses\ResourceDeletedResponse
      */
     public function destroy(DestroyRequest $request, User $user)

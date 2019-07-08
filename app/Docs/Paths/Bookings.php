@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace App\Docs\Paths;
 
 use App\Docs\Requests;
@@ -55,7 +53,7 @@ class Bookings
                 )
         );
 
-        $description = <<<'EOT'
+        $description = <<<EOT
 **Permission:** `Open`
 
 ***
@@ -104,7 +102,7 @@ EOT;
                 )
         );
 
-        $description = <<<'EOT'
+        $description = <<<EOT
 **Permission:** `Open`
 
 ***

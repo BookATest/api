@@ -1,12 +1,9 @@
 <?php
 
-declare(strict_types=1);
-
 namespace App\Http\Controllers\V1;
 
 use App\Contracts\Geocoder;
 use App\Events\EndpointHit;
-use App\Http\Controllers\Controller;
 use App\Http\Requests\Clinic\DestroyRequest;
 use App\Http\Requests\Clinic\IndexRequest;
 use App\Http\Requests\Clinic\ShowRequest;
@@ -15,6 +12,7 @@ use App\Http\Requests\Clinic\UpdateRequest;
 use App\Http\Resources\ClinicResource;
 use App\Http\Responses\ResourceDeletedResponse;
 use App\Models\Clinic;
+use App\Http\Controllers\Controller;
 use App\Support\Postcode;
 use Illuminate\Support\Facades\DB;
 use Spatie\QueryBuilder\Filter;
@@ -83,7 +81,7 @@ class ClinicController extends Controller
                 'address_line_2' => $request->address_line_2,
                 'address_line_3' => $request->address_line_3,
                 'city' => $request->city,
-                'postcode' => mb_strtoupper($request->postcode),
+                'postcode' => strtoupper($request->postcode),
                 'directions' => $request->directions,
                 'appointment_duration' => $request->appointment_duration,
                 'appointment_booking_threshold' => $request->appointment_booking_threshold,
@@ -108,7 +106,7 @@ class ClinicController extends Controller
      * Display the specified resource.
      *
      * @param \App\Http\Requests\Clinic\ShowRequest $request
-     * @param \App\Models\Clinic $clinic
+     * @param  \App\Models\Clinic $clinic
      * @return \App\Http\Resources\ClinicResource
      */
     public function show(ShowRequest $request, Clinic $clinic)
@@ -122,7 +120,7 @@ class ClinicController extends Controller
      * Update the specified resource in storage.
      *
      * @param \App\Http\Requests\Clinic\UpdateRequest $request
-     * @param \App\Models\Clinic $clinic
+     * @param  \App\Models\Clinic $clinic
      * @return \App\Http\Resources\ClinicResource
      */
     public function update(UpdateRequest $request, Clinic $clinic)
@@ -136,7 +134,7 @@ class ClinicController extends Controller
                 'address_line_2' => $request->address_line_2,
                 'address_line_3' => $request->address_line_3,
                 'city' => $request->city,
-                'postcode' => mb_strtoupper($request->postcode),
+                'postcode' => strtoupper($request->postcode),
                 'directions' => $request->directions,
                 // TODO: 'appointment_duration' => $request->appointment_duration,
                 'appointment_booking_threshold' => $request->appointment_booking_threshold,
@@ -161,7 +159,7 @@ class ClinicController extends Controller
      * Remove the specified resource from storage.
      *
      * @param \App\Http\Requests\Clinic\DestroyRequest $request
-     * @param \App\Models\Clinic $clinic
+     * @param  \App\Models\Clinic $clinic
      * @return \App\Http\Responses\ResourceDeletedResponse
      */
     public function destroy(DestroyRequest $request, Clinic $clinic)

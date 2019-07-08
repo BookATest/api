@@ -1,15 +1,13 @@
 <?php
 
-declare(strict_types=1);
-
 namespace App\Http\Controllers\V1;
 
 use App\Events\EndpointHit;
-use App\Http\Controllers\Controller;
 use App\Http\Requests\ServiceUser\IndexRequest;
 use App\Http\Requests\ServiceUser\ShowRequest;
 use App\Http\Resources\ServiceUserResource;
 use App\Models\ServiceUser;
+use App\Http\Controllers\Controller;
 use Spatie\QueryBuilder\Filter;
 use Spatie\QueryBuilder\QueryBuilder;
 
@@ -54,7 +52,7 @@ class ServiceUserController extends Controller
      * Display the specified resource.
      *
      * @param \App\Http\Requests\ServiceUser\ShowRequest $request
-     * @param \App\Models\ServiceUser $serviceUser
+     * @param  \App\Models\ServiceUser $serviceUser
      * @return \App\Http\Resources\ServiceUserResource
      */
     public function show(ShowRequest $request, ServiceUser $serviceUser)

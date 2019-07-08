@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace App\Docs\Paths;
 
 use App\Docs\Requests;
@@ -27,7 +25,7 @@ class Questions
      */
     public static function index(): Operation
     {
-        $description = <<<'EOT'
+        $description = <<<EOT
 **Permission:** `Open`
 
 ***
@@ -57,7 +55,7 @@ EOT;
      */
     public static function store(): Operation
     {
-        $description = <<<'EOT'
+        $description = <<<EOT
 **Permission:** `Organisation Admin`
 
 ***

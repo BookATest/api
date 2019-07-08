@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace App\Http\Controllers\V1;
 
 use App\Events\EndpointHit;
@@ -34,7 +32,7 @@ class SettingController extends Controller
         $settings = Setting::getAll();
         unset($settings[Setting::LOGO_FILE_ID]);
 
-        event(EndpointHit::onRead($request, 'Viewed settings'));
+        event(EndpointHit::onRead($request, "Viewed settings"));
 
         return response()->json(['data' => $settings]);
     }
@@ -165,7 +163,7 @@ class SettingController extends Controller
         $settings = Setting::getAll();
         unset($settings[Setting::LOGO_FILE_ID]);
 
-        event(EndpointHit::onUpdate($request, 'Updated settings'));
+        event(EndpointHit::onUpdate($request, "Updated settings"));
 
         return response()->json(['data' => $settings]);
     }

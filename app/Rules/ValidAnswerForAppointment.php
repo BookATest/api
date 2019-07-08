@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace App\Rules;
 
 use App\Models\Appointment;
@@ -31,8 +29,8 @@ class ValidAnswerForAppointment implements Rule
     /**
      * Determine if the validation rule passes.
      *
-     * @param string $attribute
-     * @param mixed $answer
+     * @param  string $attribute
+     * @param  mixed $answer
      * @return bool
      */
     public function passes($attribute, $answer)

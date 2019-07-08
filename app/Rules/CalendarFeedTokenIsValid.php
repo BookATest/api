@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace App\Rules;
 
 use App\Models\User;
@@ -12,8 +10,8 @@ class CalendarFeedTokenIsValid implements Rule
     /**
      * Determine if the validation rule passes.
      *
-     * @param string $attribute
-     * @param mixed $token
+     * @param  string $attribute
+     * @param  mixed $token
      * @return bool
      */
     public function passes($attribute, $token)

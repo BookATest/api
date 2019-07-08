@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace App\Docs\Paths;
 
 use App\Docs\Resources\AuditResource;

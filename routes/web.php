@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -19,7 +17,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', 'HomeController')->name('home');
 
 Route::namespace('Auth')->group(function () {
-    // Authentication Routes.
+// Authentication Routes.
     Route::get('login', 'LoginController@showLoginForm')->name('login');
     Route::post('login', 'LoginController@login');
     Route::get('login/code', 'LoginController@showOtpForm')->name('login.code');
@@ -40,7 +38,7 @@ Route::get('docs/openapi.json', 'DocsController@openapi')
     ->name('docs.openapi');
 
 // Temporary DNA Routes - TODO: Remove these and replace with endpoints on the admin app.
-Route::get('appointments/{appointment}/did-not-attend/{payload}', function (App\Models\Appointment $appointment, string $payload) {
+Route::get('appointments/{appointment}/did-not-attend/{payload}', function (\App\Models\Appointment $appointment, string $payload) {
     try {
         $didNotAttend = json_decode(decrypt($payload), true);
     } catch (\Exception $exception) {

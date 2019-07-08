@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace App\Geocoders;
 
 use App\Models\CachedGeocodeResult;
@@ -16,7 +14,7 @@ trait CachesResults
      */
     protected function normaliseAddress(Postcode $postcode): string
     {
-        $postcode = mb_strtolower($postcode->get());
+        $postcode = strtolower($postcode->get());
         $postcode = single_space($postcode);
 
         return "$postcode, united kingdom";
