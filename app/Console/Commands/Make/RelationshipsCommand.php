@@ -41,16 +41,16 @@ class RelationshipsCommand extends Command
         $model = $this->argument('model');
 
         return <<<EOT
-<?php
-
-namespace App\Models\Relationships;
-
-trait {$model}Relationships
-{
-    //
-}
-
-EOT;
+            <?php
+            
+            namespace App\Models\Relationships;
+            
+            trait {$model}Relationships
+            {
+                //
+            }
+            
+            EOT;
     }
 
     /**

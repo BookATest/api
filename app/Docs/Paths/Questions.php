@@ -25,17 +25,6 @@ class Questions
      */
     public static function index(): Operation
     {
-        $description = <<<'EOT'
-**Permission:** `Open`
-
-***
-
-This endpoint will only return a list of all the current eligibility questions.
-
-It's important to realise that previous questions cannot be accessed through the API, even though they remain in
-the database.
-EOT;
-
         $responses = [
             Responses::http200(
                 MediaType::json(QuestionResource::all())
@@ -45,7 +34,18 @@ EOT;
         return Operation::get(...$responses)
             ->security([])
             ->summary('List all questions')
-            ->description($description)
+            ->description(
+                <<<'EOT'
+                **Permission:** `Open`
+                
+                ***
+                
+                This endpoint will only return a list of all the current eligibility questions.
+                
+                It's important to realise that previous questions cannot be accessed through the API, even though they remain in
+                the database.
+                EOT
+            )
             ->operationId('questions.index')
             ->tags(Tags::questions()->name);
     }
@@ -55,17 +55,6 @@ EOT;
      */
     public static function store(): Operation
     {
-        $description = <<<'EOT'
-**Permission:** `Organisation Admin`
-
-***
-
-This will create a completely new set of eligibility questions.
-
-Even if you only intend to add a new question, the entire set will be recreated. This means all clinics will
-need to respecify their eligibility criteria.
-EOT;
-
         $responses = [
             Responses::http200(
                 MediaType::json(QuestionResource::all())
@@ -87,7 +76,18 @@ EOT;
         return Operation::post(...$responses)
             ->requestBody($requestBody)
             ->summary('Create a new set of eligibility questions')
-            ->description($description)
+            ->description(
+                <<<'EOT'
+                **Permission:** `Organisation Admin`
+                
+                ***
+                
+                This will create a completely new set of eligibility questions.
+                
+                Even if you only intend to add a new question, the entire set will be recreated. This means all clinics will
+                need to respecify their eligibility criteria.
+                EOT
+            )
             ->operationId('questions.store')
             ->tags(Tags::questions()->name);
     }

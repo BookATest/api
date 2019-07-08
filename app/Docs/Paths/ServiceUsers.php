@@ -158,11 +158,6 @@ class ServiceUsers
      */
     public static function appointments(): Operation
     {
-        $description = <<<'EOT'
-**Permission:** `Service User`
-* View all their appointments
-EOT;
-
         $responses = [
             Responses::http200(
                 MediaType::json(AppointmentResource::list())
@@ -193,7 +188,12 @@ EOT;
             ->security([])
             ->parameters(...$parameters)
             ->summary('List all appointments for the service user')
-            ->description($description)
+            ->description(
+                <<<'EOT'
+                **Permission:** `Service User`
+                * View all their appointments
+                EOT
+            )
             ->operationId('service-users.appointments.index')
             ->tags(Tags::appointments()->name, Tags::serviceUsers()->name);
     }

@@ -27,11 +27,6 @@ class ReportSchedules
      */
     public static function index(): Operation
     {
-        $description = <<<'EOT'
-**Permission:** `Community Worker`
-- List their own report schedules
-EOT;
-
         $responses = [
             Responses::http200(
                 MediaType::json(ReportScheduleResource::list())
@@ -50,7 +45,12 @@ EOT;
         return Operation::get(...$responses)
             ->parameters(...$parameters)
             ->summary('List all report schedules')
-            ->description($description)
+            ->description(
+                <<<'EOT'
+                **Permission:** `Community Worker`
+                - List their own report schedules
+                EOT
+            )
             ->operationId('report-schedules.index')
             ->tags(Tags::reportSchedules()->name);
     }
@@ -60,11 +60,6 @@ EOT;
      */
     public static function store(): Operation
     {
-        $description = <<<'EOT'
-**Permission:** `Community Worker`
-- Create reports for them self
-EOT;
-
         $responses = [
             Responses::http201(
                 MediaType::json(ReportScheduleResource::show())
@@ -82,7 +77,12 @@ EOT;
         return Operation::post(...$responses)
             ->requestBody($requestBody)
             ->summary('Create a new report schedule')
-            ->description($description)
+            ->description(
+                <<<'EOT'
+                **Permission:** `Community Worker`
+                - Create reports for them self
+                EOT
+            )
             ->operationId('report-schedules.store')
             ->tags(Tags::reportSchedules()->name);
     }
@@ -92,11 +92,6 @@ EOT;
      */
     public static function show(): Operation
     {
-        $description = <<<'EOT'
-**Permission:** `Community Worker`
-- View their own report schedule
-EOT;
-
         $responses = [
             Responses::http200(
                 MediaType::json(ReportScheduleResource::show())
@@ -112,7 +107,12 @@ EOT;
         return Operation::get(...$responses)
             ->parameters(...$parameters)
             ->summary('Show the specified report schedule')
-            ->description($description)
+            ->description(
+                <<<'EOT'
+                **Permission:** `Community Worker`
+                - View their own report schedule
+                EOT
+            )
             ->operationId('report-schedules.show')
             ->tags(Tags::reportSchedules()->name);
     }
@@ -122,11 +122,6 @@ EOT;
      */
     public static function destroy(): Operation
     {
-        $description = <<<'EOT'
-**Permission:** `Community Worker`
-- Delete their own report schedule
-EOT;
-
         $responses = [
             Responses::http200(
                 MediaType::json(BaseResource::deleted())
@@ -142,7 +137,12 @@ EOT;
         return Operation::delete(...$responses)
             ->parameters(...$parameters)
             ->summary('Delete the specified report schedule')
-            ->description($description)
+            ->description(
+                <<<'EOT'
+                **Permission:** `Community Worker`
+                - Delete their own report schedule
+                EOT
+            )
             ->operationId('report-schedules.destroy')
             ->tags(Tags::reportSchedules()->name);
     }

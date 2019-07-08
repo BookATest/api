@@ -27,11 +27,6 @@ class Reports
      */
     public static function index(): Operation
     {
-        $description = <<<'EOT'
-**Permission:** `Community Worker`
-- List their own reports
-EOT;
-
         $responses = [
             Responses::http200(
                 MediaType::json(ReportResource::list())
@@ -48,7 +43,12 @@ EOT;
         return Operation::get(...$responses)
             ->parameters(...$parameters)
             ->summary('List all reports')
-            ->description($description)
+            ->description(
+                <<<'EOT'
+                **Permission:** `Community Worker`
+                - List their own reports
+                EOT
+            )
             ->operationId('reports.index')
             ->tags(Tags::reports()->name);
     }
@@ -58,11 +58,6 @@ EOT;
      */
     public static function store(): Operation
     {
-        $description = <<<'EOT'
-**Permission:** `Community Worker`
-- Create reports for them self
-EOT;
-
         $responses = [
             Responses::http201(
                 MediaType::json(ReportResource::show())
@@ -81,7 +76,12 @@ EOT;
         return Operation::post(...$responses)
             ->requestBody($requestBody)
             ->summary('Create a new report')
-            ->description($description)
+            ->description(
+                <<<'EOT'
+                **Permission:** `Community Worker`
+                - Create reports for them self
+                EOT
+            )
             ->operationId('reports.store')
             ->tags(Tags::reports()->name);
     }
@@ -91,11 +91,6 @@ EOT;
      */
     public static function show(): Operation
     {
-        $description = <<<'EOT'
-**Permission:** `Community Worker`
-- Show their own reports
-EOT;
-
         $responses = [
             Responses::http200(
                 MediaType::json(ReportResource::show())
@@ -111,7 +106,12 @@ EOT;
         return Operation::get(...$responses)
             ->parameters(...$parameters)
             ->summary('Show the specified report')
-            ->description($description)
+            ->description(
+                <<<'EOT'
+                **Permission:** `Community Worker`
+                - Show their own reports
+                EOT
+            )
             ->operationId('reports.show')
             ->tags(Tags::reports()->name);
     }
@@ -121,11 +121,6 @@ EOT;
      */
     public static function destroy(): Operation
     {
-        $description = <<<'EOT'
-**Permission:** `Community Worker`
-- Delete their own reports
-EOT;
-
         $responses = [
             Responses::http200(
                 MediaType::json(BaseResource::deleted())
@@ -141,7 +136,12 @@ EOT;
         return Operation::delete(...$responses)
             ->parameters(...$parameters)
             ->summary('Delete the specified report')
-            ->description($description)
+            ->description(
+                <<<'EOT'
+                **Permission:** `Community Worker`
+                - Delete their own reports
+                EOT
+            )
             ->operationId('reports.destroy')
             ->tags(Tags::reports()->name);
     }
@@ -151,11 +151,6 @@ EOT;
      */
     public static function download(): Operation
     {
-        $description = <<<'EOT'
-**Permission:** `Community Worker`
-- Download their own reports
-EOT;
-
         $responses = [
             Responses::http200(
                 MediaType::create('application/pdf', Schema::string()->format(Schema::BINARY))
@@ -171,7 +166,12 @@ EOT;
         return Operation::get(...$responses)
             ->parameters(...$parameters)
             ->summary('Download the specified report')
-            ->description($description)
+            ->description(
+                <<<'EOT'
+                **Permission:** `Community Worker`
+                - Download their own reports
+                EOT
+            )
             ->operationId('reports.download')
             ->tags(Tags::reports()->name);
     }
