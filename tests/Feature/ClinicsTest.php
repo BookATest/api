@@ -44,8 +44,8 @@ class ClinicsTest extends TestCase
                     'appointment_booking_threshold',
                     'created_at',
                     'updated_at',
-                ]
-            ]
+                ],
+            ],
         ]);
         $response->assertJsonFragment([
             [
@@ -63,7 +63,7 @@ class ClinicsTest extends TestCase
                 'appointment_booking_threshold' => $clinic->appointment_booking_threshold,
                 'created_at' => $clinic->created_at->toIso8601String(),
                 'updated_at' => $clinic->updated_at->toIso8601String(),
-            ]
+            ],
         ]);
     }
 
@@ -106,8 +106,8 @@ class ClinicsTest extends TestCase
                     'send_dna_follow_ups',
                     'created_at',
                     'updated_at',
-                ]
-            ]
+                ],
+            ],
         ]);
         $response->assertJsonFragment([
             [
@@ -127,7 +127,7 @@ class ClinicsTest extends TestCase
                 'send_dna_follow_ups' => $clinic->send_dna_follow_ups,
                 'created_at' => $clinic->created_at->toIso8601String(),
                 'updated_at' => $clinic->updated_at->toIso8601String(),
-            ]
+            ],
         ]);
     }
 
@@ -294,7 +294,7 @@ class ClinicsTest extends TestCase
                 'appointment_booking_threshold',
                 'created_at',
                 'updated_at',
-            ]
+            ],
         ]);
         $response->assertJsonFragment([
             [
@@ -312,7 +312,7 @@ class ClinicsTest extends TestCase
                 'appointment_booking_threshold' => $clinic->appointment_booking_threshold,
                 'created_at' => $clinic->created_at->toIso8601String(),
                 'updated_at' => $clinic->updated_at->toIso8601String(),
-            ]
+            ],
         ]);
     }
 
@@ -343,7 +343,7 @@ class ClinicsTest extends TestCase
                 'send_dna_follow_ups',
                 'created_at',
                 'updated_at',
-            ]
+            ],
         ]);
         $response->assertJsonFragment([
             [
@@ -363,7 +363,7 @@ class ClinicsTest extends TestCase
                 'send_dna_follow_ups' => $clinic->send_dna_follow_ups,
                 'created_at' => $clinic->created_at->toIso8601String(),
                 'updated_at' => $clinic->updated_at->toIso8601String(),
-            ]
+            ],
         ]);
     }
 
@@ -379,7 +379,7 @@ class ClinicsTest extends TestCase
             $this->assertEquals(Audit::READ, $event->getAction());
         });
     }
-    
+
     /*
      * Update one.
      */
@@ -463,7 +463,7 @@ class ClinicsTest extends TestCase
                 'send_dna_follow_ups' => true,
                 'created_at' => $clinic->created_at->toIso8601String(),
                 'updated_at' => $clinic->updated_at->toIso8601String(),
-            ]
+            ],
         ]);
     }
 
@@ -496,7 +496,7 @@ class ClinicsTest extends TestCase
             $this->assertEquals(Audit::UPDATE, $event->getAction());
         });
     }
-    
+
     /*
      * Delete one.
      */

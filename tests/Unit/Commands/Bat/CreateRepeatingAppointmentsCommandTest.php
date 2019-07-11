@@ -6,7 +6,6 @@ use App\Console\Commands\Bat\CreateRepeatingAppointmentsCommand;
 use App\Models\AppointmentSchedule;
 use App\Models\Clinic;
 use App\Models\User;
-use Carbon\CarbonImmutable;
 use Illuminate\Support\Facades\Date;
 use Tests\TestCase;
 
@@ -15,7 +14,7 @@ class CreateRepeatingAppointmentsCommandTest extends TestCase
     public function test_appointments_created()
     {
         $startDate = Date::now()->startOfWeek();
-        CarbonImmutable::setTestNow($startDate);
+        Date::setTestNow($startDate);
 
         $clinic = factory(Clinic::class)->create();
         $user = factory(User::class)->create()->makeOrganisationAdmin();
@@ -54,7 +53,7 @@ class CreateRepeatingAppointmentsCommandTest extends TestCase
             'start_at' => $startDate->addWeeks(16)->hour(12)->timezone('UTC')->toDateTimeString(),
         ]);
 
-        CarbonImmutable::setTestNow($startDate->addWeeks(4));
+        Date::setTestNow($startDate->addWeeks(4));
 
         $this->artisan(CreateRepeatingAppointmentsCommand::class);
 
@@ -87,7 +86,7 @@ class CreateRepeatingAppointmentsCommandTest extends TestCase
     public function test_appointments_not_duplicated()
     {
         $startDate = Date::now()->startOfWeek();
-        CarbonImmutable::setTestNow($startDate);
+        Date::setTestNow($startDate);
 
         $clinic = factory(Clinic::class)->create();
         $user = factory(User::class)->create()->makeOrganisationAdmin();
@@ -121,8 +120,8 @@ class CreateRepeatingAppointmentsCommandTest extends TestCase
     public function test_appointment_time_remains_the_same_during_bst()
     {
         // 2019-03-31 is Sunday when British Summer Time begins.
-        CarbonImmutable::setTestNow(
-            CarbonImmutable::create(2019, 3, 24)
+        Date::setTestNow(
+            Date::create(2019, 3, 24)
         );
 
         $clinic = factory(Clinic::class)->create();
@@ -159,8 +158,8 @@ class CreateRepeatingAppointmentsCommandTest extends TestCase
     public function test_appointment_time_remains_the_same_after_bst()
     {
         // 2019-10-27 is Sunday when British Summer Time ends.
-        CarbonImmutable::setTestNow(
-            CarbonImmutable::create(2019, 10, 20)
+        Date::setTestNow(
+            Date::create(2019, 10, 20)
         );
 
         $clinic = factory(Clinic::class)->create();

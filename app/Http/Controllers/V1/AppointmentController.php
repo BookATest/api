@@ -107,7 +107,7 @@ class AppointmentController extends Controller
     public function store(StoreRequest $request)
     {
         $appointment = DB::transaction(function () use ($request): Appointment {
-            $startAt = CarbonImmutable::createFromFormat(CarbonImmutable::ATOM, $request->start_at)
+            $startAt = Date::createFromFormat(CarbonImmutable::ATOM, $request->start_at)
                 ->second(0);
 
             // For repeating appointments.

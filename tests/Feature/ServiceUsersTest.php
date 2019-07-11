@@ -48,7 +48,7 @@ class ServiceUsersTest extends TestCase
                 'preferred_contact_method' => $serviceUser->preferred_contact_method,
                 'created_at' => $serviceUser->created_at->toIso8601String(),
                 'updated_at' => $serviceUser->updated_at->toIso8601String(),
-            ]
+            ],
         ]);
     }
 
@@ -117,7 +117,7 @@ class ServiceUsersTest extends TestCase
                 'preferred_contact_method' => $serviceUser->preferred_contact_method,
                 'created_at' => $serviceUser->created_at->toIso8601String(),
                 'updated_at' => $serviceUser->updated_at->toIso8601String(),
-            ]
+            ],
         ]);
     }
 
@@ -330,7 +330,7 @@ class ServiceUsersTest extends TestCase
                 'preferred_contact_method' => $serviceUser->preferred_contact_method,
                 'created_at' => $serviceUser->created_at->toIso8601String(),
                 'updated_at' => $serviceUser->updated_at->toIso8601String(),
-            ]
+            ],
         ]);
     }
 }

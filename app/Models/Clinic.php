@@ -5,7 +5,6 @@ namespace App\Models;
 use App\Models\Mutators\ClinicMutators;
 use App\Models\Relationships\ClinicRelationships;
 use App\Support\Coordinate;
-use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Date;
@@ -147,7 +146,7 @@ class Clinic extends Model
     protected function dateIsEligible(string $answer, EligibleAnswer $eligibleAnswer): bool
     {
         try {
-            $answer = CarbonImmutable::createFromFormat('Y-m-d', $answer);
+            $answer = Date::createFromFormat('Y-m-d', $answer);
         } catch (InvalidArgumentException $exception) {
             return false;
         }

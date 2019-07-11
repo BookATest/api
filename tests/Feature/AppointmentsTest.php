@@ -960,7 +960,8 @@ class AppointmentsTest extends TestCase
         Queue::assertPushed(\App\Notifications\Sms\ServiceUser\BookingCancelledByUserSms::class);
     }
 
-    public function test_notification_not_sent_to_community_worker_with_notification_disabled_when_cancelled_by_service_user()
+    public function test_notification_not_sent_to_community_worker_with_notification_disabled_when_cancelled_by_service_user(
+    )
     {
         Queue::fake();
 
@@ -1037,10 +1038,12 @@ class AppointmentsTest extends TestCase
         ]);
 
         $response->assertStatus(Response::HTTP_OK);
-        Queue::assertPushed(\App\Notifications\Email\ClinicAdmin\BookingCancelledByServiceUserEmail::class, function (\App\Notifications\Email\ClinicAdmin\BookingCancelledByServiceUserEmail $email) use ($clinicAdmin) {
-            $this->assertEquals($email->getTo(), $clinicAdmin->email);
-            return true;
-        });
+        Queue::assertPushed(\App\Notifications\Email\ClinicAdmin\BookingCancelledByServiceUserEmail::class,
+            function (\App\Notifications\Email\ClinicAdmin\BookingCancelledByServiceUserEmail $email) use ($clinicAdmin
+            ) {
+                $this->assertEquals($email->getTo(), $clinicAdmin->email);
+                return true;
+            });
     }
 
     public function test_notifications_not_sent_to_clinic_admins_when_notifications_disabled()

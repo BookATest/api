@@ -55,12 +55,12 @@ class UsersTest extends TestCase
                         [
                             'role' => Role::communityWorker()->name,
                             'clinic_id' => $clinic->id,
-                        ]
+                        ],
                     ],
                     'created_at' => $user->created_at->toIso8601String(),
                     'updated_at' => $user->updated_at->toIso8601String(),
-                ]
-            ]
+                ],
+            ],
         ]);
     }
 
@@ -122,7 +122,7 @@ class UsersTest extends TestCase
                 [
                     'role' => Role::COMMUNITY_WORKER,
                     'clinic_id' => $clinic->id,
-                ]
+                ],
             ],
         ]);
 
@@ -141,7 +141,7 @@ class UsersTest extends TestCase
                 [
                     'role' => Role::COMMUNITY_WORKER,
                     'clinic_id' => $clinic->id,
-                ]
+                ],
             ],
         ]);
     }
@@ -164,7 +164,7 @@ class UsersTest extends TestCase
             'roles' => [
                 [
                     'role' => Role::ORGANISATION_ADMIN,
-                ]
+                ],
             ],
         ]);
 
@@ -194,7 +194,7 @@ class UsersTest extends TestCase
                 [
                     'role' => Role::COMMUNITY_WORKER,
                     'clinic_id' => $clinic->id,
-                ]
+                ],
             ],
         ]);
 
@@ -226,7 +226,7 @@ class UsersTest extends TestCase
                 [
                     'role' => Role::COMMUNITY_WORKER,
                     'clinic_id' => $clinic->id,
-                ]
+                ],
             ],
             'profile_picture' => static::BASE64_JPEG,
         ]);
@@ -260,7 +260,7 @@ class UsersTest extends TestCase
                 [
                     'role' => Role::COMMUNITY_WORKER,
                     'clinic_id' => $clinic->id,
-                ]
+                ],
             ],
             'profile_picture' => 'data:image/jpeg;base64,' . base64_encode(Storage::disk('testing')->get('example-500KB.jpg')),
         ]);
@@ -292,7 +292,7 @@ class UsersTest extends TestCase
                 [
                     'role' => Role::COMMUNITY_WORKER,
                     'clinic_id' => $clinic->id,
-                ]
+                ],
             ],
             'profile_picture' => 'data:image/jpeg;base64,' . base64_encode(Storage::disk('testing')->get('example-3MB.jpg')),
         ]);
@@ -339,11 +339,11 @@ class UsersTest extends TestCase
                     [
                         'role' => Role::communityWorker()->name,
                         'clinic_id' => $clinic->id,
-                    ]
+                    ],
                 ],
                 'created_at' => $user->created_at->toIso8601String(),
                 'updated_at' => $user->updated_at->toIso8601String(),
-            ]
+            ],
         ]);
     }
 
@@ -399,11 +399,11 @@ class UsersTest extends TestCase
                     [
                         'role' => Role::communityWorker()->name,
                         'clinic_id' => $clinic->id,
-                    ]
+                    ],
                 ],
                 'created_at' => $user->created_at->toIso8601String(),
                 'updated_at' => $user->updated_at->toIso8601String(),
-            ]
+            ],
         ]);
     }
 
@@ -454,7 +454,7 @@ class UsersTest extends TestCase
                 [
                     'role' => Role::COMMUNITY_WORKER,
                     'clinic_id' => $clinic->id,
-                ]
+                ],
             ],
         ]);
 
@@ -473,7 +473,7 @@ class UsersTest extends TestCase
                 [
                     'role' => Role::COMMUNITY_WORKER,
                     'clinic_id' => $clinic->id,
-                ]
+                ],
             ],
         ]);
     }
@@ -627,7 +627,7 @@ class UsersTest extends TestCase
                 [
                     'role' => Role::COMMUNITY_WORKER,
                     'clinic_id' => $anotherClinic->id,
-                ]
+                ],
             ],
         ]);
 
@@ -646,7 +646,7 @@ class UsersTest extends TestCase
                 [
                     'role' => Role::COMMUNITY_WORKER,
                     'clinic_id' => $anotherClinic->id,
-                ]
+                ],
             ],
         ]);
     }
@@ -705,7 +705,7 @@ class UsersTest extends TestCase
                 [
                     'role' => Role::COMMUNITY_WORKER,
                     'clinic_id' => $clinic->id,
-                ]
+                ],
             ],
         ]);
 
@@ -735,7 +735,7 @@ class UsersTest extends TestCase
                 [
                     'role' => Role::COMMUNITY_WORKER,
                     'clinic_id' => $clinic->id,
-                ]
+                ],
             ],
         ]);
 
@@ -848,7 +848,7 @@ class UsersTest extends TestCase
                 [
                     'role' => Role::COMMUNITY_WORKER,
                     'clinic_id' => $clinic->id,
-                ]
+                ],
             ],
             'profile_picture' => static::BASE64_JPEG,
         ]);

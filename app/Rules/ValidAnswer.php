@@ -3,8 +3,8 @@
 namespace App\Rules;
 
 use App\Models\Question;
-use Carbon\CarbonImmutable;
 use Illuminate\Contracts\Validation\Rule;
+use Illuminate\Support\Facades\Date;
 use InvalidArgumentException;
 
 class ValidAnswer implements Rule
@@ -81,7 +81,7 @@ class ValidAnswer implements Rule
         }
 
         try {
-            CarbonImmutable::createFromFormat('Y-m-d', $answer);
+            Date::createFromFormat('Y-m-d', $answer);
         } catch (InvalidArgumentException $exception) {
             return false;
         }

@@ -10,11 +10,10 @@ use App\Models\EligibleAnswer;
 use App\Models\Question;
 use App\Models\ServiceUser;
 use App\Models\User;
-use App\Notifications\Email\ServiceUser\BookingConfirmedEmail as BookingConfirmedServiceUserEmail;
-use App\Notifications\Email\ServiceUser\BookingConfirmedEmail;
 use App\Notifications\Email\CommunityWorker\BookingConfirmedEmail as BookingConfirmedUserEmail;
+use App\Notifications\Email\ServiceUser\BookingConfirmedEmail;
+use App\Notifications\Email\ServiceUser\BookingConfirmedEmail as BookingConfirmedServiceUserEmail;
 use App\Notifications\Sms\ServiceUser\BookingConfirmedSms;
-use Carbon\CarbonImmutable;
 use Illuminate\Http\Response;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Date;
@@ -206,7 +205,7 @@ class BookingsTest extends TestCase
     public function test_guest_cannot_booked_appointment_outside_booking_threshold()
     {
         // Fake the current time.
-        CarbonImmutable::setTestNow(Date::today()->hour(20));
+        Date::setTestNow(Date::today()->hour(20));
 
         // Create the question.
         $textQuestion = Question::createText('Where did you hear about us?');
@@ -272,7 +271,7 @@ class BookingsTest extends TestCase
                 [
                     'question_id' => $selectQuestion->id,
                     'answer' => 'Female',
-                ]
+                ],
             ],
         ]);
 
@@ -302,7 +301,7 @@ class BookingsTest extends TestCase
                 [
                     'question_id' => $selectQuestion->id,
                     'answer' => 'Male',
-                ]
+                ],
             ],
         ]);
 
@@ -466,7 +465,8 @@ class BookingsTest extends TestCase
         Queue::assertPushed(BookingConfirmedEmail::class);
     }
 
-    public function test_booking_email_notification_not_sent_to_community_worker_with_notification_disabled_when_booked()
+    public function test_booking_email_notification_not_sent_to_community_worker_with_notification_disabled_when_booked(
+    )
     {
         Queue::fake();
 

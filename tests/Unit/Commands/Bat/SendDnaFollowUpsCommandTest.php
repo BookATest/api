@@ -8,7 +8,6 @@ use App\Models\Clinic;
 use App\Models\ServiceUser;
 use App\Models\User;
 use App\Notifications\Email\ClinicAdmin\DnaFollowUpEmail;
-use Carbon\CarbonImmutable;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\Queue;
 use Tests\TestCase;
@@ -19,7 +18,7 @@ class SendDnaFollowUpsCommandTest extends TestCase
     {
         Queue::fake();
 
-        CarbonImmutable::setTestNow(Date::now()->startOfWeek());
+        Date::setTestNow(Date::now()->startOfWeek());
 
         $clinic = factory(Clinic::class)->create([
             'appointment_duration' => 60, // 1 hour
@@ -41,7 +40,7 @@ class SendDnaFollowUpsCommandTest extends TestCase
     {
         Queue::fake();
 
-        CarbonImmutable::setTestNow(Date::now()->startOfWeek());
+        Date::setTestNow(Date::now()->startOfWeek());
 
         $clinic = factory(Clinic::class)->create([
             'appointment_duration' => 60, // 1 hour
@@ -63,7 +62,7 @@ class SendDnaFollowUpsCommandTest extends TestCase
     {
         Queue::fake();
 
-        CarbonImmutable::setTestNow(Date::now()->startOfWeek());
+        Date::setTestNow(Date::now()->startOfWeek());
 
         $clinic = factory(Clinic::class)->create([
             'appointment_duration' => 60, // 1 hour
@@ -85,7 +84,7 @@ class SendDnaFollowUpsCommandTest extends TestCase
     {
         Queue::fake();
 
-        CarbonImmutable::setTestNow(Date::now()->startOfWeek());
+        Date::setTestNow(Date::now()->startOfWeek());
 
         $clinic = factory(Clinic::class)->create([
             'appointment_duration' => 60, // 1 hour

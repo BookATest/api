@@ -59,9 +59,9 @@ class GeneralExportGeneratorTest extends TestCase
 
     /**
      * @param string $xlsx
-     * @return array
      * @throws \PhpOffice\PhpSpreadsheet\Exception
      * @throws \PhpOffice\PhpSpreadsheet\Reader\Exception
+     * @return array
      */
     protected function xlsxToArray(string $xlsx): array
     {

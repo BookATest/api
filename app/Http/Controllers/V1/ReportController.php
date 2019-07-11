@@ -13,7 +13,7 @@ use App\Http\Responses\ResourceDeletedResponse;
 use App\Models\Clinic;
 use App\Models\Report;
 use App\Models\ReportType;
-use Carbon\CarbonImmutable;
+use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
 use Spatie\QueryBuilder\Filter;
 use Spatie\QueryBuilder\QueryBuilder;
@@ -75,8 +75,8 @@ class ReportController extends Controller
                 $request->user('api'),
                 Clinic::find($request->clinic_id),
                 ReportType::findByName($request->type),
-                CarbonImmutable::createFromFormat('Y-m-d', $request->start_at),
-                CarbonImmutable::createFromFormat('Y-m-d', $request->end_at)
+                Date::createFromFormat('Y-m-d', $request->start_at),
+                Date::createFromFormat('Y-m-d', $request->end_at)
             );
         });
 

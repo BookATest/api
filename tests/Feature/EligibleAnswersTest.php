@@ -262,8 +262,8 @@ class EligibleAnswersTest extends TestCase
                 [
                     'question_id' => $selectQuestion->id,
                     'answer' => ['Blue', 'Green'],
-                ]
-            ]
+                ],
+            ],
         ]);
 
         $response->assertStatus(Response::HTTP_OK);
@@ -303,7 +303,7 @@ class EligibleAnswersTest extends TestCase
                     'question_id' => $checkboxQuestion->id,
                     'answer' => false,
                 ],
-            ]
+            ],
         ]);
 
         $response->assertStatus(Response::HTTP_OK);
@@ -350,7 +350,7 @@ class EligibleAnswersTest extends TestCase
                     ],
                 ],
                 // Purposely missing the checkbox answer here.
-            ]
+            ],
         ]);
 
         $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
@@ -369,8 +369,8 @@ class EligibleAnswersTest extends TestCase
                 [
                     'question_id' => $checkboxQuestion->id,
                     'answer' => null,
-                ]
-            ]
+                ],
+            ],
         ]);
 
         $response->assertStatus(Response::HTTP_OK);

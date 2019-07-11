@@ -5,7 +5,6 @@ namespace App\Rules;
 use App\Models\Appointment;
 use App\Models\EligibleAnswer;
 use App\Models\Question;
-use Carbon\CarbonImmutable;
 use Illuminate\Contracts\Validation\Rule;
 use Illuminate\Support\Facades\Date;
 use InvalidArgumentException;
@@ -111,7 +110,7 @@ class ValidAnswerForAppointment implements Rule
         }
 
         try {
-            $answer = CarbonImmutable::createFromFormat('Y-m-d', $answer);
+            $answer = Date::createFromFormat('Y-m-d', $answer);
         } catch (InvalidArgumentException $exception) {
             return false;
         }

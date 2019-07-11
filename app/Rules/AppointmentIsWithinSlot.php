@@ -6,6 +6,7 @@ use App\Models\Clinic;
 use App\Models\User;
 use Carbon\CarbonImmutable;
 use Illuminate\Contracts\Validation\Rule;
+use Illuminate\Support\Facades\Date;
 use InvalidArgumentException;
 
 class AppointmentIsWithinSlot implements Rule
@@ -50,7 +51,7 @@ class AppointmentIsWithinSlot implements Rule
         }
 
         try {
-            $startAt = CarbonImmutable::createFromFormat(CarbonImmutable::ATOM, $startAt);
+            $startAt = Date::createFromFormat(CarbonImmutable::ATOM, $startAt);
         } catch (InvalidArgumentException $exception) {
             return false;
         }

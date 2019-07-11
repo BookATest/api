@@ -6,7 +6,6 @@ use App\Models\Appointment;
 use App\Models\Clinic;
 use App\Models\ServiceUser;
 use App\Models\User;
-use Carbon\CarbonImmutable;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Date;
 use Laravel\Passport\Passport;
@@ -43,13 +42,13 @@ class StatsTest extends TestCase
                 'did_not_attend_rate' => null,
                 'start_at' => Date::today()->startOfWeek()->toDateString(),
                 'end_at' => Date::today()->endOfWeek()->toDateString(),
-            ]
+            ],
         ]);
     }
 
     public function test_global_stats_are_correct()
     {
-        CarbonImmutable::setTestNow(Date::now()->startOfWeek());
+        Date::setTestNow(Date::now()->startOfWeek());
 
         $clinic = factory(Clinic::class)->create(['appointment_duration' => 60]);
         $user = factory(User::class)->create()->makeCommunityWorker($clinic);
@@ -116,13 +115,13 @@ class StatsTest extends TestCase
                 'did_not_attend_rate' => 20,
                 'start_at' => Date::today()->startOfWeek()->toDateString(),
                 'end_at' => Date::today()->endOfWeek()->toDateString(),
-            ]
+            ],
         ]);
     }
 
     public function test_clinic_stats_are_correct()
     {
-        CarbonImmutable::setTestNow(Date::now()->startOfWeek());
+        Date::setTestNow(Date::now()->startOfWeek());
 
         $clinic = factory(Clinic::class)->create(['appointment_duration' => 60]);
         $user = factory(User::class)->create()->makeCommunityWorker($clinic);
@@ -192,7 +191,7 @@ class StatsTest extends TestCase
                 'did_not_attend_rate' => 33.33,
                 'start_at' => Date::today()->startOfWeek()->toDateString(),
                 'end_at' => Date::today()->endOfWeek()->toDateString(),
-            ]
+            ],
         ]);
     }
 }

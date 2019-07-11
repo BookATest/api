@@ -63,7 +63,7 @@ trait AppointmentScopes
     {
         $dateTime = $dateTime instanceof CarbonImmutable
             ? $dateTime
-            : CarbonImmutable::createFromFormat(CarbonImmutable::ATOM, $dateTime);
+            : Date::createFromFormat(CarbonImmutable::ATOM, $dateTime);
 
         return $query->where('appointments.start_at', '>=', $dateTime->timezone('UTC'));
     }
@@ -77,7 +77,7 @@ trait AppointmentScopes
     {
         $dateTime = $dateTime instanceof CarbonImmutable
             ? $dateTime
-            : CarbonImmutable::createFromFormat(CarbonImmutable::ATOM, $dateTime);
+            : Date::createFromFormat(CarbonImmutable::ATOM, $dateTime);
 
         return $query->where('appointments.start_at', '<=', $dateTime->timezone('UTC'));
     }

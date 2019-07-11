@@ -6,7 +6,6 @@ use App\Console\Commands\Bat\SendAppointmentRemindersCommand;
 use App\Models\Appointment;
 use App\Models\ServiceUser;
 use App\Notifications\Sms\ServiceUser\AppointmentReminderSms;
-use Carbon\CarbonImmutable;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\Queue;
 use Tests\TestCase;
@@ -17,13 +16,13 @@ class SendAppointmentRemindersCommandTest extends TestCase
     {
         Queue::fake();
 
-        CarbonImmutable::setTestNow(Date::now()->startOfWeek());
+        Date::setTestNow(Date::now()->startOfWeek());
 
         $serviceUser = factory(ServiceUser::class)->create();
         $appointment = factory(Appointment::class)->create(['start_at' => Date::now()->hour(12)]);
         $appointment->book($serviceUser);
 
-        CarbonImmutable::setTestNow(Date::now()->startOfWeek()->hour(12)->subMinutes(SendAppointmentRemindersCommand::MINUTES_IN_DAY));
+        Date::setTestNow(Date::now()->startOfWeek()->hour(12)->subMinutes(SendAppointmentRemindersCommand::MINUTES_IN_DAY));
 
         $this->artisan(SendAppointmentRemindersCommand::class);
 
@@ -34,13 +33,13 @@ class SendAppointmentRemindersCommandTest extends TestCase
     {
         Queue::fake();
 
-        CarbonImmutable::setTestNow(Date::now()->startOfWeek());
+        Date::setTestNow(Date::now()->startOfWeek());
 
         $serviceUser = factory(ServiceUser::class)->create();
         $appointment = factory(Appointment::class)->create(['start_at' => Date::now()->hour(12)]);
         $appointment->book($serviceUser);
 
-        CarbonImmutable::setTestNow(Date::now()->startOfWeek()->hour(12)->subMinutes(SendAppointmentRemindersCommand::MINUTES_IN_DAY)->subMinute());
+        Date::setTestNow(Date::now()->startOfWeek()->hour(12)->subMinutes(SendAppointmentRemindersCommand::MINUTES_IN_DAY)->subMinute());
 
         $this->artisan(SendAppointmentRemindersCommand::class);
 
