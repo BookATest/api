@@ -17,8 +17,8 @@ class StatResource extends BaseResource
             Schema::integer('appointments_booked'),
             Schema::number('attendance_rate'),
             Schema::number('did_not_attend_rate'),
-            Schema::string('start_at')->format(Schema::DATE),
-            Schema::string('end_at')->format(Schema::DATE)
+            Schema::string('start_at')->format(Schema::FORMAT_DATE),
+            Schema::string('end_at')->format(Schema::FORMAT_DATE)
         );
     }
 }

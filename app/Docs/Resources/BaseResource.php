@@ -25,7 +25,9 @@ abstract class BaseResource
     public static function show(): Schema
     {
         return Schema::object()
-            ->properties(static::resource()->name('data'));
+            ->properties(
+                static::resource()->objectId('data')
+            );
     }
 
     /**

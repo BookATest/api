@@ -5,10 +5,10 @@ namespace App\Docs\Paths;
 use App\Docs\Requests;
 use App\Docs\Resources\AppointmentResource;
 use App\Docs\Resources\ClinicResource;
-use App\Docs\Responses;
 use App\Docs\Tags;
 use GoldSpecDigital\ObjectOrientedOAS\Objects\MediaType;
 use GoldSpecDigital\ObjectOrientedOAS\Objects\Operation;
+use GoldSpecDigital\ObjectOrientedOAS\Objects\Response;
 use GoldSpecDigital\ObjectOrientedOAS\Objects\Schema;
 
 class Bookings
@@ -22,20 +22,22 @@ class Bookings
     }
 
     /**
+     * @throws \GoldSpecDigital\ObjectOrientedOAS\Exceptions\InvalidArgumentException
      * @return \GoldSpecDigital\ObjectOrientedOAS\Objects\Operation
      */
     public static function store(): Operation
     {
         $responses = [
-            Responses::http200(
-                MediaType::json(AppointmentResource::show())
-            ),
+            Response::ok()
+                ->content(
+                    MediaType::json()->schema(AppointmentResource::show())
+                ),
         ];
         $requestBody = Requests::json(
             Schema::object()
                 ->required('appointment_id', 'service_user', 'answers', 'notification')
                 ->properties(
-                    Schema::string('appointment_id')->format(Schema::UUID),
+                    Schema::string('appointment_id')->format(Schema::FORMAT_UUID),
                     Schema::object('service_user')
                         ->required('name', 'phone', 'email', 'preferred_contact_method')
                         ->properties(
@@ -44,17 +46,21 @@ class Bookings
                             Schema::string('email'),
                             Schema::string('preferred_contact_method')->enum('email', 'phone', 'both')
                         ),
-                    Schema::array('answers')->items(Schema::object()
-                        ->required('question_id', 'answer')
-                        ->properties(
-                            Schema::string('question_id')->format(Schema::UUID),
-                            Schema::string('answer')
-                        ))
+                    Schema::array('answers')
+                        ->items(
+                            Schema::object()
+                                ->required('question_id', 'answer')
+                                ->properties(
+                                    Schema::string('question_id')->format(Schema::FORMAT_UUID),
+                                    Schema::string('answer')
+                                )
+                        )
                 )
         );
 
-        return Operation::post(...$responses)
-            ->security([])
+        return Operation::post()
+            ->responses(...$responses)
+            ->noSecurity()
             ->requestBody($requestBody)
             ->summary('Make a booking for the service user')
             ->description(
@@ -67,18 +73,20 @@ class Bookings
                 EOT
             )
             ->operationId('bookings.store')
-            ->tags(Tags::bookings()->name);
+            ->tags(Tags::bookings());
     }
 
     /**
+     * @throws \GoldSpecDigital\ObjectOrientedOAS\Exceptions\InvalidArgumentException
      * @return \GoldSpecDigital\ObjectOrientedOAS\Objects\Operation
      */
     public static function eligibleClinics(): Operation
     {
         $responses = [
-            Responses::http200(
-                MediaType::json(ClinicResource::all())
-            ),
+            Response::ok()
+                ->content(
+                    MediaType::json()->schema(ClinicResource::all())
+                ),
         ];
         $requestBody = Requests::json(
             Schema::object()
@@ -91,19 +99,21 @@ class Bookings
                             Schema::number('lat'),
                             Schema::number('lon')
                         ),
-                    Schema::array('answers')->items(
-                        Schema::object()
-                            ->required('question_id', 'answer')
-                            ->properties(
-                                Schema::string('question_id')->format(Schema::UUID),
-                                Schema::string('answer')
-                            )
-                    )
+                    Schema::array('answers')
+                        ->items(
+                            Schema::object()
+                                ->required('question_id', 'answer')
+                                ->properties(
+                                    Schema::string('question_id')->format(Schema::FORMAT_UUID),
+                                    Schema::string('answer')
+                                )
+                        )
                 )
         );
 
-        return Operation::post(...$responses)
-            ->security([])
+        return Operation::post()
+            ->responses(...$responses)
+            ->noSecurity()
             ->requestBody($requestBody)
             ->summary('Check which clinics the service user is eligible for')
             ->description(
@@ -118,6 +128,6 @@ class Bookings
                 EOT
             )
             ->operationId('bookings.eligible-clinics')
-            ->tags(Tags::bookings()->name);
+            ->tags(Tags::bookings());
     }
 }

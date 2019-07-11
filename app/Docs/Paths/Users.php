@@ -4,11 +4,11 @@ namespace App\Docs\Paths;
 
 use App\Docs\Requests;
 use App\Docs\Resources\UserResource;
-use App\Docs\Responses;
 use App\Docs\Tags;
 use GoldSpecDigital\ObjectOrientedOAS\Objects\MediaType;
 use GoldSpecDigital\ObjectOrientedOAS\Objects\Operation;
 use GoldSpecDigital\ObjectOrientedOAS\Objects\Parameter;
+use GoldSpecDigital\ObjectOrientedOAS\Objects\Response;
 use GoldSpecDigital\ObjectOrientedOAS\Objects\Schema;
 
 class Users
@@ -22,43 +22,56 @@ class Users
     }
 
     /**
+     * @throws \GoldSpecDigital\ObjectOrientedOAS\Exceptions\InvalidArgumentException
      * @return \GoldSpecDigital\ObjectOrientedOAS\Objects\Operation
      */
     public static function index(): Operation
     {
         $responses = [
-            Responses::http200(
-                MediaType::json(UserResource::list())
-            ),
+            Response::ok()
+                ->content(
+                    MediaType::json()->schema(UserResource::list())
+                ),
         ];
         $parameters = [
-            Parameter::query('filter[id]', Schema::string()->format(Schema::UUID))
+            Parameter::query()
+                ->name('filter[id]')
+                ->schema(Schema::string()->format(Schema::FORMAT_UUID))
                 ->description('Comma separated user IDs'),
-            Parameter::query('filter[clinic_id]', Schema::string()->format(Schema::UUID))
+            Parameter::query()
+                ->name('filter[clinic_id]')
+                ->schema(Schema::string()->format(Schema::FORMAT_UUID))
                 ->description('Comma separated clinic IDs'),
-            Parameter::query('filter[disabled]', Schema::boolean())
+            Parameter::query()
+                ->name('filter[disabled]')
+                ->schema(Schema::boolean())
                 ->description('Filter users to only disabled or active, omit to show all users'),
-            Parameter::query('sort', Schema::string()->default('first_name,last_name'))
+            Parameter::query()
+                ->name('sort')
+                ->schema(Schema::string()->default('first_name,last_name'))
                 ->description('The field to sort the results by [`first_name`, `last_name`]'),
         ];
 
-        return Operation::get(...$responses)
+        return Operation::get()
+            ->responses(...$responses)
             ->parameters(...$parameters)
             ->summary('List all users')
             ->description('**Permission:** `Community Worker`')
             ->operationId('users.index')
-            ->tags(Tags::users()->name);
+            ->tags(Tags::users());
     }
 
     /**
+     * @throws \GoldSpecDigital\ObjectOrientedOAS\Exceptions\InvalidArgumentException
      * @return \GoldSpecDigital\ObjectOrientedOAS\Objects\Operation
      */
     public static function store(): Operation
     {
         $responses = [
-            Responses::http201(
-                MediaType::json(UserResource::show())
-            ),
+            Response::created()
+                ->content(
+                    MediaType::json()->schema(UserResource::show())
+                ),
         ];
         $requestBody = Requests::json(
             Schema::object()
@@ -80,23 +93,26 @@ class Users
                     Schema::string('last_name'),
                     Schema::string('email'),
                     Schema::string('phone'),
-                    Schema::string('password')->format(Schema::PASSWORD),
+                    Schema::string('password')->format(Schema::FORMAT_PASSWORD),
                     Schema::boolean('display_email'),
                     Schema::boolean('display_phone'),
                     Schema::boolean('receive_booking_confirmations'),
                     Schema::boolean('receive_cancellation_confirmations'),
                     Schema::boolean('include_calendar_attachment'),
-                    Schema::array('roles')->items(Schema::object()
-                        ->required('role')
-                        ->properties(
-                            Schema::string('role'),
-                            Schema::string('clinic_id')->format(Schema::UUID)
-                        )),
+                    Schema::array('roles')->items(
+                        Schema::object()
+                            ->required('role')
+                            ->properties(
+                                Schema::string('role'),
+                                Schema::string('clinic_id')->format(Schema::FORMAT_UUID)
+                            )
+                    ),
                     Schema::string('profile_picture')->description('Base64 encoded JPEG.')
                 )
         );
 
-        return Operation::post(...$responses)
+        return Operation::post()
+            ->responses(...$responses)
             ->requestBody($requestBody)
             ->summary('Create a new user')
             ->description(
@@ -113,63 +129,74 @@ class Users
                 EOT
             )
             ->operationId('users.store')
-            ->tags(Tags::users()->name);
+            ->tags(Tags::users());
     }
 
     /**
+     * @throws \GoldSpecDigital\ObjectOrientedOAS\Exceptions\InvalidArgumentException
      * @return \GoldSpecDigital\ObjectOrientedOAS\Objects\Operation
      */
     public static function show(): Operation
     {
         $responses = [
-            Responses::http200(
-                MediaType::json(UserResource::show())
-            ),
+            Response::ok()
+                ->content(
+                    MediaType::json()->schema(UserResource::show())
+                ),
         ];
         $parameters = [
-            Parameter::path('user', Schema::string()->format(Schema::UUID))
+            Parameter::path()
+                ->name('user')
+                ->schema(Schema::string()->format(Schema::FORMAT_UUID))
                 ->description('The user ID')
                 ->required(),
         ];
 
-        return Operation::get(...$responses)
+        return Operation::get()
+            ->responses(...$responses)
             ->parameters(...$parameters)
             ->summary('Get a specific user')
             ->description('**Permission:** `Community Worker`')
             ->operationId('users.show')
-            ->tags(Tags::users()->name);
+            ->tags(Tags::users());
     }
 
     /**
+     * @throws \GoldSpecDigital\ObjectOrientedOAS\Exceptions\InvalidArgumentException
      * @return \GoldSpecDigital\ObjectOrientedOAS\Objects\Operation
      */
     public static function user(): Operation
     {
         $responses = [
-            Responses::http200(
-                MediaType::json(UserResource::show())
-            ),
+            Response::ok()
+                ->content(
+                    MediaType::json()->schema(UserResource::show())
+                ),
         ];
 
-        return Operation::get(...$responses)
+        return Operation::get()
+            ->responses(...$responses)
             ->summary('Get the logged in user')
             ->description('**Permission:** `Community Worker`')
             ->operationId('users.user')
-            ->tags(Tags::users()->name);
+            ->tags(Tags::users());
     }
 
     /**
+     * @throws \GoldSpecDigital\ObjectOrientedOAS\Exceptions\InvalidArgumentException
      * @return \GoldSpecDigital\ObjectOrientedOAS\Objects\Operation
      */
     public static function update(): Operation
     {
         $responses = [
-            Responses::http200(
-                MediaType::json(UserResource::show())
+            Response::ok()->content(
+                MediaType::json()->schema(UserResource::show())
             ),
         ];
         $parameters = [
-            Parameter::path('user', Schema::string()->format(Schema::UUID))
+            Parameter::path()
+                ->name('user')
+                ->schema(Schema::string()->format(Schema::FORMAT_UUID))
                 ->description('The user ID')
                 ->required(),
         ];
@@ -192,25 +219,28 @@ class Users
                     Schema::string('last_name'),
                     Schema::string('email'),
                     Schema::string('phone'),
-                    Schema::string('password')->format(Schema::PASSWORD),
+                    Schema::string('password')->format(Schema::FORMAT_PASSWORD),
                     Schema::boolean('display_email'),
                     Schema::boolean('display_phone'),
                     Schema::boolean('receive_booking_confirmations'),
                     Schema::boolean('receive_cancellation_confirmations'),
                     Schema::boolean('include_calendar_attachment'),
-                    Schema::array('roles')->items(Schema::object()
-                        ->required('role')
-                        ->properties(
-                            Schema::string('role'),
-                            Schema::string('clinic_id')->format(Schema::UUID)
-                        )),
+                    Schema::array('roles')->items(
+                        Schema::object()
+                            ->required('role')
+                            ->properties(
+                                Schema::string('role'),
+                                Schema::string('clinic_id')->format(Schema::FORMAT_UUID)
+                            )
+                    ),
                     Schema::string('profile_picture')
                         ->nullable()
                         ->description('Base64 encoded JPEG.')
                 )
         );
 
-        return Operation::put(...$responses)
+        return Operation::put()
+            ->responses(...$responses)
             ->parameters(...$parameters)
             ->requestBody($requestBody)
             ->summary('Update a specified user')
@@ -235,26 +265,30 @@ class Users
                 EOT
             )
             ->operationId('users.update')
-            ->tags(Tags::users()->name);
+            ->tags(Tags::users());
     }
 
     /**
+     * @throws \GoldSpecDigital\ObjectOrientedOAS\Exceptions\InvalidArgumentException
      * @return \GoldSpecDigital\ObjectOrientedOAS\Objects\Operation
      */
     public static function destroy(): Operation
     {
         $responses = [
-            Responses::http200(
-                MediaType::json(UserResource::deleted())
+            Response::ok()->content(
+                MediaType::json()->schema(UserResource::deleted())
             ),
         ];
         $parameters = [
-            Parameter::path('user', Schema::string()->format(Schema::UUID))
+            Parameter::path()
+                ->name('user')
+                ->schema(Schema::string()->format(Schema::FORMAT_UUID))
                 ->description('The user ID')
                 ->required(),
         ];
 
-        return Operation::delete(...$responses)
+        return Operation::delete()
+            ->responses(...$responses)
             ->parameters(...$parameters)
             ->summary('Delete a specific user')
             ->description(
@@ -268,52 +302,65 @@ class Users
                 EOT
             )
             ->operationId('users.destroy')
-            ->tags(Tags::users()->name);
+            ->tags(Tags::users());
     }
 
     /**
+     * @throws \GoldSpecDigital\ObjectOrientedOAS\Exceptions\InvalidArgumentException
      * @return \GoldSpecDigital\ObjectOrientedOAS\Objects\Operation
      */
     public static function profilePicture(): Operation
     {
         $responses = [
-            Responses::http200(
-                MediaType::create('image/jpeg', Schema::string()->format(Schema::BINARY))
+            Response::ok()->content(
+                MediaType::jpeg()->schema(
+                    Schema::string()->format(Schema::FORMAT_BINARY)
+                )
             ),
         ];
         $parameters = [
-            Parameter::path('user', Schema::string()->format(Schema::UUID))
+            Parameter::path()
+                ->name('user')
+                ->schema(Schema::string()->format(Schema::FORMAT_UUID))
                 ->description('The user ID')
                 ->required(),
         ];
 
-        return Operation::get(...$responses)
+        return Operation::get()
+            ->responses(...$responses)
             ->parameters(...$parameters)
             ->summary('Get a specific user\'s profile picture')
             ->description('**Permission:** `Open`')
             ->operationId('users.profile-picture')
-            ->tags(Tags::users()->name);
+            ->tags(Tags::users());
     }
 
     /**
+     * @throws \GoldSpecDigital\ObjectOrientedOAS\Exceptions\InvalidArgumentException
      * @return \GoldSpecDigital\ObjectOrientedOAS\Objects\Operation
      */
     public static function calendarFeedToken(): Operation
     {
         $responses = [
-            Responses::http201(
-                MediaType::json(Schema::object()->properties(
-                    Schema::string('calendar_feed_token')
-                ))
+            Response::created()->content(
+                MediaType::json()->schema(
+                    Schema::object()
+                        ->properties(
+                            Schema::string('calendar_feed_token')
+                        )
+                )
             ),
         ];
         $parameters = [
-            Parameter::path('user', Schema::string()->format(Schema::UUID))
+            Parameter::path()
+                ->name('user')
+                ->schema(Schema::string()->format(Schema::FORMAT_UUID))
                 ->description('The user ID')
                 ->required(),
         ];
 
-        return Operation::put(...$responses)
+        return Operation::put()
+            ->responses(...$responses)
             ->parameters(...$parameters)
             ->summary('Refresh the calendar feed token')
             ->description(
@@ -323,17 +370,18 @@ class Users
                 EOT
             )
             ->operationId('users.calendar-feed-token')
-            ->tags(Tags::users()->name);
+            ->tags(Tags::users());
     }
 
     /**
+     * @throws \GoldSpecDigital\ObjectOrientedOAS\Exceptions\InvalidArgumentException
      * @return \GoldSpecDigital\ObjectOrientedOAS\Objects\Operation
      */
     public static function destroySessions(): Operation
     {
         $responses = [
-            Responses::http200(
-                MediaType::json(
+            Response::ok()->content(
+                MediaType::json()->schema(
                     Schema::object()->properties(
                         Schema::string('message')->example('All your sessions have been cleared.')
                     )
@@ -341,7 +389,8 @@ class Users
             ),
         ];
 
-        return Operation::delete(...$responses)
+        return Operation::delete()
+            ->responses(...$responses)
             ->summary('Clear the sessions for the authenticated user')
             ->description(
                 <<<'EOT'
@@ -349,6 +398,6 @@ class Users
                 EOT
             )
             ->operationId('users.sessions.destroy')
-            ->tags(Tags::users()->name);
+            ->tags(Tags::users());
     }
 }

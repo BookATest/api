@@ -12,7 +12,7 @@ class ServiceUserResource extends BaseResource
     public static function resource(): Schema
     {
         return Schema::object()->properties(
-            Schema::string('id')->format(Schema::UUID),
+            Schema::string('id')->format(Schema::FORMAT_UUID),
             Schema::string('name'),
             Schema::string('phone'),
             Schema::string('email'),
