@@ -12,8 +12,8 @@ class AuditResource extends BaseResource
     public static function resource(): Schema
     {
         return Schema::object()->properties(
-            Schema::string('id')->format(Schema::UUID),
-            Schema::string('auditable_id')->format(Schema::UUID)->nullable(),
+            Schema::string('id')->format(Schema::FORMAT_UUID),
+            Schema::string('auditable_id')->format(Schema::FORMAT_UUID)->nullable(),
             Schema::string('auditable_type')->nullable(),
             Schema::string('client')->nullable(),
             Schema::string('action'),

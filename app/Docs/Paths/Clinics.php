@@ -5,11 +5,11 @@ namespace App\Docs\Paths;
 use App\Docs\Requests;
 use App\Docs\Resources\BaseResource;
 use App\Docs\Resources\ClinicResource;
-use App\Docs\Responses;
 use App\Docs\Tags;
 use GoldSpecDigital\ObjectOrientedOAS\Objects\MediaType;
 use GoldSpecDigital\ObjectOrientedOAS\Objects\Operation;
 use GoldSpecDigital\ObjectOrientedOAS\Objects\Parameter;
+use GoldSpecDigital\ObjectOrientedOAS\Objects\Response;
 use GoldSpecDigital\ObjectOrientedOAS\Objects\Schema;
 
 class Clinics
@@ -23,42 +23,53 @@ class Clinics
     }
 
     /**
+     * @throws \GoldSpecDigital\ObjectOrientedOAS\Exceptions\InvalidArgumentException
      * @return \GoldSpecDigital\ObjectOrientedOAS\Objects\Operation
      */
     public static function index(): Operation
     {
         $responses = [
-            Responses::http200(
-                MediaType::json(ClinicResource::list())
-            ),
+            Response::ok()
+                ->content(
+                    MediaType::json()->schema(ClinicResource::list())
+                ),
         ];
         $parameters = [
-            Parameter::query('filter[id]', Schema::string())
+            Parameter::query()
+                ->name('filter[id]')
+                ->schema(Schema::string())
                 ->description('Comma separated clinic IDs'),
-            Parameter::query('filter[name]', Schema::string())
+            Parameter::query()
+                ->name('filter[name]')
+                ->schema(Schema::string())
                 ->description('Filter the clinics by their name'),
-            Parameter::query('sort', Schema::string()->default('name'))
+            Parameter::query()
+                ->name('sort')
+                ->schema(Schema::string()->default('name'))
                 ->description('The field to sort the results by [`name`]'),
         ];
 
-        return Operation::get(...$responses)
-            ->security([])
+        return Operation::get()
+            ->responses(...$responses)
+            ->noSecurity()
             ->parameters(...$parameters)
             ->summary('List all clinics')
             ->description('**Permission:** `Open`')
             ->operationId('clinics.index')
-            ->tags(Tags::clinics()->name);
+            ->tags(Tags::clinics());
     }
 
     /**
+     * @throws \GoldSpecDigital\ObjectOrientedOAS\Exceptions\InvalidArgumentException
      * @return \GoldSpecDigital\ObjectOrientedOAS\Objects\Operation
      */
     public static function store(): Operation
     {
         $responses = [
-            Responses::http201(
-                MediaType::json(ClinicResource::show())
-            ),
+            Response::created()
+                ->content(
+                    MediaType::json()->schema(ClinicResource::show())
+                ),
         ];
         $requestBody = Requests::json(
             Schema::object()
@@ -92,32 +103,38 @@ class Clinics
                 )
         );
 
-        return Operation::post(...$responses)
+        return Operation::post()
+            ->responses(...$responses)
             ->requestBody($requestBody)
             ->summary('Create a new clinic')
             ->description('**Permission:** `Organisation Admin`')
             ->operationId('clinics.store')
-            ->tags(Tags::clinics()->name);
+            ->tags(Tags::clinics());
     }
 
     /**
+     * @throws \GoldSpecDigital\ObjectOrientedOAS\Exceptions\InvalidArgumentException
      * @return \GoldSpecDigital\ObjectOrientedOAS\Objects\Operation
      */
     public static function show(): Operation
     {
         $responses = [
-            Responses::http200(
-                MediaType::json(ClinicResource::show())
-            ),
+            Response::ok()
+                ->content(
+                    MediaType::json()->schema(ClinicResource::show())
+                ),
         ];
         $parameters = [
-            Parameter::path('clinic', Schema::string()->format(Schema::UUID))
+            Parameter::path()
+                ->name('clinic')
+                ->schema(Schema::string()->format(Schema::FORMAT_UUID))
                 ->description('The clinic ID')
                 ->required(),
         ];
 
-        return Operation::get(...$responses)
-            ->security([])
+        return Operation::get()
+            ->responses(...$responses)
+            ->noSecurity()
             ->parameters(...$parameters)
             ->summary('Get a specific clinic')
             ->description('**Permission:** `Open`')
@@ -126,17 +143,21 @@ class Clinics
     }
 
     /**
+     * @throws \GoldSpecDigital\ObjectOrientedOAS\Exceptions\InvalidArgumentException
      * @return \GoldSpecDigital\ObjectOrientedOAS\Objects\Operation
      */
     public static function update(): Operation
     {
         $responses = [
-            Responses::http200(
-                MediaType::json(ClinicResource::show())
-            ),
+            Response::ok()
+                ->content(
+                    MediaType::json()->schema(ClinicResource::show())
+                ),
         ];
         $parameters = [
-            Parameter::path('clinic', Schema::string()->format(Schema::UUID))
+            Parameter::path()
+                ->name('clinic')
+                ->schema(Schema::string()->format(Schema::FORMAT_UUID))
                 ->description('The clinic ID')
                 ->required(),
         ];
@@ -172,7 +193,8 @@ class Clinics
                 )
         );
 
-        return Operation::put(...$responses)
+        return Operation::put()
+            ->responses(...$responses)
             ->parameters(...$parameters)
             ->requestBody($requestBody)
             ->summary('Updated a specific clinic')
@@ -183,26 +205,31 @@ class Clinics
                 EOT
             )
             ->operationId('clinics.update')
-            ->tags(Tags::clinics()->name);
+            ->tags(Tags::clinics());
     }
 
     /**
+     * @throws \GoldSpecDigital\ObjectOrientedOAS\Exceptions\InvalidArgumentException
      * @return \GoldSpecDigital\ObjectOrientedOAS\Objects\Operation
      */
     public static function destroy(): Operation
     {
         $responses = [
-            Responses::http200(
-                MediaType::json(BaseResource::deleted())
-            ),
+            Response::ok()
+                ->content(
+                    MediaType::json()->schema(BaseResource::deleted())
+                ),
         ];
         $parameters = [
-            Parameter::path('clinic', Schema::string()->format(Schema::UUID))
+            Parameter::path()
+                ->name('clinic')
+                ->schema(Schema::string()->format(Schema::FORMAT_UUID))
                 ->description('The clinic ID')
                 ->required(),
         ];
 
-        return Operation::delete(...$responses)
+        return Operation::delete()
+            ->responses(...$responses)
             ->parameters(...$parameters)
             ->summary('Delete a specific clinic')
             ->description(
@@ -219,6 +246,6 @@ class Clinics
                 EOT
             )
             ->operationId('clinics.destroy')
-            ->tags(Tags::clinics()->name);
+            ->tags(Tags::clinics());
     }
 }

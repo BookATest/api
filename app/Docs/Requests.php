@@ -22,8 +22,10 @@ class Requests
      */
     public static function json(Schema $schema): RequestBody
     {
-        return RequestBody::create(
-            MediaType::json($schema)
-        )->required();
+        return RequestBody::create()
+            ->content(
+                MediaType::json()->schema($schema)
+            )
+            ->required();
     }
 }

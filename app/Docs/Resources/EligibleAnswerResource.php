@@ -12,9 +12,9 @@ class EligibleAnswerResource extends BaseResource
     public static function resource(): Schema
     {
         return Schema::object()->properties(
-            Schema::string('id')->format(Schema::UUID),
-            Schema::string('question_id')->format(Schema::UUID),
-            Schema::string('question_id')->format(Schema::UUID),
+            Schema::string('id')->format(Schema::FORMAT_UUID),
+            Schema::string('question_id')->format(Schema::FORMAT_UUID),
+            Schema::string('question_id')->format(Schema::FORMAT_UUID),
             Schema::object('answer')->properties(
                 Schema::string('type'),
                 Schema::integer('interval')

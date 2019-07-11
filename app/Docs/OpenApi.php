@@ -18,8 +18,9 @@ use GoldSpecDigital\ObjectOrientedOAS\Objects\Components;
 use GoldSpecDigital\ObjectOrientedOAS\Objects\Contact;
 use GoldSpecDigital\ObjectOrientedOAS\Objects\ExternalDocs;
 use GoldSpecDigital\ObjectOrientedOAS\Objects\Info;
+use GoldSpecDigital\ObjectOrientedOAS\Objects\OAuthFlow;
 use GoldSpecDigital\ObjectOrientedOAS\Objects\PathItem;
-use GoldSpecDigital\ObjectOrientedOAS\Objects\Paths;
+use GoldSpecDigital\ObjectOrientedOAS\Objects\SecurityRequirement;
 use GoldSpecDigital\ObjectOrientedOAS\Objects\SecurityScheme;
 use GoldSpecDigital\ObjectOrientedOAS\Objects\Server;
 use GoldSpecDigital\ObjectOrientedOAS\OpenApi as OpenApiSpec;
@@ -33,16 +34,15 @@ class OpenApi
 
     /**
      * OpenApi constructor.
+     *
+     * @throws \GoldSpecDigital\ObjectOrientedOAS\Exceptions\InvalidArgumentException
      */
     public function __construct()
     {
-        $this->openApi = OpenApiSpec::create(
-            $this->getVersion(),
-            $this->getInfo(),
-            $this->getPaths()
-        );
-
-        $this->openApi = $this->openApi
+        $this->openApi = OpenApiSpec::create()
+            ->openapi($this->getVersion())
+            ->info($this->getInfo())
+            ->paths(...$this->getPaths())
             ->servers(...$this->getServers())
             ->components($this->getComponents())
             ->security(...$this->getSecurity())
@@ -63,7 +63,7 @@ class OpenApi
      */
     protected function getVersion(): string
     {
-        return OpenApiSpec::VERSION_3_0_1;
+        return OpenApiSpec::OPENAPI_3_0_2;
     }
 
     /**
@@ -73,7 +73,9 @@ class OpenApi
     {
         $appName = config('app.name');
 
-        return Info::create("{$appName} API Specification", 'v1')
+        return Info::create()
+            ->title("{$appName} API Specification")
+            ->version('v1')
             ->description("For using the {$appName} API")
             ->contact($this->getContact());
     }
@@ -83,64 +85,134 @@ class OpenApi
      */
     protected function getContact(): Contact
     {
-        return Contact::create(
-            'Ayup Digital',
-            'https://ayup.agency',
-            'info@ayup.agency'
-        );
+        return Contact::create()
+            ->name('Ayup Digital')
+            ->url('https://ayup.agency')
+            ->email('info@ayup.agency');
     }
 
     /**
-     * @return \GoldSpecDigital\ObjectOrientedOAS\Objects\Paths
+     * @throws \GoldSpecDigital\ObjectOrientedOAS\Exceptions\InvalidArgumentException
+     * @return \GoldSpecDigital\ObjectOrientedOAS\Objects\PathItem[]
      */
-    protected function getPaths(): Paths
+    protected function getPaths(): array
     {
-        return Paths::create(
-            PathItem::create('/appointments', Appointments::index(), Appointments::store()),
-            PathItem::create('/appointments.ics', Appointments::indexIcs()),
-            PathItem::create('/appointments/{appointment}', Appointments::show(), Appointments::update(), Appointments::destroy()),
-            PathItem::create('/appointments/{appointment}/cancel', Appointments::cancel()),
-            PathItem::create('/appointments/{appointment}/schedule', Appointments::destroySchedule()),
-            PathItem::create('/audits', Audits::index()),
-            PathItem::create('/audits/{audit}', Audits::show()),
-            PathItem::create('/bookings', Bookings::store()),
-            PathItem::create('/bookings/eligibility', Bookings::eligibleClinics()),
-            PathItem::create('/clinics', Clinics::index(), Clinics::store()),
-            PathItem::create('/clinics/{clinic}', Clinics::show(), Clinics::update(), Clinics::destroy()),
-            PathItem::create('/clinics/{clinic}/eligible-answers', EligibleAnswers::index(), EligibleAnswers::update()),
-            PathItem::create('/questions', Questions::index(), Questions::store()),
-            PathItem::create('/reports', Reports::index(), Reports::store()),
-            PathItem::create('/reports/{report}', Reports::show(), Reports::destroy()),
-            PathItem::create('/reports/{report}/download', Reports::download()),
-            PathItem::create('/report-schedules', ReportSchedules::index(), ReportSchedules::store()),
-            PathItem::create('/report-schedules/{report_schedule}', ReportSchedules::show(), ReportSchedules::destroy()),
-            PathItem::create('/service-users', ServiceUsers::index()),
-            PathItem::create('/service-users/{service_user}', ServiceUsers::show()),
-            PathItem::create('/service-users/{service_user}/appointments', ServiceUsers::appointments()),
-            PathItem::create('/service-users/access-code', ServiceUsers::accessCode()),
-            PathItem::create('/service-users/token', ServiceUsers::token()),
-            PathItem::create('/service-users/token/{token}', ServiceUsers::showToken()),
-            PathItem::create('/settings', Settings::index(), Settings::update()),
-            PathItem::create('/settings/logo.png', Settings::logo()),
-            PathItem::create('/settings/styles.css', Settings::styles()),
-            PathItem::create('/stats', Stats::index()),
-            PathItem::create('/users', Users::index(), Users::store()),
-            PathItem::create('/users/user', Users::user()),
-            PathItem::create('/users/user/sessions', Users::destroySessions()),
-            PathItem::create('/users/{user}', Users::show(), Users::update(), Users::destroy()),
-            PathItem::create('/users/{user}/profile-picture.jpg', Users::profilePicture()),
-            PathItem::create('/users/{user}/calendar-feed-token', Users::calendarFeedToken())
-        );
+        return [
+            PathItem::create()
+                ->route('/appointments')
+                ->operations(Appointments::index(), Appointments::store()),
+            PathItem::create()
+                ->route('/appointments.ics')
+                ->operations(Appointments::indexIcs()),
+            PathItem::create()
+                ->route('/appointments/{appointment}')
+                ->operations(Appointments::show(), Appointments::update(), Appointments::destroy()),
+            PathItem::create()
+                ->route('/appointments/{appointment}/cancel')
+                ->operations(Appointments::cancel()),
+            PathItem::create()
+                ->route('/appointments/{appointment}/schedule')
+                ->operations(Appointments::destroySchedule()),
+            PathItem::create()
+                ->route('/audits')
+                ->operations(Audits::index()),
+            PathItem::create()
+                ->route('/audits/{audit}')
+                ->operations(Audits::show()),
+            PathItem::create()
+                ->route('/bookings')
+                ->operations(Bookings::store()),
+            PathItem::create()
+                ->route('/bookings/eligibility')
+                ->operations(Bookings::eligibleClinics()),
+            PathItem::create()
+                ->route('/clinics')
+                ->operations(Clinics::index(), Clinics::store()),
+            PathItem::create()
+                ->route('/clinics/{clinic}')
+                ->operations(Clinics::show(), Clinics::update(), Clinics::destroy()),
+            PathItem::create()
+                ->route('/clinics/{clinic}/eligible-answers')
+                ->operations(EligibleAnswers::index(), EligibleAnswers::update()),
+            PathItem::create()
+                ->route('/questions')
+                ->operations(Questions::index(), Questions::store()),
+            PathItem::create()
+                ->route('/reports')
+                ->operations(Reports::index(), Reports::store()),
+            PathItem::create()
+                ->route('/reports/{report}')
+                ->operations(Reports::show(), Reports::destroy()),
+            PathItem::create()
+                ->route('/reports/{report}/download')
+                ->operations(Reports::download()),
+            PathItem::create()
+                ->route('/report-schedules')
+                ->operations(ReportSchedules::index(), ReportSchedules::store()),
+            PathItem::create()
+                ->route('/report-schedules/{report_schedule}')
+                ->operations(ReportSchedules::show(), ReportSchedules::destroy()),
+            PathItem::create()
+                ->route('/service-users')
+                ->operations(ServiceUsers::index()),
+            PathItem::create()
+                ->route('/service-users/{service_user}')
+                ->operations(ServiceUsers::show()),
+            PathItem::create()
+                ->route('/service-users/{service_user}/appointments')
+                ->operations(ServiceUsers::appointments()),
+            PathItem::create()
+                ->route('/service-users/access-code')
+                ->operations(ServiceUsers::accessCode()),
+            PathItem::create()
+                ->route('/service-users/token')
+                ->operations(ServiceUsers::token()),
+            PathItem::create()
+                ->route('/service-users/token/{token}')
+                ->operations(ServiceUsers::showToken()),
+            PathItem::create()
+                ->route('/settings')
+                ->operations(Settings::index(), Settings::update()),
+            PathItem::create()
+                ->route('/settings/logo.png')
+                ->operations(Settings::logo()),
+            PathItem::create()
+                ->route('/settings/styles.css')
+                ->operations(Settings::styles()),
+            PathItem::create()
+                ->route('/stats')
+                ->operations(Stats::index()),
+            PathItem::create()
+                ->route('/users')
+                ->operations(Users::index(), Users::store()),
+            PathItem::create()
+                ->route('/users/user')
+                ->operations(Users::user()),
+            PathItem::create()
+                ->route('/users/user/sessions')
+                ->operations(Users::destroySessions()),
+            PathItem::create()
+                ->route('/users/{user}')
+                ->operations(Users::show(), Users::update(), Users::destroy()),
+            PathItem::create()
+                ->route('/users/{user}/profile-picture.jpg')
+                ->operations(Users::profilePicture()),
+            PathItem::create()
+                ->route('/users/{user}/calendar-feed-token')
+                ->operations(Users::calendarFeedToken()),
+        ];
     }
 
     /**
-     * @return array
+     * @return \GoldSpecDigital\ObjectOrientedOAS\Objects\Server[]
      */
     protected function getServers(): array
     {
         $appUrl = config('app.url');
 
-        return [Server::create("{$appUrl}/v1/")];
+        return [
+            Server::create()->url("{$appUrl}/v1/"),
+        ];
     }
 
     /**
@@ -148,23 +220,24 @@ class OpenApi
      */
     protected function getComponents(): Components
     {
-        $passwordFlow = [
-            'tokenUrl' => url('/oauth/token'),
-        ];
+        $passwordFlow = OAuthFlow::create()
+            ->flow(OAuthFlow::FLOW_PASSWORD)
+            ->tokenUrl(url('/oauth/token'));
 
         return Components::create()
             ->securitySchemes(
-                SecurityScheme::oauth2('OAuth2', ['password' => $passwordFlow])
+                SecurityScheme::oauth2('OAuth2')->flows($passwordFlow)
             );
     }
 
     /**
-     * @return array
+     * @throws \GoldSpecDigital\ObjectOrientedOAS\Exceptions\InvalidArgumentException
+     * @return \GoldSpecDigital\ObjectOrientedOAS\Objects\SecurityRequirement[]
      */
     protected function getSecurity(): array
     {
         return [
-            ['OAuth2' => []],
+            SecurityRequirement::create()->securityScheme('Oauth2'),
         ];
     }
 
@@ -173,7 +246,8 @@ class OpenApi
      */
     protected function getExternalDocs(): ExternalDocs
     {
-        return ExternalDocs::create('https://github.com/BookATest/api/wiki')
+        return ExternalDocs::create()
+            ->url('https://github.com/BookATest/api/wiki')
             ->description('GitHub Wiki');
     }
 }
