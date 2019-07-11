@@ -10,6 +10,7 @@ use App\Models\ServiceUser;
 use App\Models\User;
 use App\Notifications\Sms\ServiceUser\AccessCodeSms;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\Queue;
 use Laravel\Passport\Passport;
 use Tests\TestCase;
@@ -47,7 +48,7 @@ class ServiceUsersTest extends TestCase
                 'preferred_contact_method' => $serviceUser->preferred_contact_method,
                 'created_at' => $serviceUser->created_at->toIso8601String(),
                 'updated_at' => $serviceUser->updated_at->toIso8601String(),
-            ]
+            ],
         ]);
     }
 
@@ -116,7 +117,7 @@ class ServiceUsersTest extends TestCase
                 'preferred_contact_method' => $serviceUser->preferred_contact_method,
                 'created_at' => $serviceUser->created_at->toIso8601String(),
                 'updated_at' => $serviceUser->updated_at->toIso8601String(),
-            ]
+            ],
         ]);
     }
 
@@ -207,7 +208,7 @@ class ServiceUsersTest extends TestCase
 
         /** @var \App\Models\Appointment $anotherAppointment */
         $anotherAppointment = factory(Appointment::class)->create([
-            'start_at' => today()->subWeek(),
+            'start_at' => Date::today()->subWeek(),
         ]);
         $anotherAppointment->book($serviceUser);
 
@@ -329,7 +330,7 @@ class ServiceUsersTest extends TestCase
                 'preferred_contact_method' => $serviceUser->preferred_contact_method,
                 'created_at' => $serviceUser->created_at->toIso8601String(),
                 'updated_at' => $serviceUser->updated_at->toIso8601String(),
-            ]
+            ],
         ]);
     }
 }

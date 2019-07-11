@@ -5,8 +5,8 @@ namespace App\Rules;
 use App\Models\Appointment;
 use App\Models\EligibleAnswer;
 use App\Models\Question;
-use Carbon\CarbonImmutable;
 use Illuminate\Contracts\Validation\Rule;
+use Illuminate\Support\Facades\Date;
 use InvalidArgumentException;
 
 class ValidAnswerForAppointment implements Rule
@@ -110,16 +110,16 @@ class ValidAnswerForAppointment implements Rule
         }
 
         try {
-            $answer = CarbonImmutable::createFromFormat('Y-m-d', $answer);
+            $answer = Date::createFromFormat('Y-m-d', $answer);
         } catch (InvalidArgumentException $exception) {
             return false;
         }
 
         switch ($eligibleAnswer->answer['comparison']) {
             case '>':
-                return now()->diffInSeconds($answer) >= $eligibleAnswer->answer['interval'];
+                return Date::now()->diffInSeconds($answer) >= $eligibleAnswer->answer['interval'];
             case '<':
-                return now()->diffInSeconds($answer) <= $eligibleAnswer->answer['interval'];
+                return Date::now()->diffInSeconds($answer) <= $eligibleAnswer->answer['interval'];
         }
     }
 

@@ -4,6 +4,7 @@ namespace App\Models\Scopes;
 
 use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
 
 trait AppointmentScopes
@@ -38,7 +39,7 @@ trait AppointmentScopes
      */
     public function scopeFuture(Builder $query): Builder
     {
-        return $query->where('appointments.start_at', '>', now()->timezone('UTC'));
+        return $query->where('appointments.start_at', '>', Date::now()->timezone('UTC'));
     }
 
     /**
@@ -48,8 +49,8 @@ trait AppointmentScopes
     public function scopeThisWeek(Builder $query): Builder
     {
         return $query->whereBetween('appointments.start_at', [
-            today()->startOfWeek()->timezone('UTC'),
-            today()->endOfWeek()->timezone('UTC'),
+            Date::today()->startOfWeek()->timezone('UTC'),
+            Date::today()->endOfWeek()->timezone('UTC'),
         ]);
     }
 
@@ -62,7 +63,7 @@ trait AppointmentScopes
     {
         $dateTime = $dateTime instanceof CarbonImmutable
             ? $dateTime
-            : CarbonImmutable::createFromFormat(CarbonImmutable::ATOM, $dateTime);
+            : Date::createFromFormat(CarbonImmutable::ATOM, $dateTime);
 
         return $query->where('appointments.start_at', '>=', $dateTime->timezone('UTC'));
     }
@@ -76,7 +77,7 @@ trait AppointmentScopes
     {
         $dateTime = $dateTime instanceof CarbonImmutable
             ? $dateTime
-            : CarbonImmutable::createFromFormat(CarbonImmutable::ATOM, $dateTime);
+            : Date::createFromFormat(CarbonImmutable::ATOM, $dateTime);
 
         return $query->where('appointments.start_at', '<=', $dateTime->timezone('UTC'));
     }
@@ -102,7 +103,7 @@ trait AppointmentScopes
             )
             EOT;
 
-        return $query->where(DB::raw($sql), '=', now()->second(0)->timezone('UTC'));
+        return $query->where(DB::raw($sql), '=', Date::now()->second(0)->timezone('UTC'));
     }
 
     /**

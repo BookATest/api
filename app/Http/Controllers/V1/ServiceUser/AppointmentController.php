@@ -8,6 +8,7 @@ use App\Http\Requests\ServiceUser\Appointment\IndexRequest;
 use App\Http\Resources\AppointmentResource;
 use App\Models\Appointment;
 use App\Models\ServiceUser;
+use Illuminate\Support\Facades\Date;
 use Spatie\QueryBuilder\Filter;
 use Spatie\QueryBuilder\QueryBuilder;
 
@@ -33,7 +34,7 @@ class AppointmentController extends Controller
         // Prepare the base query.
         $baseQuery = Appointment::query()
             ->where('service_user_id', $serviceUser->id)
-            ->where('start_at', '>', now()->timezone('UTC'));
+            ->where('start_at', '>', Date::now()->timezone('UTC'));
 
         // Specify allowed modifications to the query via the GET parameters.
         $appointments = QueryBuilder::for($baseQuery)

@@ -66,7 +66,7 @@ class AuditsTest extends TestCase
                 'user_agent' => $audit->user_agent,
                 'created_at' => $audit->created_at->toIso8601String(),
                 'updated_at' => $audit->updated_at->toIso8601String(),
-            ]
+            ],
         ]);
     }
 
@@ -145,7 +145,7 @@ class AuditsTest extends TestCase
                 'user_agent' => $audit->user_agent,
                 'created_at' => $audit->created_at->toIso8601String(),
                 'updated_at' => $audit->updated_at->toIso8601String(),
-            ]
+            ],
         ]);
     }
 

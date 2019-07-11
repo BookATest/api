@@ -13,7 +13,7 @@ $factory->define(App\Models\Report::class, function (Faker $faker) {
         'report_type_id' => function () {
             return \App\Models\ReportType::query()->firstOrFail()->id;
         },
-        'start_at' => today()->startOfMonth(),
-        'end_at' => today()->endOfMonth(),
+        'start_at' => \Illuminate\Support\Facades\Date::today()->startOfMonth(),
+        'end_at' => \Illuminate\Support\Facades\Date::today()->endOfMonth(),
     ];
 });

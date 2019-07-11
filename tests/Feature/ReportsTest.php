@@ -9,6 +9,7 @@ use App\Models\ReportType;
 use App\Models\User;
 use App\ReportGenerators\ReportGeneratorFactory;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\Storage;
 use Laravel\Passport\Passport;
 use Tests\TestCase;
@@ -80,8 +81,8 @@ class ReportsTest extends TestCase
         $response = $this->json('POST', '/v1/reports', [
             'clinic_id' => null,
             'type' => $reportType->name,
-            'start_at' => today()->startOfWeek()->toDateString(),
-            'end_at' => today()->endOfWeek()->toDateString(),
+            'start_at' => Date::today()->startOfWeek()->toDateString(),
+            'end_at' => Date::today()->endOfWeek()->toDateString(),
         ]);
 
         $response->assertStatus(Response::HTTP_CREATED);
@@ -89,8 +90,8 @@ class ReportsTest extends TestCase
             'user_id' => $user->id,
             'clinic_id' => null,
             'type' => $reportType->name,
-            'start_at' => today()->startOfWeek()->toDateString(),
-            'end_at' => today()->endOfWeek()->toDateString(),
+            'start_at' => Date::today()->startOfWeek()->toDateString(),
+            'end_at' => Date::today()->endOfWeek()->toDateString(),
         ]);
 
         $file = Report::query()->firstOrFail()->file;

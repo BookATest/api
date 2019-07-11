@@ -32,14 +32,14 @@ class QuestionsTest extends TestCase
                 'id' => $checkboxQuestion->id,
                 'question' => 'Are you over 18?',
                 'type' => Question::CHECKBOX,
-            ]
+            ],
         ]);
         $response->assertJsonFragment([
             [
                 'id' => $dateQuestion->id,
                 'question' => 'What is your date of birth?',
                 'type' => Question::DATE,
-            ]
+            ],
         ]);
         $response->assertJsonFragment([
             [
@@ -47,14 +47,14 @@ class QuestionsTest extends TestCase
                 'question' => 'What is your sex?',
                 'options' => ['Male', 'Female'],
                 'type' => Question::SELECT,
-            ]
+            ],
         ]);
         $response->assertJsonFragment([
             [
                 'id' => $textQuestion->id,
                 'question' => 'Where did you hear about us?',
                 'type' => Question::TEXT,
-            ]
+            ],
         ]);
     }
 
@@ -113,7 +113,7 @@ class QuestionsTest extends TestCase
                 ['type' => Question::DATE, 'question' => 'What is your date of birth?'],
                 ['type' => Question::SELECT, 'question' => 'What is your sex?', 'options' => ['Male', 'Female']],
                 ['type' => Question::TEXT, 'question' => 'Where did you hear about us?'],
-            ]
+            ],
         ]);
 
         $response->assertStatus(Response::HTTP_CREATED);
@@ -151,7 +151,7 @@ class QuestionsTest extends TestCase
         $this->json('POST', '/v1/questions', [
             'questions' => [
                 ['type' => Question::CHECKBOX, 'question' => 'Are you over 18?'],
-            ]
+            ],
         ]);
 
         $this->assertEventDispatched(EndpointHit::class, function (EndpointHit $event) {
