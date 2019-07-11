@@ -3,6 +3,7 @@
 namespace App\Console\Commands\Schedule;
 
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Date;
 
 class LoopCommand extends Command
 {
@@ -30,7 +31,7 @@ class LoopCommand extends Command
     public function handle()
     {
         while (true) {
-            $time = now()->toDateTimeString();
+            $time = Date::now()->toDateTimeString();
             $this->line("Running scheduler [$time]");
 
             $this->call('schedule:run');

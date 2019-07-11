@@ -5,6 +5,7 @@ namespace Tests\Unit\ReportGenerators;
 use App\Models\Appointment;
 use App\Models\Report;
 use App\ReportGenerators\GeneralExportGenerator;
+use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\Storage;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use Tests\TestCase;
@@ -14,13 +15,13 @@ class GeneralExportGeneratorTest extends TestCase
     public function test_global_export_correct()
     {
         $appointment = factory(Appointment::class)->create([
-            'start_at' => today(),
+            'start_at' => Date::today(),
         ]);
 
         $report = factory(Report::class)->create([
             'clinic_id' => null,
-            'start_at' => today()->subMonth(),
-            'end_at' => today()->addMonth(),
+            'start_at' => Date::today()->subMonth(),
+            'end_at' => Date::today()->addMonth(),
         ]);
 
         $generator = new GeneralExportGenerator($report);

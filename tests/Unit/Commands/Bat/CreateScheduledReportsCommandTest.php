@@ -7,6 +7,7 @@ use App\Models\Report;
 use App\Models\ReportSchedule;
 use App\Notifications\Email\CommunityWorker\ReportGeneratedEmail;
 use Carbon\CarbonImmutable;
+use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\Queue;
 use Tests\TestCase;
 
@@ -17,7 +18,7 @@ class CreateScheduledReportsCommandTest extends TestCase
         factory(ReportSchedule::class)->create([
             'repeat_type' => ReportSchedule::WEEKLY,
         ]);
-        $startAt = now()->startOfWeek();
+        $startAt = Date::now()->startOfWeek();
 
         CarbonImmutable::setTestNow($startAt);
         $this->artisan(CreateScheduledReportsCommand::class);
@@ -32,7 +33,7 @@ class CreateScheduledReportsCommandTest extends TestCase
         factory(ReportSchedule::class)->create([
             'repeat_type' => ReportSchedule::MONTHLY,
         ]);
-        $startAt = now()->startOfMonth();
+        $startAt = Date::now()->startOfMonth();
 
         CarbonImmutable::setTestNow($startAt);
         $this->artisan(CreateScheduledReportsCommand::class);
@@ -47,7 +48,7 @@ class CreateScheduledReportsCommandTest extends TestCase
         factory(ReportSchedule::class)->create([
             'repeat_type' => ReportSchedule::WEEKLY,
         ]);
-        $startAt = now()->startOfWeek()->addDay();
+        $startAt = Date::now()->startOfWeek()->addDay();
 
         CarbonImmutable::setTestNow($startAt);
         $this->artisan(CreateScheduledReportsCommand::class);
@@ -62,7 +63,7 @@ class CreateScheduledReportsCommandTest extends TestCase
         factory(ReportSchedule::class)->create([
             'repeat_type' => ReportSchedule::WEEKLY,
         ]);
-        $startAt = now()->startOfWeek();
+        $startAt = Date::now()->startOfWeek();
 
         CarbonImmutable::setTestNow($startAt);
         $this->artisan(CreateScheduledReportsCommand::class);

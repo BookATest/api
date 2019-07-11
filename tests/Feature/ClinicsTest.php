@@ -10,6 +10,7 @@ use App\Models\Role;
 use App\Models\ServiceUser;
 use App\Models\User;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Date;
 use Laravel\Passport\Passport;
 use Tests\TestCase;
 
@@ -572,7 +573,7 @@ class ClinicsTest extends TestCase
         $clinic = factory(Clinic::class)->create();
         $appointment = factory(Appointment::class)->create([
             'clinic_id' => $clinic->id,
-            'start_at' => today()->addWeek(),
+            'start_at' => Date::today()->addWeek(),
         ])->book($serviceUser);
 
         Passport::actingAs($user);

@@ -6,6 +6,7 @@ use App\Models\Mutators\AppointmentMutators;
 use App\Models\Relationships\AppointmentRelationships;
 use App\Models\Scopes\AppointmentScopes;
 use Carbon\CarbonImmutable;
+use Illuminate\Support\Facades\Date;
 use InvalidArgumentException;
 
 class Appointment extends Model
@@ -45,7 +46,7 @@ class Appointment extends Model
      */
     public function book(ServiceUser $serviceUser, CarbonImmutable $bookedAt = null): self
     {
-        $bookedAt = $bookedAt ?? now();
+        $bookedAt = $bookedAt ?? Date::now();
 
         $this->update([
             'service_user_id' => $serviceUser->id,

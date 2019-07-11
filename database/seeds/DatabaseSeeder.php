@@ -10,6 +10,7 @@ use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Date;
 
 class DatabaseSeeder extends Seeder
 {
@@ -23,7 +24,7 @@ class DatabaseSeeder extends Seeder
         $this->createUsers(30);
 
         foreach (range(0, 6) as $daysToAdd) {
-            $this->createAppointments(3, today()->addDays($daysToAdd));
+            $this->createAppointments(3, Date::today()->addDays($daysToAdd));
         }
 
         $this->createQuestions();
@@ -206,7 +207,7 @@ class DatabaseSeeder extends Seeder
                                 'question_id' => $question->id,
                                 'answer' => EligibleAnswer::parseDateAnswer([
                                     'comparison' => $comparison,
-                                    'interval' => now()->diffInSeconds(now()->addYears(18)),
+                                    'interval' => Date::now()->diffInSeconds(Date::now()->addYears(18)),
                                 ]),
                             ]);
                             break;

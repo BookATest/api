@@ -16,6 +16,7 @@ use App\Models\AppointmentSchedule;
 use Carbon\CarbonImmutable;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
 use Spatie\QueryBuilder\Filter;
 use Spatie\QueryBuilder\QueryBuilder;
@@ -64,8 +65,8 @@ class AppointmentController extends Controller
         if (Auth::guard('api')->guest()) {
             $baseQuery = $baseQuery
                 ->whereBetween('appointments.start_at', [
-                    now()->timezone('UTC'),
-                    today()->addDays(config('bat.days_in_advance_to_book'))->endOfDay()->timezone('UTC'),
+                    Date::now()->timezone('UTC'),
+                    Date::today()->addDays(config('bat.days_in_advance_to_book'))->endOfDay()->timezone('UTC'),
                 ])
                 ->available();
         }

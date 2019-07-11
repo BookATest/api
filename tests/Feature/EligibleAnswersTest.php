@@ -9,6 +9,7 @@ use App\Models\EligibleAnswer;
 use App\Models\Question;
 use App\Models\User;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Date;
 use Laravel\Passport\Passport;
 use Tests\TestCase;
 
@@ -90,7 +91,7 @@ class EligibleAnswersTest extends TestCase
         $clinic = factory(Clinic::class)->create();
         $user = factory(User::class)->create()->makeClinicAdmin($clinic);
 
-        $eighteenYearsAgo = now()->subYears(18)->timestamp;
+        $eighteenYearsAgo = Date::now()->subYears(18)->timestamp;
 
         $selectQuestion = Question::createSelect('What sex are you?', 'Male', 'Female');
         $dateQuestion = Question::createDate('What is your date of birth?');
@@ -282,7 +283,7 @@ class EligibleAnswersTest extends TestCase
         $checkboxQuestion = Question::createCheckbox('Are you a smoker?');
         Question::createText('Where did you hear about us?');
 
-        $interval = now()->diffInSeconds(now()->subYears(18));
+        $interval = Date::now()->diffInSeconds(now()->subYears(18));
 
         Passport::actingAs($user);
         $response = $this->json('PUT', "/v1/clinics/$clinic->id/eligible-answers", [
@@ -332,7 +333,7 @@ class EligibleAnswersTest extends TestCase
         $dateQuestion = Question::createDate('What is your date of birth?');
         Question::createCheckbox('Are you a smoker?');
 
-        $interval = now()->diffInSeconds(now()->subYears(18));
+        $interval = Date::now()->diffInSeconds(now()->subYears(18));
 
         Passport::actingAs($user);
         $response = $this->json('PUT', "/v1/clinics/$clinic->id/eligible-answers", [

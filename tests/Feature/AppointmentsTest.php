@@ -10,6 +10,7 @@ use App\Models\Clinic;
 use App\Models\ServiceUser;
 use App\Models\User;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\Queue;
 use Laravel\Passport\Passport;
 use Tests\Support\ICal;
@@ -27,8 +28,8 @@ class AppointmentsTest extends TestCase
         $availableAppointment = factory(Appointment::class)->create();
         $bookedAppointment = factory(Appointment::class)->create([
             'service_user_id' => $serviceUser->id,
-            'booked_at' => now(),
-            'consented_at' => now(),
+            'booked_at' => Date::now(),
+            'consented_at' => Date::now(),
         ]);
 
         $response = $this->json('GET', '/v1/appointments');
@@ -63,8 +64,8 @@ class AppointmentsTest extends TestCase
         $availableAppointment = factory(Appointment::class)->create();
         $bookedAppointment = factory(Appointment::class)->create([
             'service_user_id' => $serviceUser->id,
-            'booked_at' => now(),
-            'consented_at' => now(),
+            'booked_at' => Date::now(),
+            'consented_at' => Date::now(),
         ]);
 
         Passport::actingAs($user);
@@ -187,13 +188,13 @@ class AppointmentsTest extends TestCase
         $user = factory(User::class)->create()->makeCommunityWorker($clinic);
         $serviceUsersAppointment = factory(Appointment::class)->create([
             'service_user_id' => factory(ServiceUser::class)->create()->id,
-            'booked_at' => now(),
-            'consented_at' => now(),
+            'booked_at' => Date::now(),
+            'consented_at' => Date::now(),
         ]);
         $otherAppointment = factory(Appointment::class)->create([
             'service_user_id' => factory(ServiceUser::class)->create()->id,
-            'booked_at' => now(),
-            'consented_at' => now(),
+            'booked_at' => Date::now(),
+            'consented_at' => Date::now(),
         ]);
 
         Passport::actingAs($user);
@@ -229,8 +230,8 @@ class AppointmentsTest extends TestCase
         $availableAppointment = factory(Appointment::class)->create();
         $bookedAppointment = factory(Appointment::class)->create([
             'service_user_id' => factory(ServiceUser::class)->create()->id,
-            'booked_at' => now(),
-            'consented_at' => now(),
+            'booked_at' => Date::now(),
+            'consented_at' => Date::now(),
         ]);
 
         Passport::actingAs($user);
@@ -262,14 +263,14 @@ class AppointmentsTest extends TestCase
     {
         $clinic = factory(Clinic::class)->create();
         $user = factory(User::class)->create()->makeCommunityWorker($clinic);
-        $withinRangeAppointment = factory(Appointment::class)->create(['start_at' => today()]);
-        $beforeRangeAppointment = factory(Appointment::class)->create(['start_at' => today()->subWeek()]);
-        $afterRangeAppointment = factory(Appointment::class)->create(['start_at' => today()->addWeeks(2)]);
+        $withinRangeAppointment = factory(Appointment::class)->create(['start_at' => Date::today()]);
+        $beforeRangeAppointment = factory(Appointment::class)->create(['start_at' => Date::today()->subWeek()]);
+        $afterRangeAppointment = factory(Appointment::class)->create(['start_at' => Date::today()->addWeeks(2)]);
 
         Passport::actingAs($user);
         $query = http_build_query([
-            'filter[starts_after]' => today()->toIso8601String(),
-            'filter[starts_before]' => today()->addWeek()->toIso8601String(),
+            'filter[starts_after]' => Date::today()->toIso8601String(),
+            'filter[starts_before]' => Date::today()->addWeek()->toIso8601String(),
         ]);
         $response = $this->json('GET', "/v1/appointments?$query");
 
@@ -303,7 +304,7 @@ class AppointmentsTest extends TestCase
         $user = factory(User::class)->create()->makeCommunityWorker($clinic);
 
         /** @var \App\Models\Appointment $appointment */
-        $startAt = today()->addDay()->setTime(12, 0);
+        $startAt = Date::today()->addDay()->setTime(12, 0);
         $appointment = factory(Appointment::class)->create([
             'clinic_id' => $clinic->id,
             'user_id' => $user->id,
@@ -349,7 +350,7 @@ class AppointmentsTest extends TestCase
 
         $response = $this->json('POST', '/v1/appointments', [
             'clinic_id' => $anotherClinic->id,
-            'start_at' => today()->toIso8601String(),
+            'start_at' => Date::today()->toIso8601String(),
             'is_repeating' => false,
         ]);
 
@@ -360,7 +361,7 @@ class AppointmentsTest extends TestCase
     {
         $clinic = factory(Clinic::class)->create();
         $user = factory(User::class)->create()->makeCommunityWorker($clinic);
-        $startAt = today();
+        $startAt = Date::today();
 
         Passport::actingAs($user);
 
@@ -387,7 +388,7 @@ class AppointmentsTest extends TestCase
     {
         $clinic = factory(Clinic::class)->create();
         $user = factory(User::class)->create()->makeCommunityWorker($clinic);
-        $startAt = today();
+        $startAt = Date::today();
 
         Passport::actingAs($user);
 
@@ -425,7 +426,7 @@ class AppointmentsTest extends TestCase
 
         $this->json('POST', '/v1/appointments', [
             'clinic_id' => $clinic->id,
-            'start_at' => today()->toIso8601String(),
+            'start_at' => Date::today()->toIso8601String(),
             'is_repeating' => false,
         ]);
 
@@ -443,8 +444,8 @@ class AppointmentsTest extends TestCase
         $serviceUser = factory(ServiceUser::class)->create();
         $appointment = factory(Appointment::class)->create([
             'service_user_id' => $serviceUser->id,
-            'booked_at' => now(),
-            'consented_at' => now(),
+            'booked_at' => Date::now(),
+            'consented_at' => Date::now(),
         ]);
 
         $response = $this->json('GET', "/v1/appointments/{$appointment->id}");
@@ -626,8 +627,8 @@ class AppointmentsTest extends TestCase
         $appointment = factory(Appointment::class)->create([
             'clinic_id' => $clinic->id,
             'service_user_id' => factory(ServiceUser::class)->create()->id,
-            'booked_at' => now(),
-            'consented_at' => now(),
+            'booked_at' => Date::now(),
+            'consented_at' => Date::now(),
         ]);
 
         Passport::actingAs($user);
@@ -665,8 +666,8 @@ class AppointmentsTest extends TestCase
         $appointment = factory(Appointment::class)->create([
             'clinic_id' => $clinic->id,
             'service_user_id' => factory(ServiceUser::class)->create()->id,
-            'booked_at' => now(),
-            'consented_at' => now(),
+            'booked_at' => Date::now(),
+            'consented_at' => Date::now(),
         ]);
 
         Passport::actingAs($user);
@@ -766,8 +767,8 @@ class AppointmentsTest extends TestCase
         $serviceUser = factory(ServiceUser::class)->create();
         $appointment = factory(Appointment::class)->create([
             'service_user_id' => factory(ServiceUser::class)->create()->id,
-            'booked_at' => now(),
-            'consented_at' => now(),
+            'booked_at' => Date::now(),
+            'consented_at' => Date::now(),
         ]);
 
         $response = $this->json('PUT', "/v1/appointments/{$appointment->id}/cancel", [
@@ -782,8 +783,8 @@ class AppointmentsTest extends TestCase
         $serviceUser = factory(ServiceUser::class)->create();
         $appointment = factory(Appointment::class)->create([
             'service_user_id' => $serviceUser->id,
-            'booked_at' => now(),
-            'consented_at' => now(),
+            'booked_at' => Date::now(),
+            'consented_at' => Date::now(),
         ]);
 
         $response = $this->json('PUT', "/v1/appointments/{$appointment->id}/cancel", [
@@ -833,8 +834,8 @@ class AppointmentsTest extends TestCase
         $appointment = factory(Appointment::class)->create([
             'clinic_id' => factory(Clinic::class)->create()->id,
             'service_user_id' => factory(ServiceUser::class)->create()->id,
-            'booked_at' => now(),
-            'consented_at' => now(),
+            'booked_at' => Date::now(),
+            'consented_at' => Date::now(),
         ]);
 
         Passport::actingAs($user);
@@ -851,9 +852,9 @@ class AppointmentsTest extends TestCase
         $appointment = factory(Appointment::class)->create([
             'clinic_id' => $clinic->id,
             'service_user_id' => factory(ServiceUser::class)->create()->id,
-            'start_at' => today()->subWeek(),
-            'booked_at' => now(),
-            'consented_at' => now(),
+            'start_at' => Date::today()->subWeek(),
+            'booked_at' => Date::now(),
+            'consented_at' => Date::now(),
         ]);
 
         Passport::actingAs($user);
@@ -870,8 +871,8 @@ class AppointmentsTest extends TestCase
         $appointment = factory(Appointment::class)->create([
             'clinic_id' => $clinic->id,
             'service_user_id' => factory(ServiceUser::class)->create()->id,
-            'booked_at' => now(),
-            'consented_at' => now(),
+            'booked_at' => Date::now(),
+            'consented_at' => Date::now(),
         ]);
 
         Passport::actingAs($user);
@@ -896,8 +897,8 @@ class AppointmentsTest extends TestCase
         $appointment = factory(Appointment::class)->create([
             'clinic_id' => $clinic->id,
             'service_user_id' => factory(ServiceUser::class)->create()->id,
-            'booked_at' => now(),
-            'consented_at' => now(),
+            'booked_at' => Date::now(),
+            'consented_at' => Date::now(),
         ]);
 
         Passport::actingAs($user);
@@ -918,8 +919,8 @@ class AppointmentsTest extends TestCase
         ]);
         $appointment = factory(Appointment::class)->create([
             'service_user_id' => $serviceUser->id,
-            'booked_at' => now(),
-            'consented_at' => now(),
+            'booked_at' => Date::now(),
+            'consented_at' => Date::now(),
         ]);
 
         $response = $this->json('PUT', "/v1/appointments/{$appointment->id}/cancel", [
@@ -946,8 +947,8 @@ class AppointmentsTest extends TestCase
             'user_id' => $user->id,
             'clinic_id' => $clinic,
             'service_user_id' => $serviceUser->id,
-            'booked_at' => now(),
-            'consented_at' => now(),
+            'booked_at' => Date::now(),
+            'consented_at' => Date::now(),
         ]);
 
         Passport::actingAs($user);
@@ -973,8 +974,8 @@ class AppointmentsTest extends TestCase
         $appointment = factory(Appointment::class)->create([
             'user_id' => $user->id,
             'service_user_id' => $serviceUser->id,
-            'booked_at' => now(),
-            'consented_at' => now(),
+            'booked_at' => Date::now(),
+            'consented_at' => Date::now(),
         ]);
 
         $response = $this->json('PUT', "/v1/appointments/{$appointment->id}/cancel", [
@@ -1001,8 +1002,8 @@ class AppointmentsTest extends TestCase
             'user_id' => $user->id,
             'clinic_id' => $clinic,
             'service_user_id' => $serviceUser->id,
-            'booked_at' => now(),
-            'consented_at' => now(),
+            'booked_at' => Date::now(),
+            'consented_at' => Date::now(),
         ]);
 
         Passport::actingAs($user);
@@ -1027,8 +1028,8 @@ class AppointmentsTest extends TestCase
         $appointment = factory(Appointment::class)->create([
             'clinic_id' => $clinic->id,
             'service_user_id' => $serviceUser->id,
-            'booked_at' => now(),
-            'consented_at' => now(),
+            'booked_at' => Date::now(),
+            'consented_at' => Date::now(),
         ]);
 
         $response = $this->json('PUT', "/v1/appointments/{$appointment->id}/cancel", [
@@ -1057,8 +1058,8 @@ class AppointmentsTest extends TestCase
         $appointment = factory(Appointment::class)->create([
             'clinic_id' => $clinic->id,
             'service_user_id' => $serviceUser->id,
-            'booked_at' => now(),
-            'consented_at' => now(),
+            'booked_at' => Date::now(),
+            'consented_at' => Date::now(),
         ]);
 
         $response = $this->json('PUT', "/v1/appointments/{$appointment->id}/cancel", [
@@ -1082,8 +1083,8 @@ class AppointmentsTest extends TestCase
         $appointmentSchedule = AppointmentSchedule::create([
             'user_id' => $user->id,
             'clinic_id' => $clinic->id,
-            'weekly_on' => today()->dayOfWeekIso,
-            'weekly_at' => today()->toTimeString(),
+            'weekly_on' => Date::today()->dayOfWeekIso,
+            'weekly_at' => Date::today()->toTimeString(),
         ]);
 
         $daysToSkip = 0;
@@ -1104,8 +1105,8 @@ class AppointmentsTest extends TestCase
         $appointmentSchedule = AppointmentSchedule::create([
             'user_id' => $user->id,
             'clinic_id' => factory(Clinic::class)->create()->id,
-            'weekly_on' => today()->dayOfWeekIso,
-            'weekly_at' => today()->toTimeString(),
+            'weekly_on' => Date::today()->dayOfWeekIso,
+            'weekly_at' => Date::today()->toTimeString(),
         ]);
 
         $daysToSkip = 0;
@@ -1127,8 +1128,8 @@ class AppointmentsTest extends TestCase
         $appointmentSchedule = AppointmentSchedule::create([
             'user_id' => $user->id,
             'clinic_id' => $clinic->id,
-            'weekly_on' => today()->dayOfWeekIso,
-            'weekly_at' => today()->toTimeString(),
+            'weekly_on' => Date::today()->dayOfWeekIso,
+            'weekly_at' => Date::today()->toTimeString(),
         ]);
 
         $daysToSkip = 0;
@@ -1155,15 +1156,15 @@ class AppointmentsTest extends TestCase
         $appointmentSchedule = AppointmentSchedule::create([
             'user_id' => $user->id,
             'clinic_id' => $clinic->id,
-            'weekly_on' => today()->dayOfWeekIso,
-            'weekly_at' => today()->toTimeString(),
+            'weekly_on' => Date::today()->dayOfWeekIso,
+            'weekly_at' => Date::today()->toTimeString(),
         ]);
 
         $daysToSkip = 0;
         $appointments = $appointmentSchedule->createAppointments($daysToSkip);
         $appointment = $appointments->first();
         $appointment->service_user_id = $serviceUser->id;
-        $appointment->booked_at = now();
+        $appointment->booked_at = Date::now();
         $appointment->consented_at = $appointment->booked_at;
         $appointment->save();
 
@@ -1195,8 +1196,8 @@ class AppointmentsTest extends TestCase
         $appointmentSchedule = AppointmentSchedule::create([
             'user_id' => $user->id,
             'clinic_id' => $clinic->id,
-            'weekly_on' => today()->dayOfWeekIso,
-            'weekly_at' => today()->toTimeString(),
+            'weekly_on' => Date::today()->dayOfWeekIso,
+            'weekly_at' => Date::today()->toTimeString(),
         ]);
 
         $daysToSkip = 0;

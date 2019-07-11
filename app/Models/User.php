@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Laravel\Passport\HasApiTokens;
@@ -102,7 +103,7 @@ class User extends Authenticatable
      */
     public function disable(CarbonImmutable $dateTime = null): self
     {
-        $dateTime = $dateTime ?? now();
+        $dateTime = $dateTime ?? Date::now();
         $this->update(['disabled_at' => $dateTime]);
 
         return $this;

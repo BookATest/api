@@ -7,13 +7,14 @@ use App\Models\AppointmentSchedule;
 use App\Models\Clinic;
 use App\Models\User;
 use Carbon\CarbonImmutable;
+use Illuminate\Support\Facades\Date;
 use Tests\TestCase;
 
 class CreateRepeatingAppointmentsCommandTest extends TestCase
 {
     public function test_appointments_created()
     {
-        $startDate = now()->startOfWeek();
+        $startDate = Date::now()->startOfWeek();
         CarbonImmutable::setTestNow($startDate);
 
         $clinic = factory(Clinic::class)->create();
@@ -85,7 +86,7 @@ class CreateRepeatingAppointmentsCommandTest extends TestCase
 
     public function test_appointments_not_duplicated()
     {
-        $startDate = now()->startOfWeek();
+        $startDate = Date::now()->startOfWeek();
         CarbonImmutable::setTestNow($startDate);
 
         $clinic = factory(Clinic::class)->create();

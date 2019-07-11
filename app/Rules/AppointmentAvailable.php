@@ -4,6 +4,7 @@ namespace App\Rules;
 
 use App\Models\Appointment;
 use Illuminate\Contracts\Validation\Rule;
+use Illuminate\Support\Facades\Date;
 
 class AppointmentAvailable implements Rule
 {
@@ -34,7 +35,7 @@ class AppointmentAvailable implements Rule
             $appointment->clinic->appointment_booking_threshold
         );
 
-        if (now()->greaterThan($latestBookingTime)) {
+        if (Date::now()->greaterThan($latestBookingTime)) {
             return false;
         }
 

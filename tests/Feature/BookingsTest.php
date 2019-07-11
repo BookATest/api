@@ -17,6 +17,7 @@ use App\Notifications\Sms\ServiceUser\BookingConfirmedSms;
 use Carbon\CarbonImmutable;
 use Illuminate\Http\Response;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\Queue;
 use Tests\TestCase;
 
@@ -50,7 +51,7 @@ class BookingsTest extends TestCase
             'question_id' => $dateQuestion->id,
             'answer' => EligibleAnswer::parseDateAnswer([
                 'comparison' => '>',
-                'interval' => now()->diffInSeconds(now()->subYears(18)),
+                'interval' => Date::now()->diffInSeconds(now()->subYears(18)),
             ]),
         ]);
 
@@ -76,7 +77,7 @@ class BookingsTest extends TestCase
                 ],
                 [
                     'question_id' => $dateQuestion->id,
-                    'answer' => now()->subYears(21)->toDateString(),
+                    'answer' => Date::now()->subYears(21)->toDateString(),
                 ],
                 [
                     'question_id' => $textQuestion->id,
@@ -179,7 +180,7 @@ class BookingsTest extends TestCase
         // Create an appointment at the clinic.
         $appointment = factory(Appointment::class)->create([
             'clinic_id' => $clinic->id,
-            'start_at' => today()->subDay(),
+            'start_at' => Date::today()->subDay(),
         ]);
 
         // Make the first booking.
@@ -205,7 +206,7 @@ class BookingsTest extends TestCase
     public function test_guest_cannot_booked_appointment_outside_booking_threshold()
     {
         // Fake the current time.
-        CarbonImmutable::setTestNow(today()->hour(20));
+        CarbonImmutable::setTestNow(Date::today()->hour(20));
 
         // Create the question.
         $textQuestion = Question::createText('Where did you hear about us?');
@@ -219,7 +220,7 @@ class BookingsTest extends TestCase
         // Create an appointment at the clinic.
         $appointment = factory(Appointment::class)->create([
             'clinic_id' => $clinic->id,
-            'start_at' => today()->addDay(),
+            'start_at' => Date::today()->addDay(),
         ]);
 
         // Make the first booking.
@@ -538,7 +539,7 @@ class BookingsTest extends TestCase
                 ],
                 [
                     'question_id' => $dateQuestion->id,
-                    'answer' => now()->subYears(21)->toDateString(),
+                    'answer' => Date::now()->subYears(21)->toDateString(),
                 ],
                 [
                     'question_id' => $textQuestion->id,
@@ -575,7 +576,7 @@ class BookingsTest extends TestCase
             'question_id' => $dateQuestion->id,
             'answer' => EligibleAnswer::parseDateAnswer([
                 'comparison' => '>',
-                'interval' => now()->diffInSeconds(now()->subYears(18)),
+                'interval' => Date::now()->diffInSeconds(now()->subYears(18)),
             ]),
         ]);
 
@@ -593,7 +594,7 @@ class BookingsTest extends TestCase
             'question_id' => $dateQuestion->id,
             'answer' => EligibleAnswer::parseDateAnswer([
                 'comparison' => '>',
-                'interval' => now()->diffInSeconds(now()->subYears(18)),
+                'interval' => Date::now()->diffInSeconds(now()->subYears(18)),
             ]),
         ]);
 
@@ -614,7 +615,7 @@ class BookingsTest extends TestCase
                 ],
                 [
                     'question_id' => $dateQuestion->id,
-                    'answer' => now()->subYears(21)->toDateString(),
+                    'answer' => Date::now()->subYears(21)->toDateString(),
                 ],
                 [
                     'question_id' => $textQuestion->id,

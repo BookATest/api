@@ -3,6 +3,7 @@
 namespace App\Database\Migrations;
 
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Support\Facades\Date;
 
 abstract class MigrationSeeder extends Migration
 {
@@ -26,7 +27,7 @@ abstract class MigrationSeeder extends Migration
      */
     public function __construct()
     {
-        $this->now = now();
+        $this->now = Date::now();
     }
 
     /**
