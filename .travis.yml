@@ -25,7 +25,7 @@ before_script:
   - ./develop build
   - ./develop up -d
   - ./develop composer install
-  - ./develop run --rm -T -w /var/www/html api mv .env.example .env
+  - ./develop run --rm -T app mv .env.example .env
   - ./develop artisan key:generate
   - ./develop artisan passport:keys
 
