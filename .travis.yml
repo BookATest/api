@@ -21,6 +21,7 @@ install:
   - pip install pyyaml
 
 before_script:
+  - sudo service mysql stop
   - ./develop build
   - ./develop up -d
   - ./develop composer install
