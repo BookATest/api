@@ -7,7 +7,7 @@ use App\Models\Mutators\UserMutators;
 use App\Models\Relationships\UserRelationships;
 use App\Models\Scopes\UserScopes;
 use App\Notifications\Email\User\ForgottenPasswordEmail;
-use Carbon\CarbonImmutable;
+use Carbon\CarbonInterface;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -98,10 +98,10 @@ class User extends Authenticatable
     }
 
     /**
-     * @param \Carbon\CarbonImmutable|null $dateTime
+     * @param \Carbon\CarbonInterface|null $dateTime
      * @return \App\Models\User
      */
-    public function disable(CarbonImmutable $dateTime = null): self
+    public function disable(CarbonInterface $dateTime = null): self
     {
         $dateTime = $dateTime ?? Date::now();
         $this->update(['disabled_at' => $dateTime]);
