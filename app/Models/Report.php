@@ -58,8 +58,7 @@ class Report extends Model
         ]);
 
         // Create the report model.
-        /** @var \App\Models\Report $report */
-        $report = Report::create([
+        $report = static::create([
             'user_id' => $user->id,
             'file_id' => $file->id,
             'clinic_id' => $clinic->id ?? null,
