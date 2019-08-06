@@ -5,7 +5,7 @@ namespace App\Rules;
 use App\Models\Appointment;
 use App\Models\Clinic;
 use App\Models\User;
-use Carbon\CarbonImmutable;
+use Carbon\CarbonInterface;
 use Illuminate\Contracts\Validation\Rule;
 use Illuminate\Support\Facades\Date;
 use InvalidArgumentException;
@@ -52,8 +52,8 @@ class AppointmentDoesntOverlap implements Rule
         }
 
         try {
-            /** @var \Carbon\CarbonImmutable $startAt */
-            $startAt = Date::createFromFormat(CarbonImmutable::ATOM, $startAt);
+            /** @var \Carbon\CarbonInterface $startAt */
+            $startAt = Date::createFromFormat(CarbonInterface::ATOM, $startAt);
             $startAt = $startAt->second(0);
         } catch (InvalidArgumentException $exception) {
             return false;

@@ -18,6 +18,7 @@ class ReportGeneratorFactory
     /**
      * @param \App\Models\Report $report
      * @throws \App\Exceptions\InvalidReportTypeException
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
      * @return \App\ReportGenerators\ReportGenerator
      */
     public static function for(Report $report): ReportGenerator
@@ -27,7 +28,7 @@ class ReportGeneratorFactory
         $className = __NAMESPACE__ . '\\' . $reportType . 'Generator';
 
         if (class_exists($className)) {
-            return app($className, [$report]);
+            return app()->make($className, ['report' => $report]);
         }
 
         throw new InvalidReportTypeException("Class does not exist [$className]");

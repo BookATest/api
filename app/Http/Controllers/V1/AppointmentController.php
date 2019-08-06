@@ -13,7 +13,7 @@ use App\Http\Resources\AppointmentResource;
 use App\Http\Responses\ResourceDeletedResponse;
 use App\Models\Appointment;
 use App\Models\AppointmentSchedule;
-use Carbon\CarbonImmutable;
+use Carbon\CarbonInterface;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Date;
@@ -107,7 +107,7 @@ class AppointmentController extends Controller
     public function store(StoreRequest $request)
     {
         $appointment = DB::transaction(function () use ($request): Appointment {
-            $startAt = Date::createFromFormat(CarbonImmutable::ATOM, $request->start_at)
+            $startAt = Date::createFromFormat(CarbonInterface::ATOM, $request->start_at)
                 ->second(0);
 
             // For repeating appointments.

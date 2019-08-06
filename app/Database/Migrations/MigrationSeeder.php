@@ -13,7 +13,7 @@ abstract class MigrationSeeder extends Migration
     protected $db;
 
     /**
-     * @var \Carbon\CarbonImmutable
+     * @var \Carbon\CarbonInterface
      */
     protected $now;
 

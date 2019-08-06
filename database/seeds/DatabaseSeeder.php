@@ -6,7 +6,7 @@ use App\Models\EligibleAnswer;
 use App\Models\Question;
 use App\Models\User;
 use App\Support\Coordinate;
-use Carbon\CarbonImmutable;
+use Carbon\CarbonInterface;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Arr;
@@ -117,10 +117,10 @@ class DatabaseSeeder extends Seeder
     /**
      * @param int $perDay the number of appointments that should be generated
      *                    for one day for a single user
-     * @param \Carbon\CarbonImmutable $day The day to create
+     * @param \Carbon\CarbonInterface $day The day to create
      * @return \Illuminate\Database\Eloquent\Collection the day to create appointments for
      */
-    protected function createAppointments(int $perDay, CarbonImmutable $day): Collection
+    protected function createAppointments(int $perDay, CarbonInterface $day): Collection
     {
         $appointments = new Collection();
 
