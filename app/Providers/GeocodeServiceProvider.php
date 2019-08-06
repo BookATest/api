@@ -8,8 +8,6 @@ class GeocodeServiceProvider extends ServiceProvider
 {
     /**
      * Bootstrap services.
-     *
-     * @return void
      */
     public function boot()
     {
@@ -25,8 +23,6 @@ class GeocodeServiceProvider extends ServiceProvider
 
     /**
      * Register services.
-     *
-     * @return void
      */
     public function register()
     {

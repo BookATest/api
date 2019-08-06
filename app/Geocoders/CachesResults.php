@@ -14,7 +14,7 @@ trait CachesResults
      */
     protected function normaliseAddress(Postcode $postcode): string
     {
-        $postcode = strtolower($postcode->get());
+        $postcode = mb_strtolower($postcode->get());
         $postcode = single_space($postcode);
 
         return "$postcode, united kingdom";

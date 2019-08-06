@@ -4,6 +4,7 @@ namespace App\Http\Requests\Appointment;
 
 use App\Rules\ServiceUserTokenIsValid;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Date;
 
 class CancelRequest extends FormRequest
 {
@@ -15,7 +16,7 @@ class CancelRequest extends FormRequest
     public function authorize()
     {
         // If the appointment is in the past.
-        if ($this->appointment->start_at->lessThan(now())) {
+        if ($this->appointment->start_at->lessThan(Date::now())) {
             return false;
         }
 

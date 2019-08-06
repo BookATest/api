@@ -4,10 +4,10 @@ namespace App\Docs\Paths;
 
 use App\Docs\Requests;
 use App\Docs\Resources\SettingResource;
-use App\Docs\Responses;
 use App\Docs\Tags;
 use GoldSpecDigital\ObjectOrientedOAS\Objects\MediaType;
 use GoldSpecDigital\ObjectOrientedOAS\Objects\Operation;
+use GoldSpecDigital\ObjectOrientedOAS\Objects\Response;
 use GoldSpecDigital\ObjectOrientedOAS\Objects\Schema;
 
 class Settings
@@ -21,33 +21,38 @@ class Settings
     }
 
     /**
+     * @throws \GoldSpecDigital\ObjectOrientedOAS\Exceptions\InvalidArgumentException
      * @return \GoldSpecDigital\ObjectOrientedOAS\Objects\Operation
      */
     public static function index(): Operation
     {
         $responses = [
-            Responses::http200(
-                MediaType::json(SettingResource::show())
-            ),
+            Response::ok()
+                ->content(
+                    MediaType::json()->schema(SettingResource::show())
+                ),
         ];
 
-        return Operation::get(...$responses)
-            ->security([])
+        return Operation::get()
+            ->responses(...$responses)
+            ->noSecurity()
             ->summary('List all the organisation settings')
             ->description('**Permission:** `Open`')
             ->operationId('settings.index')
-            ->tags(Tags::settings()->name);
+            ->tags(Tags::settings());
     }
 
     /**
+     * @throws \GoldSpecDigital\ObjectOrientedOAS\Exceptions\InvalidArgumentException
      * @return \GoldSpecDigital\ObjectOrientedOAS\Objects\Operation
      */
     public static function update(): Operation
     {
         $responses = [
-            Responses::http200(
-                MediaType::json(SettingResource::show())
-            ),
+            Response::ok()
+                ->content(
+                    MediaType::json()->schema(SettingResource::show())
+                ),
         ];
         $requestBody = Requests::json(
             Schema::object()
@@ -65,11 +70,7 @@ class Settings
                     Schema::integer('default_appointment_booking_threshold'),
                     Schema::integer('default_appointment_duration'),
                     Schema::object('language')
-                        ->required(
-                            'home',
-                            'make-booking',
-                            'list-bookings'
-                        )
+                        ->required('home', 'make-booking', 'list-bookings')
                         ->properties(
                             Schema::object('home')
                                 ->required('title', 'content')
@@ -211,47 +212,58 @@ class Settings
                 )
         );
 
-        return Operation::put(...$responses)
+        return Operation::put()
+            ->responses(...$responses)
             ->requestBody($requestBody)
             ->summary('Update all of the organisation settings')
             ->description('**Permission:** `Organisation Admin`')
             ->operationId('settings.update')
-            ->tags(Tags::settings()->name);
+            ->tags(Tags::settings());
     }
 
     /**
+     * @throws \GoldSpecDigital\ObjectOrientedOAS\Exceptions\InvalidArgumentException
      * @return \GoldSpecDigital\ObjectOrientedOAS\Objects\Operation
      */
     public static function logo(): Operation
     {
         $responses = [
-            Responses::http200(
-                MediaType::create('image/png', Schema::string()->format(Schema::BINARY))
-            ),
+            Response::ok()
+                ->content(
+                    MediaType::png()->schema(
+                        Schema::string()->format(Schema::FORMAT_BINARY)
+                    )
+                ),
         ];
 
-        return Operation::get(...$responses)
+        return Operation::get()
+            ->responses(...$responses)
             ->summary('Get the organisation\'s logo')
             ->description('**Permission:** `Open`')
             ->operationId('settings.logo')
-            ->tags(Tags::settings()->name);
+            ->tags(Tags::settings());
     }
 
     /**
+     * @throws \GoldSpecDigital\ObjectOrientedOAS\Exceptions\InvalidArgumentException
      * @return \GoldSpecDigital\ObjectOrientedOAS\Objects\Operation
      */
     public static function styles(): Operation
     {
         $responses = [
-            Responses::http200(
-                MediaType::create('text/css', Schema::string())
-            ),
+            Response::ok()
+                ->content(
+                    MediaType::create()
+                        ->mediaType('text/css')
+                        ->schema(Schema::string())
+                ),
         ];
 
-        return Operation::get(...$responses)
+        return Operation::get()
+            ->responses(...$responses)
             ->summary('Get the custom CSS')
             ->description('**Permission:** `Open`')
             ->operationId('settings.styles')
-            ->tags(Tags::settings()->name);
+            ->tags(Tags::settings());
     }
 }

@@ -7,6 +7,7 @@ use App\Notifications\Sms\ServiceUser\AppointmentReminderSms;
 use Illuminate\Console\Command;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Bus\DispatchesJobs;
+use Illuminate\Support\Facades\Date;
 
 class SendAppointmentRemindersCommand extends Command
 {
@@ -37,7 +38,7 @@ class SendAppointmentRemindersCommand extends Command
     public function handle()
     {
         $minutesBefore = (int)$this->option('minutes-before');
-        $startAt = now()->second(0)->addMinutes($minutesBefore);
+        $startAt = Date::now()->second(0)->addMinutes($minutesBefore);
 
         Appointment::query()
             ->with('serviceUser')

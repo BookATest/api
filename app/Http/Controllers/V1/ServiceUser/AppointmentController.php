@@ -3,11 +3,12 @@
 namespace App\Http\Controllers\V1\ServiceUser;
 
 use App\Events\EndpointHit;
+use App\Http\Controllers\Controller;
 use App\Http\Requests\ServiceUser\Appointment\IndexRequest;
 use App\Http\Resources\AppointmentResource;
 use App\Models\Appointment;
 use App\Models\ServiceUser;
-use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Date;
 use Spatie\QueryBuilder\Filter;
 use Spatie\QueryBuilder\QueryBuilder;
 
@@ -25,7 +26,7 @@ class AppointmentController extends Controller
      * Display a listing of the resource.
      *
      * @param \App\Http\Requests\ServiceUser\Appointment\IndexRequest $request
-     * @param  \App\Models\ServiceUser $serviceUser
+     * @param \App\Models\ServiceUser $serviceUser
      * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
     public function index(IndexRequest $request, ServiceUser $serviceUser)
@@ -33,7 +34,7 @@ class AppointmentController extends Controller
         // Prepare the base query.
         $baseQuery = Appointment::query()
             ->where('service_user_id', $serviceUser->id)
-            ->where('start_at', '>', now()->timezone('UTC'));
+            ->where('start_at', '>', Date::now()->timezone('UTC'));
 
         // Specify allowed modifications to the query via the GET parameters.
         $appointments = QueryBuilder::for($baseQuery)

@@ -24,7 +24,7 @@ class File extends Model implements Responsable
      */
     protected function onDeleted(Model $model)
     {
-        /** @var $model \App\Models\File */
+        /** @var \App\Models\File $model */
         Storage::cloud()->delete($model->path());
 
         parent::onDeleted($model);
@@ -33,7 +33,7 @@ class File extends Model implements Responsable
     /**
      * Create an HTTP response that represents the object.
      *
-     * @param  \Illuminate\Http\Request $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function toResponse($request)

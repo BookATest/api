@@ -55,7 +55,7 @@ class SettingsTest extends TestCase
                 'primary_colour',
                 'secondary_colour',
                 'styles',
-            ]
+            ],
         ]);
     }
 
@@ -165,7 +165,7 @@ class SettingsTest extends TestCase
                 'primary_colour' => '#ffffff',
                 'secondary_colour' => '#000000',
                 'styles' => '* { display: none; }',
-            ]
+            ],
         ]);
     }
 

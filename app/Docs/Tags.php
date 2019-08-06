@@ -40,7 +40,8 @@ class Tags
      */
     public static function appointments(): Tag
     {
-        return Tag::create('Appointments')
+        return Tag::create()
+            ->name('Appointments')
             ->description('Appointments at clinics');
     }
 
@@ -49,7 +50,8 @@ class Tags
      */
     public static function audits(): Tag
     {
-        return Tag::create('Audits')
+        return Tag::create()
+            ->name('Audits')
             ->description('User access auditing');
     }
 
@@ -58,7 +60,8 @@ class Tags
      */
     public static function bookings(): Tag
     {
-        return Tag::create('Bookings')
+        return Tag::create()
+            ->name('Bookings')
             ->description('For service users to make appointment bookings');
     }
 
@@ -67,7 +70,8 @@ class Tags
      */
     public static function clinics(): Tag
     {
-        return Tag::create('Clinics')
+        return Tag::create()
+            ->name('Clinics')
             ->description('Clinic location');
     }
 
@@ -76,7 +80,8 @@ class Tags
      */
     public static function eligibleAnswers(): Tag
     {
-        return Tag::create('Eligible Answers')
+        return Tag::create()
+            ->name('Eligible Answers')
             ->description('Set by clinics to specify which answers make the user eligible');
     }
 
@@ -85,7 +90,8 @@ class Tags
      */
     public static function questions(): Tag
     {
-        return Tag::create('Questions')
+        return Tag::create()
+            ->name('Questions')
             ->description('To check eligibility at clinics for service users');
     }
 
@@ -94,7 +100,8 @@ class Tags
      */
     public static function reports(): Tag
     {
-        return Tag::create('Reports')
+        return Tag::create()
+            ->name('Reports')
             ->description('User generated/scheduled reports');
     }
 
@@ -103,7 +110,8 @@ class Tags
      */
     public static function reportSchedules(): Tag
     {
-        return Tag::create('Report Schedules')
+        return Tag::create()
+            ->name('Report Schedules')
             ->description('Schedules for reports to be automatically generated');
     }
 
@@ -112,7 +120,8 @@ class Tags
      */
     public static function serviceUsers(): Tag
     {
-        return Tag::create('Service Users')
+        return Tag::create()
+            ->name('Service Users')
             ->description('End-users consuming the service');
     }
 
@@ -121,7 +130,8 @@ class Tags
      */
     public static function settings(): Tag
     {
-        return Tag::create('Settings')
+        return Tag::create()
+            ->name('Settings')
             ->description('Organisation settings');
     }
 
@@ -130,7 +140,8 @@ class Tags
      */
     public static function stats(): Tag
     {
-        return Tag::create('Stats')
+        return Tag::create()
+            ->name('Stats')
             ->description('Dashboard stats');
     }
 
@@ -139,7 +150,8 @@ class Tags
      */
     public static function users(): Tag
     {
-        return Tag::create('Users')
+        return Tag::create()
+            ->name('Users')
             ->description('Backend users');
     }
 }

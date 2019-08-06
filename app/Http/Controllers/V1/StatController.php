@@ -6,6 +6,7 @@ use App\Events\EndpointHit;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Stat\IndexRequest;
 use App\Models\Clinic;
+use Illuminate\Support\Facades\Date;
 
 class StatController extends Controller
 {
@@ -34,8 +35,8 @@ class StatController extends Controller
         $appointmentsBooked = $request->user('api')->appointmentsBooked($clinics);
         $attendanceRate = $request->user('api')->attendanceRateThisWeek($clinics);
         $didNotAttendRate = $request->user('api')->didNotAttendRateThisWeek($clinics);
-        $startAt = today()->startOfWeek();
-        $endAt = today()->endOfWeek();
+        $startAt = Date::today()->startOfWeek();
+        $endAt = Date::today()->endOfWeek();
 
         event(EndpointHit::onRead($request, 'Viewed stats'));
 

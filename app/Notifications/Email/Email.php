@@ -82,7 +82,6 @@ abstract class Email implements ShouldQueue
      * Execute the job.
      *
      * @param \App\Contracts\EmailSender $emailSender
-     * @return void
      */
     public function handle(EmailSender $emailSender)
     {
@@ -97,7 +96,7 @@ abstract class Email implements ShouldQueue
                 $this->notification->message = $this->message;
                 $this->notification->save();
 
-                // TODO: $this->notification->update(['sent_at' => now()]);
+                // TODO: $this->notification->update(['sent_at' => Date::now()]);
             }
         } catch (Exception $exception) {
             // Log the error.
@@ -105,7 +104,7 @@ abstract class Email implements ShouldQueue
 
             // Update the notification.
             if ($this->notification) {
-                // TODO: $this->notification->update(['failed_at' => now()]);
+                // TODO: $this->notification->update(['failed_at' => Date::now()]);
             }
         }
     }

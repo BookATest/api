@@ -35,8 +35,8 @@ class CanRemoveRoles implements Rule
     /**
      * Determine if the validation rule passes.
      *
-     * @param  string $attribute
-     * @param  mixed $roles
+     * @param string $attribute
+     * @param mixed $roles
      * @return bool
      */
     public function passes($attribute, $roles)

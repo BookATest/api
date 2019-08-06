@@ -12,9 +12,9 @@ class ReportResource extends BaseResource
     public static function resource(): Schema
     {
         return Schema::object()->properties(
-            Schema::string('id')->format(Schema::UUID),
-            Schema::string('user_id')->format(Schema::UUID),
-            Schema::string('clinic_id')->format(Schema::UUID)->nullable(),
+            Schema::string('id')->format(Schema::FORMAT_UUID),
+            Schema::string('user_id')->format(Schema::FORMAT_UUID),
+            Schema::string('clinic_id')->format(Schema::FORMAT_UUID)->nullable(),
             Schema::string('type')->enum('general_export'),
             Schema::string('start_at')->format('date'),
             Schema::string('end_at')->format('date'),

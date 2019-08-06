@@ -8,8 +8,6 @@ class SeedReportTypesTable extends MigrationSeeder
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
     public function up()
     {
@@ -18,8 +16,6 @@ class SeedReportTypesTable extends MigrationSeeder
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
     public function down()
     {

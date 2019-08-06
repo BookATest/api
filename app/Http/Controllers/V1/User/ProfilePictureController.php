@@ -9,8 +9,8 @@ class ProfilePictureController extends Controller
 {
     /**
      * @param \App\Models\User $user
-     * @return \Illuminate\Http\Response|mixed
      * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
+     * @return \Illuminate\Http\Response|mixed
      */
     public function __invoke(User $user)
     {

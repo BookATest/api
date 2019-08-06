@@ -9,8 +9,8 @@ class Base64EncodedPng implements Rule
     /**
      * Determine if the validation rule passes.
      *
-     * @param  string $attribute
-     * @param  mixed $image
+     * @param string $attribute
+     * @param mixed $image
      * @return bool
      */
     public function passes($attribute, $image)

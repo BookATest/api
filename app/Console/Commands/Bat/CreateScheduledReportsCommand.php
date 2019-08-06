@@ -8,6 +8,7 @@ use App\Notifications\Email\CommunityWorker\ReportGeneratedEmail;
 use Illuminate\Console\Command;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Bus\DispatchesJobs;
+use Illuminate\Support\Facades\Date;
 
 class CreateScheduledReportsCommand extends Command
 {
@@ -87,7 +88,7 @@ class CreateScheduledReportsCommand extends Command
     protected function handleWeekly(ReportSchedule $reportSchedule)
     {
         // Skip if not a Monday.
-        if (now()->dayOfWeekIso !== static::MONDAY) {
+        if (Date::now()->dayOfWeekIso !== static::MONDAY) {
             // Output skipped message.
             $this->info("Report not due for report schedule [$reportSchedule->id]");
 
@@ -100,8 +101,8 @@ class CreateScheduledReportsCommand extends Command
                 $reportSchedule->user,
                 $reportSchedule->clinic,
                 $reportSchedule->reportType,
-                now()->startOfWeek(),
-                now()->endOfWeek()
+                Date::now()->startOfWeek(),
+                Date::now()->endOfWeek()
             );
 
             // Send a notification.
@@ -127,7 +128,7 @@ class CreateScheduledReportsCommand extends Command
     protected function handleMonthly(ReportSchedule $reportSchedule)
     {
         // Skip if not the first day of the month.
-        if (now()->day !== 1) {
+        if (Date::now()->day !== 1) {
             // Output skipped message.
             $this->info("Report not due for report schedule [$reportSchedule->id]");
 
@@ -140,8 +141,8 @@ class CreateScheduledReportsCommand extends Command
                 $reportSchedule->user,
                 $reportSchedule->clinic,
                 $reportSchedule->reportType,
-                now()->startOfMonth(),
-                now()->endOfMonth()
+                Date::now()->startOfMonth(),
+                Date::now()->endOfMonth()
             );
 
             // Send a notification.

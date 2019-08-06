@@ -1,7 +1,7 @@
 <?php
 
-use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Support\Facades\DB;
 
 class FixTimezoneUsedForStartAtColumnOnAppointmentsTable extends Migration
 {
@@ -10,8 +10,6 @@ class FixTimezoneUsedForStartAtColumnOnAppointmentsTable extends Migration
 
     /**
      * Run the migrations.
-     *
-     * @return void
      */
     public function up()
     {
@@ -24,8 +22,6 @@ class FixTimezoneUsedForStartAtColumnOnAppointmentsTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
     public function down()
     {

@@ -3,6 +3,7 @@
 namespace App\Models\Mutators;
 
 use Carbon\CarbonImmutable;
+use Illuminate\Support\Facades\Date;
 
 trait AppointmentMutators
 {
@@ -15,7 +16,7 @@ trait AppointmentMutators
     }
 
     /**
-     * @return null|string
+     * @return string|null
      */
     public function getServiceUserNameAttribute(): ?string
     {
@@ -39,7 +40,7 @@ trait AppointmentMutators
     }
 
     /**
-     * @return null|string
+     * @return string|null
      */
     public function getUserEmailAttribute(): ?string
     {
@@ -47,7 +48,7 @@ trait AppointmentMutators
     }
 
     /**
-     * @return null|string
+     * @return string|null
      */
     public function getUserPhoneAttribute(): ?string
     {
@@ -56,13 +57,14 @@ trait AppointmentMutators
 
     /**
      * @param string $startAt
-     * @return \Carbon\CarbonImmutable
      * @throws \Exception
+     * @return \Carbon\CarbonImmutable
      */
     public function getStartAtAttribute(string $startAt): CarbonImmutable
     {
         // Convert UTC time stored in database to application timezone.
-        return (new CarbonImmutable($startAt, 'UTC'))->timezone(config('app.timezone'));
+        return Date::createFromFormat('Y-m-d H:i:s', $startAt, 'UTC')
+            ->timezone(config('app.timezone'));
     }
 
     /**

@@ -5,9 +5,9 @@ namespace App\Models;
 use App\Models\Mutators\ClinicMutators;
 use App\Models\Relationships\ClinicRelationships;
 use App\Support\Coordinate;
-use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Date;
 use InvalidArgumentException;
 
 class Clinic extends Model
@@ -47,7 +47,7 @@ class Clinic extends Model
         // Cancel all booked appointments in the future.
         $this->appointments()
             ->booked()
-            ->where('start_at', '>', now()->timezone('UTC'))
+            ->where('start_at', '>', Date::now()->timezone('UTC'))
             ->chunk(200, function (Collection $appointments) {
                 $appointments->each->cancel();
             });
@@ -146,16 +146,16 @@ class Clinic extends Model
     protected function dateIsEligible(string $answer, EligibleAnswer $eligibleAnswer): bool
     {
         try {
-            $answer = CarbonImmutable::createFromFormat('Y-m-d', $answer);
+            $answer = Date::createFromFormat('Y-m-d', $answer);
         } catch (InvalidArgumentException $exception) {
             return false;
         }
 
         switch ($eligibleAnswer->answer['comparison']) {
             case '>':
-                return now()->diffInSeconds($answer) >= $eligibleAnswer->answer['interval'];
+                return Date::now()->diffInSeconds($answer) >= $eligibleAnswer->answer['interval'];
             case '<':
-                return now()->diffInSeconds($answer) <= $eligibleAnswer->answer['interval'];
+                return Date::now()->diffInSeconds($answer) <= $eligibleAnswer->answer['interval'];
         }
 
         return false;

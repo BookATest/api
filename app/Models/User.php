@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Laravel\Passport\HasApiTokens;
@@ -62,8 +63,6 @@ class User extends Authenticatable
 
     /**
      * The "booting" method of the model.
-     *
-     * @return void
      */
     protected static function boot()
     {
@@ -91,8 +90,7 @@ class User extends Authenticatable
     /**
      * Send the password reset notification.
      *
-     * @param  string $token
-     * @return void
+     * @param string $token
      */
     public function sendPasswordResetNotification($token)
     {
@@ -105,7 +103,7 @@ class User extends Authenticatable
      */
     public function disable(CarbonImmutable $dateTime = null): self
     {
-        $dateTime = $dateTime ?? now();
+        $dateTime = $dateTime ?? Date::now();
         $this->update(['disabled_at' => $dateTime]);
 
         return $this;
@@ -223,6 +221,7 @@ class User extends Authenticatable
             case Role::COMMUNITY_WORKER:
                 $requesterIsClinicAdmin = $this->isClinicAdmin($userRole->clinic);
                 $subjectIsClinicAdmin = $subjectUser->isClinicAdmin($userRole->clinic);
+
                 return $requesterIsClinicAdmin && !$subjectIsClinicAdmin;
         }
 
@@ -305,8 +304,8 @@ class User extends Authenticatable
 
     /**
      * @param \App\Models\Clinic $clinic
-     * @return \App\Models\User
      * @throws \App\Exceptions\CannotRevokeRoleException
+     * @return \App\Models\User
      */
     public function revokeCommunityWorker(Clinic $clinic): self
     {
@@ -319,8 +318,8 @@ class User extends Authenticatable
 
     /**
      * @param \App\Models\Clinic $clinic
-     * @return \App\Models\User
      * @throws \App\Exceptions\CannotRevokeRoleException
+     * @return \App\Models\User
      */
     public function revokeClinicAdmin(Clinic $clinic): self
     {
@@ -377,7 +376,7 @@ class User extends Authenticatable
         }
 
         // Generate the token.
-        $token = strtoupper(str_random(10));
+        $token = mb_strtoupper(str_random(10));
 
         // Use recursion if the token has already been used.
         if (static::where('calendar_feed_token', $token)->exists()) {
@@ -476,8 +475,8 @@ class User extends Authenticatable
     }
 
     /**
-     * @return \Illuminate\Http\Response
      * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
+     * @return \Illuminate\Http\Response
      */
     public function placeholderProfilePicture(): Response
     {
@@ -485,7 +484,7 @@ class User extends Authenticatable
 
         return response()->make($content, Response::HTTP_OK, [
             'Content-Type' => File::MIME_JPEG,
-            'Content-Disposition' => "inline; filename=\"profile-picture.jpg\"",
+            'Content-Disposition' => 'inline; filename="profile-picture.jpg"',
         ]);
     }
 
@@ -577,8 +576,8 @@ class User extends Authenticatable
 
     /**
      * @param string $content
-     * @return \App\Models\File
      * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
+     * @return \App\Models\File
      */
     public function uploadProfilePicture(string $content): File
     {

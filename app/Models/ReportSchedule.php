@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\Mutators\ReportScheduleMutators;
 use App\Models\Relationships\ReportScheduleRelationships;
 use App\ReportGenerators\ReportGeneratorFactory;
+use Illuminate\Support\Facades\Date;
 
 class ReportSchedule extends Model
 {
@@ -34,12 +35,12 @@ class ReportSchedule extends Model
 
         switch ($this->repeat_type) {
             case static::WEEKLY:
-                $report->start_at = now()->startOfWeek();
-                $report->end_at = now()->endOfWeek();
+                $report->start_at = Date::now()->startOfWeek();
+                $report->end_at = Date::now()->endOfWeek();
                 break;
             case static::MONTHLY:
-                $report->start_at = now()->startOfMonth();
-                $report->end_at = now()->endOfMonth();
+                $report->start_at = Date::now()->startOfMonth();
+                $report->end_at = Date::now()->endOfMonth();
                 break;
         }
 

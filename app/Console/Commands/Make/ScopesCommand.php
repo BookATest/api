@@ -41,16 +41,16 @@ class ScopesCommand extends Command
         $model = $this->argument('model');
 
         return <<<EOT
-<?php
-
-namespace App\Models\Scopes;
-
-trait {$model}Scopes
-{
-    //
-}
-
-EOT;
+            <?php
+            
+            namespace App\Models\Scopes;
+            
+            trait {$model}Scopes
+            {
+                //
+            }
+            
+            EOT;
     }
 
     /**

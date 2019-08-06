@@ -32,7 +32,7 @@ class SettingController extends Controller
         $settings = Setting::getAll();
         unset($settings[Setting::LOGO_FILE_ID]);
 
-        event(EndpointHit::onRead($request, "Viewed settings"));
+        event(EndpointHit::onRead($request, 'Viewed settings'));
 
         return response()->json(['data' => $settings]);
     }
@@ -163,7 +163,7 @@ class SettingController extends Controller
         $settings = Setting::getAll();
         unset($settings[Setting::LOGO_FILE_ID]);
 
-        event(EndpointHit::onUpdate($request, "Updated settings"));
+        event(EndpointHit::onUpdate($request, 'Updated settings'));
 
         return response()->json(['data' => $settings]);
     }

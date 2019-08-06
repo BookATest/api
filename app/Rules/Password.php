@@ -9,8 +9,8 @@ class Password implements Rule
     /**
      * Determine if the validation rule passes.
      *
-     * @param  string $attribute
-     * @param  mixed $password
+     * @param string $attribute
+     * @param mixed $password
      * @return bool
      */
     public function passes($attribute, $password)

@@ -16,6 +16,7 @@ use App\Models\AppointmentSchedule;
 use Carbon\CarbonImmutable;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
 use Spatie\QueryBuilder\Filter;
 use Spatie\QueryBuilder\QueryBuilder;
@@ -64,8 +65,8 @@ class AppointmentController extends Controller
         if (Auth::guard('api')->guest()) {
             $baseQuery = $baseQuery
                 ->whereBetween('appointments.start_at', [
-                    now()->timezone('UTC'),
-                    today()->addDays(config('bat.days_in_advance_to_book'))->endOfDay()->timezone('UTC'),
+                    Date::now()->timezone('UTC'),
+                    Date::today()->addDays(config('bat.days_in_advance_to_book'))->endOfDay()->timezone('UTC'),
                 ])
                 ->available();
         }
@@ -106,7 +107,7 @@ class AppointmentController extends Controller
     public function store(StoreRequest $request)
     {
         $appointment = DB::transaction(function () use ($request): Appointment {
-            $startAt = CarbonImmutable::createFromFormat(CarbonImmutable::ATOM, $request->start_at)
+            $startAt = Date::createFromFormat(CarbonImmutable::ATOM, $request->start_at)
                 ->second(0);
 
             // For repeating appointments.
@@ -144,7 +145,7 @@ class AppointmentController extends Controller
      * Display the specified resource.
      *
      * @param \App\Http\Requests\Appointment\ShowRequest $request
-     * @param  \App\Models\Appointment $appointment
+     * @param \App\Models\Appointment $appointment
      * @return \App\Http\Resources\AppointmentResource
      */
     public function show(ShowRequest $request, Appointment $appointment)
@@ -173,7 +174,7 @@ class AppointmentController extends Controller
      * Update the specified resource in storage.
      *
      * @param \App\Http\Requests\Appointment\UpdateRequest $request
-     * @param  \App\Models\Appointment $appointment
+     * @param \App\Models\Appointment $appointment
      * @return \App\Http\Resources\AppointmentResource
      */
     public function update(UpdateRequest $request, Appointment $appointment)
@@ -191,7 +192,7 @@ class AppointmentController extends Controller
      * Remove the specified resource from storage.
      *
      * @param \App\Http\Requests\Appointment\DestroyRequest $request
-     * @param  \App\Models\Appointment $appointment
+     * @param \App\Models\Appointment $appointment
      * @return \App\Http\Responses\ResourceDeletedResponse
      */
     public function destroy(DestroyRequest $request, Appointment $appointment)

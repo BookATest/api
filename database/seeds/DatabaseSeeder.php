@@ -10,13 +10,12 @@ use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Date;
 
 class DatabaseSeeder extends Seeder
 {
     /**
      * Seed the application's database.
-     *
-     * @return void
      */
     public function run()
     {
@@ -25,7 +24,7 @@ class DatabaseSeeder extends Seeder
         $this->createUsers(30);
 
         foreach (range(0, 6) as $daysToAdd) {
-            $this->createAppointments(3, today()->addDays($daysToAdd));
+            $this->createAppointments(3, Date::today()->addDays($daysToAdd));
         }
 
         $this->createQuestions();
@@ -116,10 +115,10 @@ class DatabaseSeeder extends Seeder
     }
 
     /**
-     * @param int $perDay The number of appointments that should be generated
-     * for one day for a single user.
+     * @param int $perDay the number of appointments that should be generated
+     *                    for one day for a single user
      * @param \Carbon\CarbonImmutable $day The day to create
-     * @return \Illuminate\Database\Eloquent\Collection The day to create appointments for.
+     * @return \Illuminate\Database\Eloquent\Collection the day to create appointments for
      */
     protected function createAppointments(int $perDay, CarbonImmutable $day): Collection
     {
@@ -208,7 +207,7 @@ class DatabaseSeeder extends Seeder
                                 'question_id' => $question->id,
                                 'answer' => EligibleAnswer::parseDateAnswer([
                                     'comparison' => $comparison,
-                                    'interval' => now()->diffInSeconds(now()->addYears(18)),
+                                    'interval' => Date::now()->diffInSeconds(Date::now()->addYears(18)),
                                 ]),
                             ]);
                             break;

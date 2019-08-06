@@ -65,13 +65,20 @@ Ensure any OAuth clients have been created to access the API (only implicit gran
 To run the PHPUnit tests:
  
 ```bash
-./develop phpunit
+./develop composer test:unit
 ```
 
 To run the code style tests:
 
 ```bash
-./develop phpcs
+./develop composer test:style
+```
+
+You can also fix most, if not all of the code style issues using the
+following command:
+
+```bash
+./develop composer fix:style
 ```
 
 ## Deployment

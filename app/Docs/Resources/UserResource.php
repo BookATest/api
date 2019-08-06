@@ -12,7 +12,7 @@ class UserResource extends BaseResource
     public static function resource(): Schema
     {
         return Schema::object()->properties(
-            Schema::string('id')->format(Schema::UUID),
+            Schema::string('id')->format(Schema::FORMAT_UUID),
             Schema::string('first_name'),
             Schema::string('last_name'),
             Schema::string('email'),
@@ -27,7 +27,7 @@ class UserResource extends BaseResource
             Schema::array('roles')->items(
                 Schema::object()->properties(
                     Schema::string('role'),
-                    Schema::string('clinic_id')->format(Schema::UUID)->nullable()
+                    Schema::string('clinic_id')->format(Schema::FORMAT_UUID)->nullable()
                 )
             ),
             Schema::string('created_at')->format('date-time'),

@@ -7,6 +7,7 @@ use App\Http\Requests\Appointment\IcsRequest;
 use App\Http\Responses\ICalAppointmentsResponse;
 use App\Models\Appointment;
 use App\Models\User;
+use Illuminate\Support\Facades\Date;
 use Spatie\QueryBuilder\Filter;
 use Spatie\QueryBuilder\QueryBuilder;
 
@@ -32,8 +33,8 @@ class IcsController extends Controller
         $baseQuery = Appointment::query()
             ->with('clinic')
             ->whereBetween('start_at', [
-                today()->timezone('UTC'),
-                today()->addMonths(3)->timezone('UTC'),
+                Date::today()->timezone('UTC'),
+                Date::today()->addMonths(3)->timezone('UTC'),
             ])
             ->orderBy('start_at');
 

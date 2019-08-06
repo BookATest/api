@@ -4,14 +4,15 @@ namespace App\Rules;
 
 use App\Models\Appointment;
 use Illuminate\Contracts\Validation\Rule;
+use Illuminate\Support\Facades\Date;
 
 class AppointmentAvailable implements Rule
 {
     /**
      * Determine if the validation rule passes.
      *
-     * @param  string $attribute
-     * @param  mixed $appointmentId
+     * @param string $attribute
+     * @param mixed $appointmentId
      * @return bool
      */
     public function passes($attribute, $appointmentId)
@@ -34,7 +35,7 @@ class AppointmentAvailable implements Rule
             $appointment->clinic->appointment_booking_threshold
         );
 
-        if (now()->greaterThan($latestBookingTime)) {
+        if (Date::now()->greaterThan($latestBookingTime)) {
             return false;
         }
 

@@ -41,16 +41,16 @@ class MutatorsCommand extends Command
         $model = $this->argument('model');
 
         return <<<EOT
-<?php
-
-namespace App\Models\Mutators;
-
-trait {$model}Mutators
-{
-    //
-}
-
-EOT;
+            <?php
+            
+            namespace App\Models\Mutators;
+            
+            trait {$model}Mutators
+            {
+                //
+            }
+            
+            EOT;
     }
 
     /**

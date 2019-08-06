@@ -7,6 +7,7 @@ use App\Models\Relationships\AppointmentScheduleRelationships;
 use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Date;
 
 class AppointmentSchedule extends Model
 {
@@ -45,7 +46,7 @@ class AppointmentSchedule extends Model
         // Loop through the date range.
         foreach (range($daysToSkip, $daysUpTo) as $day) {
             // Get the date of the looped day in the future.
-            $startAt = today()
+            $startAt = Date::today()
                 ->addDays($day)
                 ->setTimeFromTimeString($this->weekly_at);
 

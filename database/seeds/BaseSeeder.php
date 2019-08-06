@@ -2,6 +2,7 @@
 
 use Illuminate\Database\DatabaseManager;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Date;
 
 abstract class BaseSeeder extends Seeder
 {
@@ -28,13 +29,11 @@ abstract class BaseSeeder extends Seeder
     public function __construct(DatabaseManager $db)
     {
         $this->db = $db;
-        $this->now = now();
+        $this->now = Date::now();
     }
 
     /**
      * @param array $args
-     *
-     * @return void
      */
     abstract protected function addRecord(...$args);
 }

@@ -7,7 +7,7 @@ use App\Models\Appointment;
 use App\Models\Clinic;
 use App\Models\ServiceUser;
 use App\Notifications\Email\CommunityWorker\DnaReminderEmail;
-use Carbon\CarbonImmutable;
+use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\Queue;
 use Tests\TestCase;
 
@@ -17,17 +17,17 @@ class SendDnaRemindersCommandTest extends TestCase
     {
         Queue::fake();
 
-        CarbonImmutable::setTestNow(now()->startOfWeek());
+        Date::setTestNow(Date::now()->startOfWeek());
 
         $clinic = factory(Clinic::class)->create([
             'appointment_duration' => 60, // 1 hour
         ]);
         $appointment = factory(Appointment::class)->create([
             'clinic_id' => $clinic->id,
-            'start_at' => now()->subHour()->subMinutes(30),
+            'start_at' => Date::now()->subHour()->subMinutes(30),
         ]);
         $serviceUser = factory(ServiceUser::class)->create();
-        $appointment->book($serviceUser, now()->subHours(2));
+        $appointment->book($serviceUser, Date::now()->subHours(2));
 
         $this->artisan(SendDnaRemindersCommand::class);
 
@@ -38,17 +38,17 @@ class SendDnaRemindersCommandTest extends TestCase
     {
         Queue::fake();
 
-        CarbonImmutable::setTestNow(now()->startOfWeek());
+        Date::setTestNow(Date::now()->startOfWeek());
 
         $clinic = factory(Clinic::class)->create([
             'appointment_duration' => 60, // 1 hour
         ]);
         $appointment = factory(Appointment::class)->create([
             'clinic_id' => $clinic->id,
-            'start_at' => now()->subHour()->subMinutes(35),
+            'start_at' => Date::now()->subHour()->subMinutes(35),
         ]);
         $serviceUser = factory(ServiceUser::class)->create();
-        $appointment->book($serviceUser, now()->subHours(2));
+        $appointment->book($serviceUser, Date::now()->subHours(2));
 
         $this->artisan(SendDnaRemindersCommand::class);
 
