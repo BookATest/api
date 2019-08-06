@@ -5,7 +5,7 @@ namespace App\Models;
 use App\Models\Mutators\AppointmentMutators;
 use App\Models\Relationships\AppointmentRelationships;
 use App\Models\Scopes\AppointmentScopes;
-use Carbon\CarbonImmutable;
+use Carbon\CarbonInterface;
 use Illuminate\Support\Facades\Date;
 use InvalidArgumentException;
 
@@ -41,10 +41,10 @@ class Appointment extends Model
 
     /**
      * @param \App\Models\ServiceUser $serviceUser
-     * @param \Carbon\CarbonImmutable|null $bookedAt
+     * @param \Carbon\CarbonInterface|null $bookedAt
      * @return \App\Models\Appointment
      */
-    public function book(ServiceUser $serviceUser, CarbonImmutable $bookedAt = null): self
+    public function book(ServiceUser $serviceUser, CarbonInterface $bookedAt = null): self
     {
         $bookedAt = $bookedAt ?? Date::now();
 
@@ -159,10 +159,10 @@ class Appointment extends Model
     /**
      * @param \App\Models\Question $question
      * @param \App\Models\ServiceUser $serviceUser
-     * @param \Carbon\CarbonImmutable $dateTime
+     * @param \Carbon\CarbonInterface $dateTime
      * @return \App\Models\Answer
      */
-    public function createDateAnswer(Question $question, ServiceUser $serviceUser, CarbonImmutable $dateTime): Answer
+    public function createDateAnswer(Question $question, ServiceUser $serviceUser, CarbonInterface $dateTime): Answer
     {
         // Validation.
         $questionType = Question::DATE;

@@ -2,7 +2,7 @@
 
 namespace App\Models\Scopes;
 
-use Carbon\CarbonImmutable;
+use Carbon\CarbonInterface;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
@@ -56,28 +56,28 @@ trait AppointmentScopes
 
     /**
      * @param \Illuminate\Database\Eloquent\Builder $query
-     * @param $dateTime
+     * @param \Carbon\CarbonInterface|string $dateTime
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeStartsAfter(Builder $query, $dateTime)
     {
-        $dateTime = $dateTime instanceof CarbonImmutable
+        $dateTime = $dateTime instanceof CarbonInterface
             ? $dateTime
-            : Date::createFromFormat(CarbonImmutable::ATOM, $dateTime);
+            : Date::createFromFormat(CarbonInterface::ATOM, $dateTime);
 
         return $query->where('appointments.start_at', '>=', $dateTime->timezone('UTC'));
     }
 
     /**
      * @param \Illuminate\Database\Eloquent\Builder $query
-     * @param $dateTime
+     * @param \Carbon\CarbonInterface|string $dateTime
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeStartsBefore(Builder $query, $dateTime)
     {
-        $dateTime = $dateTime instanceof CarbonImmutable
+        $dateTime = $dateTime instanceof CarbonInterface
             ? $dateTime
-            : Date::createFromFormat(CarbonImmutable::ATOM, $dateTime);
+            : Date::createFromFormat(CarbonInterface::ATOM, $dateTime);
 
         return $query->where('appointments.start_at', '<=', $dateTime->timezone('UTC'));
     }

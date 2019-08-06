@@ -5,7 +5,7 @@ namespace App\Models;
 use App\Models\Mutators\ReportMutators;
 use App\Models\Relationships\ReportRelationships;
 use App\ReportGenerators\ReportGeneratorFactory;
-use Carbon\CarbonImmutable;
+use Carbon\CarbonInterface;
 
 class Report extends Model
 {
@@ -38,8 +38,8 @@ class Report extends Model
      * @param \App\Models\User $user
      * @param \App\Models\Clinic|null $clinic
      * @param \App\Models\ReportType $reportType
-     * @param \Carbon\CarbonImmutable $startAt
-     * @param \Carbon\CarbonImmutable $endAt
+     * @param \Carbon\CarbonInterface $startAt
+     * @param \Carbon\CarbonInterface $endAt
      * @throws \App\Exceptions\InvalidReportTypeException
      * @return \App\Models\Report
      */
@@ -47,8 +47,8 @@ class Report extends Model
         User $user,
         ?Clinic $clinic,
         ReportType $reportType,
-        CarbonImmutable $startAt,
-        CarbonImmutable $endAt
+        CarbonInterface $startAt,
+        CarbonInterface $endAt
     ): self {
         // Create the file.
         /** @var \App\Models\File $file */

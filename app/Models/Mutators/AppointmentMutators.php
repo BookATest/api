@@ -2,7 +2,7 @@
 
 namespace App\Models\Mutators;
 
-use Carbon\CarbonImmutable;
+use Carbon\CarbonInterface;
 use Illuminate\Support\Facades\Date;
 
 trait AppointmentMutators
@@ -58,9 +58,9 @@ trait AppointmentMutators
     /**
      * @param string $startAt
      * @throws \Exception
-     * @return \Carbon\CarbonImmutable
+     * @return \Carbon\CarbonInterface
      */
-    public function getStartAtAttribute(string $startAt): CarbonImmutable
+    public function getStartAtAttribute(string $startAt): CarbonInterface
     {
         // Convert UTC time stored in database to application timezone.
         return Date::createFromFormat('Y-m-d H:i:s', $startAt, 'UTC')
@@ -68,9 +68,9 @@ trait AppointmentMutators
     }
 
     /**
-     * @param \Carbon\CarbonImmutable $startAt
+     * @param \Carbon\CarbonInterface $startAt
      */
-    public function setStartAtAttribute(CarbonImmutable $startAt)
+    public function setStartAtAttribute(CarbonInterface $startAt)
     {
         // Convert from application timezone to UTC before storing in database.
         $this->attributes['start_at'] = $startAt

@@ -2,7 +2,7 @@
 
 namespace App\Rules;
 
-use Carbon\CarbonImmutable;
+use Carbon\CarbonInterface;
 
 class DateFormat
 {
@@ -26,7 +26,7 @@ class DateFormat
      */
     public static function iso8601(): self
     {
-        return new static(CarbonImmutable::ATOM);
+        return new static(CarbonInterface::ATOM);
     }
 
     /**

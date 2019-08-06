@@ -4,7 +4,7 @@ namespace App\Models;
 
 use App\Models\Mutators\AppointmentScheduleMutators;
 use App\Models\Relationships\AppointmentScheduleRelationships;
-use Carbon\CarbonImmutable;
+use Carbon\CarbonInterface;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Date;
@@ -88,10 +88,10 @@ class AppointmentSchedule extends Model
     }
 
     /**
-     * @param \Carbon\CarbonImmutable $date
+     * @param \Carbon\CarbonInterface $date
      * @throws \Exception
      */
-    public function deleteFrom(CarbonImmutable $date)
+    public function deleteFrom(CarbonInterface $date)
     {
         $this->appointments()
             ->available()
