@@ -120,7 +120,7 @@ class AppointmentController extends Controller
                     'weekly_at' => $startAt->toTimeString(),
                 ]);
 
-                $daysToSkip = 0;
+                $daysToSkip = $startAt->diffInDays(Date::today());
                 $appointments = $appointmentSchedule->createAppointments($daysToSkip);
 
                 return $appointments->first();
