@@ -415,6 +415,47 @@ class AppointmentsTest extends TestCase
         ]);
     }
 
+    public function test_cw_can_create_appointment_schedule_for_future()
+    {
+        $clinic = factory(Clinic::class)->create();
+        $user = factory(User::class)->create()->makeCommunityWorker($clinic);
+        $startAt = Date::today()->addMonth();
+
+        Passport::actingAs($user);
+
+        $response = $this->json('POST', '/v1/appointments', [
+            'clinic_id' => $clinic->id,
+            'start_at' => $startAt->toIso8601String(),
+            'is_repeating' => true,
+        ]);
+
+        $appointmentId = json_decode($response->getContent(), true)['data']['id'];
+        /** @var \App\Models\Appointment $appointment */
+        $appointment = Appointment::findOrFail($appointmentId);
+
+        $response->assertStatus(Response::HTTP_CREATED);
+        $response->assertJsonFragment([
+            'user_id' => $user->id,
+            'clinic_id' => $clinic->id,
+            'is_repeating' => true,
+            'service_user_id' => null,
+            'start_at' => $startAt->toIso8601String(),
+            'booked_at' => null,
+            'consented_at' => null,
+            'did_not_attend' => null,
+        ]);
+        $this->assertDatabaseHas('appointment_schedules', [
+            'user_id' => $user->id,
+            'clinic_id' => $clinic->id,
+        ]);
+        $this->assertFalse(
+            $appointment->appointmentSchedule
+                ->appointments()
+                ->where('appointments.start_at', '<', $startAt->timezone('UTC'))
+                ->exists()
+        );
+    }
+
     public function test_audit_created_when_created()
     {
         $this->fakeEvents();
@@ -960,8 +1001,7 @@ class AppointmentsTest extends TestCase
         Queue::assertPushed(\App\Notifications\Sms\ServiceUser\BookingCancelledByUserSms::class);
     }
 
-    public function test_notification_not_sent_to_community_worker_with_notification_disabled_when_cancelled_by_service_user(
-    )
+    public function test_notification_not_sent_to_community_worker_with_notification_disabled_when_cancelled_by_service_user()
     {
         Queue::fake();
 
