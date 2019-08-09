@@ -208,6 +208,7 @@ class Settings
                     Schema::string('phone'),
                     Schema::string('primary_colour'),
                     Schema::string('secondary_colour'),
+                    Schema::string('styles'),
                     Schema::string('logo')->description('Base64 encoded PNG.')
                 )
         );
