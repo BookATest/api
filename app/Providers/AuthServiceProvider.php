@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+use Illuminate\Support\Facades\Date;
 use Laravel\Passport\Passport;
 use Laravel\Passport\RouteRegistrar;
 
@@ -38,5 +39,6 @@ class AuthServiceProvider extends ServiceProvider
             $router->forAuthorization();
         });
         Passport::enableImplicitGrant();
+        Passport::tokensExpireIn(Date::today()->endOfDay());
     }
 }
