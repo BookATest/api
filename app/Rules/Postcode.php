@@ -2,6 +2,8 @@
 
 namespace App\Rules;
 
+use App\Contracts\Geocoder;
+use App\Exceptions\AddressNotFoundException;
 use Illuminate\Contracts\Validation\Rule;
 
 class Postcode implements Rule
@@ -19,7 +21,20 @@ class Postcode implements Rule
             return false;
         }
 
-        return \App\Support\Postcode::validate($postcode);
+        if (!\App\Support\Postcode::validate($postcode)) {
+            return false;
+        }
+
+        /** @var \App\Contracts\Geocoder $geocoder */
+        $geocoder = resolve(Geocoder::class);
+
+        try {
+            $geocoder->geocode(new \App\Support\Postcode($postcode));
+        } catch (AddressNotFoundException $exception) {
+            return false;
+        }
+
+        return true;
     }
 
     /**
