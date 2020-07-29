@@ -90,8 +90,8 @@ class ClinicController extends Controller
                 'language' => [
                     'make-booking' => [
                         'appointments' => [
-                            'title' => $request->language['make-booking']['appointments']['title'],
-                            'content' => $request->language['make-booking']['appointments']['content'],
+                            'title' => $request->input('language.make-booking.appointments.title'),
+                            'content' => $request->input('language.make-booking.appointments.content'),
                         ],
                     ],
                 ],
@@ -151,8 +151,8 @@ class ClinicController extends Controller
                 'language' => [
                     'make-booking' => [
                         'appointments' => [
-                            'title' => $request->language['make-booking']['appointments']['title'],
-                            'content' => $request->language['make-booking']['appointments']['content'],
+                            'title' => $request->input('language.make-booking.appointments.title'),
+                            'content' => $request->input('language.make-booking.appointments.content'),
                         ],
                     ],
                 ],
