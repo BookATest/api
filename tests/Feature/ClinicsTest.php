@@ -120,6 +120,14 @@ class ClinicsTest extends TestCase
                     'appointment_booking_threshold',
                     'send_cancellation_confirmations',
                     'send_dna_follow_ups',
+                    'language' => [
+                        'make-booking' => [
+                            'appointments' => [
+                                'title',
+                                'content',
+                            ],
+                        ],
+                    ],
                     'created_at',
                     'updated_at',
                 ],
@@ -141,6 +149,14 @@ class ClinicsTest extends TestCase
                 'appointment_booking_threshold' => $clinic->appointment_booking_threshold,
                 'send_cancellation_confirmations' => $clinic->send_cancellation_confirmations,
                 'send_dna_follow_ups' => $clinic->send_dna_follow_ups,
+                'language' => [
+                    'make-booking' => [
+                        'appointments' => [
+                            'title' => null,
+                            'content' => null,
+                        ],
+                    ],
+                ],
                 'created_at' => $clinic->created_at->toIso8601String(),
                 'updated_at' => $clinic->updated_at->toIso8601String(),
             ],
