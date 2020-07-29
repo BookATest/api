@@ -84,7 +84,8 @@ class Clinics
                     'postcode',
                     'directions',
                     'send_cancellation_confirmations',
-                    'send_dna_follow_ups'
+                    'send_dna_follow_ups',
+                    'language'
                 )
                 ->properties(
                     Schema::string('name'),
@@ -99,7 +100,21 @@ class Clinics
                     Schema::integer('appointment_duration'),
                     Schema::integer('appointment_booking_threshold'),
                     Schema::boolean('send_cancellation_confirmations'),
-                    Schema::boolean('send_dna_follow_ups')
+                    Schema::boolean('send_dna_follow_ups'),
+                    Schema::object('language')
+                        ->required('make-booking')
+                        ->properties(
+                            Schema::object('make-booking')
+                                ->required('appointments')
+                                ->properties(
+                                    Schema::object('appointments')
+                                        ->required('title', 'content')
+                                        ->properties(
+                                            Schema::string('title')->nullable(),
+                                            Schema::string('content')->nullable()
+                                        )
+                                )
+                        )
                 )
         );
 
@@ -235,9 +250,9 @@ class Clinics
             ->description(
                 <<<'EOT'
                 **Permission:** `Organisation Admin`
-                
+
                 ***
-                
+
                 This will:
                 * Cancel all booked appointments in the future
                 * Delete all appointment schedules

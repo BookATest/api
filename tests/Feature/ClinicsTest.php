@@ -42,6 +42,14 @@ class ClinicsTest extends TestCase
                     'directions',
                     'appointment_duration',
                     'appointment_booking_threshold',
+                    'language' => [
+                        'make-booking' => [
+                            'appointments' => [
+                                'title',
+                                'content',
+                            ],
+                        ],
+                    ],
                     'created_at',
                     'updated_at',
                 ],
@@ -61,6 +69,14 @@ class ClinicsTest extends TestCase
                 'directions' => $clinic->directions,
                 'appointment_duration' => $clinic->appointment_duration,
                 'appointment_booking_threshold' => $clinic->appointment_booking_threshold,
+                'language' => [
+                    'make-booking' => [
+                        'appointments' => [
+                            'title' => null,
+                            'content' => null,
+                        ],
+                    ],
+                ],
                 'created_at' => $clinic->created_at->toIso8601String(),
                 'updated_at' => $clinic->updated_at->toIso8601String(),
             ],
@@ -104,6 +120,14 @@ class ClinicsTest extends TestCase
                     'appointment_booking_threshold',
                     'send_cancellation_confirmations',
                     'send_dna_follow_ups',
+                    'language' => [
+                        'make-booking' => [
+                            'appointments' => [
+                                'title',
+                                'content',
+                            ],
+                        ],
+                    ],
                     'created_at',
                     'updated_at',
                 ],
@@ -125,6 +149,14 @@ class ClinicsTest extends TestCase
                 'appointment_booking_threshold' => $clinic->appointment_booking_threshold,
                 'send_cancellation_confirmations' => $clinic->send_cancellation_confirmations,
                 'send_dna_follow_ups' => $clinic->send_dna_follow_ups,
+                'language' => [
+                    'make-booking' => [
+                        'appointments' => [
+                            'title' => null,
+                            'content' => null,
+                        ],
+                    ],
+                ],
                 'created_at' => $clinic->created_at->toIso8601String(),
                 'updated_at' => $clinic->updated_at->toIso8601String(),
             ],
@@ -183,6 +215,14 @@ class ClinicsTest extends TestCase
             'appointment_booking_threshold' => 120,
             'send_cancellation_confirmations' => true,
             'send_dna_follow_ups' => true,
+            'language' => [
+                'make-booking' => [
+                    'appointments' => [
+                        'title' => 'Test',
+                        'content' => null,
+                    ],
+                ],
+            ],
         ]);
 
         $response->assertStatus(Response::HTTP_CREATED);
@@ -200,6 +240,14 @@ class ClinicsTest extends TestCase
             'appointment_booking_threshold' => 120,
             'send_cancellation_confirmations' => true,
             'send_dna_follow_ups' => true,
+            'language' => [
+                'make-booking' => [
+                    'appointments' => [
+                        'title' => 'Test',
+                        'content' => null,
+                    ],
+                ],
+            ],
         ]);
     }
 
@@ -224,6 +272,14 @@ class ClinicsTest extends TestCase
             'appointment_booking_threshold' => 120,
             'send_cancellation_confirmations' => true,
             'send_dna_follow_ups' => true,
+            'language' => [
+                'make-booking' => [
+                    'appointments' => [
+                        'title' => null,
+                        'content' => null,
+                    ],
+                ],
+            ],
         ]);
 
         $this->assertEventDispatched(EndpointHit::class, function (EndpointHit $event) {
@@ -250,6 +306,14 @@ class ClinicsTest extends TestCase
             'appointment_booking_threshold' => 120,
             'send_cancellation_confirmations' => true,
             'send_dna_follow_ups' => true,
+            'language' => [
+                'make-booking' => [
+                    'appointments' => [
+                        'title' => null,
+                        'content' => null,
+                    ],
+                ],
+            ],
         ]);
 
         $clinic = Clinic::firstOrFail();
@@ -294,6 +358,14 @@ class ClinicsTest extends TestCase
                 'appointment_booking_threshold',
                 'created_at',
                 'updated_at',
+                'language' => [
+                    'make-booking' => [
+                        'appointments' => [
+                            'title',
+                            'content',
+                        ],
+                    ],
+                ],
             ],
         ]);
         $response->assertJsonFragment([
@@ -310,6 +382,14 @@ class ClinicsTest extends TestCase
                 'directions' => $clinic->directions,
                 'appointment_duration' => $clinic->appointment_duration,
                 'appointment_booking_threshold' => $clinic->appointment_booking_threshold,
+                'language' => [
+                    'make-booking' => [
+                        'appointments' => [
+                            'title' => null,
+                            'content' => null,
+                        ],
+                    ],
+                ],
                 'created_at' => $clinic->created_at->toIso8601String(),
                 'updated_at' => $clinic->updated_at->toIso8601String(),
             ],
@@ -341,6 +421,14 @@ class ClinicsTest extends TestCase
                 'appointment_booking_threshold',
                 'send_cancellation_confirmations',
                 'send_dna_follow_ups',
+                'language' => [
+                    'make-booking' => [
+                        'appointments' => [
+                            'title',
+                            'content',
+                        ],
+                    ],
+                ],
                 'created_at',
                 'updated_at',
             ],
@@ -361,6 +449,14 @@ class ClinicsTest extends TestCase
                 'appointment_booking_threshold' => $clinic->appointment_booking_threshold,
                 'send_cancellation_confirmations' => $clinic->send_cancellation_confirmations,
                 'send_dna_follow_ups' => $clinic->send_dna_follow_ups,
+                'language' => [
+                    'make-booking' => [
+                        'appointments' => [
+                            'title' => null,
+                            'content' => null,
+                        ],
+                    ],
+                ],
                 'created_at' => $clinic->created_at->toIso8601String(),
                 'updated_at' => $clinic->updated_at->toIso8601String(),
             ],
@@ -440,6 +536,14 @@ class ClinicsTest extends TestCase
             'appointment_booking_threshold' => 120,
             'send_cancellation_confirmations' => true,
             'send_dna_follow_ups' => true,
+            'language' => [
+                'make-booking' => [
+                    'appointments' => [
+                        'title' => null,
+                        'content' => null,
+                    ],
+                ],
+            ],
         ]);
 
         $clinic->refresh();
@@ -461,6 +565,14 @@ class ClinicsTest extends TestCase
                 'appointment_booking_threshold' => 120,
                 'send_cancellation_confirmations' => true,
                 'send_dna_follow_ups' => true,
+                'language' => [
+                    'make-booking' => [
+                        'appointments' => [
+                            'title' => null,
+                            'content' => null,
+                        ],
+                    ],
+                ],
                 'created_at' => $clinic->created_at->toIso8601String(),
                 'updated_at' => $clinic->updated_at->toIso8601String(),
             ],
@@ -490,6 +602,14 @@ class ClinicsTest extends TestCase
             'appointment_booking_threshold' => 120,
             'send_cancellation_confirmations' => true,
             'send_dna_follow_ups' => true,
+            'language' => [
+                'make-booking' => [
+                    'appointments' => [
+                        'title' => null,
+                        'content' => null,
+                    ],
+                ],
+            ],
         ]);
 
         $this->assertEventDispatched(EndpointHit::class, function (EndpointHit $event) {

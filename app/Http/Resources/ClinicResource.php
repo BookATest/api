@@ -30,6 +30,7 @@ class ClinicResource extends JsonResource
             'send_cancellation_confirmations' => $this->when($request->user('api'), $this->send_cancellation_confirmations),
             'send_dna_follow_ups' => $this->when($request->user('api'), $this->send_dna_follow_ups),
             'distance' => $this->when($this->hasAppend('distance'), $this->distance),
+            'language' => $this->language,
             'created_at' => $this->created_at->toIso8601String(),
             'updated_at' => $this->updated_at->toIso8601String(),
         ];

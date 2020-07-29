@@ -87,6 +87,14 @@ class ClinicController extends Controller
                 'appointment_booking_threshold' => $request->appointment_booking_threshold,
                 'send_cancellation_confirmations' => $request->send_cancellation_confirmations,
                 'send_dna_follow_ups' => $request->send_dna_follow_ups,
+                'language' => [
+                    'make-booking' => [
+                        'appointments' => [
+                            'title' => $request->input('language.make-booking.appointments.title'),
+                            'content' => $request->input('language.make-booking.appointments.content'),
+                        ],
+                    ],
+                ],
             ]);
 
             $coordinate = $this->geocoder->geocode(
@@ -140,6 +148,14 @@ class ClinicController extends Controller
                 'appointment_booking_threshold' => $request->appointment_booking_threshold,
                 'send_cancellation_confirmations' => $request->send_cancellation_confirmations,
                 'send_dna_follow_ups' => $request->send_dna_follow_ups,
+                'language' => [
+                    'make-booking' => [
+                        'appointments' => [
+                            'title' => $request->input('language.make-booking.appointments.title'),
+                            'content' => $request->input('language.make-booking.appointments.content'),
+                        ],
+                    ],
+                ],
             ]);
 
             $coordinate = $this->geocoder->geocode(

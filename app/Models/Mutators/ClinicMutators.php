@@ -13,4 +13,18 @@ trait ClinicMutators
 
         return $minutesInDay / $this->appointment_duration;
     }
+
+    /*
+     * Language.
+     */
+
+    public function getLanguageAttribute(string $value)
+    {
+        return json_decode($value, true);
+    }
+
+    public function setLanguageAttribute($value)
+    {
+        $this->attributes['language'] = json_encode($value);
+    }
 }

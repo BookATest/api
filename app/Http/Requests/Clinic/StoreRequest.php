@@ -5,6 +5,7 @@ namespace App\Http\Requests\Clinic;
 use App\Rules\DurationFitsIntoDay;
 use App\Rules\Postcode;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class StoreRequest extends FormRequest
 {
@@ -105,6 +106,21 @@ class StoreRequest extends FormRequest
             'send_dna_follow_ups' => [
                 'required',
                 'boolean',
+            ],
+            'language' => [
+                'required',
+                'array',
+            ],
+            'language.make-booking.appointments.title' => [
+                Rule::requiredIf($this->input('language.make-booking.appointments.content') !== null),
+                'present',
+                'nullable',
+                'string',
+            ],
+            'language.make-booking.appointments.content' => [
+                'present',
+                'nullable',
+                'string',
             ],
         ];
     }
