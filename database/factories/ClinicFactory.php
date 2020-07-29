@@ -18,5 +18,13 @@ $factory->define(Clinic::class, function (Faker $faker) {
         'appointment_booking_threshold' => 120,
         'send_cancellation_confirmations' => true,
         'send_dna_follow_ups' => true,
+        'language' => [
+            'make-booking' => [
+                'appointments' => [
+                    'title' => null,
+                    'content' => null,
+                ],
+            ],
+        ],
     ];
 });
